@@ -1,0 +1,60 @@
+<div class="white-box">
+  <div class="box-feat">Give your <span id="space_value"></span> a name.</div>
+  <span class="hel-14-gray">This information will be shared with potential renters.</span>
+
+  <div class="xfields">Headline:
+    <br/>
+
+    <%= f.text_field :headline, :class => "select-menux2" %>
+    <br/>
+    <span class="hel-11">
+      <script type="text/javascript">
+        $("#location_headline").counter({
+          count: 'down',
+          goal: 40
+        });
+      </script>
+    </span>
+
+  </div>
+
+  <div class="xfields">Description:<br/>
+    <%= f.text_area :description, :size => "40x5" %>
+  </div>
+
+  <div class="xfields">Number of spaces:*<br/>
+    <span style="float: left;">
+      <%= f.text_field :max_spaces, :style => "width:50px;font-size:18px;" %>
+    </span>
+  </div>
+
+  <div class="xfields">Available Starting:<br/>
+    <script>
+      $(document).ready(function(){
+        Date.firstDayOfWeek = 0;
+        Date.format = 'yyyy-mm-dd';
+
+        if($('#location_start_date').val() == ""){
+          $('#location_start_date').datePicker({clickInput:true}).val("<%= Time.now.strftime("%Y-%m-%d").to_s %>").trigger('change');
+        }else{
+          $('#location_start_date').datePicker({clickInput:true});
+        }
+      });
+    </script>
+    <%= f.text_field :start_date , :size => "40" %>
+
+  </div>
+
+  <div class="xfields">Monthly Price*:<br/>
+    <span style="float: left;">
+      $
+    </span>
+    <span style="float: left;">
+      <%= f.text_field :price , :id => "calander1", :style => "font-size:18px;" %>
+    </span>
+    <span style="float: left;">
+      .00
+    </span>
+  </div>
+
+</div>

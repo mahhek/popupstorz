@@ -1,0 +1,79 @@
+<div style="background-color: lavender;border: 1px solid black;width: 100%;float: left;">
+  <div style="margin: 10px;float: left;width: 100%;">
+    <% form_tag "/locations/search_location" , {:id => "search_form"} do %>
+      <span style="float: left;margin-left: 10px;">
+        <%= select_tag "requested_city",options_for_select([["Philadelphia" , "Philadelphia"],["New York" ,"New York"] , ["San Francisco", "San Francisco"],["Boston", "Boston"], ["Add My City!","Add My City!"]], @city) %>
+      </span>
+      <%= observe_field("requested_city", :on => :changed,
+        :url => requested_city_path,
+        :with => "requested_city")
+    %>
+      <span style="float: left;margin-left: 10px;">
+        <%= select_tag "storage_menus",options_for_select([["Parking" , "Parking"],["Storage" ,"Storage"] , ["Both", "Both"]], @park_store) %>
+      </span>
+      <span style="float: left;margin-left: 10px;">
+        <%= text_field_tag "request_date", "mm / dd / yy", :class => "calander-fields" %>
+      </span>
+      <span style="float: left;margin-left: 10px;margin-top: 5px;">
+        <a href="javascript:void(0);" onclick="$('#search_form').submit();">Find</a>
+      </span>
+      <script>
+        $(document).ready(function(){
+          Date.firstDayOfWeek = 0;
+          Date.format = 'mm / dd / yy';
+          $('#request_date').datePicker({startDate:'01-01-1996',clickInput:true})
+        });
+      </script>
+    <% end %>
+    <div id="requested_city_div" style="float: left;margin-left: 10px;">
+    </div>
+    <div id="requested_city_msg_div" style="float: left;color: darkcyan;margin-left: 10px;">
+    </div>
+    <script type="text/javascript">
+      function hide_updated_msg(){
+        jQuery('#requested_city_msg_div').animate({ opacity: 'hide' }, "slow");
+      }
+    </script>
+  </div>
+</div>
+<div style="background-color: lavender;border: 1px solid black;width: 65%;float: left;margin-top: 10px;">
+  <% unless @locations.blank? %>
+    <% @locations.each do | location | %>
+      <div style="float: left;width: 100%;border-bottom: 1px solid silver;">
+        <div style="width: 100%;float: left;margin: 10px;">
+          <div style="float: left;width: 150px;">
+            <% if location.avatars.size > 0 %>
+              <%= image_tag(location.avatars.first.photo.url(:small)) %>
+            <% end %>
+          </div>
+          <div style="float: left;width: 365px;margin-left: 10px;">
+            <span style="float: left;width: 100%;font-size: 25px;margin-top: 5px;">
+              <span style="float: left;font-size: 25px;margin-top: 5px;">
+                <%= link_to location.headline, location_path(location) %>
+              </span>
+              <span style="float: right;font-size: 25px;margin-top: 5px;">
+                $<%= location.price.to_i %>
+              </span>
+            </span>
+            <span style="float: left;width: 100%;margin-top: 15px;">
+              <%= "#{location.street_name} #{location.region}  #{location.city}, #{location.zipcode}, #{location.country_code}" %>
+            </span>
+            <span style="float: left;width: 100%;margin-top: 15px;">
+              <%= location.storage_type %> for <%= location.accommodates %>
+            </span>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div style="float: left;width: 100%;margin: 20px;">
+      No Record Found! please <%= link_to "Create new space", new_location_path %>
+    </div>
+  <% end %>
+</div>
+<% unless @map.blank? %>
+  <div id="map_div" style="float: left;width: 34%;margin: 0 auto;margin-top: 10px;margin-left: 5px;">
+    <%= @map.div(:width => 290, :height => 300) %>
+  </div>
+<%end%>
+

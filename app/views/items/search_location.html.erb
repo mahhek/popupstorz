@@ -1,0 +1,95 @@
+<%= stylesheet_link_tag "search-list"%>
+
+<div id="get-list-header">
+  <% form_tag search_location_path , {:id => "search_form"} do %>
+    <div id="search-list">
+      <span style="float: left;">
+        Sort by:
+      </span>
+      <%= select_tag "requested_city",options_for_select([["Philadelphia" , "Philadelphia"],
+          ["Atlanta" ,"Atlanta"], ["Austin" ,"Austin"] , ["Baltimore", "Baltimore"],["Boston", "Boston"],
+          ["Chicago" ,"Chicago"], ["Cincinnati" ,"Cincinnati"] , ["Cleveland", "Cleveland"],
+          ["Columbus" ,"Columbus"], ["Dallas" ,"Dallas"] , ["Denver", "Denver"],["Detroit", "Detroit"],
+          ["Houston" ,"Houston"], ["Las Vegas" ,"Las Vegas"] , ["Los Angeles", "Los Angeles"],
+          ["Miami" ,"Miami"], ["New Orleans" ,"New Orleans"] , ["Newark", "Newark"],["New York", "New York"],
+          ["Phoenix" ,"Phoenix"], ["Portland" ,"Portland"] , ["San Diego", "San Diego"],
+          ["San Francisco" ,"San Francisco"], ["San Jose" ,"San Jose"] , ["Seattle", "Seattle"],
+          ["Washington D.C.", "Washington D.C."],["Add My City!","Add My City!"]],@city), :class => "listx-selectx" %>
+        <!--<%= observe_field("requested_city", :on => :changed,
+          :url => requested_city_path,
+          :with => "requested_city")
+      %>-->
+
+      <%= select_tag "storage_menus",options_for_select([["Parking" , "Parking"],["Storage" ,"Storage"] , ["Both", "Both"]], @park_store), :class => "listx-selectx", :id => "search_storage_menus"  %>
+
+      <%= text_field_tag "request_date", "mm / dd / yy", :class => "calander-fields" %>
+      <script type="text/javascript">
+        $(document).ready(function(){
+          Date.firstDayOfWeek = 0;
+          Date.format = 'mm / dd / yy';
+          $('#request_date').datePicker({startDate:'01-01-1996',clickInput:true})
+        });
+      </script>
+      <span style="float: left;margin-left: 10px;">
+        <a href="javascript:void(0);" >
+          <img border="0" height="28"  alt="Find" src="/images/find-btn.png" onclick="$('#search_form').submit();" />
+        </a>
+      </span>
+    </div>
+  <% end %>
+</div>
+<div id="requested_city_msg_div" class="extra_city_div" style="height: 30px;padding-top: 5px;">
+</div>
+<div id="other_requested_city_div" class="extra_city_div" >
+</div>
+<script type="text/javascript">
+  function hide_updated_msg(){
+    jQuery('#requested_city_msg_div').animate({ opacity: 'hide' }, "slow");
+  }
+</script>
+
+
+<div class="result123">
+  <% unless @locations.blank? %>
+    <% @locations.each do | location | %>
+      <div class="resultx">
+        <a href="#"></a>
+        <div class="result-img">
+          <a href="#">
+            <% if location.avatars.size > 0 %>
+              <%= image_tag(location.avatars.first.photo.url(:small), :border => "0", :height => "86", :width => "106", :alt => "space") %>
+            <% else %>
+              <%= image_tag("Home.png", :border => "0", :height => "86", :width => "106", :alt => "space")  %>
+            <% end %>
+          </a>
+        </div>
+        <div class="resultx-detail">
+          <div class="resultx-heading"><%= link_to location.headline, location_path(location) %></div>
+          <div class="resultx-details"><%= "#{location.street_name} #{location.region}  #{location.city}, #{location.zipcode}, #{location.country_code}" %><br/>
+            <%= location.storage_type %> for <%= location.accommodates %></div>
+          <div class="aplus">
+            <% if location.features.include?(Feature.find_by_name("Will help upload Car/Truck")) %>
+              <div class="icon-small"><img height="31" width="34" alt="" src="/images/small-icon.png"/></div>
+            <% end %>
+          </div>
+        </div>
+        <div class="pricex">$<%= storably_displayed_price(location.price, location.park_store).to_i %></div>
+      </div>
+    <% end  %>
+  <% else %>
+    <div class="extra_city_div" style="height: 30px;padding-top: 5px;margin-top: 15px;display: block;width: 560px;">
+      There are no listings in this city. Be the first to <%= link_to "add your space", new_location_path %>!
+    </div>
+  <% end %>
+
+  <div id="page-navigator">
+    <%= will_paginate(@locations, :params => params,   :inner_window => 2 ,:outer_window => 0  , :renderer => PaginationListLinkRenderer )%>
+  </div>
+
+</div>
+
+<div id="right-map">
+  <div id="map-display">
+    <%= @map.div(:width => 270, :height => 300) %>
+  </div>
+</div>

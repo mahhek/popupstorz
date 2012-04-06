@@ -1,0 +1,39 @@
+<%= stylesheet_link_tag "search-list"%>
+
+   
+<% unless @items.blank? %>
+  <% @items.each do | item | %>
+    <div class="result123">
+      <div class="resultx">
+        <a href="#"></a>
+        <div class="result-img">
+          <a href="#">
+            <% if item.avatars.size > 0 %>
+              <%= image_tag("rails.png", :border => "0", :alt => "image")  %>
+            <% else %>
+              <%= image_tag("rails.png", :border => "0", :alt => "image")  %>
+            <% end %>
+          </a>
+        </div>
+        <div class="resultx-detail">
+          <div class="resultx-heading"><%= link_to item.title, item_path(item) %> - e<%= item.price %> per day - <%= link_to "Book now", item_path(item.id) %></div>
+
+        </div>
+      </div>
+    </div>
+
+  <% end  %>
+
+  
+
+  <%#*<div>%>
+    <%# if @map %>
+      <%#= raw(@map.div(:width => 500, :height => 400)) %>
+    <%# end %>
+  <%#*</div>%>
+<% else %>
+  No result found
+<%end %>
+  <div id="page-navigator">
+    <%= will_paginate @items %>
+  </div>

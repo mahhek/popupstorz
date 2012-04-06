@@ -1,0 +1,8 @@
+<% if @location.avatars.size > 0 %>
+  <div style="float: left;width: 100%;margin-top: 10px;margin: 5px;">
+    <%= image_tag(@location.avatars.first.photo.url(:medium)) %>
+  </div>
+  <div style="float: left;width: 100%;margin-top: 10px;margin: 5px;">
+    <%= @location.avatars.first.caption %>
+  </div>
+<% end %>

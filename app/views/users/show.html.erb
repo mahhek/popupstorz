@@ -1,0 +1,34 @@
+<h1>Profile</h1>
+<li>
+  <%= link_to('Edit Profile', edit_user_registration_path) %>
+</li>
+
+<div class="existingPaperclipFiles">
+  <% @user.avatars.each  do |avatar| %>
+    <div class="thumbnail">
+      <%= link_to( image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
+    </div>
+  <% end %>
+</div>
+
+
+<div style="margin: 5px;">
+  <b>Email</b><br /><br />&nbsp;&nbsp;&nbsp;<%= @user.email %>
+</div>
+
+<div style="margin: 5px;">
+  <b>First Name</b><br /><br />&nbsp;&nbsp;&nbsp;<%= @user.first_name %>
+</div>
+
+<div style="margin: 5px;">
+  <b>Last Name</b><br /><br />&nbsp;&nbsp;&nbsp;<%= @user.last_name %>
+</div>
+
+<div style="margin: 5px;">
+  <b>Gender</b><br /><br />&nbsp;&nbsp;&nbsp;<%= @user.gender %>
+</div>
+
+
+
+
+

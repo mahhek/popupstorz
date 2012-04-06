@@ -1,0 +1,39 @@
+<div id="get-list-header">
+  <h2>Space Listings</h2>
+</div>
+
+
+
+<div class="listx-bg">
+  <% unless @items.blank? %>
+    <div class="btn-bar" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
+      <%= link_to "Create New Space" , new_item_path %>
+    </div>
+
+    <% @items.each do | item | %>
+      <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
+        <div class="imgx">
+          <% if item.avatars.size > 0 %>
+            <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo")  %>
+          <% else %>
+            NO IMAGE PROVIDED YET.
+          <% end %>
+        </div>
+
+        <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
+        <div class="name-list" style="margin-bottom: 5px;"><b>Location: </b><%= item.address %></div>
+        <div class="name-list" style="margin-bottom: 5px;"><b>Price: </b><%=  item.price_unit %>&nbsp;<%=  item.price %>&nbsp;&nbsp;<%=  item.time_for_unit_price %></div>
+        <div class="manage-bg" style="margin-bottom: 5px;margin-top: 5px;">
+          <div class="btns">
+            <%= link_to "Edit Space" , edit_item_path(item)%>&nbsp;|&nbsp;
+            <%= link_to "Preview Space" , item_path(item)%>
+          </div>
+        </div>
+      </div>
+    <%end%>
+  <%else%>
+    You don't currently have any space listed with PopupStorz. Why not get started by <%= link_to "creating a space?", new_item_path %>
+  <%end%>
+</div>
+
+

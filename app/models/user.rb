@@ -1,0 +1,54 @@
+class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  has_many :avatars, :dependent => :destroy
+  accepts_nested_attributes_for :avatars, :allow_destroy => true
+  
+
+  devise :database_authenticatable, :registerable, :confirmable,
+    :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name,
+    :verify_email, :mobile_phone, :gender, :date_of_birth, :activity, :security_question,
+    :security_answer, :city_country, :description, :avatars_attributes
+
+  validates :email, :presence => true
+  validates :verify_email, :presence => true
+  validates :mobile_phone, :presence => true
+  validates :first_name, :presence => true
+  validates :last_name, :presence => true
+  validates :security_question, :presence => true
+  validates :security_answer, :presence => true
+  validates :date_of_birth, :presence => true
+
+
+  has_many :services
+  has_many :items
+  has_many :notifications
+  has_many :offers
+  has_one  :account
+
+
+
+  #after_save :send_user_notification
+  #  after_save :create_account_just_activated_user
+
+  #def send_user_notification
+  #    if self.confirmed_at_changed? and self.email?
+  #      Notification.new(:user_id => self.id, :notification_type =>"Welcome", :description => "You have successfully signed up, thanks!").save
+  #    end
+  #  end
+
+  #  def create_account_just_activated_user
+  #    if self.confirmed_at_changed? and self.email?
+  #      Account.new(:email => self.email, :user_id => self.id).save if self.account.blank?
+  #    end
+  #  end
+
+  def popupstorz_display_name
+    "#{self.first_name[0..6]} #{self.last_name[0..0].capitalize}" if self.last_name
+  end
+
+
+end

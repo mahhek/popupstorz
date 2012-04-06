@@ -1,0 +1,98 @@
+<%= form_for [@item, @offer], :html => {:name => "offer_form"} do|f| %>
+  <div style="padding-bottom: 20px;float: left;">
+    <% if @offer.errors.any? %>
+      <div id="errorExplanation" class="erro_messages">
+        <h2>Oops! Looks like you need to include the following:</h2>
+        <ul>
+          <li style="list-style: square;float: left;">
+            Required fields(and the display names): <%= @offer.errors.full_messages.to_sentence  %>
+          </li>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+
+  <div style="float: left; width: 45%;">
+    <div style="float: left; padding: 10px; border: 1px solid gray;">
+      <div id="get-list-header">
+        <div id="lisit-txt"><%= @item.title %><br/><%= @item.user.email%><b>(owner)</b>
+          <br/><br/>
+          <span class="hel-14">
+            <%= "#{@item.street_name} #{@item.city}, #{@item.region}, #{@item.zipcode}" %>
+          </span>
+        </div>
+      </div>
+      <br/><br/>
+      <div id="left-side">
+        <div class="left-gray">
+          <div id="white-btn">
+            <%= link_to_function "PHOTO" , "if($('#photo_div').is(':hidden')){$('#photo_div').show();$('#my_map_div').css('visibility','hidden');$('#my_map_div').css('position','absolute');}"  %>
+            <%= link_to_function "MAP", "$('#photo_div').hide();$('#my_map_div').css('visibility','visible');$('#my_map_div').css('position','');"  %>
+          </div>
+          <br/>
+          <div id="photo_div">
+            <% if @item.avatars.size > 0 %>
+              <div id="space-img">
+                <%= image_tag(@item.avatars.first.photo.url(:large), :height => "286") %>
+              </div>
+            <% else %>
+              <div id="space-img">
+                No Image Available
+              </div>
+            <%end%>
+          </div>
+
+          <div id="my_map_div" style="visibility:hidden;position:absolute;">
+            <%= raw(@map.div(:width => 500, :height => 400)) %>
+          </div>
+        </div>
+        <br/><br/>
+        <div class="left-gray">
+          <div id="space-details-txt"><%= raw @item.description %></div>
+        </div>
+
+      </div>
+
+      <br/><br/>
+      <div id="right-widgets">
+        <div class="blue-box">
+          <div id="price-x"><span class="font-24"><%=  @item.price %></span>&nbsp; euro per month</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="float: left; width: 50%;">
+    <div style="float: left; padding: 10px; border: 1px solid gray;">
+      <div class="xfields">Rental Start Date*:<br/>
+        <%= f.datetime_select :rental_start_date, :order => [:year, :month, :day]   %>
+      </div>
+      <br/>
+      <div class="xfields">Rental End Date*:<br/>
+        <%= f.datetime_select :rental_end_date, :order => [:year, :month, :day]   %>
+      </div>
+      <br/>
+      <div class="xfields">Pickup Location*:<br/>
+        <%= f.text_field :pickup_location%>
+      </div>
+      <br/>
+      <div class="xfields">Willingness To Pay:<br/>
+        <%= f.text_field :willingness_to_pay %>
+      </div>
+      <br/>
+      <div class="xfields">Required Response by owner before:<br/>
+        <%= f.text_field :required_response_by_owner_before %>
+      </div>
+      <br/>
+      <div class="xfields">Additional Message:<br/>
+        <%= f.text_area :additional_message, :size => "40x5" %>
+      </div>
+      <br/>
+      <div id="save-addmore">
+        <%= f.submit %>
+
+      </div>
+    </div>
+  </div>
+
+<% end %>

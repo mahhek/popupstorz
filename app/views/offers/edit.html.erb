@@ -1,0 +1,85 @@
+<%if @offer.status == "Decline by renter" || @offer.status == "Decline by owner" %>
+
+This Offer is no longer Valid !
+<br/>
+Rental Start Date: <%= @offer.rental_start_date %>
+<br/>
+Rental End Date: <%= @offer.rental_end_date %>
+<br/>
+Pickup Location: <%= @offer.pickup_location %>
+<br/>
+Willingness To Pay: <%= @offer.willingness_to_pay %>
+<br/>
+Required Response by Owner Before: <%= @offer.required_response_by_owner_before %>
+<br/>
+Additional Message: <%= @offer.additional_message %>
+<br/>
+Status: <%= @offer.status %>
+<br/>
+<%elsif @offer.status == "Accepted by owner" || @offer.status == "Accepted by renter" %>
+This Offer is accepted
+<br/>
+Rental Start Date: <%= @offer.rental_start_date %>
+<br/>
+Rental End Date: <%= @offer.rental_end_date %>
+<br/>
+Pickup Location: <%= @offer.pickup_location %>
+<br/>
+Willingness To Pay: <%= @offer.willingness_to_pay %>
+<br/>
+Required Response by Owner Before: <%= @offer.required_response_by_owner_before %>
+<br/>
+Additional Message: <%= @offer.additional_message %>
+<br/>
+Status: <%= @offer.status %>
+<br/>
+<%else%>
+
+<%= form_for [@item, @offer], :html => {:name => "offer_form"} do|f| %>
+  <div style="padding-bottom: 20px;float: left;">
+    <% if @offer.errors.any? %>
+      <div id="errorExplanation" class="erro_messages">
+        <h2>Oops! Looks like you need to include the following:</h2>
+        <ul>
+          <li style="list-style: square;float: left;">
+            Required fields(and the display names): <%= @offer.errors.full_messages.to_sentence  %>
+          </li>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+
+  <div style="float: left; width: 60%;">
+    <div class="xfields">Rental Start Date*:<br/>
+     <%= f.text_field :rental_start_date %>
+
+    </div>
+    <div class="xfields">Rental End Date*:<br/>
+      <%= f.text_field :rental_end_date %>
+    </div>
+<script type="text/javascript">
+       $('#offer_rental_start_date').datepick({ dateFormat: 'yyyy-mm-dd', showTrigger: '#calImg'});
+       $('#offer_rental_end_date').datepick({ dateFormat: 'yyyy-mm-dd', showTrigger: '#calImg'});
+      </script>
+    <div class="xfields">Pickup Location*:<br/>
+      <%= f.text_field :pickup_location %>
+    </div>
+    <div class="xfields">Willingness To Pay:<br/>
+      <%= f.text_field :willingness_to_pay %>
+    </div>
+    <div class="xfields">Required Response by owner before:<br/>
+      <%= f.text_field :required_response_by_owner_before %>
+    </div>
+    <div class="xfields">Additional Message:<br/>
+      <%= f.text_field :additional_message %>
+    </div>
+
+    <div id="save-addmore">
+      <%= f.submit %>
+      <%= link_to "Accept", accept_item_offer_path(params[:item_id], params[:id]) %>
+      <%= link_to "Decline", decline_item_offer_path(params[:item_id], params[:id]) %>
+    </div>
+    </div>
+
+  <% end %>
+<%end%>

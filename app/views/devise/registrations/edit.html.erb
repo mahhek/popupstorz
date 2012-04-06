@@ -1,0 +1,100 @@
+<h2>Edit Profile</h2>
+
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :multipart => true  }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="newPaperclipFiles">
+
+    <%(3 - resource.avatars.size).times { resource.avatars.build }%>
+
+    <%= f.fields_for :avatars do |avatar| %>
+      <% if avatar.object.new_record? %>
+        <%= avatar.file_field :photo %>
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+  <div class="existingPaperclipFiles">
+    <%= f.fields_for :avatars do |avatar| %>
+      <% unless avatar.object.new_record? %>
+        <div class="thumbnail">
+          <%= link_to( image_tag(avatar.object.photo.url(:thumb)), avatar.object.photo.url(:original) ) %>
+          <%= avatar.check_box :_destroy %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name %>
+  </div>
+
+  <div>
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name %>
+  </div>
+
+  <div>
+    <%= f.label :gender %><br />
+    <%= f.text_field :gender %>
+  </div>
+
+  <div><%= f.label :security_question %><br />
+    <%= f.text_field :security_question %>(required)</div>
+
+  <div><%= f.label :security_answer %><br />
+    <%= f.text_field :security_answer %>(required)</div>
+
+  <div><%= f.label :mobile_phone %><br />
+    <%= f.text_field :mobile_phone %>(required)</div>
+
+  <div><%= f.label :gender %>
+    <%= f.select :gender, options_for_select(['Male', 'Female'])%>(required, but will not be shown)</div><br/>
+
+  <div><%= f.label :date_of_birth %>
+    <%=  f.date_select :date_of_birth, :start_year => Time.now.year - 110, :end_year => Time.now.year %>(required, but will not be shown)</div><br/>
+
+  <div><%= f.label :city_country %> <br />
+    <%= f.text_field :city_country %>(optional)</div><br/>
+
+  <div><%= f.label :description %><br />
+    <%= f.text_area :description, :size => "40x4" %></div><br/>
+
+  <div><%= f.label :activity %><br />
+    <%= f.text_field :activity %></div><br/>
+
+
+  <div>
+    <%= f.label :email %><br />
+    <%= f.email_field :email, :readonly => true %>
+  </div>
+
+  <div>
+    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.password_field :password %>
+  </div>
+
+  <div>
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation %>
+  </div>
+
+  <div>
+    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+    <%= f.password_field :current_password %>
+  </div>
+
+  <br/>
+
+  <div><%= f.submit "Update" %></div>
+
+<% end %>
+
+<h3>Cancel my account</h3>
+
+<p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete %>.</p>
+
+<%= link_to "Back", :back %>

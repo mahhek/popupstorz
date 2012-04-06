@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PopupStorz</title>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div style="margin: auto 0;float: left;width: 980px;">
+
+      <% if notice %>
+        <p class="notice" style="padding: 5px;width :95%;background-color:lightgreen;"><%= notice %></p>
+      <% end %>
+      <% if   alert %>
+        <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= alert %></p>
+      <% end %>
+
+      <ul class="hmenu">
+        <%= render 'devise/menu/registration_items' %>
+        <%= render 'devise/menu/login_items' %>
+      </ul>
+      <!--    <div style="float: right;margin-right: 20px;">
+            <a href="/auth/twitter" class="services">
+      <%= image_tag "twitter2.jpeg", :size => "20x20", :alt => "Twitter" %>
+            </a><br/>
+            <a href="/auth/facebook" class="services">
+      <%= image_tag "fb.jpeg", :size => "20x20", :alt => "Facebook" %>
+            </a><br/>
+            <a href="/auth/google" class="services">
+      <%= image_tag "googleplus.jpeg", :size => "20x20", :alt => "Google+" %>
+            </a><br/>
+            <a href="/auth/email" class="services">
+      <%= image_tag "emailbox.jpeg", :size => "20x20", :alt => "email" %>
+            </a><br/>
+
+          </div>
+      -->
+      <%= yield %>
+
+
+
+    </div>
+  </body>
+
+</html>
+
