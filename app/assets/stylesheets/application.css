@@ -1,18 +1,10 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the top of the
- * compiled file, but it's generally better to create a new file per style scope.
- *
+ * This is a manifest file that'll automatically include all the stylesheets available in this directory
+ * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
+ * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
- *= require_tree .
+ *= require_tree . 
 */
-
-
 
 ul.hmenu {
     list-style: none;
@@ -22,4 +14,81 @@ ul.hmenu {
 
 ul.hmenu li {
     display: inline;
+}
+
+
+/*star rating goes from here*/
+
+
+
+.star-rating{
+    list-style:none;
+    margin: 0px;
+    padding:0px;
+    width: 100px;
+    height: 20px;
+    position: relative;
+    background: url(star_rating.gif) top left repeat-x;
+}
+.star-rating li{
+    padding:0px;
+    margin:0px;
+    /*\*/
+    float: left;
+    /* */
+}
+.star-rating li a{
+    display:block;
+    width:20px;
+    height: 20px;
+    text-decoration: none;
+    text-indent: -9000px;
+    z-index: 20;
+    position: absolute;
+    padding: 0px;
+}
+.star-rating li a:hover{
+    background: url(star_rating.gif) left center;
+    z-index: 2;
+    left: 0px;
+    border:none;
+}
+.star-rating a.one-star{
+    left: 0px;
+}
+.star-rating a.one-star:hover{
+    width:20px;
+}
+.star-rating a.two-stars{
+    left:20px;
+}
+.star-rating a.two-stars:hover{
+    width: 40px;
+}
+.star-rating a.three-stars{
+    left: 40px;
+}
+.star-rating a.three-stars:hover{
+    width: 60px;
+}
+.star-rating a.four-stars{
+    left: 60px;
+}
+.star-rating a.four-stars:hover{
+    width: 80px;
+}
+.star-rating a.five-stars{
+    left: 80px;
+}
+.star-rating a.five-stars:hover{
+    width: 100px;
+}
+
+.star-rating li.current-rating{
+    background: url(star_rating.gif) left bottom;
+    position: absolute;
+    height: 20px;
+    display: block;
+    text-indent: -9000px;
+    z-index: 1;
 }

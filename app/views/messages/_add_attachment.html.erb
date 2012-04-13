@@ -1,0 +1,4 @@
+<div style="float:left;margin-bottom:10px;height:auto;width: 100%;">
+  <%= file_field_tag "attachment[]" , :class => "files"%>
+  <a href="#" onclick="removeNodes('<%= params[:div_id] %>');return false;"><%= t(:delete) %></a>
+</div>

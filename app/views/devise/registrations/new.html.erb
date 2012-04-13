@@ -32,14 +32,26 @@
   <div><%= f.label :mobile_phone %><br />
     <%= f.text_field :mobile_phone %>(required)</div>
 
+  <div><%= f.label :Address1 %><br />
+    <%= f.text_field :address1 %>(required)</div>
+
+  <div><%= f.label :Address2 %> <br />
+    <%= f.text_field :address2 %></div>
+
+  <div><%= f.label :ZipCode %>
+    <%= f.text_field :zip_code, :size => "5" %></div>
+  <br />
+  <div><%= f.label :city %>
+    <%= f.text_field :city, :size => "20" %>(required)</div>
+  <br />
+  <div><%= f.label :country %>
+    <%= f.text_field :country, :size => "20" %>(required)</div>
+  <br />
   <div><%= f.label :gender %>
     <%= f.select :gender, options_for_select(['Male', 'Female'])%>(required, but will not be shown)</div><br/>
 
   <div><%= f.label :date_of_birth %>
-    <%=  f.date_select :date_of_birth, :start_year => Time.now.year - 110, :end_year => Time.now.year %>(required, but will not be shown)</div><br/>
-
-  <div><%= f.label :city_country %> <br />
-    <%= f.text_field :city_country %>(optional)</div><br/>
+    <%=  f.text_field :date_of_birth %>(required, but will not be shown)</div><br/>
 
   <div><%= f.label :description %><br />
     <%= f.text_area :description, :size => "40x4" %></div><br/>
@@ -51,3 +63,13 @@
 <% end %>
 
 <%= render :partial => "devise/shared/links" %>
+
+
+
+
+
+<script type="text/javascript">
+
+  $('#user_date_of_birth').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
+
+</script>

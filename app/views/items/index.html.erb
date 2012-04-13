@@ -2,12 +2,14 @@
   <h2>Space Listings</h2>
 </div>
 
-
-
 <div class="listx-bg">
   <% unless @items.blank? %>
     <div class="btn-bar" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
-      <%= link_to "Create New Space" , new_item_path %>
+      <%= link_to "Inbox", "/home/index" %>&nbsp;&nbsp;
+      <%= link_to "Bookings", "/home/index" %>&nbsp;&nbsp;
+      <%= link_to "Listings", "/home/index" %>&nbsp;&nbsp;
+      <%= link_to('Profile', profile_path(current_user.id)) %>&nbsp;&nbsp;
+      <%= link_to "Account", "/home/index" %>&nbsp;&nbsp;
     </div>
 
     <% @items.each do | item | %>
@@ -26,7 +28,9 @@
         <div class="manage-bg" style="margin-bottom: 5px;margin-top: 5px;">
           <div class="btns">
             <%= link_to "Edit Space" , edit_item_path(item)%>&nbsp;|&nbsp;
-            <%= link_to "Preview Space" , item_path(item)%>
+            <%= link_to "Preview Space" , item_path(item)%>&nbsp;|&nbsp;
+            <%= link_to "Create New Space" , new_item_path %>&nbsp;|&nbsp;
+            <%= link_to "Delete this Item", item_path(item), :method => :delete, :confirm => "Are you sure?" %>
           </div>
         </div>
       </div>

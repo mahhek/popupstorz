@@ -1,0 +1,32 @@
+<div>
+  <% form_tag( {:controller => "message_system", :action => "search_email"}, :name => "search_form", :onsubmit => "return checkTextForSearch();") do %>
+    <%= text_field_tag  "search_text" , "", :size => "35" %>
+    <!--<%= select_tag "search_from", options_for_select({ "Select From" => "Select From", "Til/Fra" => "To/From", "Tittel" => "Subject", "Melding" => "Body", "Dato" => "Date" }.sort, "Select From")   %>-->
+    <%= submit_tag "#{t(:search)}" %>
+  <% end %>
+</div>
+<br/>
+
+<%= link_to "#{t(:mark_as_read)}",   "#",  :onclick => "checkListOfCheckBox('mark_as_read');return false;" %>&nbsp;|&nbsp;
+<%= link_to "#{t(:mark_as_unread)}", "#",  :onclick => "checkListOfCheckBox('mark_as_unread');return false;" %>&nbsp;|&nbsp;
+<% if  params[:action] == "trash" %>
+  <%= link_to "#{t(:move_to_inbox)}",  "#",  :onclick => "checkListOfCheckBox('move_to_inbox');return false;" %>&nbsp;
+<%else%>
+  <% unless @sent_mails.blank? %>
+    <%= link_to "#{t(:move_to_trash)}",  "#",  :onclick => "checkListOfCheckBox('move_to_trash');return false;" %>&nbsp;
+  <% end %>
+<%end%>
+
+<br/><br/>
+
+<% unless @sent_mails.blank? %>
+  <% @sent_mails.each do |mail| %>
+    <%= t(:title) %>: <%= mail.message.subject %>
+    <br/>
+    <%= link_to "#{t(:details)}", :controller => :message_system, :action => "message_details", :id => mail.id %>
+    <br/>
+    <br/>
+  <%end%>
+<%else%>
+  <%= t(:empty) %>.
+<%end%>

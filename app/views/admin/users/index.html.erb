@@ -1,0 +1,24 @@
+<div id="get-list-header">
+  <h2>All Users</h2>
+</div>
+<div class="listx-bg">
+  <% unless @users.blank? %>
+    <% @users.each do | user | %>
+      <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
+      
+        <div class="name-list"><%= user.email %> - <%= user.first_name %> <%= user.last_name %></div>
+        <div class="manage-bg">
+          <div class="btns">
+            <%= link_to "Details" , admin_user_path(user)%>
+          </div>
+        </div>
+      </div>
+    <%end%>
+  <%else%>
+    No users registered with PopUPStorz
+  <%end%>
+</div>
+
+<div class="btn-bar">
+
+</div>

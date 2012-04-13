@@ -1,0 +1,177 @@
+<script>
+  index = 0;
+</script>
+
+
+<h2><%= t(:compose) %></h2>
+
+<% form_for :message, :url => { :controller => "message_system", :action => @action_url , :id => @conversation_or_mail_id }, :html => { :multipart => true, :id => "email_compose_form" } do |f| %>
+
+  <% case @from
+  when "Compose"%>
+    <div style="width:100%;float:left;height:50px;">
+      <div style="width: 55px;float:left;margin-top: 7px;">
+        <%= t(:to) %>
+      </div>
+      <div style="width: 500px;float:left;">
+        <%= text_field_tag "to" , "", :style => "width:520px;",:class => "text-box" %>
+        <div style="width:100%; float: left;color: #909090;">
+          <i>
+            <%= t(:enter_email_comma) %>.
+          </i>
+        </div>
+      </div>
+    </div>
+  <% when "Reply"%>
+    <div style="width:100%;float:left;height:50px;">
+      <div style="width: 55px;float:left;margin-top: 7px;">
+        <%= t(:to) %>
+      </div>
+      <div style="width: 500px;float:left;">
+        <%= text_field_tag "to" , @reply_setter == "inbox" ? @message.sender.login : @org_message.recipients.collect(&:login).join(";") , :style => "width:520px;", :class => "text-box"%>
+      </div>
+      <div style="width:100%; float: left;color: #909090;">
+        <i>
+          <%= t(:enter_email_comma) %>.
+        </i>
+      </div>
+    </div>
+  <% when "Reply_all"%>
+    <div style="width:100%;float:left;height:50px;">
+      <div style="width: 55px;float:left;">
+        <%= t(:to) %>
+      </div>
+      <div style="width: 500px;float:left;margin-top: 7px;">
+        <%= text_field_tag "to" , @recipients_for_reply_all  ,:style => "width:520px;", :class => "text-box" %>
+        <div style="width:100%; float: left;color: #909090;">
+          <i>
+            <%= t(:enter_email_comma) %>.
+          </i>
+        </div>
+      </div>
+    </div>
+  <%end%>
+
+  <div style="width:100%;float:left;height:50px;">
+    <div style="width: 55px;float:left;margin-top: 7px;">
+      <%= t(:title) %>:
+    </div>
+    <div style="width: 500px;float:left;">
+      <%= f.text_field :subject , :style => "width:520px;", :class => "text-box"%>
+    </div>
+  </div>
+
+  <div style="width:100%;float:left;height:auto;">
+    <div style="width: 55px;float:left;margin-top: 7px;">
+      <%= t(:attachment) %>:
+    </div>
+    <div style="width: 499px;float:left;height:auto;">
+  <%#= link_to "Velg fil", "#", :onclick => "appendNodes();return false;"  %>
+  <%#= render :partial => "add_attachment" , :locals => { :f => f } %>
+
+  <%#= javascript_include_tag "uploadify/jquery-1.4.2.min.js" %>
+  <%#= javascript_include_tag "uploadify/jquery.uploadify.v2.1.4.min.js" %>
+      <%- session_key_name = ActionController::Base.session_options[:key] -%>
+      <%= javascript_include_tag "uploadify/swfobject" %>
+      <%= javascript_include_tag "uploadify/jquery.uploadify.v2.1.4.js" %>
+      <script type="text/javascript">
+  <%#*jQuery.noConflict();%>
+
+  $(document).ready(function() {
+    $('#message_attachment').click(function(event){
+      event.preventDefault();
+    });
+
+    $('#message_attachment').uploadify(
+    {
+      'uploader'    : '/javascripts/uploadify/uploadify.swf',
+      'script'      : '/message_system/upload_attachment/<%= current_user.id %>',
+      'multi'       : true,
+      'cancelImg' : '/images/cancel.png',
+      'buttonImg'   :'/images/<%= params[:locale] == "en" ? "select_files.png" : "velg_fil.png" %>',
+      'auto'      : true,
+      'onSelect'    : function(event,ID,fileObj) {
+        $('#message_attachment').uploadifySettings('scriptData', {'unique_id' : ID });
+      },
+      'onCancel'    : function(event,ID,fileObj,data) {
+        tmp = <%= remote_function(:url => {:controller=>"message_system" , :action=>"remove_files"},:with=>"'id=' + ID") %> ;
+        // alert('The upload of has been canceled!');
+      },
+
+
+      'removeCompleted' : false,
+      onAllComplete : function(event, data) {}
+    });
+
+  });
+
+      </script>
+      <div style="float:left;margin-bottom:10px;height:auto;">
+        <%= f.file_field :attachment%>
+        <!--<%#*<a href="#" onclick="removeNodes('<%= params[:div_id] %>');return false;">Slett</a>%>-->
+      </div>
+
+    </div>
+  </div>
+
+  <%#*<div style="width:100%;float:left;">%>
+  <%#*<div style="width: 75px;float:left;">%>
+  <%#*&nbsp;%>
+  <%#*</div>%>
+  <%#*<div style="width: 499px;float:left;" id="attachment_div">%>
+
+  <%#*</div>%>
+  <%#*</div>%>
+
+  <div style="width:100%;float:left;margin-bottom:10px;margin-top:auto;">
+
+    <div style="width: 500px;float:left;">
+      <%= f.text_area :body, :style => "width:585px;height:275px;", :class => "text-box"  %>
+
+  <%#= f.text_area :body, :value=> "",:style => "width:500px;height:200px;" %>
+    </div>
+  </div>
+  <div style="float:right;">
+    <div class="myTableMenu" align="center" style="float:left;cursor: pointer; width:90px;"  onclick="chectFields();">
+      <a><span><div><%= t(:send) %></div></span></a>
+    </div>
+  </div>
+  <div style="float:right;">
+    <div class="myTableMenu" align="center" style="float:left;cursor: pointer; width:90px;"  onclick="window.location='/message_system/inbox?locale=<%= params[:locale] %>'">
+      <a><span><div><%= t(:discard) %></div></span></a>
+    </div>
+  </div>
+
+
+<% end %>
+
+
+<script>
+  function appendNodes(){
+    var div = document.getElementById("attachment_div");
+    var div2 = document.createElement("div");
+    index = index + 1;
+    div2.setAttribute('id',index)
+    div.appendChild(div2);
+    a = <%= remote_function(:url => {:controller=>"message_system" , :action=>"append_div", :partial_to_be_rendered => ""},
+  :with=>"'div_id=' + index") %> ;
+  }
+
+  function removeNodes(id){
+
+    var div = document.getElementById("attachment_div")
+    div2 = document.getElementById(id)
+    div.removeChild(div2);
+  }
+
+  function chectFields(){    
+    if($('#to').val() == ""){
+      alert('Please enter one user name or email, at-least.');
+      return false;
+    }else{
+      $('#email_compose_form').submit();
+    }
+  }
+
+
+</script>

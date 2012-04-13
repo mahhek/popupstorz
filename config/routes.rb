@@ -1,20 +1,27 @@
 PopupStorz::Application.routes.draw do
-  devise_for :users, :controllers => {:registrations => "registrations"}
-  get "users/show"
+   get "users/show"
 
   match '/auth/:provider/callback' => 'services#create'
   match '/auth/facebook/callback' => 'services#create'
   match '/auth/twitter/callback' => 'services#create'
   match '/items/search_keyword' => 'items#search_keyword'
+  match '/items/search_category/:id' => 'items#search_category'
   match '/notifications/destroy/:id' => 'notifications#destroy'
 
-  resources :items
+  devise_for :users, :controllers => {:registrations => "registrations"}
 
   resources :accounts do
     collection do
       get 'verification_selection'
     end
   end
+  
+  resources :messages do
+    collection do
+      get 'inbox'
+    end
+  end
+
   match "account/:id/dashboard" => "accounts#dashboard",  :as  => :dashboard
   match "accept_invitation/:id" => "invitations#accept_invitation",  :as  => :accept_invitation
 
@@ -25,11 +32,50 @@ PopupStorz::Application.routes.draw do
   end
 
   get "home/index"
-
+  get "home/about"
+  get "items/new"
+  
+  namespace :admin do
+    resources :items
+    resources :users
+  end
   resources :services do
     get "/services/create/:id" => "services#create"
   end
+  resources :invitations do
+    collection do
+      get :fetch
+      post :fetch
+      post :send_emails
+    end
+  end
 
+  namespace :xml do
+    match 'location_search.xml' => 'LocationSearch#index', :format => :xml
+    match 'address_search.xml'  => 'AddressSearch#index' , :format => :xml
+  end
+
+  resources :ratings do
+    collection do
+      get "rate"
+      post "rate"
+    end
+  end
+
+  resources :items do
+    collection do
+      get "sent_requests"
+    end
+    get :autocomplete_item_title, :on => :collection
+    get :autocomplete_item_city, :on => :collection
+    resources :offers do
+      resources :payments
+      member do
+        get 'decline'
+        get 'accept'
+      end
+    end
+  end
 
   match '/users/:id/profile' => 'users#show', :as => :profile
   # The priority is based upon order of creation:

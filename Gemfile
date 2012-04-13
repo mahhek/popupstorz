@@ -49,6 +49,7 @@ gem 'jquery-rails'
 gem 'rails3-jquery-autocomplete'
 gem 'gmaps4rails'
 gem 'aws-sdk'
+gem 'acts-as-messageable'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

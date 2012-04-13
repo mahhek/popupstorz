@@ -1,0 +1,13 @@
+Dear User
+<br/>
+<br/>
+You have been invited by <%= @invitation.email %> to join PopUpStorz
+<br/>
+Please confirm by clicking the link below
+<br/>
+<br/>
+<a href="<%= root_url(:only_path => false) %>users/sign_up?locale=el&token=<%= @invitation.token %>">Confirm Now</a>
+<br/>
+<br/>
+Kind Regards
+Admin PopUpStorz

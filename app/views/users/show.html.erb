@@ -1,34 +1,38 @@
 <h1>Profile</h1>
-<li>
-  <%= link_to('Edit Profile', edit_user_registration_path) %>
-</li>
 
 <div class="existingPaperclipFiles">
   <% @user.avatars.each  do |avatar| %>
-    <div class="thumbnail">
-      <%= link_to( image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
-    </div>
+    <%= link_to(image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
   <% end %>
 </div>
 
-
 <div style="margin: 5px;">
-  <b>Email</b><br /><br />&nbsp;&nbsp;&nbsp;<%= @user.email %>
+  <b>First Name:</b>&nbsp;&nbsp;&nbsp;<%= @user.first_name %>
 </div>
 
 <div style="margin: 5px;">
-  <b>First Name</b><br /><br />&nbsp;&nbsp;&nbsp;<%= @user.first_name %>
+  <b>Last Name:</b>&nbsp;&nbsp;&nbsp;<%= @user.last_name %>
 </div>
-
+<br/>
 <div style="margin: 5px;">
-  <b>Last Name</b><br /><br />&nbsp;&nbsp;&nbsp;<%= @user.last_name %>
+  <% if  (@user.gender == true) then %>
+    <b>Gender:</b> &nbsp;Male.
+  <%else%>
+    <b>Gender:</b> &nbsp;Female.
+  <%end%>
 </div>
-
 <div style="margin: 5px;">
-  <b>Gender</b><br /><br />&nbsp;&nbsp;&nbsp;<%= @user.gender %>
+  <b>Email:</b>&nbsp;&nbsp;&nbsp;<%= @user.email %>
 </div>
-
-
-
-
+<br/>
+<div style="margin: 5px;">
+  <b> City:</b>&nbsp;&nbsp;&nbsp<%= @user.city %>
+</div>
+<div style="margin: 5px;">
+  <b> Country:</b>&nbsp;&nbsp;&nbsp<%= @user.country %>
+</div>
+<br/>
+<li>
+  <%= link_to('Edit Profile', edit_user_registration_path) %>
+</li>
 

@@ -4,7 +4,7 @@
   <%= devise_error_messages! %>
 
   <div class="newPaperclipFiles">
-
+    <b>Upload Profile Pictures:</b><br/>
     <%(3 - resource.avatars.size).times { resource.avatars.build }%>
 
     <%= f.fields_for :avatars do |avatar| %>
@@ -19,10 +19,10 @@
   <div class="existingPaperclipFiles">
     <%= f.fields_for :avatars do |avatar| %>
       <% unless avatar.object.new_record? %>
-        <div class="thumbnail">
-          <%= link_to( image_tag(avatar.object.photo.url(:thumb)), avatar.object.photo.url(:original) ) %>
-          <%= avatar.check_box :_destroy %>
-        </div>
+
+        <%= link_to( image_tag(avatar.object.photo.url(:thumb)), avatar.object.photo.url(:original) ) %>
+        <%= avatar.check_box :_destroy %>
+
       <% end %>
     <% end %>
   </div>
@@ -38,29 +38,30 @@
   </div>
 
   <div>
-    <%= f.label :gender %><br />
-    <%= f.text_field :gender %>
+    Gender:
+    <%= f.radio_button :gender, true %> Male
+    <%= f.radio_button :gender, false %> Female
+
   </div>
 
-  <div><%= f.label :security_question %><br />
-    <%= f.text_field :security_question %>(required)</div>
-
-  <div><%= f.label :security_answer %><br />
-    <%= f.text_field :security_answer %>(required)</div>
-
   <div><%= f.label :mobile_phone %><br />
-    <%= f.text_field :mobile_phone %>(required)</div>
+    <%= f.text_field :mobile_phone %>(required)</div><br/>
 
-  <div><%= f.label :gender %>
-    <%= f.select :gender, options_for_select(['Male', 'Female'])%>(required, but will not be shown)</div><br/>
+ <div><%= f.label :Address1 %><br />
+    <%= f.text_field :address1 %>(required)</div>
 
-  <div><%= f.label :date_of_birth %>
-    <%=  f.date_select :date_of_birth, :start_year => Time.now.year - 110, :end_year => Time.now.year %>(required, but will not be shown)</div><br/>
+  <div><%= f.label :Address2 %> <br />
+    <%= f.text_field :address2 %></div>
 
-  <div><%= f.label :city_country %> <br />
-    <%= f.text_field :city_country %>(optional)</div><br/>
+  <div><%= f.label :city %> <br />
+    <%= f.text_field :city %></div><br/>
 
-  <div><%= f.label :description %><br />
+  <div><%= f.label :country %> <br />
+    <%= f.text_field :country %></div><br/>
+
+
+
+    <div><%= f.label :description %><br />
     <%= f.text_area :description, :size => "40x4" %></div><br/>
 
   <div><%= f.label :activity %><br />

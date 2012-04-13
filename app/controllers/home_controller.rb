@@ -1,6 +1,9 @@
 class HomeController < ApplicationController
 
   def index
+   if current_user && current_user.admin?
+      redirect_to admin_items_path
+    else
     if !session[:items].blank?
       redirect_to new_item_path
     elsif !session[:item].blank?
@@ -9,7 +12,7 @@ class HomeController < ApplicationController
       redirect_to edit_item_offer_path(session[:edit_item], session[:edit_offer])
     end
   end
-
+  end
 
   def about
     

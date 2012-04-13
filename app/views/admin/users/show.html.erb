@@ -1,0 +1,29 @@
+<div style="float: left; padding: 10px; border: 1px solid gray;">
+  <div>
+  </div>
+  <div id="get-list-header">
+    <div id="lisit-txt"><%= @user.email %><br/><br/>
+      <span class="hel-14">
+
+      </span>
+    </div>
+    <div>
+      Other information
+      <br/>
+      Name: <%= @user.first_name %> <%= @user.last_name %>
+      <br/>
+      Lives in: <%= @user.address1 %> <%= @user.address2 %> <%= @user.city %> <%= @user.country %>
+      <br/>
+    </div>
+    <%#*<div>%>
+      <%#*Invitations sent to <%= @user.invitations.size %> users amongst those
+<%#= @user.invitations.where("is_accepted = ?",true).size %> registered%>
+
+    <%#*</div>%>
+  </div>
+  <br/><br/>
+
+
+
+
+</div>

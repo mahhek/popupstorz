@@ -1,6 +1,6 @@
 <%= stylesheet_link_tag "search-list"%>
 
-   
+
 <% unless @items.blank? %>
   <% @items.each do | item | %>
     <div class="result123">
@@ -9,7 +9,11 @@
         <div class="result-img">
           <a href="#">
             <% if item.avatars.size > 0 %>
-              <%= image_tag("rails.png", :border => "0", :alt => "image")  %>
+              <% item.avatars.each  do |avatar| %>
+                <div class="thumbnail">
+                  <%= link_to( image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
+                </div>
+              <% end %>
             <% else %>
               <%= image_tag("rails.png", :border => "0", :alt => "image")  %>
             <% end %>
@@ -24,16 +28,16 @@
 
   <% end  %>
 
-  
+
 
   <%#*<div>%>
-    <%# if @map %>
-      <%#= raw(@map.div(:width => 500, :height => 400)) %>
-    <%# end %>
+  <%# if @map %>
+  <%#= raw(@map.div(:width => 500, :height => 400)) %>
+  <%# end %>
   <%#*</div>%>
 <% else %>
   No result found
 <%end %>
-  <div id="page-navigator">
-    <%= will_paginate @items %>
-  </div>
+<%#*<div id="page-navigator">%>
+<%#= will_paginate @items %>
+<%#*</div>%>

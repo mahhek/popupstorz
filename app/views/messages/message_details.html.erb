@@ -1,0 +1,31 @@
+<br/><br/>
+
+Message Details:
+
+<br/>
+
+
+<br/>
+
+
+
+  Sender: <%= @mail.message.sender.login %>
+  <br/>
+  Recipients: &nbsp;
+  <% @mail.message.recipients.each do |recipient|%>
+      <%= recipient.login %> &nbsp;
+  <%end%>
+
+
+  <br/>
+  Tittel: <%= @mail.message.subject %>
+  <br/>
+  Melding:    <%= @mail.message.body %>
+  <br/>
+  <br/>
+
+
+
+
+
+

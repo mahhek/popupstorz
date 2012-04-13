@@ -1,0 +1,105 @@
+<% unless @messages.blank? %>
+  <%= form_tag( {:controller => "messages", :action => "manage_messages"}, :name => "message_form", :style=>"float:left;") do %>
+
+    <div style="float: left;margin-bottom:15px;margin-top:15px;">
+      <% if  params[:action] == "trash" %>
+        <%= link_to "Move To Inbox",  "#",  :onclick => "checkListOfCheckBox('move_to_inbox');return false;" %>&nbsp;&nbsp;&nbsp;
+        <%= link_to "Empty Trash", {:controller => "messages", :action => "empty_trash"} , :confirm => "Are you sure you want to delete all messages?" %>
+      <%else%>
+        <% unless @messages.blank? %>
+          <%= link_to "Move to Trash",  "#",  :onclick => "checkListOfCheckBox('move_to_trash');return false;" %>&nbsp;
+        <% end %>
+      <%end%>
+    </div>
+
+    <div class="mail-table">
+      <span style="float:left;width:20px;" >
+        <%= check_box_tag "check_all" , false  , false %>
+      </span>
+      <span style="width:130px;float:left;margin-left:5px;padding-top:2px;font-weight: bold;">
+        From
+      </span>
+      <span style="width:200px;float:left;padding-top:2px;font-weight: bold;">
+        Subject
+      </span>
+      <span style="width:340px;float:left;padding-top:2px;font-weight: bold;">
+        Body
+      </span>
+      <span style="width:70px;float:left;padding-top:2px;font-weight: bold;">
+        Date
+      </span>
+    </div>
+      <% @messages.each do |message| %>
+        <% unless message.opened %>
+          <b>
+          <%end%>
+          <div style="float:left;width:100%;line-height:30px;border-bottom: 0px solid silver;padding: 5px 0px;" class="mail-list-hover">
+
+            <span class="checkbox" style="float:left;width:20px;margin-top:6px;" >
+              <%=  check_box_tag "messages[]", message.id, false, {:id => "messages_#{message.id}", :class => "checkBoxClass"} %>
+            </span>
+
+            <span style="width:130px;float:left;margin-left:5px;padding-top:2px;font-weight: bold;">
+              <%=  message_user(message.sent_messageable_id).email %>
+            </span>
+            <span style="width:200px;float:left;padding-top:2px;font-weight: bold;">
+              <%=  message.topic %>
+            </span>
+            <span style="width:340px;float:left;padding-top:2px;font-weight: bold;">
+              <%=  message.body %>
+            </span>
+            <span style="width:70px;float:left;padding-top:2px;font-weight: bold;">
+              <%=  message.created_at.strftime("%d %b %y") %>
+            </span>
+          </div>
+          <% unless mail.read %>
+          </b>
+        <%end%>
+        <br/>
+
+      <%end%>
+
+    <%end%>
+  <%else%>
+    <% if params[:action] == "sent" %>
+      <%= t(:no_message_folder) %>.
+    <% else %>
+      <%= t(:empty) %>.
+    <% end %>
+  <%end%>
+
+  <script>
+
+    function checkListOfCheckBox(action){
+    elementArray = document.getElementsByName('mail[]')
+    var check_boxes_length = elementArray.length;
+    var breaked = false;
+    for(var count = 0 ; count < check_boxes_length ; count++){
+    if(elementArray[count].checked == true){
+    breaked = true;
+    break;
+    }
+    }
+    if(breaked == true){
+    $('#action_to_perform').val(action);
+    document.mail_form.submit();
+    return true;
+    }
+    else{
+    alert('No Mail selected.');
+    return false;
+    }
+    }
+  </script>
+
+
+  <script>
+    jQuery(document).ready(function(){
+    jQuery("#check_all").click(function(){
+    var checked_status = this.checked;
+    jQuery(".checkBoxClass").each(function(){
+    this.checked = checked_status;
+    });
+    });
+    });
+  </script>

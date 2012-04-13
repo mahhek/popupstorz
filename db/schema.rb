@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120406121011) do
+ActiveRecord::Schema.define(:version => 20120413052333) do
 
   create_table "accounts", :force => true do |t|
     t.datetime "created_at"
@@ -53,10 +53,24 @@ ActiveRecord::Schema.define(:version => 20120406121011) do
     t.datetime "availability_to"
     t.string   "time_period"
     t.string   "size"
+    t.string   "size_unit"
     t.string   "type"
-    t.boolean  "is_shareable",        :default => true
+    t.boolean  "is_shareable",                                        :default => true
     t.integer  "maximum_members"
     t.boolean  "is_agree"
+    t.string   "neighbourhood"
+    t.string   "country_code"
+    t.string   "county"
+    t.string   "region"
+    t.string   "city"
+    t.string   "zipcode"
+    t.string   "street"
+    t.decimal  "latitude",            :precision => 15, :scale => 10
+    t.decimal  "longitude",           :precision => 15, :scale => 10
+    t.string   "street_name"
+    t.string   "street_number"
+    t.integer  "locatable_id"
+    t.string   "locatable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -66,6 +80,26 @@ ActiveRecord::Schema.define(:version => 20120406121011) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "messages", :force => true do |t|
+    t.string   "topic"
+    t.text     "body"
+    t.integer  "received_messageable_id"
+    t.string   "received_messageable_type"
+    t.integer  "sent_messageable_id"
+    t.string   "sent_messageable_type"
+    t.boolean  "opened",                     :default => false
+    t.boolean  "recipient_delete",           :default => false
+    t.boolean  "sender_delete",              :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "ancestry"
+    t.boolean  "recipient_permanent_delete", :default => false
+    t.boolean  "sender_permanent_delete",    :default => false
+  end
+
+  add_index "messages", ["ancestry"], :name => "index_messages_on_ancestry"
+  add_index "messages", ["sent_messageable_id", "received_messageable_id"], :name => "acts_as_messageable_ids"
 
   create_table "notifications", :force => true do |t|
     t.integer  "user_id"
@@ -96,8 +130,8 @@ ActiveRecord::Schema.define(:version => 20120406121011) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "email",                                 :default => "",    :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -120,8 +154,13 @@ ActiveRecord::Schema.define(:version => 20120406121011) do
     t.string   "activity"
     t.string   "security_question"
     t.string   "security_answer"
-    t.string   "city_country"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "zip_code"
+    t.string   "city"
+    t.string   "country"
     t.string   "description"
+    t.boolean  "admin",                                 :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

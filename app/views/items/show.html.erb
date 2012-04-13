@@ -1,17 +1,20 @@
 <div style="float: left; padding: 10px; border: 1px solid gray;">
   <div>
-    <%= link_to "Edit this Item", edit_item_path(@item) %> &nbsp;|&nbsp;
-    <%= link_to "Delete this Item", item_path(@item), :method => :delete, :confirm => "Are you sure?" %>
-    <span style="float: right;margin-right: 10px;"><%= button_to "Book it", "#" %></span>
+    <%= link_to "Edit this Item", edit_item_path(@item) if (@item.user.email == current_user.email) %> &nbsp;&nbsp;
+    <%= link_to "Delete this Item", item_path(@item), :method => :delete, :confirm => "Are you sure?"  if (@item.user.email == current_user.email)%>
+    <span style="float: right;margin-right: 10px;">
+      <%= button_to "Book it", "#" unless (@item.user == current_user)%></span>
   </div>
   <br/>
   <div id="get-list-header">
     <div id="lisit-txt"><b>Title: </b><%= @item.title %><br/>
       <span class="hel-14">
-        <b>Location: </b><%= @item.address %>
-        <br/>        
+        <b>Neighbourhood: </b><%= @item.neighbourhood %><br/>
+        <b>City: </b><%= @item.city %><br/>
+        <b>Country: </b><%= @item.country_code %>
       </span>
     </div>
+
     <div>
       <b>Owner: </b><%= @item.user.first_name %> <%= @item.user.last_name %>
     </div>
@@ -36,7 +39,7 @@
 
   <div id="right-widgets">
     <div class="blue-box">
-      <div id="price-x"><span class="font-24"><b>Size: </b><%=  @item.size %></span>&nbsp; </div>
+      <div id="price-x"><span class="font-24"><b>Size: </b><%=  @item.size %> <%= @item.size_unit %></span>&nbsp; </div>
     </div>
   </div>
 

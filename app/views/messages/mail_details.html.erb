@@ -1,0 +1,75 @@
+<% if session[:from] and session[:from] == "inbox" %>
+  <%= link_to "#{t(:back_inbox)}", :controller => "message_system", :action => "inbox" %>&nbsp;&nbsp;&nbsp;
+  <%= link_to "#{t(:delete)}", :controller => "message_system", :action => "move_single_conversation_to_trash" , :id => @conversation_details.first.conversation_id %>
+<% end %>
+<% if session[:from] and session[:from] == "sent" %>
+  <%= link_to "#{t(:back_sent)}", :controller => "message_system", :action => "sent" %>&nbsp;&nbsp;&nbsp;
+  <%= link_to "#{t(:delete)}", :controller => "message_system", :action => "move_single_conversation_to_trash" , :id => @conversation_details.first.conversation_id %>
+<% end %>
+<% if session[:from] and session[:from] == "trash" %>
+  <%= link_to "#{t(:back_trash)}", :controller => "message_system", :action => "trash" %>&nbsp;&nbsp;&nbsp;
+<% end %>
+
+
+
+<% @conversation_details.each do |mail| %>
+  <div style="margin-left: 5px;border: 1px solid #cccccc; padding-top: 10px;height: auto;overflow: hidden; margin-top: 13px;">
+    <div style="width:auto;float:left;font-size: 18px;font-weight: bold; margin: 0px 10px;">
+      <%= mail.message.subject %>
+    </div>
+
+
+    <div style="width:100%;float:left;margin-top: 10px; background: #efefef; padding: 7px; padding-bottom: 0px;color: #009900;">
+      <div style="float:right;margin-right: 15px;margin-bottom: 5px;">
+        <%= mail.message.created_at.strftime("%d %b %y") %> (<%= time_ago_in_words(mail.message.created_at) %> <%= t( :ago ) %>)
+      </div>
+      <span style="color:#606060;width: 32px;float:left;">
+        <%= t(:from) %>
+      </span>
+      <b>
+        <%= mail.message.sender.login %>
+      </b>
+    </div>
+
+    <div style="width:100%;float:left;margin-bottom: 10px;background: #efefef; padding: 7px; padding-top: 3px; color: #009900;">
+      <span style="color:#606060;width: 32px;float:left;">
+        <%= t(:to) %>
+      </span>
+      <b>
+        <% mail.message.recipients.each do |recipient|%>
+          <%= recipient.login %> &nbsp;
+        <%end%>
+      </b>
+    </div>
+
+    <div style="width:100%; float: left; height: auto; overflow: hidden;">
+      
+      <div style="width:auto; float:left; padding: 10px; padding-top: 0px;"><%= simple_format(mail.message.body) %></div>
+
+    </div>
+
+    <% if find_conversation_have_attachment?(mail) %>
+      <div style="width:100%; height: 1px; float: left; overflow: hidden; border-top: 1px solid #efefef; margin: 10px 0px;"></div>
+      <div style="width:100%; float: left;">
+        <div style="width:auto; float: left;  padding: 0px 8px;">
+          <%= t(:download_attachments) %>:
+        </div>
+        <div style="width:auto; float: left;  padding: 0px 10px;">
+          <% mail.message.attachments.each do |attached_file| %>
+            <%= link_to attached_file.attachment_file_name , { :controller => "message_system", :action => "download_attachment", :id => attached_file.id }%> &nbsp;&nbsp;
+          <%end%>
+        </div>
+      </div>
+    <% else %>
+      <div style="width:100%; height: 1px; float: left; overflow: hidden; border-top: 1px solid #efefef; margin: 10px 0px;"></div>
+    <% end %>
+
+    <div style="float:left;width:100%; background: #efefef; padding: 8px 5px; margin-top: 10px; ">
+      <%= link_to "#{t(:reply)}" , :controller =>"message_system", :action => "reply_mail", :id => mail.conversation_id, :sender_id => mail.message.sender_id, :message_id => mail.message.id , :reply_setter => params[:reply_setter] %>&nbsp; | &nbsp;
+      <%= link_to "#{t(:reply_all)}" , :controller =>"message_system", :action => "reply_all_to_mail", :id => mail.id,  :message_id => mail.message.id , :reply_setter => params[:reply_setter]%>
+    </div>
+  </div>
+
+<%end%>
+
+
