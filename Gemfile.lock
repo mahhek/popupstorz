@@ -106,6 +106,7 @@ GEM
     httparty (0.8.2)
       multi_json
       multi_xml
+    httpauth (0.1)
     i18n (0.6.0)
     jquery-rails (1.0.19)
       railties (~> 3.0)
@@ -125,8 +126,9 @@ GEM
     mysql2 (0.3.11)
     nokogiri (1.5.2)
     oauth (0.4.5)
-    oauth2 (0.5.2)
+    oauth2 (0.6.0)
       faraday (~> 0.7)
+      httpauth (~> 0.1)
       multi_json (~> 1.0)
     omniauth (1.1.0)
       hashie (~> 1.2)
@@ -136,8 +138,8 @@ GEM
     omniauth-oauth (1.0.1)
       oauth
       omniauth (~> 1.0)
-    omniauth-oauth2 (1.0.0)
-      oauth2 (~> 0.5.0)
+    omniauth-oauth2 (1.0.1)
+      oauth2 (~> 0.6.0)
       omniauth (~> 1.0)
     omniauth-twitter (0.0.9)
       omniauth-oauth (~> 1.0)

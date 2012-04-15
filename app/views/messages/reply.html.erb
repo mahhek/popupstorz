@@ -1,0 +1,57 @@
+<%= render "message_header" %>
+<div id="message_detail_div" style="width:650px;float:left;margin-top:10px;">
+
+  <span style="font-size: 20px;font-weight: bold;">Reply</span>
+  <br/><br/>
+  <%= form_tag  do_reply_messages_path, { :id => "email_compose_form" } do %>
+
+    <%= hidden_field_tag :message_id , @message.id %>
+
+    <div style="width:100%;float:left;height:50px;margin-top: 10px;">
+      <div style="width: 75px;float:left;margin-top: 7px;">
+        Subject:&nbsp;&nbsp;&nbsp;
+      </div>
+      <div style="width: 500px;float:left;">
+        <%= text_field_tag :topic,"Re: #{@message.topic}"  , :style => "width:520px;"%>
+      </div>
+    </div>
+
+    <div style="width:100%;float:left;">
+      <div style="width: 75px;float:left;margin-top: 7px;">
+        Body:&nbsp;&nbsp;&nbsp;
+      </div>
+      <div style="width: 500px;float:left;">
+        <%= text_area_tag :body, "", :style => "width:520px;height:275px;" %>
+      </div>
+    </div>
+
+    <div style="float:right;width:80px;margin-top: 10px;margin-right: 35px;">
+      <div class="myTableMenu" align="center" style="float:left;cursor: pointer; width:90px;"  onclick="checkFields();">
+        <a><span><div>Send</div></span></a>
+      </div>
+    </div>
+
+    <div style="float:right;width:80px;margin-top: 10px;margin-right: 20px;">
+      <div class="myTableMenu" align="center" style="float:left;cursor: pointer; width:90px;"  onclick="window.location='<%= inbox_messages_path %>'">
+        <a><span><div>Cancel</div></span></a>
+      </div>
+    </div>
+
+
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  function checkFields(){
+    if($('#topic').val() == ""){
+      alert('Please enter subject.');
+      return false;
+    }else if($('#body').val() == ""){
+      alert('Please enter body.');
+      return false;
+    }
+    else{
+      $('#email_compose_form').submit();
+    }
+  }
+</script>

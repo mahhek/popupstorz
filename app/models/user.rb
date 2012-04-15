@@ -12,7 +12,10 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name,
     :verify_email, :mobile_phone, :gender, :date_of_birth, :activity, :security_question,
     :security_answer, :city_country, :description, :avatars_attributes, :address1, :address2, :zip_code, :city, :country, :neighbourhood
-
+  acts_as_messageable :table_name => "messages",
+    :required => [:topic, :body],
+    :class_name => "ActsAsMessageable::Message"
+  
   validates :email, :presence => true
   validates :verify_email, :presence => true
   validates :mobile_phone, :presence => true
@@ -30,7 +33,10 @@ class User < ActiveRecord::Base
   has_one  :account
   
 
-
+  def popup_storz_display_name
+    return"#{self.first_name[0..6]} #{self.last_name[0..0].capitalize} ." if self.last_name
+    self.first_name
+  end
   #after_save :send_user_notification
   #  after_save :create_account_just_activated_user
 
@@ -51,8 +57,6 @@ class User < ActiveRecord::Base
   end
 
 
-  acts_as_messageable :table_name => "messages",
-                      :required => [:topic, :body],
-                      :class_name => "ActsAsMessageable::Message"
+
   
 end

@@ -1,5 +1,5 @@
 PopupStorz::Application.routes.draw do
-   get "users/show"
+  get "users/show"
 
   match '/auth/:provider/callback' => 'services#create'
   match '/auth/facebook/callback' => 'services#create'
@@ -19,6 +19,17 @@ PopupStorz::Application.routes.draw do
   resources :messages do
     collection do
       get 'inbox'
+      get 'compose'
+      get 'sent_items'
+      get 'trash'      
+      get 'delete'
+      get 'empty_trash'
+      get 'reply'
+
+      post 'do_reply'
+      post 'manage'
+      post 'send_message'
+      post 'contact_me'
     end
   end
 

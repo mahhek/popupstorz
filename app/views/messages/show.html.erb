@@ -1,0 +1,21 @@
+<%= render "message_header" %>
+
+<div id="message_detail_div" style="width:700px;float:left;margin-top:10px;">
+  <%= link_to "Mark as unread", manage_messages_path(:message => [@message.id], :action_to_perform => "mark_as_unread"), :method => :post %>
+  <br/>
+  <br/>
+  From: <%= @message.from.popup_storz_display_name %>
+  <br/>
+  <br/>
+  Topic: <%=  @message.topic %>
+  <br/>
+  <br/>
+  Body: <%=  raw @message.body %>
+  <br/>
+  <br/>
+  Date: <%=  @message.created_at.strftime("%d %b %y") %>
+  <br/>
+  <br/>
+  <%= link_to "Reply", reply_messages_path(:id => @message.id) %>
+</div>
+

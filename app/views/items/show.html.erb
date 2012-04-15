@@ -70,3 +70,38 @@
 
 
 </div>
+<div style="float: left; padding: 10px; border: 1px solid gray;width: 400px;margin-left: 20px;">
+  <div class="blue-box">
+
+    <div id="image-person">
+      <% if @item.user.avatars.size > 0 %>
+        <%= image_tag(@item.user.avatars.first.photo.url(:thumb), :height => "56", :alt => "Seller-Image" )%>
+      <% else %>
+        <%= image_tag("User.png", :height => "56") %>
+      <% end %>
+      <%= @item.user.popup_storz_display_name %>
+      <br/>
+      <span class="hel-14"></span></div>
+
+
+    <% if current_user != @item.user %>
+      <div id="store-btn">
+        <%= link_to_function "Contact Me", "$('#contact_me_div').toggle('slow');"  %>
+      </div>
+    <% end %>
+
+    <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
+      <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
+        <%= hidden_field_tag :topic, "Inquiry" %>
+        <%= hidden_field_tag :user_id, @item.user.id %>
+        <span style="width: auto;float: left;">
+          <%= text_area_tag  :body, "", :style => "width:370px;height:100px;" %>
+        </span>
+        <div style="float: left;margin-top: 5px;">
+          <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
+        </div>
+      <% end %>
+    </div>
+
+  </div> 
+</div>
