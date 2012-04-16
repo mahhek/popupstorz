@@ -16,7 +16,10 @@
         <div class="name-list"><%= item.title %></div>
         <div class="manage-bg">
           <div class="btns">
-            <%= link_to "Preview " , admin_item_path(item)%>|&nbsp;
+            <%= link_to "Preview " , admin_item_path(item) %>|&nbsp;
+          </div>
+          <div class="btns">
+            <%= link_to "Edit " , edit_admin_item_path(item) %>|&nbsp;
           </div>
         </div>
       </div>

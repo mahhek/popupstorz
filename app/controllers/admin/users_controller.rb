@@ -7,7 +7,18 @@ class Admin::UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = User.find(params[:id])   
+  end
+
+  def destroy_user
+    user = User.find(params[:id])
+    if user.destroy
+      flash[:notice] = "User deleted successfully!"
+    else
+      flash[:notice] = "User can't be deleted. Please try again or later."
+    end
+    redirect_to admin_users_path
     
   end
+
 end

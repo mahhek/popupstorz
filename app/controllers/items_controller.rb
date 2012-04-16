@@ -11,6 +11,7 @@ class ItemsController < ApplicationController
   end
   
   def new
+    @countries = Country.all
     @item =  Item.new
     5.times { @item.avatars.build }
     @listing_types = ListingType.all :order =>"name asc"
@@ -20,7 +21,8 @@ class ItemsController < ApplicationController
     @map.center_zoom_init([48.48, 2.20], 6)
   end
 
-  def create    
+  def create
+    @countries = Country.all
     @item = Item.new(params[:item])
     @item.availability_option_ids = params[:availability_options]
     if @item.save
@@ -35,7 +37,8 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    @item = Item.find_by_id(params[:id])    
+    @countries = Country.all
+    @item = Item.find_by_id(params[:id])
     (5 - @item.avatars.size).times { @item.avatars.build }
     @listing_types = ListingType.all :order =>"name asc"
     @availability_options = AvailabilityOption.all
@@ -47,6 +50,7 @@ class ItemsController < ApplicationController
   end
 
   def update
+    @countries = Country.all
     @item = Item.find(params[:id])
     @item.availability_option_ids = params[:availability_options]       
     if @item.update_attributes(params[:item])      

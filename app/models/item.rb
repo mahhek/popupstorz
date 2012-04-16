@@ -10,7 +10,7 @@ class Item < ActiveRecord::Base
   accepts_nested_attributes_for :avatars, :allow_destroy => true
 
   has_many :avatars, :dependent => :destroy
-  
+  belongs_to :country
   before_save :geolocate_from_address
 
   belongs_to :user
