@@ -1,13 +1,15 @@
 PopupStorz::Application.routes.draw do
   get "users/show"
-
+  
   match '/auth/:provider/callback' => 'services#create'
   match '/auth/facebook/callback' => 'services#create'
   match '/auth/twitter/callback' => 'services#create'
   match '/items/search_keyword' => 'items#search_keyword'
   match '/items/search_category/:id' => 'items#search_category'
   match '/notifications/destroy/:id' => 'notifications#destroy'
-
+  match '/members' => 'users#members'
+  match '/search_members' => 'users#search_members'
+  
   devise_for :users, :controllers => {:registrations => "registrations"}
 
   resources :accounts do

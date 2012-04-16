@@ -16,4 +16,13 @@ class Admin::ItemsController < ApplicationController
     @map.center_zoom_init(coordinates, 15)
     @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.email, :info_window => "#{@item.title}"))
   end
+  
+  def delete_listings
+    @items = Item.all
+  end
+  
+  def destroy
+    ssss
+  end
+  
 end
