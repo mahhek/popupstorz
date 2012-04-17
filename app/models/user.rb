@@ -11,7 +11,9 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name,
     :verify_email, :mobile_phone, :gender, :date_of_birth, :activity, :security_question,
-    :security_answer, :city_country, :description, :avatars_attributes, :address1, :address2, :zip_code, :city, :country, :neighbourhood
+    :security_answer, :city_country, :description, :avatars_attributes, :address1, :address2,
+    :zip_code, :city, :country, :neighbourhood
+  
   acts_as_messageable :table_name => "messages",
     :required => [:topic, :body],
     :class_name => "ActsAsMessageable::Message"
