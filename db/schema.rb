@@ -168,7 +168,7 @@ ActiveRecord::Schema.define(:version => 20120417112308) do
     t.string   "zip_code"
     t.string   "city"
     t.string   "country"
-    t.string   "description"
+    t.text     "description"
     t.boolean  "admin",                                 :default => false
   end
 
