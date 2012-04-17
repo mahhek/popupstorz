@@ -39,7 +39,7 @@
           <span class="checkbox" style="float:left;width:20px;margin-top:6px;" >
             <%=  check_box_tag "message[]", message.id, false, {:id => "messages_#{message.id}", :class => "checkBoxClass"} %>
           </span>
-          <div style="float: left;width: 100%;" onclick="window.location='<%= message_path(message) %>'">
+          <div style="float: left;width: 680px;" onclick="window.location='<%= message_path(message) %>'">
             <span style="width:130px;float:left;margin-left:5px;padding-top:2px;">
               <%=  message.from.popup_storz_display_name %>
             </span>
