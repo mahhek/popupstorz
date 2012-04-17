@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   has_many :avatars, :dependent => :destroy
   accepts_nested_attributes_for :avatars, :allow_destroy => true
-  belongs_to :country
+#  belongs_to :country
 
   devise :database_authenticatable, :registerable, :confirmable,
     :recoverable, :rememberable, :trackable, :validatable
