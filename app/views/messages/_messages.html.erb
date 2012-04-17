@@ -34,24 +34,25 @@
       <% unless message.opened? %>
         <b>
         <%end%>
-        <div style="float:left;width:auto;line-height:30px;border-bottom: 1px solid silver;padding: 5px 0px;font-size: 12px;cursor: pointer;" class="mail-list-hover" onclick="window.location='<%= message_path(message) %>'" >
+        <div style="float:left;width:auto;line-height:30px;border-bottom: 1px solid silver;padding: 5px 0px;font-size: 12px;cursor: pointer;" class="mail-list-hover" >
 
           <span class="checkbox" style="float:left;width:20px;margin-top:6px;" >
             <%=  check_box_tag "message[]", message.id, false, {:id => "messages_#{message.id}", :class => "checkBoxClass"} %>
           </span>
-
-          <span style="width:130px;float:left;margin-left:5px;padding-top:2px;">
-            <%=  message.from.popup_storz_display_name %>
-          </span>
-          <span style="width:150px;float:left;padding-top:2px;">
-            <%=  message.topic %>
-          </span>
-          <span style="width:320px;float:left;padding-top:2px;">
-            <%=  raw message.body %>
-          </span>
-          <span style="width:70px;float:left;padding-top:2px;">
-            <%=  message.created_at.strftime("%d %b %y") %>
-          </span>
+          <div style="float: left;width: 100%;" onclick="window.location='<%= message_path(message) %>'">
+            <span style="width:130px;float:left;margin-left:5px;padding-top:2px;">
+              <%=  message.from.popup_storz_display_name %>
+            </span>
+            <span style="width:150px;float:left;padding-top:2px;">
+              <%=  message.topic %>
+            </span>
+            <span style="width:320px;float:left;padding-top:2px;">
+              <%=  raw message.body %>
+            </span>
+            <span style="width:70px;float:left;padding-top:2px;">
+              <%=  message.created_at.strftime("%d %b %y") %>
+            </span>
+          </div>
         </div>
         <% unless message.opened? %>
         </b>
