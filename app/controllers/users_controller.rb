@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     end
     if params[:search][:type]
       if !conds.blank? and !params[:search][:type].blank?
-        conds += " and "
+        conds += " or "
       end
       unless params[:search][:type].blank?
         conds += "LOWER(activity) LIKE "+ "'%%" + params[:search][:type].strip.downcase.to_s + "%%'"
@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     end
     unless params[:search][:user].blank?
       unless conds.blank?
-        conds += " and "
+        conds += " or "
       end
       conds += "(LOWER(first_name) LIKE "+ "'%%"+ params[:search][:user].strip.downcase.to_s + "%%'" + " or LOWER(last_name) LIKE "  + "'%%" + params[:search][:user].strip.downcase.to_s + "%%'" +")"
     end

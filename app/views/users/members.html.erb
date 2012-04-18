@@ -9,8 +9,8 @@
     </div>
 
     <div style="width:90%;float:left;clear:both;margin:10px;">
-      <div style="width:20%;float:left;margin-right: 10px;font-weight: bold;">Username:</div>
-      <div style="width:70%;float:left;">
+      <div style="float:left;margin-right: 10px;font-weight: bold;">Name or Email:</div>
+      <div style="width:65%;float:right;">
         <%= f.text_field "user" %>
       </div>
     </div>
@@ -18,7 +18,7 @@
     <div style="width:90%;float:left;clear:both;margin:10px;">
       <div style="width:20%;float:left;margin-right: 10px;font-weight: bold;">Type:</div>
       <div style="width:70%;float:left;">
-        <%= select_tag "search[type]", options_for_select([['Fashion Designer','Fashion Designer'],['Painter','Painter'], ['Jeweler','Jeweler'], ['Photographer','Photographer'], ['Software Engineer','Software Engineer'], ['Other','']]) %>  
+        <%= select_tag "search[type]", options_for_select([['All','All'], ['Fashion Designer','Fashion Designer'], ['Painter','Painter'], ['Jeweler','Jeweler'], ['Photographer','Photographer']]) %>
       </div>
     </div>
     

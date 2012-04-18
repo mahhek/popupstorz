@@ -5,11 +5,12 @@
 <div class="listx-bg">
   <% unless @items.blank? %>
     <div class="btn-bar" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
-      <%= link_to "Inbox", "/home/index" %>&nbsp;&nbsp;
-      <%= link_to "Bookings", "/home/index" %>&nbsp;&nbsp;
-      <%= link_to "Listings", "/home/index" %>&nbsp;&nbsp;
-      <%= link_to('Profile', profile_path(current_user.id)) %>&nbsp;&nbsp;
-      <%= link_to "Account", "/home/index" %>&nbsp;&nbsp;
+      <%= link_to "Home", "/home/index" %>&nbsp;|
+      <%= link_to "Inbox", inbox_messages_path %>&nbsp;|
+      <%= link_to "Bookings", "/home/index" %>&nbsp;|
+      <%= link_to "Listings", "/home/index" %>&nbsp;|
+      <%= link_to('Profile', profile_path(current_user.id)) %>&nbsp;|
+      <%= link_to "Account", "/home/index" %>&nbsp;
     </div>
 
     <% @items.each do | item | %>

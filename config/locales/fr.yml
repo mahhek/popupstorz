@@ -1,0 +1,129 @@
+
+fr:
+  verify_your_account: "vérifier votre compte"
+  number:
+    format:
+      separator: ","
+      delimiter: "."
+      precision: 3
+
+    currency:
+      format:
+        format: "%u%n"
+        unit: "€"
+        separator: ","
+        delimiter: "."
+        precision: 2
+
+    percentage:
+      format:
+        delimiter: ""
+
+    precision:
+      format:
+        delimiter: ""
+
+    human:
+      format:
+        delimiter: ""
+        precision: 1
+        storage_units: [Bytes, KB, MB, GB, TB]
+
+  datetime:
+    distance_in_words:
+      half_a_minute: "une demi-minute"
+      less_than_x_seconds:
+        one:   "λιγότερο απο ένα δευτερόλεπτο"
+        other: "λιγότερο απο {{count}} δευτερόλεπτα"
+      x_seconds:
+        one:   "1 δευτερόλεπτο"
+        other: "{{count}} δευτερόλεπτα"
+      less_than_x_minutes:
+        one:   "λιγότερο απο ένα λεπτό"
+        other: "λιγότερο απο {{count}} λεπτά"
+      x_minutes:
+        one:   "ένα λεπτό"
+        other: "{{count}} λεπτά"
+      about_x_hours:
+        one:   "1 ώρα περίπου"
+        other: "{{count}} hours περίπου"
+      x_days:
+        one:   "1 μέρα"
+        other: "{{count}} μέρες"
+      about_x_months:
+        one:   "1 μήνα περίπου"
+        other: "{{count}} μήνες περίπου"
+      x_months:
+        one:   "1 μήνα"
+        other: "{{count}} μήνες"
+      about_x_years:
+        one:   "ένα χρόνο περίπου"
+        other: "{{count}} χρόνια περίπου"
+      over_x_years:
+        one:   "πάνω απο 1 χρόνο"
+        other: "πάνω απο {{count}} χρόνια"
+
+  activerecord:
+    errors:
+      template:
+        header:
+          one:    "1 λάθος παρεμπόδισε αυτό το {{model}} να αποθηκευθεί"
+          other:  "{{count}} λάθη εμπόδισαν αυτό το {{model}} να αποθηκευθεί"
+        body: "Υπήρξαν προβλήματα με τα ακόλουθα πεδία :"
+
+
+  activerecord:
+    errors:
+      messages:
+        inclusion: "δεν συμπεριλαβάνεται στη λίστα"
+        exclusion: "είναι δεσμευμένο"
+        invalid: "είναι άκυρο"
+        confirmation: "δεν ταιριάζει με την επικύρωση"
+        accepted: "πρέπει να είναι αποδεκτό"
+        empty: "δεν πρέπει να είναι άδειο"
+        blank: "δεν πρέπει να είναι κενό"
+        too_long: "είναι πολύ μεγάλο (το μέγιστο μήκος είναι {{count}} χαρακτήρες)"
+        too_short: "είναι πολύ μικρό (το μικρότερο μήκος είναι {{count}} χαρακτήρες)"
+        wrong_length: "έχει λανθασμένο μήκος (πρέπει να είναι {{count}} χαρακτήρες)"
+        taken: "το έχουν ήδη χρησιμοποιήσει"
+        not_a_number: "δεν είναι ένας αριθμός"
+        greater_than: "πρέπει να είναι μεγαλύτερο απο {{count}}"
+        greater_than_or_equal_to: "πρέπει να είναι μεγαλύτερο ή ίσον με {{count}}"
+        equal_to: "πρέπει να είναι ίσον με  {{count}}"
+        less_than: "πρέπει να είναι λιγότερο απο {{count}}"
+        less_than_or_equal_to: "πρέπει να είναι λιγότερο ή ίσον με {{count}}"
+        odd: "πρέπει να είναι περιττός"
+        even: "πρέπει να είναι άρτιος"
+
+  date:
+    formats:
+      default: "%d-%m-%Y"
+      short: "%d %b"
+      long: "%d %B %Y"
+      only_day: "%e"
+
+    day_names: [Κυριακή, Δευτέρα, Τρίτη, Τετάρτη, Πέμπτη, Παρασκευή, Σάββατο]
+    abbr_day_names: [Κυρ, Δευ, Τρι, Τετ, Πεμ, Παρ, Σαβ]
+
+    month_names: [~, Ιανοάριος, Φεβρουάριος, Μάρτιος, Απρίλιος, Μάιος, Ιούνιος, Ιούλιος, Άυγουστος, Σεπτέμβριος, Οκτώβριος, Νοέμβριος, Δεκέμβριος]
+    abbr_month_names: [~, Ιαν, Φεβ, Μάρ, Απρ, Μαι, Ιουν, Ιούλ, Αυγ, Σεπ, Οκτ, Νοε, Δεκ]
+    order: [ :year, :month, :day ]
+
+  time:
+    formats:
+      default: "%a %d %b %Y, %H:%M:%S %z"
+      time: "%H:%M"
+      short: "%d %b %H:%M"
+      long: "%d %B %Y %H:%M"
+      only_second: "%S"
+    am: "am"
+    pm: "pm"
+
+  datetime:
+    formats:
+      default: "%d-%m-%YT%H:%M:%S%Z"
+
+  support:
+    array:
+      sentence_connector: "και"
+      skip_last_comma: false
