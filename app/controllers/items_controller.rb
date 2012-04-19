@@ -83,10 +83,26 @@ class ItemsController < ApplicationController
 
 
   def search_keyword
-  
-    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => ["LOWER(title) LIKE ? AND LOWER(address) LIKE ?","%#{params[:keyword].strip.downcase}%","%#{params[:location].strip.downcase}%"], :order => "price")
-  
-  
+    conds = ""
+    unless params[:search_from].blank?
+      conds += "(Date(availability_from) >= " + "'#{params[:search_from].to_date}'" +")"
+    end
+    unless params[:search_to].blank?
+      unless conds.blank?
+        conds += " AND "
+      end
+      conds += "(Date(availability_to) <= " + "'#{params[:search_to].to_date}'" +")"
+    end
+    unless params[:location].blank?
+      unless conds.blank?
+        conds += " AND "
+      end
+      conds += "(LOWER(address) LIKE  " + "'%%" + "#{params[:location].strip.downcase}" + "%%'" +")"
+    end
+    
+#    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => ["Date(availability_from) >= ? AND Date(availability_to) <= ? AND LOWER(address) LIKE ?","#{params[:search_from].to_date}","#{params[:search_to].to_date}","%#{params[:location].strip.downcase}%"], :order => "price")
+    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => [ conds ], :order => "price")
+    
     @map = GMap.new("map")
     @map.control_init(:map_type => true, :small_zoom => true)
   

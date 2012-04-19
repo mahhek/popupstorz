@@ -4,7 +4,7 @@
     <div style="width:90%;float:left;clear:both;margin:10px;">
       <div style="width:20%;float:left;margin-right: 10px;font-weight: bold;">Where:</div>
       <div style="width:70%;float:left;">
-          <%= select_tag "search[location]", options_for_select([['Paris','Paris'],['London','London'], ['New York','New York'], ['Worldwide','Worldwide']])%>
+          <%= select_tag "search[location]", options_for_select([['Paris','Paris'],['London','London'], ['New York','New York'], ['Worldwide','']])%>
       </div>
     </div>
 
@@ -18,7 +18,7 @@
     <div style="width:90%;float:left;clear:both;margin:10px;">
       <div style="width:20%;float:left;margin-right: 10px;font-weight: bold;">Type:</div>
       <div style="width:70%;float:left;">
-        <%= select_tag "search[type]", options_for_select([['All','All'], ['Fashion Designer','Fashion Designer'], ['Painter','Painter'], ['Jeweler','Jeweler'], ['Photographer','Photographer']]) %>
+        <%= select_tag "search[type]", options_for_select([['All',''], ['Fashion Designer','Fashion Designer'], ['Painter','Painter'], ['Jeweler','Jeweler'], ['Photographer','Photographer']]) %>
       </div>
     </div>
     

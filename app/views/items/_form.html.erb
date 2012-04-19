@@ -126,7 +126,7 @@
 
 <div>
   Gathering: &nbsp;&nbsp;&nbsp;
-  <%= select_tag "item[is_shareable]", options_for_select([["Yes","Yes"],["No","No"]], @item.is_shareable) %>&nbsp;&nbsp;
+  <%= select_tag "item[is_shareable]", options_for_select([["Yes","Yes"],["No","No"]], @item.is_shareable), :onchange => "check_persons_limit(this.value)" %>&nbsp;&nbsp;
   Up to: &nbsp;&nbsp;&nbsp;
   <%= f.text_field :maximum_members, :size => "5" %> persons
 </div>
@@ -306,6 +306,15 @@
       }
       $("#other_unit").text(Math.round(mts)+" SQMT");
     }
+  }
+
+  function check_persons_limit(val){    
+    if(val == 'No'){      
+      $("#item_maximum_members").attr('disabled', true);
+    }
+    else{
+      $("#item_maximum_members").attr('disabled', false);
+    }    
   }
 
 

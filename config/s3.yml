@@ -1,0 +1,12 @@
+development:
+  bucket: storably-dev
+  access_key_id: AKIAJ7NRFCLPMYSCNYFQ
+  secret_access_key: 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
+test:
+  bucket: storably-dev
+  access_key_id: e4xKcjQPNoj0tw95DEF33hK36/Yao/7wuCalle1J
+  secret_access_key: AKIAJ7NRFCLPMYSCNYFQ
+production:
+  bucket: storably-dev
+  access_key_id: AKIAJ7NRFCLPMYSCNYFQ
+  secret_access_key: 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

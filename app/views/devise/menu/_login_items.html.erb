@@ -10,20 +10,20 @@
   </li>
   <li>
     <%= link_to "Gatherings", "/home/index" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   </li>
   <li>
     <%= link_to "$/euro", "/home/index" %>&nbsp;&nbsp;|
   </li>
 
-<li>
-  <%= link_to image_tag("en.jpg"),  {:locale => "en" } %>
-  <%= link_to image_tag("fr.jpg"), {:locale => "fr" }%>&nbsp;|
-</li>
+  <li>
+    <%= link_to image_tag("en.jpg"),  {:locale => "en" } %>
+    <%= link_to image_tag("fr.jpg"), {:locale => "fr" }%>&nbsp;|
+  </li>
 
 
 
-   <li>
+  <li>
     <%= link_to('Profile', profile_path(current_user.id)) %>
   </li>
   <li>
@@ -37,7 +37,7 @@
   </li>
 
   <%#*<li>%>
-    <%#= link_to "About", "/home/about" %>&nbsp;
+  <%#= link_to "About", "/home/about" %>&nbsp;
   <%#*</li>%>
 
 <% else %>
@@ -59,9 +59,14 @@
 <br/><br/>
 
 <%= form_tag "/items/search_keyword", :method => :get  do %>
-
-  <%= autocomplete_field_tag :keyword, params[:keyword], autocomplete_item_title_items_path, :placeholder => "Appartment, Hotel or warehouse etc.", :style => "width:300px;" %>&nbsp;in the city of&nbsp;
+  <b>From</b> <%=  text_field_tag :search_from %>
+  <b>To</b> <%=  text_field_tag :search_to %>
+  <%#= autocomplete_field_tag :keyword, params[:keyword], autocomplete_item_title_items_path, :placeholder => "Appartment, Hotel or warehouse etc.", :style => "width:300px;" %>&nbsp;in the city of&nbsp;
   <%= autocomplete_field_tag :location, params[:location], autocomplete_item_city_items_path, :placeholder => "Location", :style => "width:300px;" %>
   <%= submit_tag "Search" %>
 <% end %>
 
+<script type="text/javascript">
+  $('#search_from').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
+  $('#search_to').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
+</script>
