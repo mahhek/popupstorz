@@ -3,3 +3,15 @@
 
 en:
    verify_your_account: "Verify Your Account"
+   welcome_to_popup_storz: "Welcome to Popup Storz"
+   number:
+       currency:
+           format:
+               format: "%u%n"
+               unit: "$"
+               # These three are to override number.format and are optional
+               separator: "."
+               delimiter: ","
+               precision: 2
+
+

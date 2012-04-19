@@ -24,7 +24,7 @@
 
   </head>
   <body>
-    <div style="margin: auto 0;float: left;width: 980px;">
+    <div style="margin: 0 auto;width: 980px;padding: 0 20px;border-left: 1px solid silver;border-right: 1px solid silver;min-height: 580px;">
 
       <% if notice %>
         <p class="notice" style="padding: 5px;width :95%;background-color:lightgreen;"><%= notice %></p>
@@ -34,6 +34,9 @@
       <% end %>
 
       <ul class="hmenu">
+        <li>
+          <%= link_to "Home", "/" %>
+        </li>
         <%= render 'devise/menu/registration_items' %>
         <%= render 'devise/menu/login_items' %>
       </ul>

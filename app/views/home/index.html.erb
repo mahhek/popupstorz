@@ -1,3 +1,8 @@
 <h1>
-  Welcome to Popup Storz
+  <%= t(:welcome_to_popup_storz) %>
 </h1>
+<h2>
+  <%= number_to_currency(currency_conversion(1)) %>
+</h2>
+<iframe id="tmcmini" src="http://themoneyconverter.com/MoneyConverter.aspx?from=GBP&amp;to=pkr" style="width: 185px; height: 210px; border: none; background-color: #ffffff;" marginwidth="0" marginheight="0" frameborder="0" scrolling="no">
+</iframe>

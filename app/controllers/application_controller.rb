@@ -9,20 +9,33 @@ require 'cgi'
 
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  #def available_locales; AVAILABLE_LOCALES; end
+  def available_locales; AVAILABLE_LOCALES; end
   helper :all
-  #  before_filter :set_locale
+  before_filter :set_locale
   helper_method :account_verified
   helper_method :message_user
+  helper_method :currency_conversion
 
-    def set_locale
-      I18n.locale = params[:locale] || I18n.default_locale
-    end
+  def currency_conversion(amount)
+    locale = params[:locale] || I18n.default_locale
+    if locale == "en"
+      currency_from = "EUR"
+      currency_to = "USD"
+    else
+      currency_from = "USD"
+      currency_to = "EUR"
+    end    
+    amount.to_money(currency_from).exchange_to(currency_to)
+  end
 
-    def default_url_options(options={})
-      logger.debug "default_url_options is passed options: #{options.inspect}\n"
-      { :locale => I18n.locale }
-    end
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
+
+  def default_url_options(options={})
+    logger.debug "default_url_options is passed options: #{options.inspect}\n"
+    { :locale => I18n.locale }
+  end
 
   def translate( text, to='en', from='no' )
     unless params[:locale].nil?

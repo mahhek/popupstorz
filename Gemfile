@@ -5,6 +5,9 @@ gem 'rails', '3.1.3'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 #gem 'jruby-rack', '1.0.10'
+gem 'json' #important, was not set as a dependency, so I add it manually
+gem 'google_currency'
+gem 'money'
 gem 'mysql2'
 gem 'devise'
 gem 'rest-client'
@@ -19,7 +22,7 @@ gem 'uuidtools'
 gem 'execjs'
 gem 'therubyracer'
 gem "bcrypt-ruby"
-gem "json"
+
 gem 'geokit'
 gem 'nokogiri'
 gem 'feedzirra'
