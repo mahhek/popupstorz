@@ -57,15 +57,15 @@
 </div>
 
 <div class="leftcontent">
-                  <%= form_tag "/items/search_keyword", :method => :get  do %>
-  <div class="refinesearchresults">
-    <%= autocomplete_field_tag :location, params[:location], autocomplete_item_city_items_path, :placeholder => "Location", :class => "paris" %>
-    <span>from</span>
-     <%=  text_field_tag :search_from %>
-    <span>to</span>
-    <%=  text_field_tag :search_to %>
-    <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
-  </div>
+  <%= form_tag "/items/search_keyword", :method => :get  do %>
+    <div class="refinesearchresults">
+      <%= autocomplete_field_tag :location, params[:location], autocomplete_item_city_items_path, :placeholder => "Location", :class => "paris" %>
+      <span>from</span>
+      <%=  text_field_tag :search_from %>
+      <span>to</span>
+      <%=  text_field_tag :search_to %>
+      <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
+    </div>
   <%end%>
   <div class="sortby">
     <select>
@@ -79,9 +79,9 @@
 
   <div class="resultsholderlist">
     <% unless @items.blank? %>
-  <% @items.each do | item | %>
-    <div class="resultsholder">
-          <div class="price"><%= item.price_unit %><%= item.price %> <br /> <span class="perweek"><%= item.time_for_unit_price 	%></span> </div>
+      <% @items.each do | item | %>
+        <div class="resultsholder">
+          <div class="price"><%= item.price_unit == "USD" ? "$" : "€" %><%= item.price %> <br /> <span class="perweek"><%= item.time_for_unit_price 	%></span> </div>
           <% if item.avatars.size > 0 %>
             <% avatar = item.avatars.first %>
             <%= link_to( image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
@@ -92,17 +92,17 @@
           <br />
           <span class="subheading">Venice Beach (Los Angeles)</span><br /><br />
           <span class="details">
-          <%= item.description %>
+            <%= item.description %>
         </div>
       <%end%>
+    </div>
   </div>
-</div>
 
 <% else %>
   No result found
 <%end %>
 
-           <%#*- e per day - <%= link_to "Book now", item_path(item.id) %>
+<%#*- e per day - <%= link_to "Book now", item_path(item.id) %>
 
 <script type="text/javascript">
   $('#search_from').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
