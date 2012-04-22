@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
-  before_filter :authenticate_user!, :except => [:new, :create, :search_keyword, :search_category, :autocomplete_item_city, :autocomplete_item_title]
+
+  before_filter :authenticate_user!, :except => [:search_keyword, :search_category, :autocomplete_item_city, :autocomplete_item_title]
 
   autocomplete :item, :title
   autocomplete :item, :city

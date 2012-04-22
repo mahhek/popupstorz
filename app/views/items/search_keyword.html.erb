@@ -1,43 +1,114 @@
 <%= stylesheet_link_tag "search-list"%>
 
+<div class="rightcontent">
 
-<% unless @items.blank? %>
-  <% @items.each do | item | %>
-    <div class="result123">
-      <div class="resultx">
-        <a href="#"></a>
-        <div class="result-img">
-          <a href="#">
-            <% if item.avatars.size > 0 %>
-              <% item.avatars.each  do |avatar| %>
-                <div class="thumbnail">
-                  <%= link_to( image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
-                </div>
-              <% end %>
-            <% else %>
-              <%= image_tag("rails.png", :border => "0", :alt => "image")  %>
-            <% end %>
-          </a>
-        </div>
-        <div class="resultx-detail">
-          <div class="resultx-heading"><%= link_to item.title, item_path(item) %> - e<%= item.price %> per day - <%= link_to "Book now", item_path(item.id) %></div>
+  <h2>Refine your search</h2>
 
-        </div>
+  <div class="pannelright">
+    <img class="closepannel" src="../assets/-.png" />
+    <div class="heading_right">Price</div>
+    <img src="../assets/350.png" />
+  </div>
+
+  <div class="pannelright">
+    <img class="closepannel" src="../assets/-.png" />
+    <div class="heading_right">Price</div>
+    <img src="../assets/350.png" />
+  </div>
+
+  <div class="pannelright">
+    <img class="closepannel" src="../assets/-.png" />
+    <div class="heading_right">Price</div>
+    <div class="twocol">
+      <div class="leftrow">
+        <div class="unselected"></div><span>Neighbourhood</span>
+        <div class="unselected"></div><span>Neighbourhood</span>
+        <div class="selected"></div><span>Neighbourhood</span>
+        <div class="unselected"></div><span>Neighbourhood</span>
+      </div><div class="rightrow">
+        <div class="unselected"></div><span>Neighbourhood</span>
+        <div class="unselected"></div><span>Neighbourhood</span>
+        <div class="unselected"></div><span>Neighbourhood</span>
+        <div class="selected"></div><span>Neighbourhood</span>
       </div>
     </div>
 
-  <% end  %>
+  </div>
 
+  <div class="pannelright">
+    <img class="closepannel" src="../assets/-.png" />
+    <div class="heading_right">Price</div>
+    <div class="twocol">
+      <div class="leftrow">
+        <div class="unselected"></div><span>Neighbourhood</span>
+        <div class="unselected"></div><span>Neighbourhood</span>
+        <div class="selected"></div><span>Neighbourhood</span>
+        <div class="unselected"></div><span>Neighbourhood</span>
+      </div><div class="rightrow">
+        <div class="unselected"></div><span>Neighbourhood</span>
+        <div class="unselected"></div><span>Neighbourhood</span>
+        <div class="unselected"></div><span>Neighbourhood</span>
+        <div class="selected"></div><span>Neighbourhood</span>
+      </div>
+    </div>
 
+  </div>
 
-  <%#*<div>%>
-  <%# if @map %>
-  <%#= raw(@map.div(:width => 500, :height => 400)) %>
-  <%# end %>
-  <%#*</div>%>
+</div>
+
+<div class="leftcontent">
+                  <%= form_tag "/items/search_keyword", :method => :get  do %>
+  <div class="refinesearchresults">
+    <%= autocomplete_field_tag :location, params[:location], autocomplete_item_city_items_path, :placeholder => "Location", :class => "paris" %>
+    <span>from</span>
+     <%=  text_field_tag :search_from %>
+    <span>to</span>
+    <%=  text_field_tag :search_to %>
+    <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
+  </div>
+  <%end%>
+  <div class="sortby">
+    <select>
+      <option>
+                    	Recommended
+      </option>
+    </select>
+    <span>sort by</span>
+
+  </div>
+
+  <div class="resultsholderlist">
+    <% unless @items.blank? %>
+  <% @items.each do | item | %>
+    <div class="resultsholder">
+          <div class="price"><%= item.price_unit %><%= item.price %> <br /> <span class="perweek"><%= item.time_for_unit_price 	%></span> </div>
+          <% if item.avatars.size > 0 %>
+            <% avatar = item.avatars.first %>
+            <%= link_to( image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
+          <% else %>
+            <%= image_tag("rails.png", :border => "0", :alt => "image")  %>
+          <%end%>
+          <span class="heading"><%= link_to item.title, item_path(item) %>!</span>
+          <br />
+          <span class="subheading">Venice Beach (Los Angeles)</span><br /><br />
+          <span class="details">
+          <%= item.description %>
+        </div>
+      <%end%>
+  </div>
+</div>
+
 <% else %>
   No result found
 <%end %>
-<%#*<div id="page-navigator">%>
-<%#= will_paginate @items %>
-<%#*</div>%>
+
+           <%#*- e per day - <%= link_to "Book now", item_path(item.id) %>
+
+<script type="text/javascript">
+  $('#search_from').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
+  $('#search_to').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
+</script>
+
+
+
+

@@ -1,75 +1,129 @@
-<h2>Sign up</h2>
-<h4> Your "e-mail" and "mobile phone" are necessary to contact you <br/>
-  if there is any problem during the rental. They will not be shown <br/>
-  on the website, except to people with whom you have confirmed transactions.</h4>
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+<div class="leftcontent">
+  <div class="shadowCont">
+    <div class="s_head">Sign Up</div>
+    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+      <%= devise_error_messages! %>
 
-  <div><%= f.label :first_name %><br />
-    <%= f.text_field :first_name %>(required)</div>
+      <div class="reqInfo">Required information</div>
+      <div class="sign_up_input">
+        <label>First Name</label>
+        <%= f.text_field :first_name %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label>Last Name</label>
+        <%= f.text_field :last_name %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label>Date of Birth</label>
+        <%=  f.text_field :date_of_birth %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label>Gender</label>
+        <div class="fltL">
+          <%= f.select :gender, options_for_select(['Male', 'Female'])%>(required, but will not be shown)
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+      <div class="sign_up_input">
+        <label>Email</label>
+        <%= f.email_field :email %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label>Verify Email</label>
+        <%= f.email_field :verify_email %>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
 
-  <div><%= f.label :last_name %><br />
-    <%= f.text_field :last_name %>(required)</div>
+      <div class="sign_up_input">
+        <label>Password</label>
+        <%= f.password_field :password %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input fltL">
+        <label>Conform Password</label>
+        <%= f.password_field :password_confirmation %>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
 
-  <div><%= f.label :email %><br />
-    <%= f.email_field :email %>(required)</div>
+      <div class="sign_up_input">
+        <label>Security Question</label>
+        <%= f.text_field :security_question %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label>Security Answer</label>
+        <%= f.text_field :security_answer %>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+      <div class="sign_up_input">
+        <label>Mobile No</label>
+        <%= f.text_field :mobile_phone %>
+        <div class="clear"></div>
+      </div>
 
-  <div><%= f.label :verify_email %><br />
-    <%= f.email_field :verify_email %>(required)</div>
+      <div class="reqInfo">Optional information</div>
+      <div class="sign_up_input">
+        <label>Address 1</label>
+        <%= f.text_field :address1 %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label>Address 2</label>
+        <%= f.text_field :address1 %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label>City</label>
+        <%= f.text_field :city %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input fltL">
+        <label>Country</label>
+        <%= f.text_field :country %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input fltL">
+        <label>Zip code</label>
+        <%= f.text_field :zip_code %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input fltL">
+        <label>Activity</label>
+        <%= f.text_field :activity %>
+        <div class="clear"></div>
+      </div>
+  <%#*<div class="sign_up_input fltL">%>
+  <%#*<label>Other</label>%>
+  <%#*<input type="text" value="Raza" />%>
+  <%#*<div class="clear"></div>%>
+  <%#*</div>%>
+      <div class="clear"></div>
+      <div class="sign_up_input">
+        <label>Description</label>
+        <%= f.text_area :description, :size => "40x4" %>
+        <div class="clear"></div>
+      </div>
+      <%#*<div class="sign_up_input">%>
+        <%#*<label>Upload</label>%>
+        <%#*<input type="text" value="Raza" />%>
+        <%#*<div class="clear"></div>%>
+      <%#*</div>%>
+      <%= f.submit "Sign up", :class => "search" %>
 
-  <div><%= f.label :password %><br />
-    <%= f.password_field :password %>(required)</div>
+    <% end %>
+    <br/>
+    <div style="float:left">
+    <%= render :partial => "devise/shared/links" %>
+</div>
 
-  <div><%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation %></div>
-
-  <div><%= f.label :security_question %><br />
-    <%= f.text_field :security_question %>(required)</div>
-
-  <div><%= f.label :security_answer %><br />
-    <%= f.text_field :security_answer %>(required)</div>
-
-  <div><%= f.label :mobile_phone %><br />
-    <%= f.text_field :mobile_phone %>(required)</div>
-
-  <div><%= f.label :Address1 %><br />
-    <%= f.text_field :address1 %>(required)</div>
-
-  <div><%= f.label :Address2 %> <br />
-    <%= f.text_field :address2 %></div>
-
-  <div><%= f.label :ZipCode %>
-    <%= f.text_field :zip_code, :size => "5" %></div>
-  <br />
-  <div><%= f.label :city %>
-    <%= f.text_field :city, :size => "20" %>(required)</div>
-  <br />
-  <div><%= f.label :country %>
-    <%= f.text_field :country, :size => "20" %>(required)</div>
-  <br />
-  <div><%= f.label :gender %>
-    <%= f.select :gender, options_for_select(['Male', 'Female'])%>(required, but will not be shown)</div><br/>
-
-  <div><%= f.label :date_of_birth %>
-    <%=  f.text_field :date_of_birth %>(required, but will not be shown)</div><br/>
-
-  <div><%= f.label :description %><br />
-    <%= f.text_area :description, :size => "40x4" %></div><br/>
-
-  <div><%= f.label :activity %><br />
-    <%= f.text_field :activity %></div><br/>
-
-  <div><%= f.submit "Sign up" %></div>
-<% end %>
-
-<%= render :partial => "devise/shared/links" %>
-
-
-
-
-
-<script type="text/javascript">
-
-  $('#user_date_of_birth').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
-
-</script>
+   <script type="text/javascript">
+      $('#user_date_of_birth').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
+    </script>

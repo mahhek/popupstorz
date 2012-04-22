@@ -1,107 +1,107 @@
-<div style="float: left; padding: 10px; border: 1px solid gray;">
-  <div>
-    <%= link_to "Edit this Item", edit_item_path(@item) if (@item.user.email == current_user.email) %> &nbsp;&nbsp;
-    <%= link_to "Delete this Item", item_path(@item), :method => :delete, :confirm => "Are you sure?"  if (@item.user.email == current_user.email)%>
-    <span style="float: right;margin-right: 10px;">
-      <%= button_to "Book it", "#" unless (@item.user == current_user)%></span>
+<a href="#" class="back">&lt;&lt; Back to results</a>
+<div class="leftcontent">
+  <div class="shadowCont">
+    <div class="fltL">
+      <h1 class="charming"><%= @item.title %>!</h1>
+      <h6><%= link_to "(Edit this Item)", edit_item_path(@item)   if (@item.user.email == current_user.email)%></h6>
+      <%= link_to "Delete this Item", item_path(@item), :method => :delete, :confirm => "Are you sure?"  if (@item.user.email == current_user.email)%>
+
+      <p class="charming_text"><%= @item.address %>(<%= @item.zipcode %> - <%= @item.city %>, <%= @item.country_code   %>)</p>
+    </div>
+    <div class="fltR">
+      <h1 class="charming graytext"><%= @item.price_unit %><%= @item.price %></h1>
+      <p class="charming_text graytext"><%=  @item.time_for_unit_price %></p>
+    </div>
+    <div class="clear"></div>
+    <img src="../assets/gallery.png" alt="" class="gallery" />
+    <div class="fltR w200 mt100">
+      <h1 class="size">Size:</h1>
+      <p class="size_text"><%= @item.size %> <%= @item.size_unit %></p>
+      <div class="clear"></div>
+      <h1 class="size">Type:</h1>
+      <p class="size_text"><%= @item.type %></p>
+      <div class="clear"></div>
+      <h1 class="size">Number of floors:</h1>
+      <p class="size_text"></p>
+      <div class="clear"></div>
+      <%if @item.is_shareable%>
+        Is shareable  up to <%= @item.maximum_members %>
+      <%end%>
+
+    </div>
+    <div class="clear"></div>
+
+    <p class="charming_text mt30"><%= @item.description %>
+
+    <div class="line"></div>
+
+    <h1 class="charming">what other people think</h1>
+    <p class="charming_text">what other people thinkwhat other people thinkwhat other people thinkwhat other people think</p>
+
+
+
   </div>
-  <br/>
-  <div id="get-list-header">
-    <div id="lisit-txt"><b>Title: </b><%= @item.title %><br/>
-      <span class="hel-14">
-        <b>Neighbourhood: </b><%= @item.neighbourhood %><br/>
-        <b>City: </b><%= @item.city %><br/>
-        <b>Country: </b><%= @item.country_code %>
-      </span>
-    </div>
-
-    <div>
-      <b>Owner: </b><%= @item.user.first_name %> <%= @item.user.last_name %>
-    </div>
-  </div>
-  <br/><br/>
-  <div id="left-side">
-    <div class="left-gray">
-      <div class="existingPaperclipFiles">
-        <% @item.avatars.each  do |avatar| %>
-          <div class="thumbnail">
-            <%= link_to( image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-
-    <div class="left-gray">
-      <div id="space-details-txt"><b>Description: </b><%= raw @item.description %></div>
-    </div>
-
-  </div>
-
-  <div id="right-widgets">
-    <div class="blue-box">
-      <div id="price-x"><span class="font-24"><b>Size: </b><%=  @item.size %> <%= @item.size_unit %></span>&nbsp; </div>
-    </div>
-  </div>
-
-  <div id="right-widgets">
-    <div class="blue-box">      
-      <div id="price-x"><span class="font-24"><b>Price: </b><%=  @item.price_unit %>&nbsp;<%=  @item.price %></span>&nbsp; <%=  @item.time_for_unit_price %></div>
-    </div>
-  </div>
-
-  <div id="right-widgets">
-    <div class="blue-box">
-      <div id="price-x"><span class="font-24"><%=  @item.time_period %></span></div>
-    </div>
-  </div>
-
-
-  <div id="right-widgets">
-    <div class="blue-box">
-      <div id="price-x">
-        <span class="font-24">
-          <b>From: </b>
-          <%=  @item.availability_from.strftime("%d-%m-%Y %I:%M%p") %>&nbsp; <b>To:</b>
-          <%=  @item.availability_to.strftime("%d-%m-%Y %I:%M%p") %>
-        </span>
-      </div>
-    </div>
-  </div>
-
 
 </div>
-<div style="float: left; padding: 10px; border: 1px solid gray;width: 400px;margin-left: 20px;">
-  <div class="blue-box">
 
-    <div id="image-person">
+<div class="fltR">
+  <div class="shadowCont w212">
+    <div class="fltL">
       <% if @item.user.avatars.size > 0 %>
         <%= image_tag(@item.user.avatars.first.photo.url(:thumb), :height => "56", :alt => "Seller-Image" )%>
       <% else %>
         <%= image_tag("User.png", :height => "56") %>
       <% end %>
-      <%= @item.user.popup_storz_display_name %>
-      <br/>
-      <span class="hel-14"></span></div>
-
-
-    <% if current_user != @item.user %>
-      <div id="store-btn">
-        <%= link_to_function "Contact Me", "$('#contact_me_div').toggle('slow');"  %>
-      </div>
-    <% end %>
-
-    <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
-      <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
-        <%= hidden_field_tag :topic, "Inquiry" %>
-        <%= hidden_field_tag :user_id, @item.user.id %>
-        <span style="width: auto;float: left;">
-          <%= text_area_tag  :body, "", :style => "width:370px;height:100px;" %>
-        </span>
-        <div style="float: left;margin-top: 5px;">
-          <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
+    </div>
+    <div class="fltR w107">
+      <img src="../assets/rating.png" alt="" />
+      <h1 class="name"><%= @item.user.popup_storz_display_name %></h1>
+      <p class="name_text"><%= @item.user.country %></p>
+      <% if current_user != @item.user %>
+        <div id="store-btn">
+          <%= link_to_function "Contact Me", "$('#contact_me_div').toggle('slow');", :class => "send"  %>
         </div>
       <% end %>
-    </div>
 
-  </div> 
+      <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
+        <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
+          <%= hidden_field_tag :topic, "Inquiry" %>
+          <%= hidden_field_tag :user_id, @item.user.id %>
+          <span style="width: auto;float: left;">
+            <%= text_area_tag  :body, "", :style => "width:370px;height:100px;" %>
+          </span>
+          <div style="float: left;margin-top: 5px;">
+            <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="shadowCont w212 mt30">
+    <h1 class="available">Availabilities</h1>
+    <a href="#" class="daytime">daytime</a>
+    <a href="#" class="daytime">daytime</a>
+    <div class="clear"></div>
+    <a href="#" class="daytime">daytime</a>
+    <a href="#" class="daytime">daytime</a>
+    <div class="clear"></div>
+
+    <img src="../assets/calender.png" alt="" class="mt30" />
+
+    <a href="#" class="search ml70">Back</a>
+    <div class="clear"></div>
+  </div>
 </div>
+<div class="clear"></div>
+
+
+
+<%#=  @item.availability_from.strftime("%d-%m-%Y %I:%M%p") %>
+<%#=  @item.availability_to.strftime("%d-%m-%Y %I:%M%p") %>
+
+
+
+<%#*</div>%>
+<%#*</div>%>

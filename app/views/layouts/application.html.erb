@@ -1,8 +1,9 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>PopUpStorz</title>
-    <%= stylesheet_link_tag    "application" %>
+    <%= stylesheet_link_tag    "application", "style" %>
     <%= stylesheet_link_tag    "jquery.datepick" %>
 
     <%= javascript_include_tag "application" %>
@@ -23,45 +24,66 @@
     <%= yield(:head) %>
 
   </head>
+
   <body>
-    <div style="margin: 0 auto;width: 980px;padding: 0 20px;border-left: 1px solid silver;border-right: 1px solid silver;min-height: 580px;">
 
-      <% if notice %>
-        <p class="notice" style="padding: 5px;width :95%;background-color:lightgreen;"><%= notice %></p>
-      <% end %>
-      <% if   alert %>
-        <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= alert %></p>
-      <% end %>
+    <div class="right">
+      <a href="/auth/twitter" class="twiter"></a>
+      <a href="/auth/facebook" class="facebook"></a>
+      <a href="/auth/google" class="google"></a>
+      <a href="/auth/email" class="mail"></a>
+    </div>
 
-      <ul class="hmenu">
-        <li>
-          <%= link_to "Home", "/" %>
-        </li>
-        <%= render 'devise/menu/registration_items' %>
-        <%= render 'devise/menu/login_items' %>
-      </ul>
-      <!--    <div style="float: right;margin-right: 20px;">
-            <a href="/auth/twitter" class="services">
-      <%= image_tag "twitter2.jpeg", :size => "20x20", :alt => "Twitter" %>
-            </a><br/>
-            <a href="/auth/facebook" class="services">
-      <%= image_tag "fb.jpeg", :size => "20x20", :alt => "Facebook" %>
-            </a><br/>
-            <a href="/auth/google" class="services">
-      <%= image_tag "googleplus.jpeg", :size => "20x20", :alt => "Google+" %>
-            </a><br/>
-            <a href="/auth/email" class="services">
-      <%= image_tag "emailbox.jpeg", :size => "20x20", :alt => "email" %>
-            </a><br/>
+    <div class="maincontainer">
+      <div class="header">
+        <div class="loginpannel">
+          <input type="text" />
+          <input type="password" />
+          <input type="button" value="Login" />
+        </div>
 
+        <div class="logo">
+          <a href="/"><img src="../assets/Objet-dynamique-vectoriel.png" /></a>
+        </div>
+        <div class="menubar">
+          <div class="dropdowns">
+            <%= link_to image_tag("en.jpg"),  {:locale => "en" } %>
+            <%= link_to image_tag("fr.jpg"), {:locale => "fr" }%>
+
+            <%= link_to(image_tag("listaspace.png"), new_item_path ) %>
+            <%#*<img class="listaspace" src="../assets/" />%>
           </div>
-      -->
-      <%= yield %>
+          <a href="/home/about">About</a>
+          <% if user_signed_in? %>
+            <%= link_to 'Members', "/members", :class=>"m_act" %>
+            <%= link_to('Messages', inbox_messages_path ) %>
+            <%= link_to('Profile', profile_path(current_user.id)) %>
+            <%= link_to "Personal Space", items_path %>
+            <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
+          <%end%>
+          <% unless user_signed_in? %>
+            <%= link_to('Signup', new_user_registration_path)  %>
+          <% end %>
+        </div>
 
 
+        <div class="contentholder">
+          <% if notice %>
+            <p class="notice" style="padding: 5px;width :95%;background-color:lightgreen;"><%= notice %></p>
+          <% end %>
+          <% if alert %>
+            <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= alert %></p>
+          <% end %>
+          <%= yield %>
+          <%#= render 'devise/menu/login_items' %>
+          
+          <div class="fltR footer mt30 mr100">
+            <a href="#">Pop Up Storz 2012</a>        <a href="#">Terms</a>        <a href="#">Contact</a>
+          </div>
+          <div class="clear"></div>
+        </div>
 
+      </div>
     </div>
   </body>
-
 </html>
-

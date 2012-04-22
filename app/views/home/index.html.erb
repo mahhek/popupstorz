@@ -1,8 +1,100 @@
-<h1>
-  <%= t(:welcome_to_popup_storz) %>
-</h1>
-<h2>
-  <%= number_to_currency(currency_conversion(1)) %>
-</h2>
-<iframe id="tmcmini" src="http://themoneyconverter.com/MoneyConverter.aspx?from=GBP&amp;to=pkr" style="width: 185px; height: 210px; border: none; background-color: #ffffff;" marginwidth="0" marginheight="0" frameborder="0" scrolling="no">
-</iframe>
+<div class="cont_heading">Spaces to rent</div>
+            <a class="leftArrow"></a>
+            <div class="gellaryHold">
+            	<div class="g_hold">
+                	<img src="../assets/img_1.png" alt="" />
+                    <h1>Los Angeles, USA</h1>
+                    <p>04/05 - 06/05</p>
+
+                    <h5>2/3</h5>
+                    <h6>$55</h6>
+                    <div class="clear"></div>
+                </div>
+                <div class="g_hold">
+                	<img src="../assets/img_1.png" alt="" />
+                    <h1>Los Angeles, USA</h1>
+                    <p>04/05 - 06/05</p>
+
+                    <h5>2/3</h5>
+                    <h6>$55</h6>
+                    <div class="clear"></div>
+                </div><div class="g_hold">
+                	<img src="../assets/img_1.png" alt="" />
+                    <h1>Los Angeles, USA</h1>
+                    <p>04/05 - 06/05</p>
+
+                    <h5>2/3</h5>
+                    <h6>$55</h6>
+                    <div class="clear"></div>
+                </div>
+                <div class="g_hold">
+                	<img src="../assets/img_1.png" alt="" />
+                    <h1>Los Angeles, USA</h1>
+                    <p>04/05 - 06/05</p>
+
+                    <h5>2/3</h5>
+                    <h6>$55</h6>
+                    <div class="clear"></div>
+                </div>
+                <div class="g_hold">
+                	<img src="../assets/img_1.png" alt="" />
+                    <h1>Los Angeles, USA</h1>
+                    <p>04/05 - 06/05</p>
+
+                    <h5>2/3</h5>
+                    <h6>$55</h6>
+                    <div class="clear"></div>
+                </div>
+              <div class="clear"></div>
+
+            </div>
+            <a class="rightArrow"></a>
+            <div class="clear"></div>
+            <div class="img-heading">
+              <img src="../assets/img-heading.png" alt="" />
+            </div>
+            <div class="fltL mt30 w370">
+              <div class="paris_hold ml40">
+
+                <%= form_tag "/items/search_keyword", :method => :get  do %>
+                  <p>City</p>
+                  <%= autocomplete_field_tag :location, params[:location], autocomplete_item_city_items_path, :placeholder => "Location", :class => "paris" %>
+                  <div class="fltL start_time">
+                    <p>From</p>
+                    <%=  text_field_tag :search_from %>
+                  </div>
+                  <div class="fltR start_time">
+                    <p>To</p>
+                    <%=  text_field_tag :search_to %>
+                  </div>
+                  <div class="clear"></div>
+                  <%= submit_tag "Search", :class => "search"  %>
+
+                  <div class="clear"></div>
+                </div>
+              <% end %>
+
+<script type="text/javascript">
+  $('#search_from').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
+  $('#search_to').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
+</script>
+              <div class="paris_hold mt30">
+                	<h1 class="text_he">Ideas, suggestions? We would love your <samp class="blue">feedback</samp>!</h1>
+
+                </div>
+            </div>
+            <div class="fltR mt10 w390 mr100">
+            	<div class="play_hold">
+                	<h1>Look how designers, artists and <br />
+owners of free spaces connect:</h1>
+                	<img src="../assets/play.png" alt="" />
+                </div>
+            </div>
+
+            <div class="clear"></div>
+
+<%#*<h2>%>
+  <%#= number_to_currency(currency_conversion(1)) %>
+<%#*</h2>%>
+<%#*<iframe id="tmcmini" src="http://themoneyconverter.com/MoneyConverter.aspx?from=GBP&amp;to=pkr" style="width: 185px; height: 210px; border: none; background-color: #ffffff;" marginwidth="0" marginheight="0" frameborder="0" scrolling="no">%>
+<%#*</iframe>%>
