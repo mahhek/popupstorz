@@ -6,7 +6,7 @@ fr:
       currency:
           format:
               format: "%u%n"
-              unit: "£"
+              unit: "€"
               # These three are to override number.format and are optional
               separator: "."
               delimiter: ","

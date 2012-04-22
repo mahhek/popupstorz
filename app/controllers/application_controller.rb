@@ -14,18 +14,11 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   helper_method :account_verified
   helper_method :message_user
-  helper_method :currency_conversion
+  before_filter :currency_conversion
 
-  def currency_conversion(amount)
-    locale = params[:locale] || I18n.default_locale
-    if locale == "en"
-      currency_from = "EUR"
-      currency_to = "USD"
-    else
-      currency_from = "USD"
-      currency_to = "EUR"
-    end    
-    amount.to_money(currency_from).exchange_to(currency_to)
+  def currency_conversion
+    session[:curr] = params[:curr] if params[:curr]
+    session[:curr] = "USD" if session[:curr].blank?
   end
 
   def set_locale

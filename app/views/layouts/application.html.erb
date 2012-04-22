@@ -47,11 +47,16 @@
         </div>
         <div class="menubar">
           <div class="dropdowns">
-            <%= link_to image_tag("en.jpg"),  {:locale => "en" } %>
-            <%= link_to image_tag("fr.jpg"), {:locale => "fr" }%>
+            <%= link_to "ENG",  {:locale => "en" } %>
+            <%= link_to "FR", {:locale => "fr" }%>
+            <%= link_to "$",  {:curr => "USD" } %>
+            <%= link_to "€", {:curr => "EUR" } %>
+
+
+
 
             <%= link_to(image_tag("listaspace.png"), new_item_path ) %>
-            <%#*<img class="listaspace" src="../assets/" />%>
+<%#*<img class="listaspace" src="../assets/" />%>
           </div>
           <a href="/home/about">About</a>
           <% if user_signed_in? %>
@@ -64,6 +69,9 @@
           <% unless user_signed_in? %>
             <%= link_to('Signup', new_user_registration_path)  %>
           <% end %>
+          <br/>
+          <br/>
+          <%= number_to_currency(exchange_currency(500), :unit => session[:curr]) %>
         </div>
 
 
@@ -75,8 +83,8 @@
             <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= alert %></p>
           <% end %>
           <%= yield %>
-          <%#= render 'devise/menu/login_items' %>
-          
+<%#= render 'devise/menu/login_items' %>
+
           <div class="fltR footer mt30 mr100">
             <a href="#">Pop Up Storz 2012</a>        <a href="#">Terms</a>        <a href="#">Contact</a>
           </div>
