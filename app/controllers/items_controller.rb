@@ -84,21 +84,18 @@ class ItemsController < ApplicationController
 
 
   def search_keyword
-    conds = ""
+    conds = "1=1 "
     unless params[:search_from].blank?
-      conds += "(Date(availability_from) >= " + "'#{params[:search_from].to_date}'" +")"
+     new_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_time
+      conds += " AND (availability_from) >= '" + new_time.to_s + "'"
     end
     unless params[:search_to].blank?
-      unless conds.blank?
-        conds += " AND "
-      end
-      conds += "(Date(availability_to) <= " + "'#{params[:search_to].to_date}'" +")"
+     new_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_time + 1.day
+      conds += " AND (availability_to) <= '" + new_time.to_s + "'"
     end
     unless params[:location].blank?
-      unless conds.blank?
-        conds += " AND "
-      end
-      conds += "(LOWER(address) LIKE  " + "'%%" + "#{params[:location].strip.downcase}" + "%%'" +")"
+     
+      conds += " AND (LOWER(address) LIKE  " + "'%%" + "#{params[:location].strip.downcase}" + "%%'" +")"
     end
     
 #    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => ["Date(availability_from) >= ? AND Date(availability_to) <= ? AND LOWER(address) LIKE ?","#{params[:search_from].to_date}","#{params[:search_to].to_date}","%#{params[:location].strip.downcase}%"], :order => "price")

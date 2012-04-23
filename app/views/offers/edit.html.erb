@@ -58,8 +58,8 @@ Status: <%= @offer.status %>
       <%= f.text_field :rental_end_date %>
     </div>
 <script type="text/javascript">
-       $('#offer_rental_start_date').datepick({ dateFormat: 'yyyy-mm-dd', showTrigger: '#calImg'});
-       $('#offer_rental_end_date').datepick({ dateFormat: 'yyyy-mm-dd', showTrigger: '#calImg'});
+       $('#offer_rental_start_date').datepicker;
+       $('#offer_rental_end_date').datepicker;
       </script>
     <div class="xfields">Pickup Location*:<br/>
       <%= f.text_field :pickup_location %>

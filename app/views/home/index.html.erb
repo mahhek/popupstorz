@@ -57,8 +57,7 @@
   <div class="paris_hold ml40">
 
     <%= form_tag "/items/search_keyword", :method => :get  do %>
-      <p>City</p>
-      <%= autocomplete_field_tag :location, params[:location], autocomplete_item_city_items_path, :placeholder => "Location", :class => "paris" %>
+      <%= select_tag :location ,options_for_select([["Paris" , "Paris"], ["London", "London"], ["Tokyo", "Tokyo"], ["New York", "New York"]], params[:location]), {:class => "paris"} %>
       <div class="fltL start_time">
         <p>From</p>
         <%=  text_field_tag :search_from %>
@@ -75,9 +74,10 @@
   <% end %>
 
   <script type="text/javascript">
-    $('#search_from').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
-    $('#search_to').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
+    $('#search_from').datepicker();
+    $('#search_to').datepicker();
   </script>
+
   <div class="paris_hold mt30">
     <h1 class="text_he">Ideas, suggestions? We would love your <samp class="blue">feedback</samp>!</h1>
 

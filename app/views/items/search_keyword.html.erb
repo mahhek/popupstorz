@@ -1,5 +1,8 @@
 <%= stylesheet_link_tag "search-list"%>
-
+ <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>    <!-- jsFiddle -->
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->
+    <link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->
 <div class="rightcontent">
 
   <h2>Refine your search</h2>
@@ -61,9 +64,9 @@
     <div class="refinesearchresults">
       <%= autocomplete_field_tag :location, params[:location], autocomplete_item_city_items_path, :placeholder => "Location", :class => "paris" %>
       <span>from</span>
-      <%=  text_field_tag :search_from %>
+      <%= text_field_tag :search_from, params[:search_from] %>
       <span>to</span>
-      <%=  text_field_tag :search_to %>
+      <%= text_field_tag :search_to, params[:search_to] %>
       <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
     </div>
   <%end%>
@@ -105,8 +108,8 @@
 <%#*- e per day - <%= link_to "Book now", item_path(item.id) %>
 
 <script type="text/javascript">
-  $('#search_from').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
-  $('#search_to').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
+  $('#search_from').datepicker;
+  $('#search_to').datepicker;
 </script>
 
 

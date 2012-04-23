@@ -23,7 +23,18 @@
       <div class="sign_up_input">
         <label>Gender</label>
         <div class="fltL">
-          <%= f.select :gender, options_for_select(['Male', 'Female'])%>(required, but will not be shown)
+          <div style="float: left;">
+            <span>
+              <%= f.radio_button :gender, true, :style => "margin-top: 2px;" %>
+            </span>
+            <span style="margin-left: 5px;">Male</span>
+          </div>
+          <div style="float: left;margin-left: 10px;">
+            <span>
+              <%= f.radio_button :gender, false , :style => "margin-top: 2px;" %>
+            </span>
+            <span style="margin-left: 5px;">Female</span>
+          </div>
         </div>
         <div class="clear"></div>
       </div>
@@ -111,19 +122,19 @@
         <%= f.text_area :description, :size => "40x4" %>
         <div class="clear"></div>
       </div>
-      <%#*<div class="sign_up_input">%>
-        <%#*<label>Upload</label>%>
-        <%#*<input type="text" value="Raza" />%>
-        <%#*<div class="clear"></div>%>
-      <%#*</div>%>
+  <%#*<div class="sign_up_input">%>
+  <%#*<label>Upload</label>%>
+  <%#*<input type="text" value="Raza" />%>
+  <%#*<div class="clear"></div>%>
+  <%#*</div>%>
       <%= f.submit "Sign up", :class => "search" %>
 
     <% end %>
     <br/>
     <div style="float:left">
-    <%= render :partial => "devise/shared/links" %>
-</div>
+      <%= render :partial => "devise/shared/links" %>
+    </div>
 
-   <script type="text/javascript">
-      $('#user_date_of_birth').datepick({ dateFormat: 'yyyy-mm-dd', yearRange: 'any',  showTrigger: '#calImg'});
+    <script type="text/javascript">
+      $('#user_date_of_birth').datepicker;
     </script>

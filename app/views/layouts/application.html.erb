@@ -4,8 +4,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>PopUpStorz</title>
     <%= stylesheet_link_tag    "application", "style" %>
-    <%= stylesheet_link_tag    "jquery.datepick" %>
 
+    <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>    <!-- jsFiddle -->
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->
+    <link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->
     <%= javascript_include_tag "application" %>
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=AIzaSyAPEeqlhndG4KU6-bRWegIBrs-v-kFcdgY"
     type="text/javascript"></script>
@@ -14,7 +17,7 @@
     <%= javascript_include_tag "geoRssOverlay" %>
     <%= javascript_include_tag "markerGroup" %>
     <%= javascript_include_tag "ym4r-gm" %>
-    <%= javascript_include_tag "jquery.datepick" %>
+    
 
 
     <%= GMap.header(:with_vml => false, :host => request.host).html_safe %>
@@ -37,13 +40,21 @@
     <div class="maincontainer">
       <div class="header">
         <div class="loginpannel">
-          <input type="text" />
-          <input type="password" />
-          <input type="button" value="Login" />
+          <% unless user_signed_in? %>
+            <%= form_tag new_user_session_path do %>
+              <%= text_field_tag 'user[email]' %>
+              <%= password_field_tag 'user[password]' %>
+              <input type="submit" value="Login" />
+            <% end %>
+          <% else %>
+            <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
+          <% end %>
         </div>
 
         <div class="logo">
-          <a href="/"><img src="../assets/Objet-dynamique-vectoriel.png" /></a>
+          <a href="/">
+            <%= image_tag "Objet-dynamique-vectoriel.png" %>
+          </a>
         </div>
         <div class="menubar">
           <div class="dropdowns">
@@ -58,15 +69,16 @@
             <%= link_to(image_tag("listaspace.png"), new_item_path ) %>
 <%#*<img class="listaspace" src="../assets/" />%>
           </div>
-          <a href="/home/about">About</a>
+
           <% if user_signed_in? %>
-            <%= link_to 'Members', "/members", :class=>"m_act" %>
-            <%= link_to('Messages', inbox_messages_path ) %>
+            <%= link_to "Hi #{current_user.popup_storz_display_name}", profile_path(current_user),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
+            <%= link_to 'Members', "/members", :class => ((params[:controller] == "users" and params[:action] == "members") ? "m_act" : "") %>
+            <%= link_to 'Messages', inbox_messages_path, :class => ((params[:controller] == "messages" and params[:action] == "inbox") ? "m_act" : "") %>
             <%= link_to('Profile', profile_path(current_user.id)) %>
             <%= link_to "Personal Space", items_path %>
-            <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
           <%end%>
           <% unless user_signed_in? %>
+            <a href="/home/about">About</a>
             <%= link_to('Signup', new_user_registration_path)  %>
           <% end %>
           <br/>
