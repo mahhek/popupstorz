@@ -1,4 +1,4 @@
-<a href="#" class="back">&lt;&lt; Back to results</a>
+<a href='#' class="back " onclick='history.back();'>&lt;&lt; Back to results</a>
 <div class="leftcontent">
   <div class="shadowCont">
     <div class="fltL">
@@ -13,7 +13,11 @@
       <p class="charming_text graytext"><%=  @item.time_for_unit_price %></p>
     </div>
     <div class="clear"></div>
-    <img src="../assets/gallery.png" alt="" class="gallery" />
+    <%#*<img src="../assets/gallery.png"alt="" class="gallery" />%>
+
+    <%= image_tag(@item.avatars.first.photo.url(:original), :alt=>"", :width => "471px",:height=>"391px")%>
+
+
     <div class="fltR w200 mt100">
       <h1 class="size">Size:</h1>
       <p class="size_text"><%= @item.size %> <%= @item.size_unit %></p>
@@ -68,7 +72,7 @@
           <%= hidden_field_tag :topic, "Inquiry" %>
           <%= hidden_field_tag :user_id, @item.user.id %>
           <span style="width: auto;float: left;">
-            <%= text_area_tag  :body, "", :style => "width:370px;height:100px;" %>
+            <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
           </span>
           <div style="float: left;margin-top: 5px;">
             <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
@@ -90,7 +94,7 @@
 
     <img src="../assets/calender.png" alt="" class="mt30" />
 
-    <a href="#" class="search ml70">Back</a>
+    <a href="#" class="search ml70">Book</a>
     <div class="clear"></div>
   </div>
 </div>
