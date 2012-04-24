@@ -374,8 +374,7 @@ h2 {
     position: absolute;
 }
 .dropdown ul li {
-    background-color: #cc33cc;
-    border-bottom: 1px dotted #fff;
+    background-color: #CC33CC;
     float: left;
     width: 100%;
 }
