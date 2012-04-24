@@ -330,17 +330,19 @@ h2 {
 .start_time{margin-top:10px;}
 .start_time p{font-size:15px;color:#010100;}
 .start_time input{border: 1px solid #939393; margin-top: 5px; padding: 3px; width: 122px;}
-.search{
-    background: url(../assets/search_home.png) repeat scroll 0 0 transparent;
+.search {
+    background: url("../assets/search_home.png") repeat scroll 0 0 transparent;
     border: 0 none;
-    color: #FFFFFF;
+    color: transparent;
     float: left;
-    font-size: 20px;
+    font-size: 0;
     font-weight: bold;
     height: 34px;
     margin-left: 105px;
     margin-top: 20px;
-    width: 128px;}
+    width: 128px;
+}
+
 
 
 .play_hold{background-color: #FFFFFF; box-shadow: 4px 5px 6px;border-radius:5px;padding:25px;}
