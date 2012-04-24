@@ -360,8 +360,41 @@ h2 {
 }
 
 
-
-
+.dropdown {
+    float: left;
+    margin: 0 6px;
+    padding: 5px;
+}
+.dropdown ul {
+    background-color: transparent;
+    float: none;
+    list-style: none outside none;
+    padding-top: 5px;
+    display: none;
+    position: absolute;
+}
+.dropdown ul li {
+    background-color: #cc33cc;
+    border-bottom: 1px dotted #fff;
+    float: left;
+    width: 100%;
+}
+.dropdown span {
+    padding: 8px;
+}
+.dropdown ul li a {
+    padding: 5px 9px;
+    color: #fff;
+}
+.dropdown:hover ul {
+    display: block;
+}
+.dropdown:hover {
+    cursor: pointer;
+}
+.dropdown ul li:last-child {
+    border: 0 none transparent;
+}
 
 .play_hold{background-color: #FFFFFF; box-shadow: 4px 5px 6px;border-radius:5px;padding:25px;}
 .play_hold h1{font-size:18px;color:#666666;font-weight:bold;margin-bottom:10px;}
