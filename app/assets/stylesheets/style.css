@@ -332,7 +332,14 @@ h2 {
 .img-heading{margin-top:20px;text-align:center;}
 .w370{width:370px;}
 .w390{width:390px;}
-.paris_hold{background-color: #FFFFFF; box-shadow: 4px 5px 6px;border-radius:5px;padding:20px;}
+abbas: .paris_hold {
+    background-color: #FFFFFF;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 4px 5px 6px;
+    -webkit-box-shadow: : 4px 5px 6px  #888;
+    padding: 20px;
+}
+
 .mt10{margin-top:10px;}
 .mt30{margin-top:30px !important;}
 .paris{border:1px solid #939393;padding:5px 10px;width:100%;}
@@ -351,6 +358,8 @@ h2 {
     margin-top: 20px;
     width: 128px;
 }
+
+
 
 
 
