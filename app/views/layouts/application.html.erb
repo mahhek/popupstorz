@@ -17,7 +17,7 @@
     <%= javascript_include_tag "geoRssOverlay" %>
     <%= javascript_include_tag "markerGroup" %>
     <%= javascript_include_tag "ym4r-gm" %>
-    
+
 
 
     <%= GMap.header(:with_vml => false, :host => request.host).html_safe %>
@@ -74,8 +74,8 @@
             <%= link_to "Hi #{current_user.popup_storz_display_name}", profile_path(current_user),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
             <%= link_to 'Members', "/members", :class => ((params[:controller] == "users" and params[:action] == "members") ? "m_act" : "") %>
             <%= link_to 'Messages', inbox_messages_path, :class => ((params[:controller] == "messages" and params[:action] == "inbox") ? "m_act" : "") %>
-            <%#= link_to('Profile', profile_path(current_user.id)) %>
-            <%#= link_to "Personal Space", items_path %>
+  <%#= link_to('Profile', profile_path(current_user.id)) %>
+  <%#= link_to "Personal Space", items_path %>
           <%end%>
           <% unless user_signed_in? %>
             <a href="/home/about">About</a>
@@ -83,27 +83,27 @@
           <% end %>
           <br/>
           <br/>
-          <%#= number_to_currency(exchange_currency(500), :unit => session[:curr]) %>
+<%#= number_to_currency(exchange_currency(500), :unit => session[:curr]) %>
         </div>
+      </div>
 
-
-        <div class="contentholder">
-          <% if notice %>
-            <p class="notice" style="padding: 5px;width :95%;background-color:lightgreen;"><%= notice %></p>
-          <% end %>
-          <% if alert %>
-            <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= alert %></p>
-          <% end %>
-          <%= yield %>
+      <div class="contentholder">
+        <% if notice %>
+          <p class="notice" style="padding: 5px;width :95%;background-color:lightgreen;"><%= notice %></p>
+        <% end %>
+        <% if alert %>
+          <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= alert %></p>
+        <% end %>
+        <%= yield %>
 <%#= render 'devise/menu/login_items' %>
 
-          <div class="fltR footer mt30 mr100">
-            <a href="#">Pop Up Storz 2012</a>        <a href="#">Terms</a>        <a href="#">Contact</a>
-          </div>
-          <div class="clear"></div>
+        <div class="fltR footer mt30 mr100">
+          <a href="#">Pop Up Storz 2012</a>        <a href="#">Terms</a>        <a href="#">Contact</a>
         </div>
-
+        <div class="clear"></div>
       </div>
+
+
     </div>
   </body>
 </html>
