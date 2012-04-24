@@ -330,13 +330,25 @@ h2 {
 .start_time{margin-top:10px;}
 .start_time p{font-size:15px;color:#010100;}
 .start_time input{border: 1px solid #939393; margin-top: 5px; padding: 3px; width: 122px;}
-.search{background: none repeat scroll 0 0 #CC33CC; border-radius: 5px 5px 5px 5px;color: #FFFFFF; float: left; font-size: 20px; font-weight: bold; margin-left: 105px; margin-top: 20px; padding: 5px 25px;}
-.play_hold{background-color: #FFFFFF; box-shadow: 4px 5px 6px;border-radius:5px;padding:10px;}
+.search{
+    background: url(../assets/search_home.png) repeat scroll 0 0 transparent;
+    border: 0 none;
+    color: #FFFFFF;
+    float: left;
+    font-size: 20px;
+    font-weight: bold;
+    height: 34px;
+    margin-left: 105px;
+    margin-top: 20px;
+    width: 128px;}
+
+
+.play_hold{background-color: #FFFFFF; box-shadow: 4px 5px 6px;border-radius:5px;padding:25px;}
 .play_hold h1{font-size:18px;color:#666666;font-weight:bold;margin-bottom:10px;}
 .mr100{margin-right:100px;}
 .ml40{margin-left:40px;}
 .text_he{font-size:13px; color:#000;}
-.search_dd{border: 1px solid #000000;float: left;font-size: 18px;height: 32px;margin-right: 22px;margin-top: 14px;width: 121px;}
+.search_dd{border: 1px solid #000000;float: left;font-size: 18px;height: 32px;margin-right: 22px;margin-top: 14px;width: 175px;}
 .blue{color:#07c9c9 !important;}
 .footer{font-size:11px; color:#353631;padding-bottom:20px;}
 .footer a{text-decoration:none;color:#353631; margin-right:10px;}

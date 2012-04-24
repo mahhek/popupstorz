@@ -20,8 +20,14 @@ class UsersController < ApplicationController
       unless conds.blank?
         conds += " and "
       end
-      conds += "(LOWER(first_name) LIKE "+ "'%%"+ params[:search][:user].strip.downcase.to_s + "%%'" + " or LOWER(last_name) LIKE "  + "'%%" + params[:search][:user].strip.downcase.to_s + "%%'"+ " or LOWER(email) LIKE "  + "'%%" + params[:search][:user].strip.downcase.to_s + "%%'" +")"
+      user = params[:search][:user].split(" ")
+      if user[1].blank?
+        conds += "(LOWER(first_name) LIKE "+ "'%%"+ user[0].strip.downcase.to_s + "%%'" + " or LOWER(last_name) LIKE "  + "'%%" + params[:search][:user].strip.downcase.to_s + "%%'"+ " or LOWER(email) LIKE "  + "'%%" + user[0].strip.downcase.to_s + "%%'" +")"
+      else
+        conds += "((LOWER(first_name) LIKE "+ "'%%"+ user[0].strip.downcase.to_s + "%%'" + " and LOWER(last_name) LIKE "  + "'%%" + user[1].strip.downcase.to_s + "%%'"+ ") or LOWER(email) LIKE "  + "'%%" +  params[:search][:user].strip.downcase.to_s + "%%'" +")"
+      end
     end
+    p "aaaaaaaaaaaaa",conds
     @members = User.find(:all, :conditions => [conds])
 #    @members = User.paginate(:page => params[:page], :per_page => 4, :conditions => [conds])
   end

@@ -3,7 +3,7 @@
   <div class="shadowCont">
     <div class="fltL">
       <h1 class="charming"><%= @item.title %>!</h1>
-      <h6><%= link_to "(Edit this Item)", edit_item_path(@item)   if (@item.user.email == current_user.email)%></h6>
+      <h6><%= link_to "(Edit this Item)", edit_item_path(@item) if (@item.user.email == current_user.email)%></h6>
       <%= link_to "Delete this Item", item_path(@item), :method => :delete, :confirm => "Are you sure?"  if (@item.user.email == current_user.email)%>
 
       <p class="charming_text"><%= @item.address %>(<%= @item.zipcode %> - <%= @item.city %>, <%= @item.country_code   %>)</p>

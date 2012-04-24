@@ -93,9 +93,10 @@
           <%end%>
           <span class="heading"><%= link_to item.title, item_path(item) %>!</span>
           <br />
-          <span class="subheading">Venice Beach (Los Angeles)</span><br /><br />
+          <br />
+          <span class="subheading"><%= item.address %></span><br /><br />
           <span class="details">
-            <%= item.description %>
+            <%= item.description %></span>
         </div>
       <%end%>
     </div>
