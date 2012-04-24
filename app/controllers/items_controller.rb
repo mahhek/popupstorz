@@ -86,11 +86,11 @@ class ItemsController < ApplicationController
   def search_keyword
     conds = "1=1 "
     unless params[:search_from].blank?
-     new_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_time
+      new_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_time
       conds += " AND (availability_from) >= '" + new_time.to_s + "'"
     end
     unless params[:search_to].blank?
-     new_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_time + 1.day
+      new_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_time + 1.day
       conds += " AND (availability_to) <= '" + new_time.to_s + "'"
     end
     unless params[:location].blank?
@@ -98,7 +98,7 @@ class ItemsController < ApplicationController
       conds += " AND (LOWER(address) LIKE  " + "'%%" + "#{params[:location].strip.downcase}" + "%%'" +")"
     end
     
-#    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => ["Date(availability_from) >= ? AND Date(availability_to) <= ? AND LOWER(address) LIKE ?","#{params[:search_from].to_date}","#{params[:search_to].to_date}","%#{params[:location].strip.downcase}%"], :order => "price")
+    #    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => ["Date(availability_from) >= ? AND Date(availability_to) <= ? AND LOWER(address) LIKE ?","#{params[:search_from].to_date}","#{params[:search_to].to_date}","%#{params[:location].strip.downcase}%"], :order => "price")
     @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => [ conds ], :order => "price")
     
     @map = GMap.new("map")
@@ -118,6 +118,7 @@ class ItemsController < ApplicationController
         @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? item.title : current_user.first_name, :info_window => "#{item.title}"))
       end
     end
+    @items_with_uniq_cities = Item.select("distinct(city)")
   
   end
 end

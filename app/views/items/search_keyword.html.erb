@@ -1,8 +1,8 @@
 <%= stylesheet_link_tag "search-list"%>
- <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>    <!-- jsFiddle -->
-    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->
-    <link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->
+<script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>    <!-- jsFiddle -->
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->
+<link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->
 <div class="rightcontent">
 
   <h2>Refine your search</h2>
@@ -62,7 +62,7 @@
 <div class="leftcontent">
   <%= form_tag "/items/search_keyword", :method => :get  do %>
     <div class="refinesearchresults">
-      <%= autocomplete_field_tag :location, params[:location], autocomplete_item_city_items_path, :placeholder => "Location", :class => "paris" %>
+      <%= select_tag( "location", options_from_collection_for_select(@items_with_uniq_cities, :city, :city, params[:location]), :class => "search_dd") %>
       <span>from</span>
       <%= text_field_tag :search_from, params[:search_from] %>
       <span>to</span>
@@ -84,7 +84,7 @@
     <% unless @items.blank? %>
       <% @items.each do | item | %>
         <div class="resultsholder">
-          <div class="price"><%= item.price_unit == "USD" ? "$" : "€" %><%= item.price %> <br /> <span class="perweek"><%= item.time_for_unit_price 	%></span> </div>
+          <div class="price"><%= item.price_unit == "USD" ? "$" : "€" %><%= item.price.to_i %> <br /> <span class="perweek"><%= item.time_for_unit_price 	%></span> </div>
           <% if item.avatars.size > 0 %>
             <% avatar = item.avatars.first %>
             <%= link_to( image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
