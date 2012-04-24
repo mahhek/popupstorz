@@ -60,19 +60,19 @@
           <div class="menubar">
             <div class="dropdowns">
               <div class="dropdown">
+                <span>ENG</span>
                 <ul>
-                  <li class="selected">ENG</li>
-                  <li>lorium ispm</li>
-                  <li>lorium ispm</li>
-                  <li>lorium ispm</li>
+                  <li><%= link_to "EN", {:locale => "fr" }%></li>
+                  <li><%= link_to "FR", {:locale => "en" }%></li>
                 </ul>
               </div>
-              <%= link_to "FR", {:locale => "fr" }%>
-              <%= link_to "$",  {:curr => "USD" } %>
-              <%= link_to "€", {:curr => "EUR" } %>
-
-
-
+              <div class="dropdown">
+                <span>ENG</span>
+                <ul>
+                  <li><%= link_to "$",  {:curr => "USD" } %></li>
+                  <li><%= link_to "€", {:curr => "EUR" } %></li>
+                </ul>
+              </div>
 
               <%= link_to(image_tag("listaspace.png"), new_item_path ) %>
 <%#*<img class="listaspace" src="../assets/" />%>
