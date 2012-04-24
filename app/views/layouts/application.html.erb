@@ -39,51 +39,53 @@
 
     <div class="maincontainer">
       <div class="header">
-        <div class="loginpannel">
-          <% unless user_signed_in? %>
-            <%= form_tag new_user_session_path do %>
-              <%= text_field_tag 'user[email]' %>
-              <%= password_field_tag 'user[password]' %>
-              <input type="submit" value="Login" />
+        <div class contentholder>
+          <div class="loginpannel">
+            <% unless user_signed_in? %>
+              <%= form_tag new_user_session_path do %>
+                <%= text_field_tag 'user[email]' %>
+                <%= password_field_tag 'user[password]' %>
+                <input type="submit" value="Login" />
+              <% end %>
+            <% else %>
+              <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
             <% end %>
-          <% else %>
-            <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
-          <% end %>
-        </div>
-
-        <div class="logo">
-          <a href="/">
-            <%= image_tag "Objet-dynamique-vectoriel.png" %>
-          </a>
-        </div>
-        <div class="menubar">
-          <div class="dropdowns">
-            A<%= link_to "ENG",  {:locale => "en" } %>
-            <%= link_to "FR", {:locale => "fr" }%>
-            <%= link_to "$",  {:curr => "USD" } %>
-            <%= link_to "€", {:curr => "EUR" } %>
-
-
-
-
-            <%= link_to(image_tag("listaspace.png"), new_item_path ) %>
-<%#*<img class="listaspace" src="../assets/" />%>
           </div>
 
-          <% if user_signed_in? %>
-            <%= link_to "Hi #{current_user.popup_storz_display_name}", profile_path(current_user),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
-            <%= link_to 'Members', "/members", :class => ((params[:controller] == "users" and params[:action] == "members") ? "m_act" : "") %>
-            <%= link_to 'Messages', inbox_messages_path, :class => ((params[:controller] == "messages" and params[:action] == "inbox") ? "m_act" : "") %>
+          <div class="logo">
+            <a href="/">
+              <%= image_tag "Objet-dynamique-vectoriel.png" %>
+            </a>
+          </div>
+          <div class="menubar">
+            <div class="dropdowns">
+              A<%= link_to "ENG",  {:locale => "en" } %>
+              <%= link_to "FR", {:locale => "fr" }%>
+              <%= link_to "$",  {:curr => "USD" } %>
+              <%= link_to "€", {:curr => "EUR" } %>
+
+
+
+
+              <%= link_to(image_tag("listaspace.png"), new_item_path ) %>
+<%#*<img class="listaspace" src="../assets/" />%>
+            </div>
+
+            <% if user_signed_in? %>
+              <%= link_to "Hi #{current_user.popup_storz_display_name}", profile_path(current_user),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
+              <%= link_to 'Members', "/members", :class => ((params[:controller] == "users" and params[:action] == "members") ? "m_act" : "") %>
+              <%= link_to 'Messages', inbox_messages_path, :class => ((params[:controller] == "messages" and params[:action] == "inbox") ? "m_act" : "") %>
   <%#= link_to('Profile', profile_path(current_user.id)) %>
   <%#= link_to "Personal Space", items_path %>
-          <%end%>
-          <% unless user_signed_in? %>
-            <a href="/home/about">About</a>
-            <%= link_to('Signup', new_user_registration_path)  %>
-          <% end %>
-          <br/>
-          <br/>
+            <%end%>
+            <% unless user_signed_in? %>
+              <a href="/home/about">About</a>
+              <%= link_to('Signup', new_user_registration_path)  %>
+            <% end %>
+            <br/>
+            <br/>
 <%#= number_to_currency(exchange_currency(500), :unit => session[:curr]) %>
+          </div>
         </div>
       </div>
 
