@@ -378,6 +378,9 @@ h2 {
     float: left;
     width: 100%;
 }
+.dropdown ul li:hover {
+    background-color: #000;
+}
 .dropdown span {
     padding: 8px;
 }
