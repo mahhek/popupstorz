@@ -347,7 +347,7 @@ h2 {
 .start_time p{font-size:15px;color:#010100;}
 .start_time input{border: 1px solid #939393; margin-top: 5px; padding: 3px; width: 122px;}
 .search {
-    background: url("../assets/search_home.png") repeat scroll 0 0 transparent;
+    background: url(../assets/search_home.png) repeat scroll 0 0 transparent;
     border: 0 none;
     color: transparent;
     float: left;
@@ -396,7 +396,7 @@ h2 {
     border: 0 none transparent;
 }
 .dropdown span {
-    background: url("../assets/v.png") repeat scroll right center transparent;
+    background: url(../assets/v.png) repeat scroll right center transparent;
     padding: 8px;
 }
 
