@@ -25,13 +25,27 @@ class ItemsController < ApplicationController
   def create
     @countries = Country.all
     @item = Item.new(params[:item])
-    @item.availability_option_ids = params[:availability_options]
-    if @item.save
-      flash[:notice] = "Thanks for adding your space."
-      redirect_to item_path(@item)
+    if @item.valid?
+      if !user_signed_in?
+        session[:items] = params[:item]
+        flash[:notice] = "Please login to continue."
+        redirect_to new_user_session_path
+      else
+
+        @item.availability_option_ids = params[:availability_options]
+        if @item.save
+          flash[:notice] = "Thanks for adding your space."
+          redirect_to item_path(@item)
+        else
+          @listing_types = ListingType.all :order =>"name asc"
+          @availability_options = AvailabilityOption.all
+          flash[:notice] = "We couldn't add your space. Please check your listing for missing information."
+          render :action => "new"
+        end
+      end
     else
       @listing_types = ListingType.all :order =>"name asc"
-      @availability_options = AvailabilityOption.all 
+      @availability_options = AvailabilityOption.all
       flash[:notice] = "We couldn't add your space. Please check your listing for missing information."
       render :action => "new"
     end
