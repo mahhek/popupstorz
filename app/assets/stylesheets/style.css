@@ -395,6 +395,10 @@ h2 {
 .dropdown ul li:last-child {
     border: 0 none transparent;
 }
+.dropdown span {
+    background: url("../assets/v.png") repeat scroll right center transparent;
+    padding: 8px;
+}
 
 .play_hold{background-color: #FFFFFF; box-shadow: 4px 5px 6px;border-radius:5px;padding:25px;}
 .play_hold h1{font-size:18px;color:#666666;font-weight:bold;margin-bottom:10px;}
