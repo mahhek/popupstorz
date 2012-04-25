@@ -13,17 +13,18 @@
       <p class="charming_text graytext"><%=  @item.time_for_unit_price %></p>
     </div>
     <div class="clear"></div>
-    <%#*<img src="../assets/gallery.png"alt="" class="gallery" />%>
-
-    <%#= image_tag(@item.avatars.first.photo.url(:original), :alt=>"", :width => "471px",:height=>"391px")%>
-
+    <% unless @item.avatars.size > 0 %>
+      <img src="../assets/gallery.png"alt="" class="gallery" />
+    <% else %>
+      <%= image_tag(@item.avatars.first.photo.url(:large), :alt=>"", :width => "471px",:height=>"391px", :class => "gallery") %>
+    <% end %>
 
     <div class="fltR w200 mt100">
       <h1 class="size">Size:</h1>
       <p class="size_text"><%= @item.size %> <%= @item.size_unit %></p>
       <div class="clear"></div>
       <h1 class="size">Type:</h1>
-      <p class="size_text"><%= @item.type %></p>
+      <p class="size_text"><%= @item.listing_type.name %></p>
       <div class="clear"></div>
       <h1 class="size">Number of floors:</h1>
       <p class="size_text"></p>

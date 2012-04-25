@@ -59,6 +59,7 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 999;
 }
 
 
@@ -324,7 +325,15 @@ h2 {
 .leftArrow, .rightArrow{background:url(../assets/left_arrow.png) no-repeat;float:left; width:19px;height:29px;margin:64px 30px 0 30px;}
 .rightArrow{background:url(../assets/right_arrow.png) no-repeat !important;margin:64px 0 0 10px;}
 .gellaryHold{float:left;width:830px;}
-.g_hold{background-color: #FFFFFF; box-shadow: 4px 5px 6px;float:left;padding:6px; margin-right:20px;}
+.g_hold {
+    background-color: #FFFFFF;
+    box-shadow: 4px 5px 6px #333333;
+    -webkit-box-shadow: 4px 5px 6px #333333;
+    -moz-box-shadow: 4px 5px 6px #333333;
+    float: left;
+    margin-right: 20px;
+    padding: 6px;
+}
 .g_hold img{}
 .g_hold h1{font-size:12px;font-weight:bold;color:#3f3f3f;text-align:center;margin-top:5px;}
 .g_hold p{font-size:12px;font-weight:bold;color:#3f3f3f;text-align:center;margin-top:5px;}
@@ -343,7 +352,12 @@ h2 {
 
 .mt10{margin-top:10px;}
 .mt30{margin-top:30px !important;}
-.paris{border:1px solid #939393;padding:5px 10px;width:100%;}
+.paris {
+    border: 1px solid #939393;
+    font-size: 25px;
+    padding: 5px 10px;
+    width: 100%;
+}
 .start_time{margin-top:10px;}
 .start_time p{font-size:15px;color:#010100;}
 .start_time input{border: 1px solid #939393; margin-top: 5px; padding: 3px; width: 122px;}
@@ -403,7 +417,14 @@ h2 {
     padding: 0 13px;
 }
 
-.play_hold{background-color: #FFFFFF; box-shadow: 4px 5px 6px;border-radius:5px;padding:25px;}
+.play_hold {
+    background-color: #FFFFFF;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 4px 5px 6px #333333;
+    -webkit-box-shadow: 4px 5px 6px #333333;
+    -moz-box-shadow: 4px 5px 6px #333333;
+    padding: 25px;
+}
 .play_hold h1{font-size:18px;color:#666666;font-weight:bold;margin-bottom:10px;}
 .mr100{margin-right:100px;}
 .ml40{margin-left:40px;}
@@ -419,7 +440,13 @@ h2 {
 .right .google{background:url(../assets/icon_sprit.png) no-repeat scroll 0 -90px transparent;}
 .right .mail{background:url(../assets/icon_sprit.png) no-repeat scroll 0 -134px transparent;}
 .m_act{background:#fff;}
-.shadowCont{background-color: #FFFFFF;padding:20px; box-shadow: 2px 2px 2px;}
+.shadowCont {
+    background-color: #FFFFFF;
+    -webkit-box-shadow: 2px 2px 2px #333333;
+    box-shadow: 2px 2px 2px #333333;
+    padding: 20px;
+}
+
 .s_head{font-size:22px;color:#00ffff;font-weight:bold;}
 .reqInfo{color:#999999;margin-top:20px;margin-left:130px;}
 .sign_up_input{margin-top:5px;}

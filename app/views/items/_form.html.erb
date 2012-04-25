@@ -22,22 +22,22 @@
 <br />
 <br />
 <%#= f.fields_for :avatars do |avatar| %>
-  <%# if avatar.object.new_record? %>
-    <%#*<p>%>
-      <%#*Images of space Listing: <%= avatar.file_field :photo %>
-    <%#*</p>%>
-  <%#end%>
+<%# if avatar.object.new_record? %>
+<%#*<p>%>
+<%#*Images of space Listing: <%= avatar.file_field :photo %>
+<%#*</p>%>
+<%#end%>
 <%#end%>
 
 
 <%#*<div style="width: 100%;padding: 10px;">%>
-  <%#= f.fields_for :avatars do |avatar| %>
-    <%# unless avatar.object.new_record? %>
-      <%#= link_to( image_tag(avatar.object.photo.url(:thumb)), avatar.object.photo.url(:original) ) %>
-      <%#= avatar.check_box :_destroy %>
-      <%#*&nbsp;&nbsp;&nbsp;%>
-    <%# end %>
-  <%# end %>
+<%#= f.fields_for :avatars do |avatar| %>
+<%# unless avatar.object.new_record? %>
+<%#= link_to( image_tag(avatar.object.photo.url(:thumb)), avatar.object.photo.url(:original) ) %>
+<%#= avatar.check_box :_destroy %>
+<%#*&nbsp;&nbsp;&nbsp;%>
+<%# end %>
+<%# end %>
 <%#*</div>%>
 
 <br/>
@@ -109,7 +109,7 @@
   </span>
   <span>
     <%= f.text_field :cleaning_fee %> &nbsp;&nbsp;
-    <%= select_tag "item[cleaning_fee]", options_for_select([["$","$"],["€","€"]], @item.cleaning_fee) %>&nbsp;&nbsp;
+<!--    <%= select_tag "item[cleaning_fee]", options_for_select([["$","$"],["€","€"]], @item.cleaning_fee) %>&nbsp;&nbsp; -->
   </span>
 </div>
 <br/>
@@ -121,7 +121,7 @@
   </span>
   <span>
     <%= f.text_field :deposit %> &nbsp;&nbsp;
-    <%= select_tag "item[deposit]", options_for_select([["$","$"],["€","€"]], @item.deposit) %>&nbsp;&nbsp;
+   <!-- <%= select_tag "item[deposit]", options_for_select([["$","$"],["€","€"]], @item.deposit) %>&nbsp;&nbsp; -->
   </span>
 </div>
 <br/>
@@ -129,8 +129,8 @@
 
 <div style="float:left;width:100%;">
   <div style="float:left;width:15%;">
-  Gathering: &nbsp;&nbsp;&nbsp;
-  <%= select_tag "item[is_shareable]", options_for_select([["Yes","Yes"],["No","No"]], @item.is_shareable), :onchange => "check_persons_limit(this.value)" %>&nbsp;&nbsp;
+    Gathering: &nbsp;&nbsp;&nbsp;
+    <%= select_tag "item[is_shareable]", options_for_select([["Yes","Yes"],["No","No"]], @item.is_shareable), :onchange => "check_persons_limit(this.value)" %>&nbsp;&nbsp;
   </div>
   <div id="person_count" style="float:left;width:50%;">
     Up to: &nbsp;&nbsp;&nbsp;
@@ -176,144 +176,144 @@
   $(document).ready(function() {
 
 
-  $('#map').css("margin", "0 auto");
+    $('#map').css("margin", "0 auto");
 
 
-  var update_location_fun = function(resolveName) {
-  if(resolveName == null) {
-  resolveName = true;
-  }
+    var update_location_fun = function(resolveName) {
+      if(resolveName == null) {
+        resolveName = true;
+      }
 
-  var form = $('#new_item');
-  var latlng = new GLatLng(
-  $('#item_latitude').val(),
-  $('#item_longitude').val()
-  );
+      var form = $('#new_item');
+      var latlng = new GLatLng(
+      $('#item_latitude').val(),
+      $('#item_longitude').val()
+    );
 
-  map.setCenter(latlng);
-  if(marker) {
-  map.removeOverlay(marker);
-  }
+      map.setCenter(latlng);
+      if(marker) {
+        map.removeOverlay(marker);
+      }
 
-  marker = new GMarker(latlng);
-  map.setZoom(15);
-  map.addOverlay(marker);
-
-
-
-  if(resolveName) {
+      marker = new GMarker(latlng);
+      map.setZoom(15);
+      map.addOverlay(marker);
 
 
-  var get_location_name_fun = function() {
-  $.ajax({
-  url: "/xml/address_search.xml?lat=" + latlng.lat() + "&lon=" + latlng.lng(),
-  dataType: 'xml',
-  success: function(resp) {
 
-  $('#item_address').removeClass('ui-autocomplete-loading');
-  var name = $('address', resp).text();
-  if(name != '') {
-  $('#item_address').val($('address', resp).text());
-  }
-  }
-  });
-  }
+      if(resolveName) {
 
-  if(get_location_name_timeout) {
-  clearTimeout(get_location_name_timeout);
-  }
-  get_location_name_timeout = setTimeout(get_location_name_fun, 300);
-  $('#item_address').addClass('ui-autocomplete-loading');
-  }
-  }
 
-  var register_map_event_fun = function() {
-  if(!map) {
-  setTimeout(register_map_event_fun, 100);
-  return;
-  }
-  GEvent.addListener(map, "click", function(overlay, latlng) {
-  if (latlng) {
-  $('#item_longitude').val(latlng.lng());
-  $('#item_latitude').val(latlng.lat());
-  update_location_fun();
-  }
-  });
-  }
-  setTimeout(register_map_event_fun, 100);
+        var get_location_name_fun = function() {
+          $.ajax({
+            url: "/xml/address_search.xml?lat=" + latlng.lat() + "&lon=" + latlng.lng(),
+            dataType: 'xml',
+            success: function(resp) {
 
-  $('#item_address').autocomplete({
-  focus: function(event, ui) {
-  return false;
-  },
-  select: function(event, ui) {
-  var position = ui.item.id.split(";");
-  $('#item_longitude').val(position[0]);
-  $('#item_latitude').val(position[1]);
-  update_location_fun(false);
-  },
-  source: function(request, cb) {
-  $.ajax({
-  url: "/xml/location_search.xml?q=" + request.term,
-  dataType: 'xml',
-  success: function(resp) {
-  cb($("location", resp).map(function() {
-  return {label: $("address", this).text(), id: $("longitude", this).text() + ";" + $("latitude", this).text()
-  };
-  }).get());
-  }
-  });
-  },
-  minLength: 2,
-  change: function (event, ui) {
-  if (ui.item) {
-  $('#another_element').val(ui.item.source.label);
-  }
-  else {
-  if (!$(this).data('valid')) {
-  $(this).val('');
-  $('#another_element').val('');
-  }
-  }
-  $(this).data('valid', false);
-  }
-  }).live('blur', function (e) {
-  if ($('.ui-autocomplete li:visible').length > 0) {
-  $(".ui-autocomplete li:visible:first").click();
-  item = $($(".ui-autocomplete li:visible:first").data()).attr('item.autocomplete');
-  var position = item.id.split(";");
-  $('#item_longitude').val(position[0]);
-  $('#item_latitude').val(position[1]);
-  update_location_fun(false);
-  $(this).val(item.label);
-  $('#another_element').val(item.label);
-  $(this).data('valid', true);
+              $('#item_address').removeClass('ui-autocomplete-loading');
+              var name = $('address', resp).text();
+              if(name != '') {
+                $('#item_address').val($('address', resp).text());
+              }
+            }
+          });
+        }
 
-  }
-  });
-  //$('#new_location').validate();
+        if(get_location_name_timeout) {
+          clearTimeout(get_location_name_timeout);
+        }
+        get_location_name_timeout = setTimeout(get_location_name_fun, 300);
+        $('#item_address').addClass('ui-autocomplete-loading');
+      }
+    }
+
+    var register_map_event_fun = function() {
+      if(!map) {
+        setTimeout(register_map_event_fun, 100);
+        return;
+      }
+      GEvent.addListener(map, "click", function(overlay, latlng) {
+        if (latlng) {
+          $('#item_longitude').val(latlng.lng());
+          $('#item_latitude').val(latlng.lat());
+          update_location_fun();
+        }
+      });
+    }
+    setTimeout(register_map_event_fun, 100);
+
+    $('#item_address').autocomplete({
+      focus: function(event, ui) {
+        return false;
+      },
+      select: function(event, ui) {
+        var position = ui.item.id.split(";");
+        $('#item_longitude').val(position[0]);
+        $('#item_latitude').val(position[1]);
+        update_location_fun(false);
+      },
+      source: function(request, cb) {
+        $.ajax({
+          url: "/xml/location_search.xml?q=" + request.term,
+          dataType: 'xml',
+          success: function(resp) {
+            cb($("location", resp).map(function() {
+              return {label: $("address", this).text(), id: $("longitude", this).text() + ";" + $("latitude", this).text()
+              };
+            }).get());
+          }
+        });
+      },
+      minLength: 2,
+      change: function (event, ui) {
+        if (ui.item) {
+          $('#another_element').val(ui.item.source.label);
+        }
+        else {
+          if (!$(this).data('valid')) {
+            $(this).val('');
+            $('#another_element').val('');
+          }
+        }
+        $(this).data('valid', false);
+      }
+    }).live('blur', function (e) {
+      if ($('.ui-autocomplete li:visible').length > 0) {
+        $(".ui-autocomplete li:visible:first").click();
+        item = $($(".ui-autocomplete li:visible:first").data()).attr('item.autocomplete');
+        var position = item.id.split(";");
+        $('#item_longitude').val(position[0]);
+        $('#item_latitude').val(position[1]);
+        update_location_fun(false);
+        $(this).val(item.label);
+        $('#another_element').val(item.label);
+        $(this).data('valid', true);
+
+      }
+    });
+    //$('#new_location').validate();
   });
 
   function update_units(){
-  val = $("#item_size_unit").val();
-  if(val== "SQMT"){
-  if($("#item_size").val()){
-  fts = $("#item_size").val() * 10.76;
-  }
-  else{
-  fts = 0;
-  }
-  $("#other_unit").text(Math.round(fts)+" SQFT");
-  }
-  else{
-  if($("#item_size").val()){
-  mts = $("#item_size").val() / 10.76;
-  }
-  else{
-  mts = 0;
-  }
-  $("#other_unit").text(Math.round(mts)+" SQMT");
-  }
+    val = $("#item_size_unit").val();
+    if(val== "SQMT"){
+      if($("#item_size").val()){
+        fts = $("#item_size").val() * 10.76;
+      }
+      else{
+        fts = 0;
+      }
+      $("#other_unit").text(Math.round(fts)+" SQFT");
+    }
+    else{
+      if($("#item_size").val()){
+        mts = $("#item_size").val() / 10.76;
+      }
+      else{
+        mts = 0;
+      }
+      $("#other_unit").text(Math.round(mts)+" SQMT");
+    }
   }
 
   function check_persons_limit(val){    

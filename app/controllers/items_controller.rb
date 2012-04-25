@@ -12,14 +12,23 @@ class ItemsController < ApplicationController
   end
   
   def new
+
+    if session[:items].blank?
+      @item =  Item.new
+      @map = GMap.new("map")
+      @map.control_init(:map_type => true, :small_zoom => true)
+      @map.center_zoom_init([39.00, 22.00], 6)
+    else      
+      @item = Item.new(session[:items])
+      5.times { @item.avatars.build }      
+      @map = GMap.new("map")
+      @map.control_init(:map_type => true, :small_zoom => false)
+      @map.center_zoom_init([48.48, 2.20], 6)
+    end
     @countries = Country.all
-    @item =  Item.new
-    5.times { @item.avatars.build }
     @listing_types = ListingType.all :order =>"name asc"
-    @availability_options = AvailabilityOption.all 
-    @map = GMap.new("map")
-    @map.control_init(:map_type => true, :small_zoom => false)
-    @map.center_zoom_init([48.48, 2.20], 6)
+    @availability_options = AvailabilityOption.all
+    
   end
 
   def create
@@ -31,11 +40,11 @@ class ItemsController < ApplicationController
         flash[:notice] = "Please login to continue."
         redirect_to new_user_session_path
       else
-
         @item.availability_option_ids = params[:availability_options]
         if @item.save
+          session[:items] = nil
           flash[:notice] = "Thanks for adding your space."
-          redirect_to item_path(@item)
+          redirect_to new_item_avatar_path(@item)
         else
           @listing_types = ListingType.all :order =>"name asc"
           @availability_options = AvailabilityOption.all
@@ -70,7 +79,7 @@ class ItemsController < ApplicationController
     @item.availability_option_ids = params[:availability_options]       
     if @item.update_attributes(params[:item])      
       flash[:notice] = "Thanks for updating your space."
-      redirect_to item_path(@item)
+      redirect_to edit_item_avatar_path(@item,@item.avatars.first)
     else
       @listing_types = ListingType.all :order =>"name asc"
       @availability_options = AvailabilityOption.all 

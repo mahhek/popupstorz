@@ -11,6 +11,7 @@ class HomeController < ApplicationController
       elsif !session[:edit_item].blank?
         redirect_to edit_item_offer_path(session[:edit_item], session[:edit_offer])
       end
+      
       @items_with_uniq_cities = Item.select("distinct(city)")
     end
   end

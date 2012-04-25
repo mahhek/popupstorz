@@ -78,6 +78,7 @@ PopupStorz::Application.routes.draw do
   end
 
   resources :items do
+    resources :avatars
     collection do
       get "sent_requests"
     end
