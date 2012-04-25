@@ -240,6 +240,7 @@ body {
     margin-top: 8px;
     text-align: center;
     width: 100px;
+    color: #666666;
 }
 
 .resultsholder .perweek {
@@ -336,7 +337,7 @@ h2 {
     background-color: #FFFFFF;
     border-radius: 5px 5px 5px 5px;
     box-shadow: 4px 5px 6px;
-    -webkit-box-shadow: : 4px 5px 6px  #888;
+    -webkit-box-shadow: 4px 5px 6px  #888;
     padding: 20px;
 }
 

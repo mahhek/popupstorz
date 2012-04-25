@@ -97,7 +97,7 @@
   </span>
   <span>
     <%= f.text_field :price %> &nbsp;&nbsp;
-    <%= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EURO","EURO"]], @item.price_unit) %>&nbsp;&nbsp;
+    <%= select_tag "item[price_unit]", options_for_select([["$","$"],["€","€"]], @item.price_unit) %>&nbsp;&nbsp;
     <%= select_tag "item[time_for_unit_price]", options_for_select([["Per Day","Per Day"],["Per Week","Per Week"],["Per Weekend","Per Weekend"], ["Per Two Weeks","Per Two weeks"], ["Per Month","Per Month"]], @item.time_for_unit_price) %>&nbsp;&nbsp;PUS takes 10% of every transaction.  </span>
 </div>
 <br/>
@@ -109,6 +109,7 @@
   </span>
   <span>
     <%= f.text_field :cleaning_fee %> &nbsp;&nbsp;
+    <%= select_tag "item[cleaning_fee]", options_for_select([["$","$"],["€","€"]], @item.cleaning_fee) %>&nbsp;&nbsp;
   </span>
 </div>
 <br/>
@@ -120,6 +121,7 @@
   </span>
   <span>
     <%= f.text_field :deposit %> &nbsp;&nbsp;
+    <%= select_tag "item[deposit]", options_for_select([["$","$"],["€","€"]], @item.deposit) %>&nbsp;&nbsp;
   </span>
 </div>
 <br/>

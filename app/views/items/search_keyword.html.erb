@@ -84,7 +84,7 @@
     <% unless @items.blank? %>
       <% @items.each do | item | %>
         <div class="resultsholder">
-          <div class="price"><%= item.price_unit == "USD" ? "$" : "€" %><%= item.price.to_i %> <br /> <span class="perweek"><%= item.time_for_unit_price 	%></span> </div>
+          <div class="price"><%= item.price_unit == "USD" ? "$" : "€" %><%= item.price.to_i %> <br /> <span class="perweek"><%= item.time_for_unit_price %></span> </div>
           <% if item.avatars.size > 0 %>
             <% avatar = item.avatars.first %>
             <%= link_to( image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
@@ -108,11 +108,9 @@
 
 <%#*- e per day - <%= link_to "Book now", item_path(item.id) %>
 
+
 <script type="text/javascript">
-  $('#search_from').datepicker;
-  $('#search_to').datepicker;
-</script>
-
-
-
+    $('#search_from').datepicker();
+    $('#search_to').datepicker();
+  </script>
 
