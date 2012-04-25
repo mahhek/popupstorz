@@ -9,7 +9,7 @@
       <p class="charming_text"><%= @item.address %>(<%= @item.zipcode %> - <%= @item.city %>, <%= @item.country_code   %>)</p>
     </div>
     <div class="fltR">
-      <h1 class="charming graytext"><%= @item.price_unit == "USD" ? "$" : "€" %><%= @item.price.to_i %></h1>
+      <h1 class="charming graytext"><%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h1>
       <p class="charming_text graytext"><%=  @item.time_for_unit_price %></p>
     </div>
     <div class="clear"></div>

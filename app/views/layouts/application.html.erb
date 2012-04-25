@@ -70,7 +70,7 @@
                 <span>Cur</span>
                 <ul>
                   <li><%= link_to "$", "#", :onclick => "addParamToUrl('curr', 'USD')" %></li>
-                  <li><%= link_to "€",  "#", :onclick => "addParamToUrl('curr', 'EURO')" %></li>
+                  <li><%= link_to "€",  "#", :onclick => "addParamToUrl('curr', 'EUR')" %></li>
                 </ul>
               </div>
 
@@ -147,8 +147,8 @@
   else
   {
   
-  value_to = param == 'curr' ? value == 'USD' ? 'EURO' : 'USD' : value == 'fr' ? 'en' : 'fr';
-  value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EURO' : value == 'fr' ? 'fr' : 'en';
+  value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
+  value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
   url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
 
   }

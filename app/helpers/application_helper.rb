@@ -1,7 +1,7 @@
 module ApplicationHelper
 
-  def exchange_currency(amount)
-    amount.to_money.exchange_to(session[:curr])
+  def exchange_currency(amount, currency)
+    Money.new(amount * 100, currency).exchange_to(session[:curr])
   end
   
 end

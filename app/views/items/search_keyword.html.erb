@@ -84,7 +84,7 @@
     <% unless @items.blank? %>
       <% @items.each do | item | %>
         <div class="resultsholder">
-          <div class="price"><%= item.price_unit == "USD" ? "$" : "€" %><%= item.price.to_i %> <br /> <span class="perweek"><%= item.time_for_unit_price %></span> </div>
+          <div class="price"><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %> <br /> <span class="perweek"><%= item.time_for_unit_price %></span> </div>
           <% if item.avatars.size > 0 %>
             <% avatar = item.avatars.first %>
             <%= link_to( image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>

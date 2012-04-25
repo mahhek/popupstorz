@@ -97,7 +97,7 @@
   </span>
   <span>
     <%= f.text_field :price %> &nbsp;&nbsp;
-    <%= select_tag "item[price_unit]", options_for_select([["$","$"],["€","€"]], @item.price_unit) %>&nbsp;&nbsp;
+    <%= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EUR","EUR"]], @item.price_unit) %>&nbsp;&nbsp;
     <%= select_tag "item[time_for_unit_price]", options_for_select([["Per Day","Per Day"],["Per Week","Per Week"],["Per Weekend","Per Weekend"], ["Per Two Weeks","Per Two weeks"], ["Per Month","Per Month"]], @item.time_for_unit_price) %>&nbsp;&nbsp;PUS takes 10% of every transaction.  </span>
 </div>
 <br/>

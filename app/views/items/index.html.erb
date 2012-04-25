@@ -25,7 +25,7 @@
 
         <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
         <div class="name-list" style="margin-bottom: 5px;"><b>Location: </b><%= item.address %></div>
-        <div class="name-list" style="margin-bottom: 5px;"><b>Price: </b><%=  item.price_unit %>&nbsp;<%=  item.price %>&nbsp;&nbsp;<%=  item.time_for_unit_price %></div>
+        <div class="name-list" style="margin-bottom: 5px;"><b>Price: </b><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>&nbsp;&nbsp;<%=  item.time_for_unit_price %></div>
         <div class="manage-bg" style="margin-bottom: 5px;margin-top: 5px;">
           <div class="btns">
             <%= link_to "Edit Space" , edit_item_path(item)%>&nbsp;|&nbsp;
