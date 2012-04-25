@@ -34,6 +34,14 @@ class ItemsController < ApplicationController
   def create
     @countries = Country.all
     @item = Item.new(params[:item])
+    @map = GMap.new("map")
+    if params[:item][:latitude].blank?
+      @map.control_init(:map_type => true, :small_zoom => false)
+      @map.center_zoom_init([48.48, 2.20], 6)
+    else
+      coordinates = [params[:item][:latitude],params[:item][:longitude]]
+      @map.center_zoom_init(coordinates, 15)
+    end
     if @item.valid?
       if !user_signed_in?
         session[:items] = params[:item]
