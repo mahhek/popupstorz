@@ -17,7 +17,7 @@ class ItemsController < ApplicationController
       @item =  Item.new
       @map = GMap.new("map")
       @map.control_init(:map_type => true, :small_zoom => true)
-      @map.center_zoom_init([39.00, 22.00], 6)
+      @map.center_zoom_init([48.48, 2.20], 6)
     else      
       @item = Item.new(session[:items])
       5.times { @item.avatars.build }      

@@ -1,17 +1,17 @@
-# Sample localization file for English. Add more files in this directory for other locales.
-# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-   verify_your_account: "Verify Your Account"
+   
    welcome_to_popup_storz: "Welcome to Popup Storz"
+   spaces_to_rent: "Spaces to rent"
+   verify_your_account: "Verify Your Account"
    number:
-       currency:
-           format:
-               format: "%u%n"
-               unit: "$"
-               # These three are to override number.format and are optional
-               separator: "."
-               delimiter: ","
-               precision: 2
+      currency:
+          format:
+              format: "%u%n"
+              unit: "$"
+              # These three are to override number.format and are optional
+              separator: "."
+              delimiter: ","
+              precision: 2
 
 
