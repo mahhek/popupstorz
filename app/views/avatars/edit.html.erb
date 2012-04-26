@@ -1,4 +1,46 @@
-<%= form_for([@item,@avatar], :html => { :multipart => true, :class => "new_avatar_form" }) do |f|%>
-  <%= render :partial => "form", :locals => {:f => f} %>
-<% end %>
+<div style="padding: 20px;">
+  <div id="get-list-header">
+    <div class="white-button" style="float: left;margin-right: 10px;">
+      <%= link_to "Details", edit_item_path(@item) %>
+    </div>
+    <div class="white-button" style="float: left;margin-right: 10px;">
+      <%= link_to "Photos", "#" %>
+    </div>
+    <div class="white-button" style="float: left;margin-right: 10px;">
+      <%= link_to "Preview", item_path(@item) %>
+    </div>
+  </div>
+  <br/>
+  <div id="lisit-name"><h1><%= @avatars.first.item.title %></h1></div>
 
+  <div id="show-thumbnail">
+    <% unless @avatars.first.new_record? %>
+      <div id="thumbnail">
+        <%= image_tag(@avatars.first.photo.url(:thumb) )%>
+      </div>
+      <div id="thumbnail-txt">Your listing thumbnail</div>
+    <%end%>
+  </div>
+  <div id="thumnail-details">
+    <span class="familar-photo">Photos</span>
+    <br/>
+    <br/>
+    <span class="gray-14">gif / jpeg / png acceptable</span>
+    <br/>
+    <br/>
+
+      <br/>
+      <br/>
+      <%@avatars.each do |avatar|%>
+        <%= image_tag(avatar.photo.url(:large) )%>
+        <br/>
+        <br/>
+        <%= link_to "Delete photo", item_avatar_path(@item,avatar), :method => :delete, :confirm => "Are you sure?" %>
+        <br/>
+        <br/>
+      <%end%>
+    <br/>
+    <br/>
+  </div>
+
+</div>

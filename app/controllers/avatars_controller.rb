@@ -7,25 +7,25 @@ class AvatarsController < ApplicationController
   end
 
   def create
-    if params[:avatar][:photo]
-      @avatar = @item.avatars.build(params[:avatar])
-      @avatar.caption = "" if params[:avatar][:caption] == "Give this photo a caption"
-      if @avatar.save
-        flash[:notice] = "Thanks for uploading a picture."
-        #      @item.update_attribute("item_status", params[:item_status])
-        return redirect_to items_path
-      else
-        flash[:notice] = "We're having a problem saving your picture - please try a different one. "
-        return render :action =>"new"
+    (1..3).each do |a|
+      if params['photo_'+a.to_s]
+        params[:avatar][:photo] = params['photo_'+a.to_s]
+        @avatar = @item.avatars.build(params[:avatar])
+        @avatar.caption = "" if params[:avatar][:caption] == "Give this photo a caption"
+        if @avatar.save
+          flash[:notice] = "Thanks for uploading a picture."
+          #      @item.update_attribute("item_status", params[:item_status])
+        else
+          flash[:notice] = "We're having a problem saving your picture - please try a different one. "
+        end
       end
-    else
-      return redirect_to items_path
     end
+    return redirect_to items_path
   end
 
 
   def edit
-    @avatar = @item.avatars.find_by_id(params[:id])
+    @avatars = @item.avatars
   end
 
   def destroy
