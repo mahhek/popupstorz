@@ -361,7 +361,7 @@ h2 {
 .start_time{margin-top:10px;}
 .start_time p{font-size:15px;color:#010100;}
 .start_time input{border: 1px solid #939393; margin-top: 5px; padding: 3px; width: 122px;}
-.search {
+/*.search_home {
     background: url(../assets/search_home.png) repeat scroll 0 0 transparent;
     border: 0 none;
     color: transparent;
@@ -372,7 +372,7 @@ h2 {
     margin-left: 105px;
     margin-top: 20px;
     width: 128px;
-}
+}*/
 
 
 .dropdown {
@@ -480,3 +480,13 @@ h2 {
 .daytime{background: url("../assets/plus.png") no-repeat scroll left center transparent;color: #000000; float: left; font-size: 12px; margin-right: 37px; margin-top: 6px; padding-left: 20px; text-align: center;}
 .w212{width:212px;}
 .ml70{margin-left:70px !important;}
+.search {
+    background: none repeat scroll 0 0 #CC33CC;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFFFF;
+    float: left;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 105px;
+    margin-top: 20px;
+    padding: 5px 25px;
