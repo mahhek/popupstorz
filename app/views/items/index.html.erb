@@ -1,16 +1,15 @@
 <div id="get-list-header">
-  <h2>Space Listings</h2>
+  <h2>Your Listings</h2>
 </div>
 
 <div class="listx-bg">
   <% unless @items.blank? %>
     <div class="btn-bar" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
-      <%= link_to "Home", "/home/index" %>&nbsp;|
-      <%= link_to "Inbox", inbox_messages_path %>&nbsp;|
-      <%= link_to "Bookings", "/home/index" %>&nbsp;|
-      <%= link_to "Listings", "/home/index" %>&nbsp;|
-      <%= link_to('Profile', profile_path(current_user.id)) %>&nbsp;|
-      <%= link_to "Account", "/home/index" %>&nbsp;
+      <%= link_to 'Messages', inbox_messages_path %>&nbsp;|
+      <%= link_to 'My Listings',items_path %>&nbsp;|
+      <%= link_to 'My Pop Ups',"#" %>&nbsp;|
+      <%= link_to('My Profile', profile_path(current_user.id)) %>&nbsp;|
+      <%= link_to "My Account","#" %>&nbsp;
     </div>
 
     <% @items.each do | item | %>
