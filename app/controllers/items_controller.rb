@@ -126,7 +126,7 @@ class ItemsController < ApplicationController
     end
     unless params[:location].blank?
      
-      conds += " AND (LOWER(city) LIKE  " + "'%%" + "#{params[:location].strip.downcase}" + "%%'" +")"
+      conds += " AND (city LIKE  " + "'%%" + "#{params[:location]}" + "%%'" +")"
     end
     
     #    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => ["Date(availability_from) >= ? AND Date(availability_to) <= ? AND LOWER(address) LIKE ?","#{params[:search_from].to_date}","#{params[:search_to].to_date}","%#{params[:location].strip.downcase}%"], :order => "price")
