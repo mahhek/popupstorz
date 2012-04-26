@@ -23,7 +23,7 @@ gem 'execjs'
 gem 'therubyracer'
 gem "bcrypt-ruby"
 
-gem 'geokit'
+#gem "geokit-rails3-1beta --pre"
 gem 'nokogiri'
 gem 'feedzirra'
 gem 'sanitize'
@@ -31,7 +31,7 @@ gem "paperclip", "~> 2.7"
 gem 'dm-core'
 gem 'dm-aggregates'
 #gem 'formtastic'
-gem "geocoder"
+#gem "geocoder"
 gem "ckeditor"
 #gem 'sqlite3'
 gem 'pg'

@@ -1,5 +1,5 @@
-# encoding: utf-8
-include Geokit::Geocoders
+# encoding: UTF-8
+#include Geokit::Geocoders
 
 
 class Item < ActiveRecord::Base
@@ -10,7 +10,7 @@ class Item < ActiveRecord::Base
   accepts_nested_attributes_for :avatars, :allow_destroy => true
 
   has_many :avatars, :dependent => :destroy
-#  belongs_to :country
+  #  belongs_to :country
   before_save :geolocate_from_address
 
   belongs_to :user
@@ -39,7 +39,10 @@ class Item < ActiveRecord::Base
       # check if an actual address has been set
       if self.address.to_s.strip.size > 0
         # find information related to address
-        res = GoogleGeocoder.geocode(self.address)
+        res = Geokit::Geocoders::GoogleGeocoder.geocode(self.address)
+        p "***********************************************************************"
+        p res.inspect
+        
         if(res)          
           self.city = res.city
           self.county = res.province

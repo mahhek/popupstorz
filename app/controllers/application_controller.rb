@@ -1,6 +1,5 @@
 require 'utility'
 require 'google'
-$KCODE='utf'
 require 'pp'
 require 'net/http'
 require 'uri'
