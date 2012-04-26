@@ -19,7 +19,7 @@ module Ym4r
         sensor = options[:sensor] || false
         output =  options[:output] || "kml"
         output_encoding = options[:output_encoding] || "utf-8"
-        url = "http://maps.google.com/maps/geo?q=#{URI.encode(request)}&key=#{api_key}&sensor=#{sensor}&output=#{output}&oe=#{output_encoding}"
+        url = "http://maps.google.com/maps/geo?q=#{URI.encode(request)}&key=#{api_key}&sensor=#{sensor}&output=#{output}&oe=#{output_encoding}&language=en"
 
         res = open(url).read
 
