@@ -29,14 +29,19 @@
     <br/>
     <br/>
     <% if @avatar.new_record? %>
-      <%= f.file_field :photo %>
+      <%= file_field_tag :photo_1 if @item.avatars.size == 0 or @item.avatars.size < 4 %><br />
+      <%= file_field_tag :photo_2 if @item.avatars.size == 0 or @item.avatars.size < 3 %><br />
+      <%= file_field_tag :photo_3 if @item.avatars.size == 0 or @item.avatars.size < 2  %><br />
+      <%= f.hidden_field:photo %><br />
     <%else%>
       <br/>
       <br/>
-      <%= image_tag(@avatar.photo.url(:large) )%>
-      <br/>
-      <br/>
-      <%= link_to "Delete photo", item_avatar_path(@item,@avatar), :method => :delete, :confirm => "Are you sure?" %>
+      <%@avatar.each do |avatar|%>
+        <%= image_tag(avatar.photo.url(:large) )%>
+        <br/>
+        <br/>
+        <%= link_to "Delete photo", item_avatar_path(@item,avatar), :method => :delete, :confirm => "Are you sure?" %>
+      <%end%>
     <%end%>
     <br/>
     <br/>
