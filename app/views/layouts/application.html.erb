@@ -68,7 +68,7 @@
                 </ul>
               </div>
               <div class="dropdown">
-                <span>Cur</span>
+                <span> $ </span>
                 <ul>
                   <li><%= link_to "$", "#", :onclick => "addParamToUrl('curr', 'USD')" %></li>
                   <li><%= link_to "€",  "#", :onclick => "addParamToUrl('curr', 'EUR')" %></li>
@@ -81,9 +81,10 @@
             </div>
 
             <% if user_signed_in? %>
-              <%= link_to "Dashboard", profile_path(current_user),:class => ((params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
-              <%= link_to 'Members', "/members", :class => ((params[:controller] == "users" and params[:action] == "members") ? "m_act" : "") %>
+              <%= link_to "Hi #{current_user.first_name}!", profile_path(current_user),:class => ((params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
+
               <%= link_to 'Messages', inbox_messages_path, :class => ((params[:controller] == "messages" and params[:action] == "inbox") ? "m_act" : "") %>
+              <%= link_to 'Members', "/members", :class => ((params[:controller] == "users" and params[:action] == "members") ? "m_act" : "") %>
               <%= link_to 'Gatherings', "/home/index", :class => ((params[:controller] == "home" and params[:action] == "index") ? "m_act" : "")   %>
 
               <% if params[:controller] == "messages" or (params[:controller] == "users" and params[:action] == "show") %>

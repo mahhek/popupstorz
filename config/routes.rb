@@ -11,6 +11,7 @@ PopupStorz::Application.routes.draw do
   match '/search_members' => 'users#search_members'
   match '/admin_destroy_user/:id' => "admin/users#destroy_user"
   match '/delete_listings' => "admin/items#delete_listings"
+  match "/search_via_price_range" => "items#search_via_price_range"
   
   devise_for :users, :controllers => {:registrations => "registrations"}
 

@@ -115,6 +115,8 @@ class ItemsController < ApplicationController
 
 
   def search_keyword
+    @min_price = Item.minimum("price")
+    @max_price = Item.maximum("price")
     conds = "1=1 "
     unless params[:search_from].blank?
       new_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_time
@@ -151,5 +153,15 @@ class ItemsController < ApplicationController
     end
     @items_with_uniq_cities = Item.select("distinct(city)")
   
+  end
+
+  def search_via_price_range
+    @items = Item.paginate(:page => params[:page], :per_page => 2, :conditions => ["price >= ? AND price <= ?", params[:min_price].to_f, params[:max_price].to_f], :order => "price")
+    respond_to do |format|
+      format.js do
+        foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
+        render :js => "$('#searched-items-div').html(#{foo});$.setAjaxPagination();"
+      end
+    end
   end
 end

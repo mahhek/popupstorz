@@ -1,3 +1,26 @@
+<script type="text/javascript">
+
+  $(function() {
+		$( "#slider-range" ).slider({
+			range: true,
+			min: <%= @min_price %>,
+			max: <%= @max_price %>,
+			values: [ <%= @min_price %>, <%= @max_price %> ],
+			slide: function( event, ui ) {
+				$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+			},
+                        stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
+        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));$('#price_range_form').submit();}
+		});
+		$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+			" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+	});
+
+
+
+</script>
+
+
 <%= stylesheet_link_tag "search-list"%>
 <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>    <!-- jsFiddle -->
@@ -5,18 +28,29 @@
 <link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->
 <div class="rightcontent">
 
+
   <h2>Refine your search</h2>
 
   <div class="pannelright">
-    <img class="closepannel" src="../assets/-.png" />
-    <div class="heading_right">Price</div>
-    <img src="../assets/350.png" />
+    <p>
+      <label for="amount">Price range:</label>
+      <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" />
+    </p>
+    <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+      <a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 20.1%;"></a>
+      <a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 30.1%;"></a>
+      <a href="#" class="ui-slider-handle ui-state-disabled ui-corner-all" style="right: 99.5%;"></a>
+      <a href="#" class="ui-slider-handle ui-state-disabled ui-state-default ui-corner-all" style="left: 99.5%;"></a>
+    </div>
+    <%= form_tag "/search_via_price_range", {:remote => true, :method => :get, :id => "price_range_form" } do %>
+          <%= hidden_field_tag "min_price", "" %>
+          <%= hidden_field_tag "max_price", "" %>
+    <%end%>
   </div>
-
   <div class="pannelright">
-    <img class="closepannel" src="../assets/-.png" />
-    <div class="heading_right">Price</div>
-    <img src="../assets/350.png" />
+   <img class="closepannel" src="../assets/-.png" />
+<div class="heading_right">Price</div>
+<img src="../assets/350.png" />
   </div>
 
   <div class="pannelright">
@@ -58,7 +92,6 @@
   </div>
 
 </div>
-
 <div class="leftcontent">
   <%= form_tag "/items/search_keyword", :method => :get  do %>
     <div class="refinesearchresults">
@@ -110,7 +143,7 @@
 
 
 <script type="text/javascript">
-    $('#search_from').datepicker();
-    $('#search_to').datepicker();
-  </script>
+  $('#search_from').datepicker();
+  $('#search_to').datepicker();
+</script>
 
