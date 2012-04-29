@@ -7,6 +7,17 @@ class Admin::ItemsController < ApplicationController
     @items = Item.all
   end
 
+  def change_recommendation
+    @item = Item.find(params[:item_id])
+    @item.update_attribute("is_recommended", !@item.is_recommended)
+    respond_to do |format|
+      format.js do
+        foo = render_to_string(:partial => 'recommendation', :locals => { :item => @item }).to_json
+        render :js => "$('#recommendation_div_#{@item.id}').html(#{foo});"
+      end
+    end
+  end
+
   def show
     @item = Item.find(params[:id])
     @user = @item.user

@@ -1,0 +1,5 @@
+<% unless item.is_recommended %>
+  <%= link_to "Make it recommended", change_recommendation_admin_items_path(:item_id => item.id), :remote => true %>
+<% else %>
+  <%= link_to "Make it non recommended", change_recommendation_admin_items_path(:item_id => item.id), :remote => true %>
+<% end %>

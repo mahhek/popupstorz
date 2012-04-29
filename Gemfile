@@ -35,7 +35,7 @@ gem 'dm-aggregates'
 gem "ckeditor"
 #gem 'sqlite3'
 gem 'pg'
-gem 'will_paginate'
+gem "will_paginate", "~> 3.0.pre2"
 gem 'i18n'
 gem 'contacts', :git=>"git@github.com:bridgeutopia/contacts.git"
 

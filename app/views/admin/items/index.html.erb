@@ -12,6 +12,9 @@
             NO IMAGE PROVIDED YET.
           <% end %>
         </div>
+        <div id="recommendation_div_<%= item.id %>">
+          <%= render :partial => "recommendation", :locals => {:item => item} %>
+        </div>
 
         <div class="name-list"><%= item.title %></div>
         <div class="manage-bg">

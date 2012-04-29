@@ -52,7 +52,11 @@ PopupStorz::Application.routes.draw do
   get "items/new"
   
   namespace :admin do
-    resources :items
+    resources :items do
+      collection do
+        get :change_recommendation
+      end      
+    end
     resources :users
   end
   resources :services do

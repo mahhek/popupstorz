@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:new, :create, :search_keyword, :search_category, :autocomplete_item_city, :autocomplete_item_title]
+  before_filter :authenticate_user!, :except => [:new, :create, :show, :search_via_price_range, :search_keyword, :search_category, :autocomplete_item_city, :autocomplete_item_title]
 
   autocomplete :item, :title
   autocomplete :item, :city
@@ -132,7 +132,20 @@ class ItemsController < ApplicationController
     end
     
     #    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => ["Date(availability_from) >= ? AND Date(availability_to) <= ? AND LOWER(address) LIKE ?","#{params[:search_from].to_date}","#{params[:search_to].to_date}","%#{params[:location].strip.downcase}%"], :order => "price")
-    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => [ conds ], :order => "price")
+    case params[:sort_option]      
+    when "1"
+      order_by = "is_recommended, price DESC"
+    when "2"
+      order_by = "price DESC"
+    when "3"
+      order_by = "price ASC"
+    when "4"
+      order_by = "created_at DESC"
+    else
+      order_by = "price ASC"
+    end
+    
+    @items = Item.paginate(:page => params[:page], :per_page => 3, :conditions => [ conds ], :order => order_by )
     
     @map = GMap.new("map")
     @map.control_init(:map_type => true, :small_zoom => true)
@@ -152,6 +165,14 @@ class ItemsController < ApplicationController
       end
     end
     @items_with_uniq_cities = Item.select("distinct(city)")
+
+    respond_to do |format|
+      format.html
+      format.js do
+        foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
+        render :js => "$('#searched-items-div').html(#{foo});$.setAjaxPagination();"
+      end
+    end 
   
   end
 
@@ -164,4 +185,6 @@ class ItemsController < ApplicationController
       end
     end
   end
+
+  
 end
