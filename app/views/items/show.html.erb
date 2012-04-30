@@ -42,10 +42,56 @@
 
     <h1 class="charming">what other people think</h1>
     <p class="charming_text">what other people thinkwhat other people thinkwhat other people thinkwhat other people think</p>
+    <div class="line"></div>
+    <div id="comments">
+
+      <%= form_for @comment, :url => "/items/add_comment" do |f| %>
+        <% if @comment.errors.any? %>
+          <div id="errorExplanation" class="erro_messages">
+            <h2>Oops! Looks like you need to include the following:</h2>
+            <ul>
+              <li style="list-style: square;float: left;">
+                <%= @comment.errors.full_messages.to_sentence  %>
+              </li>
+            </ul>
+          </div>
+        <% end %>
+        <%= hidden_field_tag "id",@item.id %>
+        <div class="field">
+          <%= f.label :title %><br/>
+          <%= f.text_field "title" %>
+        </div>
+        <div class="field">
+          <%= f.label :comment %><br />
+          <%= f.text_area "comment", :rows => 5 %>
+        </div>
+        <div class ="actions">
+          <%= f.submit "Leave Comment" %>
+        </div>
+      <% end %>
 
 
+    </div>
 
+    <div id="show_comments">
+      <b>Comments</b><br/>
+      <%unless @item.comments.blank? %>
+        <%@item.comments.each do|f|%>
+          <b><%=f.title  %></b><br/>
+          <%= f.comment %><br/>
+          <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+          <br/>
+          <br/>
+        <%end%>
+      <%end%>
+    </div>
+    <div>
+      <span id="rating_<%= @item.id %>">
+        <%= render :partial => "/ratings/rating", :locals => {:asset => @item} %>
+      </span>
+    </div>
   </div>
+
 
 </div>
 
@@ -98,8 +144,14 @@
     <a href="#" class="search ml70">Book</a>
     <div class="clear"></div>
   </div>
+
 </div>
+
 <div class="clear"></div>
+
+
+
+
 
 
 

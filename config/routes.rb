@@ -12,12 +12,23 @@ PopupStorz::Application.routes.draw do
   match '/admin_destroy_user/:id' => "admin/users#destroy_user"
   match '/delete_listings' => "admin/items#delete_listings"
   match "/search_via_price_range" => "items#search_via_price_range"
+  match "/items/new/:id" => "items#new_comment"
+  match "/items/add_comment" => "items#add_comment"
+  match "/items/show/:id" => "items#show"
+  match "/users/add_comment" => "users#add_comment"
   
   devise_for :users, :controllers => {:registrations => "registrations"}
 
   resources :accounts do
     collection do
       get 'verification_selection'
+    end
+  end
+
+  resources :ratings do
+    collection do
+      get "rate"
+      post "rate"
     end
   end
   
