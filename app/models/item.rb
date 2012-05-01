@@ -17,6 +17,7 @@ class Item < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :admin
+  has_and_belongs_to_many :users
 
   validates :address, :presence => true
   validates :listing_type_id, :presence => true

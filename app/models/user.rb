@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 #  belongs_to :country
 
   devise :database_authenticatable, :registerable, :confirmable,
-    :recoverable, :rememberable, :trackable, :validatable
+    :recoverable, :rememberable, :trackable, :validatable, :authentication_keys => [:username]
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name,
@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
   has_many :notifications
   has_many :offers
   has_one  :account
-  
+  has_and_belongs_to_many :items
 
   def popup_storz_display_name
     return"#{self.first_name[0..6]} #{self.last_name[0..0].capitalize} ." if self.last_name

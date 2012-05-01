@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120430133116) do
+ActiveRecord::Schema.define(:version => 20120501142705) do
 
   create_table "accounts", :force => true do |t|
     t.datetime "created_at"
@@ -95,6 +95,11 @@ ActiveRecord::Schema.define(:version => 20120430133116) do
     t.float    "cleaning_fee"
     t.float    "deposit"
     t.boolean  "is_recommended",                                      :default => false
+  end
+
+  create_table "items_users", :id => false, :force => true do |t|
+    t.integer "item_id"
+    t.integer "user_id"
   end
 
   create_table "listing_types", :force => true do |t|

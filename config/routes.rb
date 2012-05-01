@@ -100,6 +100,8 @@ PopupStorz::Application.routes.draw do
     end
     get :autocomplete_item_title, :on => :collection
     get :autocomplete_item_city, :on => :collection
+    get :add_to_favorite, :on => :member
+    get :remove_from_favorite, :on => :member
     resources :offers do
       resources :payments
       member do

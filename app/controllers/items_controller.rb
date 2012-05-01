@@ -5,7 +5,33 @@ class ItemsController < ApplicationController
   autocomplete :item, :title
   autocomplete :item, :city
 
+  def add_to_favorite
+    @item = Item.find params[:id]
+    @user = current_user
+    unless @item.users.include?(@user)
+      @item.users << @user
+    end
+    respond_to do |format|
+      format.js do
+        foo = render_to_string(:partial => 'favorite', :locals => { :item => @item }).to_json
+        render :js => "$('#favorite_div_#{@item.id}').html(#{foo});"
+      end
+    end
+  end
 
+  def remove_from_favorite
+    @item = Item.find params[:id]
+    @user = current_user
+    if @item.users.include?(@user)
+      @item.users.destroy(@user)
+    end
+    respond_to do |format|
+      format.js do
+        foo = render_to_string(:partial => 'favorite', :locals => { :item => @item }).to_json
+        render :js => "$('#favorite_div_#{@item.id}').html(#{foo});"
+      end
+    end
+  end
 
   def index
     @items = current_user.items
@@ -199,7 +225,7 @@ class ItemsController < ApplicationController
     if @comment.save
       flash[:notice] = "Comment Added"
       @item.comments << @comment
-       redirect_to "/items/show/#{@item.id}"
+      redirect_to "/items/show/#{@item.id}"
     else
       flash[:error] = "Not saved"
       render :show
