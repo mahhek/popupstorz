@@ -18,7 +18,7 @@ jQuery(document).ready(function() {
             <% avatar = item.avatars.first %>
             <%= link_to( image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original), :class => "item_image", :width => "133px" ) %>
           <% else %>
-            <%= image_tag("img_1.png", :border => "0", :alt => "image", :class => "item_image" )  %>
+            <%= image_tag("PUS_Logo.jpg.png", :border => "0", :alt => "image", :class => "item_image" )  %>
           <%end%>
         </div>
     <h1><%=item.city%>, <%=item.country_code%></h1>
