@@ -1,54 +1,38 @@
+<script type="text/javascript">
+
+jQuery(document).ready(function() {
+    jQuery('#mycarousel').jcarousel({
+    	wrap: 'circular'
+    });
+});
+
+</script>
 <div class="cont_heading">Spaces to rent</div>
-<a class="leftArrow"></a>
 <div class="gellaryHold">
-  <div class="g_hold">
-    <img src="../assets/img_1.png" alt="" />
-    <h1>Los Angeles, USA</h1>
-    <p>04/05 - 06/05</p>
+ <ul id="mycarousel" class="jcarousel-skin-tango">
+   <% @items.each do |item| %>
+   <li>
+    <div class="g_hold">
+     <% if item.avatars.size > 0 %>
+      <% avatar = item.avatars.first %>
+      <%= link_to( image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original), :class => "item_image", :width => "133px" ) %>
+    <% else %>
+      <%= image_tag("img_1.png", :border => "0", :alt => "image", :class => "item_image" )  %>
+    <%end%>
+    <h1><%=item.city%>, <%=item.country_code%></h1>
+    <p><%=item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.strftime("%m/%y")%></p>
 
     <h5>2/3</h5>
-    <h6>$55</h6>
+    <h6><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h6>
     <div class="clear"></div>
   </div>
-  <div class="g_hold">
-    <img src="../assets/img_1.png" alt="" />
-    <h1>Los Angeles, USA</h1>
-    <p>04/05 - 06/05</p>
+    </li>
+    <%end%>
+  </ul>
 
-    <h5>2/3</h5>
-    <h6>$55</h6>
-    <div class="clear"></div>
-  </div><div class="g_hold">
-    <img src="../assets/img_1.png" alt="" />
-    <h1>Los Angeles, USA</h1>
-    <p>04/05 - 06/05</p>
-
-    <h5>2/3</h5>
-    <h6>$55</h6>
-    <div class="clear"></div>
-  </div>
-  <div class="g_hold">
-    <img src="../assets/img_1.png" alt="" />
-    <h1>Los Angeles, USA</h1>
-    <p>04/05 - 06/05</p>
-
-    <h5>2/3</h5>
-    <h6>$55</h6>
-    <div class="clear"></div>
-  </div>
-  <div class="g_hold">
-    <img src="../assets/img_1.png" alt="" />
-    <h1>Los Angeles, USA</h1>
-    <p>04/05 - 06/05</p>
-
-    <h5>2/3</h5>
-    <h6>$55</h6>
-    <div class="clear"></div>
-  </div>
-  <div class="clear"></div>
 
 </div>
-<a class="rightArrow"></a>
+
 <div class="clear"></div>
 <div class="img-heading">
   <img src="../assets/img-heading.png" alt="" />

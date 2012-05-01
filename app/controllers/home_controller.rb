@@ -13,6 +13,7 @@ class HomeController < ApplicationController
       end
       
       @items_with_uniq_cities = Item.select("distinct(city)")
+      @items = Item.all(:limit => 10)
     end
   end
 

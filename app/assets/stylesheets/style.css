@@ -325,7 +325,7 @@ h2 {
 .fltR{float:right;}
 .leftArrow, .rightArrow{background:url(../assets/left_arrow.png) no-repeat;float:left; width:19px;height:29px;margin:64px 30px 0 30px;}
 .rightArrow{background:url(../assets/right_arrow.png) no-repeat !important;margin:64px 0 0 10px;}
-.gellaryHold{float:left;width:830px;}
+.gellaryHold{float:left;width:830px; margin-left: 60px;}
 .g_hold {
     background-color: #FFFFFF;
     box-shadow: 4px 5px 6px #333333;
