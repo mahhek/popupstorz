@@ -36,3 +36,53 @@
   <%= link_to('Edit Profile', edit_user_registration_path) %>
 </li>
 
+<div id="comments">
+
+  <%= form_for @comment, :url => "/users/add_comment" do |f| %>
+    <% if @comment.errors.any? %>
+      <div id="errorExplanation" class="erro_messages">
+        <h2>Oops! Looks like you need to include the following:</h2>
+        <ul>
+          <li style="list-style: square;float: left;">
+            <%= @comment.errors.full_messages.to_sentence  %>
+          </li>
+        </ul>
+      </div>
+    <% end %>
+    <%= hidden_field_tag "id",@user.id %>
+    <div class="field">
+      <%= f.label :title %><br/>
+      <%= f.text_field "title" %>
+    </div>
+    <div class="field">
+      <%= f.label :comment %><br />
+      <%= f.text_area "comment", :rows => 5 %>
+    </div>
+    <div class ="actions">
+      <%= f.submit "Leave Comment" %>
+    </div>
+  <% end %>
+
+
+</div>
+
+<div id="show_comments">
+  <b>showing all comments</b><br/>
+<%unless @user.comments.blank? %>
+        <%@user.comments.each do|f|%>
+          <b><%=f.title  %></b><br/>
+          <%= f.comment %><br/>
+          <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+          <br/>
+          <br/>
+        <%end%>
+      <%end%>
+<div>
+  <span id="rating_<%= @user.id %>">
+    <%= render :partial => "/ratings/rating", :locals => {:asset => @user} %>
+  </span>
+</div>
+
+</div>
+
+

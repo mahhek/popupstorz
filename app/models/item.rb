@@ -3,6 +3,8 @@
 
 
 class Item < ActiveRecord::Base
+  acts_as_commentable
+  acts_as_rateable
   has_and_belongs_to_many :availability_options
   has_many :avatars, :dependent => :destroy
   belongs_to :listing_type

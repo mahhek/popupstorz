@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   def show
     @user = User.find_by_id(params[:id])
+    @comment=Comment.new
   end
   
   def search_members
@@ -30,6 +31,20 @@ class UsersController < ApplicationController
     p "aaaaaaaaaaaaa",conds
     @members = User.find(:all, :conditions => [conds])
 #    @members = User.paginate(:page => params[:page], :per_page => 4, :conditions => [conds])
+  end
+    def add_comment
+    @comment = Comment.new(params[:comment])
+    @comment.user=current_user
+    @user =User.find(params[:id])
+    if @comment.save
+      flash[:notice] = "Comment Added"
+      @user.comments << @comment
+       redirect_to profile_path(current_user)
+    else
+      flash[:error] = "Not saved"
+      render :show
+    end
+
   end
   
   

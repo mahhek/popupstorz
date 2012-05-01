@@ -98,6 +98,8 @@ class ItemsController < ApplicationController
 
   def show
     @item = Item.find(params[:id])
+    @comment = Comment.new
+   
     @user = @item.user
     @map = GMap.new("map")
     @map.control_init(:map_type => true, :small_zoom => true)
@@ -184,6 +186,25 @@ class ItemsController < ApplicationController
         render :js => "$('#searched-items-div').html(#{foo});$.setAjaxPagination();"
       end
     end
+  end
+
+  def new_comment
+   
+  end
+  
+  def add_comment
+    @comment = Comment.new(params[:comment])
+    @comment.user=current_user
+    @item =Item.find(params[:id])
+    if @comment.save
+      flash[:notice] = "Comment Added"
+      @item.comments << @comment
+       redirect_to "/items/show/#{@item.id}"
+    else
+      flash[:error] = "Not saved"
+      render :show
+    end
+   
   end
 
   

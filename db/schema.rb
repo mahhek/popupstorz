@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120429112839) do
+ActiveRecord::Schema.define(:version => 20120430133116) do
 
   create_table "accounts", :force => true do |t|
     t.datetime "created_at"
@@ -38,6 +38,16 @@ ActiveRecord::Schema.define(:version => 20120429112839) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
+  end
+
+  create_table "comments", :force => true do |t|
+    t.string   "title",            :limit => 50, :default => ""
+    t.string   "comment",                        :default => ""
+    t.datetime "created_at"
+    t.integer  "commentable_id",                 :default => 0,  :null => false
+    t.string   "commentable_type", :limit => 15, :default => "", :null => false
+    t.integer  "user_id",                        :default => 0,  :null => false
+    t.datetime "updated_at"
   end
 
   create_table "countries", :force => true do |t|
@@ -125,6 +135,16 @@ ActiveRecord::Schema.define(:version => 20120429112839) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "ratings", :force => true do |t|
+    t.integer  "rating",                      :default => 0
+    t.datetime "created_at",                                  :null => false
+    t.string   "rateable_type", :limit => 15, :default => "", :null => false
+    t.integer  "rateable_id",                 :default => 0,  :null => false
+    t.integer  "user_id",                     :default => 0,  :null => false
+  end
+
+  add_index "ratings", ["user_id"], :name => "fk_ratings_user"
 
   create_table "services", :force => true do |t|
     t.integer  "user_id"
