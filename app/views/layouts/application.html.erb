@@ -92,6 +92,7 @@
               <% if params[:controller] == "messages" or (params[:controller] == "users" and params[:action] == "show") %>
                 <%= link_to 'Messages', inbox_messages_path %>
                 <%= link_to 'My Listings',items_path %>
+                <%= link_to 'My Favorites', favorites_items_path %>
                 <%= link_to 'My Pop Ups',"#" %>
                 <%= link_to('My Profile', profile_path(current_user.id)) %>
                 <%= link_to "My Account","#" %>

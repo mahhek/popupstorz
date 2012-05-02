@@ -102,6 +102,8 @@ PopupStorz::Application.routes.draw do
     get :autocomplete_item_city, :on => :collection
     get :add_to_favorite, :on => :member
     get :remove_from_favorite, :on => :member
+    get :remove_from_favorite_on, :on => :member
+    get :favorites, :on => :collection
     resources :offers do
       resources :payments
       member do

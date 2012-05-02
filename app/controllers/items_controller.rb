@@ -33,6 +33,25 @@ class ItemsController < ApplicationController
     end
   end
 
+  def remove_from_favorite_on
+    @item = Item.find params[:id]
+    @user = current_user
+    if @item.users.include?(@user)
+      @item.users.destroy(@user)
+    end
+    @items = current_user.favorites
+    respond_to do |format|
+      format.js do
+        foo = render_to_string(:partial => 'favorites', :locals => { :items => @items }).to_json
+        render :js => "$('#favorite_div').html(#{foo});"
+      end
+    end
+  end
+
+  def favorites
+    @items = current_user.favorites
+  end
+
   def index
     @items = current_user.items
   end

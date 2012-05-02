@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
   has_many :notifications
   has_many :offers
   has_one  :account
-  has_and_belongs_to_many :items
+  has_and_belongs_to_many :favorites, :class_name => 'Item', :join_table => 'items_users', :association_foreign_key => 'item_id'
 
   def popup_storz_display_name
     return"#{self.first_name[0..6]} #{self.last_name[0..0].capitalize} ." if self.last_name
