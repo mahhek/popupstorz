@@ -1,0 +1,39 @@
+<% user = (@offer.user == current_user) ? @item.user : @offer.user %>
+
+<div style="float: left;font-style: italic;width: 95%;background-color: #eeeeee;padding: 10px;">
+  <div style="float: left;width: 45%;">
+    <b>Email:</b>  <%= user.email %><br/>
+    <b>First Name:</b>  <%= user.first_name %><br/>
+    <b>Last Name:</b>  <%= user.last_name %><br/>
+    <b>Gender:</b>  <%= user.gender %><br/>
+    <b>Address 1:</b>  <%= user.address_1 %><br/>
+    <b>Address 2:</b>  <%= user.address_2 %><br/>
+    <b>Landline Phone:</b>  <%= user.landline_phone %><br/>
+    <b>Office Phone:</b>  <%= user.office_phone %><br/>
+    <b>Cell Phone: </b>  <%= user.cell_phone %><br/>
+  </div>
+  <div style="float: left;width: 45%;">
+    <b>Mobile verification: &nbsp;</b><%= image_tag "#{user.account.is_sms_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
+    <b>Picture Verification: &nbsp;</b><%= image_tag "#{user.account.is_picture_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
+    <b>Facebook Verification: &nbsp;</b><%= image_tag "#{user.account.is_facebook_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
+    <b>Twitter Verification: &nbsp;</b><%= image_tag "#{user.account.is_twitter_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
+  </div>
+</div>
+<br/><br/>
+
+<div style="float: left;width: 100%;margin-top: 20px;">
+  Rental Start Date: <%= @offer.rental_start_date.strftime("%d-%m-%Y %I:%M %p") %>
+  <br/>
+  Rental End Date: <%= @offer.rental_end_date.strftime("%d-%m-%Y %I:%M %p") %>
+  <br/>
+  Total Amount: <%= @offer.total_amount %>
+  <br/>
+  Additional Message: <%= @offer.latest_message.message %>
+  <br/>
+  Status: <%= @offer.status %>
+  <br/>
+  <% if @offer.preferred_location %>
+    Preferred Location / Address: <%= @offer.preferred_address  %>
+  <% end %>
+  <br/>
+</div>

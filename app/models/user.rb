@@ -82,6 +82,11 @@ class User < ActiveRecord::Base
     result
   end
 
+  def rentareto_display_name
+    return"#{self.first_name[0..6]} #{self.last_name[0..0].capitalize} ." if self.last_name
+    self.first_name
+  end
+
 
   
 end

@@ -1,0 +1,32 @@
+<h2>
+  SMS Verification
+</h2>
+<div style="width: auto;height: auto;border: 1px solid silver;padding: 5px;">
+  You mobile number is a way for us to verify you exist  in planet earth and to send you
+  logistical information concerning your transactions. Also, it will be a way to contact the
+  other party, as an owner or renter, after the transaction has been confirmed.
+  We will never sell or distribute you number to other parties.
+</div>
+<% if @account.sms_verification_code.blank? %>
+  <%= form_for @account, :remote => true do |f| %>
+    <br/>
+    <%= hidden_field_tag "verification_type", params[:verification_type] %>
+    <b>Enter Phone Number:</b><br/>
+    <%= text_field_tag "mobile_number", current_user.cell_phone.blank? ? "+30" : current_user.cell_phone  %>
+    <br/><br/>
+    <div class="actions">
+      <%= f.submit "Send me Verification Code" %>
+    </div>
+  <% end %>
+<% else %>
+  <%= form_for @account, :remote => true do |f| %>
+    <br/>
+    <br/>
+    <%= hidden_field_tag "verification_type", params[:verification_type] %>
+    <%= text_field_tag "sms_verification_code" , "", :placeholder => "Enter Verification Code" %>
+    <br/><br/>
+    <div class="actions">
+      <%= f.submit "Enter code and Submit" %>
+    </div>
+  <% end %>
+<% end %>

@@ -1,0 +1,88 @@
+<script type="text/javascript">
+  $(function() {
+    var subscription;
+
+    jQuery(function() {
+      Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
+      return subscription.setupForm();
+    });
+
+    subscription = {
+      setupForm: function() {
+        return $('#cc_verification_form').submit(function() {
+          $('input[type=submit]').attr('disabled', true);
+          subscription.processCard();
+          return false;
+        });
+      },
+      processCard: function() {
+        var card;
+        card = {
+          number: $('#card_number').val(),
+          cvc: $('#card_code').val(),
+          expMonth: $('#card_month').val(),
+          expYear: $('#card_year').val()
+        };
+        return Stripe.createToken(card, subscription.handleStripeResponse);
+      },
+      handleStripeResponse: function(status, response) {
+        if (status === 200) {
+          $('#account_stripe_card_token').val(response.id);
+          return $('#cc_verification_form')[0].submit();
+        } else {
+          $('#stripe_error').text(response.error.message);
+          return $('input[type=submit]').attr('disabled', false);
+        }
+      }
+    };
+
+  }).call(this);
+</script>
+
+<h2>
+  Credit Card Verification
+</h2>
+<div style="width: auto;height: auto;border: 1px solid silver;padding: 5px;">
+  <p>
+    We collect credit card info as a security measure to verify your identity.
+    Activation doesn't cost any thing, and we will never charge your card for 
+    anything you don't explicity authorize.
+  </p>
+</div>
+
+<%= form_for @account, :html => {:id => "cc_verification_form"} do |f| %>
+  <%= hidden_field_tag "verification_type", params[:verification_type] %>  
+  <%= f.hidden_field :stripe_card_token %>
+  <br/>
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+  <br/>
+  <div class="field">
+    <%= label_tag :card_number, "Credit Card Number " %>
+    <%= text_field_tag :card_number, nil, name: nil %>
+  </div>
+  <br/>
+  <div class="field">
+    <%= label_tag :card_code, "Security Code on Card (CVV)" %>
+    <%= text_field_tag :card_code, nil, name: nil %>
+  </div>
+  <br/>
+  <div class="field">
+    <%= label_tag :card_month, "Card Expiration" %>
+    <%= select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}%>
+    <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"}%>
+  </div>
+  <br/>
+  <div id="stripe_error" style="padding: 5px;width :100%;float:left;font-style: italic;color: red;">
+    <noscript>
+      JavaScript is not enabled and is required for this form. First enable it in your web browser settings.
+    </noscript>
+  </div>
+  <br/>
+  <div class="actions">
+    <%= f.submit "Verify" %>
+  </div>
+<% end %>
+

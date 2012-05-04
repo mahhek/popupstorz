@@ -20,6 +20,7 @@
       <%= item.description %></span>
     <div id="favorite_div_<%= item.id %>">
           <%= render :partial => "favorite", :locals => {:item => item} %>
+      <p style="text-align:right;"><%= link_to "Book now", item_path(item.id), %></p>
     </div>
   </div>
 <%end%>

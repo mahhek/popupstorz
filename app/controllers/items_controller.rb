@@ -95,6 +95,7 @@ class ItemsController < ApplicationController
       else
         @item.availability_option_ids = params[:availability_options]
         if @item.save
+          @item.update_attribute("item_status","Available")
           session[:items] = nil
           flash[:notice] = "Thanks for adding your space."
           redirect_to new_item_avatar_path(@item)

@@ -25,7 +25,7 @@ jQuery(document).ready(function() {
     <p><%=item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.strftime("%m/%y")%></p>
 
     <h5>2/3</h5>
-    <h6><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h6>
+    <%#*<h6><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h6>%>
     <div class="clear"></div>
   </div>
     </li>

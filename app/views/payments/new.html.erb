@@ -1,0 +1,148 @@
+<script type="text/javascript">
+  jQuery(function() {
+    var payment;
+
+    jQuery(function() {
+      Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
+      return payment.setupForm();
+    });
+
+    payment = {
+      setupForm: function() {
+        return $('#payForm').submit(function() {
+          if($('#is_confirm_terms').is(':checked')){
+            $('input[type=submit]').attr('disabled', true);
+            payment.processCard();
+            return false;
+          }else{
+            alert('Please confirm the terms of use firs, thanks.');
+            return false;
+          }
+        });
+      },
+      processCard: function() {
+        var card;
+        card = {
+          number: $('#card_number').val(),
+          cvc: $('#card_code').val(),
+          expMonth: $('#card_month').val(),
+          expYear: $('#card_year').val()
+        };
+        return Stripe.createToken(card, payment.handleStripeResponse);
+      },
+      handleStripeResponse: function(status, response) {
+        if (status === 200) {
+          $('#payment_stripe_card_token').val(response.id);
+          return $('#payForm')[0].submit();
+        } else {
+          $('#stripe_error').text(response.error.message);
+          return $('input[type=submit]').attr('disabled', false);
+        }
+      }
+    };
+
+  });
+</script>
+<div id="hd-result">
+  <div class="container_12">
+    <div id="r-nav" class="grid_9"> <a href="/">Home</a> &nbsp;&gt;&nbsp; Confirm your booking and Contact Owner  </div>
+    <div class="grid_3"> &nbsp; </div>
+    <div class="clear">&nbsp;</div>
+  </div>
+</div>
+
+<div id="booking-content">
+  <div class="container_12">
+    <%= form_for [@item,@offer, @payment], :html => {:id => :payForm} do |f| %>
+      <div style="padding: 20px;float: left;">
+        <% if @payment.errors.any? %>
+          <div class="error_messages">
+            <h2><%= pluralize(@payment.errors.count, "error") %> prohibited this subscription from being saved:</h2>
+            <ul>
+              <% @payment.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+      <div class="grid_12">
+
+        <% if @offer.user == current_user %>
+          <%= render :partial => "/offers/offer_header" %>
+        <% end %>
+
+        <div class="clear">&nbsp;</div>
+
+
+
+        <div id="details-panel">
+          
+          <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" , :alt => "no image available") %>
+     
+          <h5>
+            <%= link_to @item.title, item_path(@item) %>
+          </h5>
+          <%#*Owner : <%= link_to @item.user.rentareto_display_name, profile_path(@item.user) %><br/><br/>%>
+          <strong>Description</strong><br/>
+          <%= raw @item.description %>
+          <div class="clear">&nbsp;</div>
+        </div>
+
+        <h3>Confirm your booking and contact <%= link_to "Owner", profile_path(@item.user) %></h3> <br/>
+
+        <div id="booking-form">
+
+
+          <div id="stripe_error" style="padding: 5px;width :100%;float:left;font-style: italic;color: red;">
+            <noscript>
+              JavaScript is not enabled and is required for this form. First enable it in your web browser settings.
+            </noscript>
+          </div>
+
+          <% rentareto_fee = @offer.total_amount.blank? ? 0 : (( @offer.total_amount * 10 ) / 100 )%>
+          <% owner_amount = @offer.total_amount.blank? ? 0 : ( @offer.total_amount - (( @offer.total_amount * 10 ) / 100)) %>
+          <% total_amount = @offer.total_amount %>
+
+          <%= f.hidden_field :seller_id, :value => @item.user_id %>
+          <%= f.hidden_field :renter_id, :value => current_user.id  %>
+          <%= f.hidden_field :offer_id, :value => @offer.id  %>
+          <%= f.hidden_field :rentareto_fee, :value => rentareto_fee %>
+          <%= f.hidden_field :seller_amount, :value => owner_amount %>
+          <%= f.hidden_field :stripe_card_token,  %>
+          <br/>
+          Total ( <b><%= total_amount %></b>  )<br/>
+          Reservation Fee to be paid now ( <b><%= rentareto_fee %></b>   )<br/>
+          Remaining balance to be paid to owner: ( <b><%= owner_amount %></b> )<br/>
+          <br/>
+          <div class="field">
+            <%= f.label :amount, "Amount to Pay" %>
+            <%= f.text_field :amount, :value => rentareto_fee, :readonly => true %>
+          </div>
+          <h3>Enter Credit Card</h3>
+          <%=label_tag :card_number, "Credit Card Number"%>
+          <%= text_field_tag :card_number, "4242424242424242", name: nil %>
+          <br/><br/>
+          <%= label_tag :card_code, "Security Code (CVV)"%>
+          <%= text_field_tag :card_code, "123", name: nil%>
+          <br/><br/>
+          <%= label_tag :card_month, "Expiry Date"%>
+          <%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month"} %>
+          <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"} %>
+          <br/>
+          <br/>
+          <% terms_of_use = "THis is terms of use, you have to agree this to proceed.
+  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
+  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
+  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
+  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
+  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
+  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed." %>
+          <%= text_area_tag :terms_of_user, terms_of_use, :size => "50x4" %><br/><br/>
+          <%= check_box_tag "is_confirm_terms" %>By Confirming I Accept Terms of Use<br/><br/>
+          <%= f.submit "Confirm Booking", :class=> "submit_button" %>
+        <%end%>
+      </div>
+    </div>
+  </div>
+</div>

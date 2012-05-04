@@ -17,6 +17,7 @@ class Item < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :admin
+  has_many :offers
   has_and_belongs_to_many :users
 
   validates :address, :presence => true
@@ -70,6 +71,11 @@ class Item < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def check_and_calculate_prices
+    self.price_per_week = (self.price * 7).to_i if self.price_per_month.blank?
+    self.price_per_month = (self.price * 30).to_i if self.price_per_month.blank?
   end
 
 

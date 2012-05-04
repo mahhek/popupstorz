@@ -1,0 +1,8 @@
+<% @notifications.each do |notification| %>
+  <div style="float: left;margin: 5px;padding: 3px;border: 1px solid silver;background-color: #cccccc;width: 98%;">
+    <%= raw(notification.description) %>
+  <%#= link_to 'delete', "/notifications/destroy" %>
+    <%= link_to 'x', "/notifications/destroy/#{notification.id}",
+      :method => :delete, :remote => true %>
+  </div>
+<% end %>

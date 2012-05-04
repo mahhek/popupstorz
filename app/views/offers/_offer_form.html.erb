@@ -1,21 +1,3 @@
-<script type='text/javascript'>//<![CDATA[
-  $(window).load(function(){
-    $(document).ready(function(){
-
-      // jsFiddle
-      $("#offer_rental_start_date").datepicker({minDate: new Date()});
-
-      $("#offer_rental_end_date").datepicker({minDate: new Date()});
-      // end jsFiddle
-      $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
-
-    });
-
-
-  });//]]>
-
-</script>
-
 <div id="hd-result">
   <div class="container_12">
     <div id="r-nav" class="grid_9"> <a href="/">Home</a> &nbsp;&gt;&nbsp; Make a booking</div>
@@ -23,51 +5,44 @@
     <div class="clear">&nbsp;</div>
   </div>
 </div>
-
-<div id="booking-content">
-  <div class="container_12">
-    <%= form_for [@item, @offer], :html => {:name => "offer_form", :onsubmit => "return checkPrefferedAddress();"} do|f| %>
-      <div style="padding: 20px;float: left;">
-        <% if @offer.errors.any? %>
-          <div id="errorExplanation" class="erro_messages">
-            <h2>Oops! Looks like you need to include the following:</h2>
-            <ul>
-              <li style="list-style: square;float: left;">
-                Required fields(and the display names): <%= @offer.errors.full_messages.to_sentence  %>
-              </li>
-            </ul>
-          </div>
-        <% end %>
+<%= form_for [@item, @offer], :html => {:name => "offer_form", :onsubmit => "return checkPrefferedAddress();"} do|f| %>
+  <div style="padding: 20px;float: left;">
+    <% if @offer.errors.any? %>
+      <div id="errorExplanation" class="erro_messages">
+        <h2>Oops! Looks like you need to include the following:</h2>
+        <ul>
+          <li style="list-style: square;float: left;">
+            Required fields(and the display names): <%= @offer.errors.full_messages.to_sentence  %>
+          </li>
+        </ul>
       </div>
+    <% end %>
+  </div>
+  <div id="booking-content">
+    <div class="container_12">
       <div class="grid_12">
 
-
-        <ul class="steps">
-          <li class="start"> <span>1</span> Make a Booking</li>
-          <li class="next"><span> &nbsp;&nbsp;2</span>Confirm & Contact</li>
-          <li class="empty"></li>
-        </ul>
-
-        <br class="clear" />
+        <% unless current_user == @offer.user %>
+          <h1>
+            We have great news for you! <%= @offer.user.rentareto_display_name %> requested your Item <%= @item.title %>
+          </h1>
+        <% end %>
+        <br/>
 
         <div class="clear">&nbsp;</div>
 
         <div id="details-panel">
-          <% if @item.avatars.size > 0 %>
-            <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" ) %>
-          <% else %>
-            <%= @item.title %>
-          <% end %>
+          <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" ) %>
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>
-          <%#*Owner : <%= link_to @item.user.rentareto_display_name, profile_path(@item.user) %><br/><br/>
+          Owner : <%= link_to @item.user.rentareto_display_name, profile_path(@item.user) %><br/><br/>
           <strong>Description</strong><br/>
           <%= raw @item.description %>
           <div class="clear">&nbsp;</div>
         </div>
 
-        <h3>Suggest Terms</h3> <br/>
+        <h3><%= @offer.user.rentareto_display_name %> suggested the following terms:</h3> <br>
 
         <div id="booking-form">
 
@@ -83,52 +58,45 @@
               <%= hidden_field_tag :per_day_price, @item.price %>
               <%= hidden_field_tag :per_week_price, @item.price_per_week %>
               <%= hidden_field_tag :per_month_price, @item.price_per_month %>
-              <%= f.hidden_field :total_amount, :value => @calculated_price %>
+              <%= f.hidden_field :total_amount, :value => @offer.total_amount %>
               <div style="float: left;width: 100px;" id="daily_price">€<%= @item.price %></div>
-              <div style="float: left;width: 100px;" id="duration"><%= "#{@number_of_days} days" %></div>
-              <div style="float: left;width: 100px;" id="total_price">€<%= @calculated_price %></div>
+              <div style="float: left;width: 100px;" id="duration"><%= (@offer.rental_end_date.to_datetime - @offer.rental_start_date.to_datetime).to_i %> days</div>
+              <div style="float: left;width: 100px;" id="total_price">€<%= @offer.total_amount %></div>
             </div>
+
+            <div class="xfields">
+
+            </div>
+            <br/><br/>
 
           </div>
 
-          <strong>I need this... From: *</strong><br/>
+
+          <%= @offer.user.rentareto_display_name %> needs your item from:<br/>
 
           <label>Pickup:</label>
-          <%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %>
+          <%= f.text_field :rental_start_date, :value => @offer.rental_start_date.strftime("%m/%d/%Y"), :class => "datex", :onchange => "calculateTotalAmount();" %>
           <div class="clear"></div>
           <label>Return:</label>
-          <%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %>
-
+          <%= f.text_field :rental_end_date, :value => @offer.rental_end_date.strftime("%m/%d/%Y"), :class => "datex", :onchange => "calculateTotalAmount();" %>
           <br/>
           <div class="clear"></div>
           <br/>
           <label>Preferred Location:</label>
 
           <div style="padding-top:22px; font-size:13px;">
-            <span style="float: left;">
-              <%= f.radio_button :preferred_location, false, :checked => true,  :class => "radio" %>
-            </span>
-            <span style="float: left;">
-              <%#= label :preferred_location_email, "#{@item.user.rentareto_display_name} Location", :style => "padding-top:0px !important;line-height: 20px;" %> &nbsp;&nbsp;&nbsp;&nbsp;
-            </span>
-            <span style="float: left;">
-              <strong>or</strong>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </span>
-            <span style="float: left;">
-              <%= f.radio_button :preferred_location, true, :checked => false ,  :class => "radio" %>
-            </span>
-            <span style="float: left;">
-              <%= label :preferred_location_sms, 'Choose another location', :style => "padding-top:0px !important;line-height: 20px;"  %>
-            </span>
+            <%= f.radio_button :preferred_location, false, :checked => @offer.preferred_location,  :class => "radio" %>
+            <%= label :preferred_location_email, "#{@item.user.rentareto_display_name} Location" %> &nbsp;&nbsp;&nbsp;&nbsp;
+            <strong>or</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+            <%= f.radio_button :preferred_location, true, :checked => @offer.preferred_location,  :class => "radio" %>
+            <%= label :preferred_location_sms, 'Choose another location' %>
           </div>
           <br/>
 
           <div class="clear"></div>
 
-          <div style="padding-left:500px; font-size:13px; font-style:italic;">
-            <%#= f.text_field :preferred_address %>
+          <div style="padding-left:390px; font-size:13px; font-style:italic;">Please Enter Preferred <strong>Address</strong> :<br/>
+            <%= f.text_field :preferred_address %>
             <div id="item_advanced_container" style="display:none;">
               <div id="item_advanced" style="display:none;">
                 <%= label_tag(:longitude, "Coordinates") %>
@@ -141,47 +109,57 @@
             </div>
           </div>
           <br/>
-
           <div class="clear"></div>
 
           <label>Willingness to Pay: </label>
           <%= f.text_field :willingness_to_pay %>
           € &nbsp;&nbsp;&nbsp;<font size="2"><em>For the whole rental period</em></font><br/>
-<br/><br/>
-          <label style="line-height:18px;">I need a response <br/>from the Owner  by:</label>
-          <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%>
+
+
+          <label style="line-height:18px;">She needs a response from you by:</label>
+          <%= f.text_field :cancellation_date, :value => @offer.cancellation_date.strftime("%m/%d/%Y"),  :class => "datex" %>
+          <script type="text/javascript">
+            $('#offer_cancellation_date').datepicker();
+          </script>
           <br/><br/>
           <div class="clear"></div>
 
-          <label style="line-height:18px; padding-top:40px;">
-            <%#*<strong>Send <%= @item.user.rentareto_display_name % message:<br/>%>
-            <small>maybe tell him/her why you need<br/> the item</small></label><br/>
-          <%= f.fields_for :offer_messages do |offer_message| %>
-            <%# if offer_message.object.new_record? %>
-              <%#= offer_message.text_area :message %>
-              <%#= offer_message.hidden_field :user_id, :value => current_user.id %>
-              <%#= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
-            <%#end%>
-          <%end%>
-          <br/>
-          <!--<input name="" type="checkbox" value="" /> <font size="2">I agree to the <a href="#">terms of use.</a></font><br />
-          -->
-          <br/>
-          <div style="padding-left:200px;">
-            <button class="large-max button orange"> Send request </button>
+
+          <label>
+            <strong><%= @offer.user.rentareto_display_name %></strong> message you:<br/>
+          </label>
+
+          <div style="padding:22px 60px 0 0; font-size:13px;">
+            <%= raw @offer.latest_message.message %>
           </div>
+          <div class="clear"></div>
+
+
+          <div style="padding-left:200px; padding-top:20px;">
+            <input type="checkbox" value="" name=""/>
+            <font size="2">I agree to the <a href="#">terms of use.</a></font>
+            <br/>
+            <br/>
+
+            <a class="large-max button orange" href="<%= accept_item_offer_path(params[:item_id], params[:id]) %>"  >
+              Accept <%= current_user ==  @offer.user ? "Change" : "Request" %>
+            </a> &nbsp; - &nbsp;
+            <button class="large button blue" type="submit"> Suggest other terms </button><br><br>
+            or <a href="<%= decline_item_offer_path(params[:item_id], params[:id]) %>">Decline</a>
+          </div>
+
+
         </div>
+
       </div>
       <div class="clear">&nbsp;</div>
-    <% end %>
+      <div id="my_map_div" style="visibility:hidden;display: none;">
+        <%= raw(@map.div(:width => 500, :height => 400)) %>
+      </div>
+    </div>
   </div>
-  <div id="my_map_div" style="visibility:hidden;display: none;">
-    <%= raw(@map.div(:width => 500, :height => 400)) %>
-  </div>
-</div>
 
-
-
+<% end %>
 
 <script type="text/javascript">
   $('.radio').change(function(){
@@ -226,7 +204,6 @@
     }
   }
   function calculateTotalAmount(){
-    //$("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
     if($('#offer_rental_start_date').val() != 'mm/dd/yy' && $('#offer_rental_end_date').val() != 'mm/dd/yy'){
       start = $('#offer_rental_start_date').val();
       start_date = new Date(start);
@@ -239,7 +216,7 @@
 
       $('#duration').text(number_of_days+ " days");
       $('#offer_total_amount').val(calculate_price(number_of_days));
-      $('#total_price').text($('#offer_total_amount').val()+ " €");
+      $('#total_price').text($('#offer_total_amount').val()+ " Euro");
     }
   }
   function calculate_price(number_of_days){
@@ -249,12 +226,6 @@
     return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
   }
 </script>
-
-
-
-
-
-
 
 <script>
   var marker = null;
@@ -380,4 +351,22 @@
     });
     //$('#new_location').validate();
   });
+</script>
+
+<script type='text/javascript'>//<![CDATA[
+  $(window).load(function(){
+    $(document).ready(function(){
+
+      // jsFiddle
+      $("#offer_rental_start_date").datepicker({minDate: new Date()});
+
+      $("#offer_rental_end_date").datepicker({minDate: new Date()});
+      // end jsFiddle
+      $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
+
+    });
+
+
+  });//]]>
+
 </script>

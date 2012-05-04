@@ -11,11 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120501142705) do
+ActiveRecord::Schema.define(:version => 20120504112158) do
 
   create_table "accounts", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "stripe_card_token"
+    t.integer  "user_id"
+    t.string   "email"
+    t.string   "plan_id"
   end
 
   create_table "availability_options", :force => true do |t|
@@ -95,6 +99,9 @@ ActiveRecord::Schema.define(:version => 20120501142705) do
     t.float    "cleaning_fee"
     t.float    "deposit"
     t.boolean  "is_recommended",                                      :default => false
+    t.float    "price_per_week"
+    t.float    "price_per_month"
+    t.string   "item_status"
   end
 
   create_table "items_users", :id => false, :force => true do |t|
@@ -136,9 +143,47 @@ ActiveRecord::Schema.define(:version => 20120501142705) do
     t.datetime "updated_at"
   end
 
-  create_table "offers", :force => true do |t|
+  create_table "offer_messages", :force => true do |t|
+    t.integer  "offer_id"
+    t.text     "message"
+    t.integer  "user_id"
+    t.string   "msg_posted_as"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "offers", :force => true do |t|
+    t.datetime "rental_start_date"
+    t.datetime "rental_end_date"
+    t.string   "pickup_location"
+    t.float    "willingness_to_pay"
+    t.integer  "required_response_by_owner_before"
+    t.string   "additional_message"
+    t.string   "status"
+    t.integer  "item_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "total_amount"
+    t.boolean  "preferred_location",                :default => false
+    t.string   "preferred_address"
+    t.datetime "cancellation_date"
+  end
+
+  create_table "payments", :force => true do |t|
+    t.integer  "seller_id"
+    t.integer  "renter_id"
+    t.float    "amount"
+    t.float    "rentareto_fee"
+    t.float    "seller_amount"
+    t.string   "email"
+    t.string   "stripe_customer_token"
+    t.string   "stripe_card_token"
+    t.string   "transaction_number"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "offer_id"
   end
 
   create_table "ratings", :force => true do |t|

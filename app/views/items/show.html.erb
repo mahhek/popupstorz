@@ -1,3 +1,20 @@
+<script type='text/javascript'>//<![CDATA[
+  $(window).load(function(){
+    $(document).ready(function(){
+
+      // jsFiddle
+      $("#txtFromDate").datepicker({minDate: new Date()});
+
+      $("#txtToDate").datepicker({minDate: new Date()});
+      // end jsFiddle
+
+    });
+
+
+  });//]]>
+
+</script>
+
 <a href='#' class="back " onclick='history.back();'>&lt;&lt; Back to results</a>
 <div class="leftcontent">
   <div class="shadowCont">
@@ -9,7 +26,7 @@
       <p class="charming_text"><%= @item.address %>(<%= @item.zipcode %> - <%= @item.city %>, <%= @item.country_code   %>)</p>
     </div>
     <div class="fltR">
-      <h1 class="charming graytext"><%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h1>
+      <%#*<h1 class="charming graytext"><%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h1>%>
       <p class="charming_text graytext"><%=  @item.time_for_unit_price %></p>
     </div>
     <div class="clear"></div>
@@ -154,10 +171,116 @@
     <div class="clear"></div>
   </div>
 
+
+
 </div>
 
 <div class="clear"></div>
 
+
+
+
+
+
+
+
+
+
+        <div id="box-bookit">
+        <%= form_tag new_item_offer_path(@item.id), :method => :get  , :onsubmit => "return check_dates();" do  %>
+          <div id="pricing">
+            <div id="price" class="price_to_book" ><%= @item.price.to_i %><sup>€</sup></div>
+            <div id="per" >
+              <select name="price_per_span" onchange="change_price_to_book($(this));">
+                <option value="<%= @item.price.to_i %>">Per day</option>
+                <option value="<%= @item.price_per_week.to_i %>">Per week</option>
+                <option value="<%= @item.price_per_month.to_i %>">Per month</option>
+              </select>
+              <%= hidden_field_tag :per_day_price, @item.price %>
+              <%= hidden_field_tag :per_week_price, @item.price_per_week %>
+              <%= hidden_field_tag :per_month_price, @item.price_per_month %>
+            </div>
+            <div class="clear"></div>
+          </div>
+          <div id="r-date">
+            <div id="pickup">
+              <label>Pick up</label>
+              <input type="text" value="mm/dd/yy" name="pick_up" id="txtFromDate" onchange ="calculateTotalAmount();" />
+
+            </div>
+            <div id="return">
+              <label>Return</label>
+              <input type="text" value="mm/dd/yy"  name="return" id="txtToDate" onchange ="calculateTotalAmount();" />
+            </div>
+            <div class="clear"></div>
+          </div>
+          <div id="r-date">
+            <div id="pickup">
+              <label>Total Days</label>
+              <div id="total_days" class="price_to_book" style="margin-left: 10px;font-size: 14px;">0 &nbsp;days</div>
+            </div>
+            <div id="pickup" >
+              <label>Total Price</label>
+              <div id="total_price" class="price_to_book" style="margin-left: 10px;font-size: 14px;">0 &nbsp;€</div>
+            </div>
+            <div class="clear"></div>
+          </div>
+
+          <div id="submit-book">
+            <% if @item.item_status == "Available" %>
+              <% unless (@item.user == current_user) %>
+                <button class="large-max button orange" type="submit"> Book it </button>
+              <% else %>
+                <button class="large-max button orange" onclick="alert('You are owner, You can not book it, Thanks.');return false;" > Book it </button>
+              <% end %>
+            <% else %>
+              <button class="large-max button orange" onclick="alert('Item is already Reserved and not Available, Thanks.');return false;" > Reserved </button>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+
+
+
+<script type="text/javascript">
+  function change_price_to_book(elem){
+  $('#price').html(elem.val()+"<sup>€</sup>");
+  }
+  function check_dates(){
+  if($('#txtFromDate').val() == "" || $('#txtFromDate').val() == "mm/dd/yy" || $('#txtToDate').val() == "" || $('#txtToDate').val() == "mm/dd/yy" ){
+  alert('Please select right date');
+  return false;
+  }else{
+  return true;
+  }
+  }
+</script>
+
+<script type="text/javascript">
+  function calculateTotalAmount(){
+  if($('#txtFromDate').val() != 'mm/dd/yy' && $('#txtToDate').val() != 'mm/dd/yy'){
+  start = $('#txtFromDate').val();
+  start_date = new Date(start);
+  end = $('#txtToDate').val();
+  end_date = new Date(end);
+
+  number_of_days = (end_date - start_date)/(1000*60*60*24);
+  if(number_of_days == 0){
+  number_of_days = 1;
+  }
+
+  $('#total_days').text(number_of_days+ " days");
+  $('#total_price').text(calculate_price(number_of_days)+ " €");
+  }
+  }
+  function calculate_price(number_of_days){
+  months = Math.floor(number_of_days/30);
+  weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);
+  days = (number_of_days - (30 * months)) - (weeks * 7);
+  return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
+  }
+</script>
 
 
 
