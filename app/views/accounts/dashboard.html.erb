@@ -1,16 +1,5 @@
 <div id="right-dash" >
   <h1>Your Dashboard</h1>
-  <div id="gary-bg-dash">
-    <%= link_to('Inbox', "#") %>&nbsp;|&nbsp;
-    <%= link_to('My Items', items_path) %>&nbsp;|&nbsp;
-    <%= link_to('My Offers', sent_requests_items_path) %>&nbsp;|&nbsp;
-    <%= link_to('My Reservations', "#") %>&nbsp;|&nbsp;
-    <%= link_to('My Bookings  ', "#") %>&nbsp;|&nbsp;
-    <%= link_to('Profile', profile_path(current_user.id)) %>&nbsp;|&nbsp;
-    <% if account_verified(current_user) %>
-      <%= link_to t(:verify_your_account), new_account_path %>&nbsp;|&nbsp;
-    <% end %>
-  </div>
 </div>
 <div style="float:left;width: 100%;" id="notifications_div">
   <%= render :partial => "notifications", :locals => {:notifications => @notifications} %>

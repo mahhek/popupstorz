@@ -204,6 +204,19 @@
     }
   }
   function calculateTotalAmount(){
+    $("#offer_rental_end_date").datepicker('option', 'minDate', new Date($("#offer_rental_start_date").val()));
+
+    if($("#offer_rental_start_date").val()=="mm/dd/yy"){
+      alert('Please select pickup date first, thanks.');
+      $("#offer_rental_end_date").val("mm/dd/yy");
+    }
+    else
+    {
+      if($("#offer_rental_end_date").val()=="")
+      {
+        $("#offer_rental_end_date").val($("#offer_rental_start_date").val());
+      }
+    }
     if($('#offer_rental_start_date').val() != 'mm/dd/yy' && $('#offer_rental_end_date').val() != 'mm/dd/yy'){
       start = $('#offer_rental_start_date').val();
       start_date = new Date(start);

@@ -96,14 +96,21 @@
     Price:
   </span>
   <span>
-    <%#= f.text_field :price %> 
-    <%#= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EUR","EUR"]], @item.price_unit) %>
-    <%#= select_tag "item[time_for_unit_price]", options_for_select([["Per Day","Per Day"],["Per Week","Per Week"],["Per Weekend","Per Weekend"], ["Per Two Weeks","Per Two weeks"], ["Per Month","Per Month"]], @item.time_for_unit_price) %>
-  <%= f.text_field :price,  :class => "price", :size =>""%> $ per day
-  <%= f.text_field :price_per_week,  :class => "price",:size =>""  %> $ per week
-  <%= f.text_field :price_per_month,  :class => "price",:size =>"" %> $ per month
+    <%= f.text_field :price,  :class => "price", :size =>""%> $ per day
+    <%= f.text_field :price_per_week,  :class => "price",:size =>""  %> $ per week
+    <%= f.text_field :price_per_month,  :class => "price",:size =>"" %> $ per month
   </span>
+</div>
+<br/>
+<br/>
 
+<div class="xfields">
+  <span>
+    Price Unit:
+  </span>
+  <span>
+    <%= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EUR","EUR"]], @item.price_unit) %>
+  </span>
 </div>
 <br/>
 <br/>

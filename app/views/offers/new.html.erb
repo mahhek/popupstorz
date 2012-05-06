@@ -61,7 +61,7 @@
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>
-          <%#*Owner : <%= link_to @item.user.rentareto_display_name, profile_path(@item.user) %><br/><br/>
+          Owner : <%= link_to @item.user.rentareto_display_name, profile_path(@item.user) %><br/><br/>
           <strong>Description</strong><br/>
           <%= raw @item.description %>
           <div class="clear">&nbsp;</div>
@@ -109,10 +109,10 @@
               <%= f.radio_button :preferred_location, false, :checked => true,  :class => "radio" %>
             </span>
             <span style="float: left;">
-              <%#= label :preferred_location_email, "#{@item.user.rentareto_display_name} Location", :style => "padding-top:0px !important;line-height: 20px;" %> &nbsp;&nbsp;&nbsp;&nbsp;
+              <%= label :preferred_location_email, "#{@item.user.rentareto_display_name} Location", :style => "padding-top:0px !important;line-height: 20px;" %> &nbsp;&nbsp;&nbsp;&nbsp;
             </span>
             <span style="float: left;">
-              <strong>or</strong>
+              <strong>OR</strong>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
@@ -127,8 +127,8 @@
 
           <div class="clear"></div>
 
-          <div style="padding-left:500px; font-size:13px; font-style:italic;">
-            <%#= f.text_field :preferred_address %>
+          <div style="padding-left:545px; font-size:13px; font-style:italic;">Please Enter Preferred <strong>Address</strong> :<br/>
+            <%= f.text_field :preferred_address %>
             <div id="item_advanced_container" style="display:none;">
               <div id="item_advanced" style="display:none;">
                 <%= label_tag(:longitude, "Coordinates") %>
@@ -147,21 +147,21 @@
           <label>Willingness to Pay: </label>
           <%= f.text_field :willingness_to_pay %>
           € &nbsp;&nbsp;&nbsp;<font size="2"><em>For the whole rental period</em></font><br/>
-<br/><br/>
+
           <label style="line-height:18px;">I need a response <br/>from the Owner  by:</label>
           <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%>
           <br/><br/>
           <div class="clear"></div>
 
           <label style="line-height:18px; padding-top:40px;">
-            <%#*<strong>Send <%= @item.user.rentareto_display_name % message:<br/>%>
+            <strong>Send <%= @item.user.rentareto_display_name %></strong> message:<br/>
             <small>maybe tell him/her why you need<br/> the item</small></label><br/>
           <%= f.fields_for :offer_messages do |offer_message| %>
-            <%# if offer_message.object.new_record? %>
-              <%#= offer_message.text_area :message %>
-              <%#= offer_message.hidden_field :user_id, :value => current_user.id %>
-              <%#= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
-            <%#end%>
+            <% if offer_message.object.new_record? %>
+              <%= offer_message.text_area :message %>
+              <%= offer_message.hidden_field :user_id, :value => current_user.id %>
+              <%= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
+            <%end%>
           <%end%>
           <br/>
           <!--<input name="" type="checkbox" value="" /> <font size="2">I agree to the <a href="#">terms of use.</a></font><br />
@@ -226,7 +226,19 @@
     }
   }
   function calculateTotalAmount(){
-    //$("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
+    $("#offer_rental_end_date").datepicker('option', 'minDate', new Date($("#offer_rental_start_date").val()));
+
+    if($("#offer_rental_start_date").val()=="mm/dd/yy"){
+      alert('Please select pickup date first, thanks.');
+      $("#offer_rental_end_date").val("mm/dd/yy");
+    }
+    else
+    {
+      if($("#offer_rental_end_date").val()=="")
+      {
+        $("#offer_rental_end_date").val($("#offer_rental_start_date").val());
+      }
+    }
     if($('#offer_rental_start_date').val() != 'mm/dd/yy' && $('#offer_rental_end_date').val() != 'mm/dd/yy'){
       start = $('#offer_rental_start_date').val();
       start_date = new Date(start);

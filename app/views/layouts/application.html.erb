@@ -52,7 +52,7 @@
                 <input type="submit" value="Login" />
               <% end %>
             <% else %>
-              <%= link_to "Hi #{current_user.popup_storz_display_name}", profile_path(current_user),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
+              <%= link_to "Hi #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
               <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
             <% end %>
           </div>
@@ -85,13 +85,13 @@
             </div>
 
             <% if user_signed_in? %>
-              <%= link_to "Hi #{current_user.first_name}!", profile_path(current_user),:class => ((params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
+              <%= link_to "Hi #{current_user.first_name}!", dashboard_path(current_user.id),:class => ((params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
 
               <%= link_to 'Messages', inbox_messages_path, :class => ((params[:controller] == "messages" and params[:action] == "inbox") ? "m_act" : "") %>
               <%= link_to 'Members', "/members", :class => ((params[:controller] == "users" and params[:action] == "members") ? "m_act" : "") %>
               <%= link_to 'Gatherings', "/home/index", :class => ((params[:controller] == "home" and params[:action] == "index") ? "m_act" : "")   %>
 
-              <% if params[:controller] == "messages" or (params[:controller] == "users" and params[:action] == "show") %>
+              <% if params[:controller] == "accounts" or params[:controller] == "messages" or (params[:controller] == "users" and params[:action] == "show") %>
                 <%= link_to 'Messages', inbox_messages_path %>
                 <%= link_to 'My Listings',items_path %>
                 <%= link_to 'My Favorites', favorites_items_path %>

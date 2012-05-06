@@ -77,13 +77,13 @@
 
 
         <div id="details-panel">
-          
+
           <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" , :alt => "no image available") %>
-     
+
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>
-          <%#*Owner : <%= link_to @item.user.rentareto_display_name, profile_path(@item.user) %><br/><br/>%>
+          Owner : <%= link_to @item.user.rentareto_display_name, profile_path(@item.user) %><br/><br/>
           <strong>Description</strong><br/>
           <%= raw @item.description %>
           <div class="clear">&nbsp;</div>

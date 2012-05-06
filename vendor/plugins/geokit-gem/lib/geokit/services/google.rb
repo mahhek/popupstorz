@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Geokit
   module Geocoders
     # -------------------------------------------------------------------------------------------
@@ -49,10 +50,12 @@ module Geokit
       def self.do_geocode(address, options = {})
         bias_str = options[:bias] ? construct_bias_string_from_options(options[:bias]) : ''
         address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
-        res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&hl=en&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8")
+        #res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{Geokit::Inflector::url_escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8")
+        res = self.call_geocoder_service("http://maps.google.com/maps/geo?q=#{URI.escape(address_str)}&output=xml#{bias_str}&key=#{Geokit::Geocoders::google}&oe=utf-8")
         return GeoLoc.new if !res.is_a?(Net::HTTPSuccess)
         xml = res.body
-        logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
+        xml.force_encoding(Encoding::UTF_8) if xml.respond_to?(:force_encoding)
+        #pablocantero logger.debug "Google geocoding. Address: #{address}. Result: #{xml}"
         return self.xml2GeoLoc(xml, address)
       end
 
@@ -96,7 +99,7 @@ module Geokit
         # re-raise because of other rescue
         raise Geokit::TooManyQueriesError, "Google returned a 620 status, too many queries. The given key has gone over the requests limit in the 24 hour period or has submitted too many requests in too short a period of time. If you're sending multiple requests in parallel or in a tight loop, use a timer or pause in your code to make sure you don't send the requests too quickly."
       rescue
-        logger.error "Caught an error during Google geocoding call: "+$!
+        #pabllogger.error "Caught an error during Google geocoding call: "+$!
         return GeoLoc.new
       end
 

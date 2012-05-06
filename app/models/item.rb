@@ -1,7 +1,6 @@
 # encoding: UTF-8
 #include Geokit::Geocoders
 
-
 class Item < ActiveRecord::Base
   acts_as_commentable
   acts_as_rateable
@@ -25,6 +24,7 @@ class Item < ActiveRecord::Base
   validates :title, :presence => true
   validates :description, :presence => true
   validates :price, :presence => true
+  before_save :check_and_calculate_prices
   #  validates :is_agree, :presence => true
   #  validates_format_of :phone, :allow_blank => true,
   #  :with => /^(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*/
@@ -35,6 +35,12 @@ class Item < ActiveRecord::Base
   def creator_id
     self.user_id.to_i
   end
+
+  def check_and_calculate_prices
+    self.price_per_week = (self.price * 7).to_i if self.price_per_month.blank?
+    self.price_per_month = (self.price * 30).to_i if self.price_per_month.blank?
+  end
+
 
   def geolocate_from_address
 
