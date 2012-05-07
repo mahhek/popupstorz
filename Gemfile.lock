@@ -1,11 +1,8 @@
 GIT
-  remote: git@github.com:bridgeutopia/contacts.git
-  revision: b6f47a54ae63a1428bc9914e39cc95dae8526561
+  remote: https://github.com/agentrock/gdata.git
+  revision: 271d0b49d7dbe97b16969f06104f3e91022c40bc
   specs:
-    contacts (1.2.4)
-      gdata-19 (>= 1.1.2)
-      json (>= 1.1.1)
-      nokogiri (>= 1.4.0)
+    gdata (1.1.1)
 
 GEM
   remote: http://rubygems.org/
@@ -44,7 +41,7 @@ GEM
       ancestry (~> 1.2.4)
       railties (>= 3.0.0)
     acts_as_commentable (3.0.1)
-    addressable (2.2.7)
+    addressable (2.2.8)
     ancestry (1.2.5)
       activerecord (>= 2.2.2)
     ansi (1.4.2)
@@ -68,6 +65,9 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.3.1)
+    contacts (1.2.4)
+      gdata (= 1.1.1)
+      json (>= 0.4.1)
     crack (0.3.1)
     curb (0.7.18)
     devise (2.0.4)
@@ -79,6 +79,8 @@ GEM
       dm-core (~> 1.2.0)
     dm-core (1.2.0)
       addressable (~> 2.2.6)
+    domainatrix (0.0.10)
+      addressable
     erubis (2.7.0)
     execjs (1.3.1)
       multi_json (~> 1.0)
@@ -94,14 +96,14 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.8)
       sax-machine (~> 0.1.0)
-    gdata-19 (1.1.2)
-    gmaps4rails (1.4.8)
-      json
+    gmaps4rails (1.5.1)
     google_currency (2.0.2)
       money (~> 3.5)
       multi_json (>= 1.0.0)
     hashie (1.2.0)
+    highline (1.6.11)
     hike (1.2.1)
+    hpricot (0.8.6)
     httparty (0.8.3)
       multi_json (~> 1.0)
       multi_xml
@@ -111,6 +113,8 @@ GEM
       railties (~> 3.0)
       thor (~> 0.14)
     json (1.7.0)
+    launchy (2.1.0)
+      addressable (~> 2.2.6)
     libv8 (3.3.10.4)
     loofah (1.2.1)
       nokogiri (>= 1.4.4)
@@ -121,10 +125,11 @@ GEM
     mime-types (1.18)
     money (3.7.1)
       i18n (~> 0.4)
-    multi_json (1.3.2)
+    multi_json (1.3.4)
     multi_xml (0.4.4)
     multipart-post (1.1.5)
     mysql2 (0.3.11)
+    net-ssh (2.1.0)
     nokogiri (1.5.2)
     oauth (0.4.6)
     oauth2 (0.6.1)
@@ -134,8 +139,8 @@ GEM
     omniauth (1.1.0)
       hashie (~> 1.2)
       rack
-    omniauth-facebook (1.2.0)
-      omniauth-oauth2 (~> 1.0.0)
+    omniauth-facebook (1.3.0)
+      omniauth-oauth2 (~> 1.0.2)
     omniauth-oauth (1.0.1)
       oauth
       omniauth (~> 1.0)
@@ -186,7 +191,7 @@ GEM
       mime-types (>= 1.16)
     sanitize (2.0.3)
       nokogiri (>= 1.4.4, < 1.6)
-    sass (3.1.16)
+    sass (3.1.17)
     sass-rails (3.1.6)
       actionpack (~> 3.1.0)
       railties (~> 3.1.0)
@@ -194,12 +199,21 @@ GEM
       tilt (~> 1.3.2)
     sax-machine (0.1.0)
       nokogiri (> 0.0.0)
+    sequel (3.20.0)
+    sinatra (1.0)
+      rack (>= 1.0)
     sprockets (2.0.4)
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+    sqlite3 (1.3.5)
     stripe (1.6.3)
       rest-client (~> 1.4)
+    taps (0.3.24)
+      rack (>= 1.0.1)
+      rest-client (>= 1.4.0, < 1.7.0)
+      sequel (~> 3.20.0)
+      sinatra (~> 1.0.0)
     therubyracer (0.10.1)
       libv8 (~> 3.3.10)
     thor (0.14.6)
@@ -216,6 +230,16 @@ GEM
     uuidtools (2.1.2)
     warden (1.1.1)
       rack (>= 1.0)
+    webbynode (1.0.5.2)
+      bundler (>= 0.9.26)
+      domainatrix (>= 0.0.7)
+      highline (>= 1.5.2)
+      httparty (>= 0.4.5)
+      launchy (>= 0.3.7)
+      net-ssh (= 2.1.0)
+      taps (~> 0.3.19)
+      webbynode-rainbow (~> 1.1.3)
+    webbynode-rainbow (1.1.3)
     will_paginate (3.0.3)
 
 PLATFORMS
@@ -229,15 +253,17 @@ DEPENDENCIES
   ckeditor
   clickatell
   coffee-rails (~> 3.1.1)
-  contacts!
+  contacts
   crack
   devise
   dm-aggregates
   dm-core
   execjs
   feedzirra
+  gdata!
   gmaps4rails
   google_currency
+  hpricot
   i18n
   jquery-rails
   json
@@ -254,9 +280,11 @@ DEPENDENCIES
   rest-client
   sanitize
   sass-rails (~> 3.1.5)
+  sqlite3
   stripe
   therubyracer
   turn (= 0.8.2)
   uglifier (>= 1.0.3)
   uuidtools
+  webbynode (~> 1.0.5.2)
   will_paginate (~> 3.0.pre2)

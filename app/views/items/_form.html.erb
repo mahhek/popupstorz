@@ -142,7 +142,7 @@
 <div style="float:left;width:100%;">
   <div style="float:left;width:15%;">
     Gathering: &nbsp;&nbsp;&nbsp;
-    <%= select_tag "item[is_shareable]", options_for_select([["Yes","Yes"],["No","No"]], @item.is_shareable), :onchange => "check_persons_limit(this.value)" %>&nbsp;&nbsp;
+    <%= select_tag "item[is_shareable]", options_for_select([["Yes",true],["No",false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)" %>&nbsp;&nbsp;
   </div>
   <div id="person_count" style="float:left;width:50%;">
     Up to: &nbsp;&nbsp;&nbsp;
@@ -328,8 +328,8 @@
     }
   }
 
-  function check_persons_limit(val){    
-    if(val == 'No'){
+  function check_persons_limit(val){
+    if(val == 'false'){
       $("#item_maximum_members").attr('disabled', true);
       $("#person_count").hide();
     }

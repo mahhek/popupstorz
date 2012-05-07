@@ -22,7 +22,7 @@ gem 'uuidtools'
 gem 'execjs'
 gem 'therubyracer'
 gem "bcrypt-ruby"
-
+gem "webbynode", "~> 1.0.5.2"
 #gem "geokit-rails3-1beta --pre"
 gem 'nokogiri'
 gem 'feedzirra'
@@ -33,12 +33,13 @@ gem 'dm-aggregates'
 #gem 'formtastic'
 #gem "geocoder"
 gem "ckeditor"
-#gem 'sqlite3'
+gem 'sqlite3'
+gem 'hpricot'
 gem 'pg'
 gem "will_paginate", "~> 3.0.pre2"
 gem 'i18n'
-gem 'contacts', :git=>"git@github.com:bridgeutopia/contacts.git"
-
+gem 'contacts'
+gem 'gdata', :git => 'https://github.com/agentrock/gdata.git'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

@@ -1,14 +1,14 @@
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
-    $(document).ready(function(){
+  $(document).ready(function(){
 
-      // jsFiddle
-      $("#txtFromDate").datepicker({minDate: new Date()});
+  // jsFiddle
+  $("#txtFromDate").datepicker({minDate: new Date()});
 
-      $("#txtToDate").datepicker({minDate: new Date()});
-      // end jsFiddle
+  $("#txtToDate").datepicker({minDate: new Date()});
+  // end jsFiddle
 
-    });
+  });
 
 
   });//]]>
@@ -37,6 +37,7 @@
       <%= image_tag(@item.avatars.first.photo.url(:large), :alt=>"", :width => "471px",:height=>"391px", :class => "gallery") %>
     <% end %>
 
+
     <div class="fltR w200 mt100">
       <h1 class="size">Size:</h1>
       <p class="size_text"><%= @item.size %> <%= @item.size_unit %></p>
@@ -47,21 +48,33 @@
       <h1 class="size">Number of floors:</h1>
       <p class="size_text"></p>
       <div class="clear"></div>
-      <%if @item.is_shareable%>
-        Is shareable  up to <%= @item.maximum_members %>
-      <%end%>
       <h1 class="size">Cleaning Fee:</h1>
-      <p class="size_text"><%= @item.cleaning_fee %></p>
+      <p class="size_text"><%= number_to_currency(exchange_currency(@item.cleaning_fee.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+      </p>
       <div class="clear"></div>
       <h1 class="size">Deposit Fee:</h1>
-      <p class="size_text"><%= @item.deposit %></p>
+      <p class="size_text"><%= number_to_currency(exchange_currency(@item.deposit.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></p>
       <div class="clear"></div>
-      <h1 class="size">Available for rent for:</h1>
-      <p class="size_text"><%= @item.time_period %></p>
+      <h1 class="size">Available from:</h1>
+      <p class="size_text"><%= @item.availability_from.strftime("%m-%d-%Y") %></p>
       <div class="clear"></div>
-
+      <h1 class="size">Available to:</h1>
+      <p class="size_text"><%= @item.availability_to.strftime("%m-%d-%Y") %></p>
+      <div class="clear"></div>
+      <h1 class="size">Gathering Available:</h1>
+      <p class="size_text">
+        <% if (@item.is_shareable == true) then %>Upto
+          <%= @item.maximum_members %> persons
+        <%else%>
+          NO
+        <%end%>  </p>
+      <div class="clear"></div>
     </div>
-    <div class="clear"></div>
+    <div class="clear"></div><br/>
+
+    <div id="favorite_div_<%= @item.id %>">
+      <%= render :partial => "favorite", :locals => {:item => @item} %>
+    </div>
 
     <p class="charming_text mt30"><%= @item.description %></p>
 
@@ -252,54 +265,54 @@
 
 <script type="text/javascript">
   function change_price_to_book(elem){
-    $('#price').html(elem.val());
+  $('#price').html(elem.val());
   }
   function check_dates(){
-    if($('#txtFromDate').val() == "" || $('#txtFromDate').val() == "mm/dd/yy" || $('#txtToDate').val() == "" || $('#txtToDate').val() == "mm/dd/yy" ){
-      alert('Please select right date');
-      return false;
-    }else{
-      return true;
-    }
+  if($('#txtFromDate').val() == "" || $('#txtFromDate').val() == "mm/dd/yy" || $('#txtToDate').val() == "" || $('#txtToDate').val() == "mm/dd/yy" ){
+  alert('Please select right date');
+  return false;
+  }else{
+  return true;
+  }
   }
 </script>
 
 <script>
   function calculateTotalAmount(){
-    $("#txtToDate").datepicker('option', 'minDate', new Date($("#txtFromDate").val()));
+  $("#txtToDate").datepicker('option', 'minDate', new Date($("#txtFromDate").val()));
 
-    if($("#txtFromDate").val()=="mm/dd/yy"){
-      alert('Please select pickup date first, thanks.');
-      $("#txtToDate").val("mm/dd/yy");
-    }
-    else
-    {
-      if($("#txtToDate").val()=="")
-      {
-        $("#txtToDate").val($("#txtFromDate").val());
-      }
-    }
+  if($("#txtFromDate").val()=="mm/dd/yy"){
+  alert('Please select pickup date first, thanks.');
+  $("#txtToDate").val("mm/dd/yy");
+  }
+  else
+  {
+  if($("#txtToDate").val()=="")
+  {
+  $("#txtToDate").val($("#txtFromDate").val());
+  }
+  }
 
-    if($('#txtFromDate').val() != 'mm/dd/yy' && $('#txtToDate').val() != 'mm/dd/yy'){
-      start = $('#txtFromDate').val();
-      start_date = new Date(start);
-      end = $('#txtToDate').val();
-      end_date = new Date(end);
+  if($('#txtFromDate').val() != 'mm/dd/yy' && $('#txtToDate').val() != 'mm/dd/yy'){
+  start = $('#txtFromDate').val();
+  start_date = new Date(start);
+  end = $('#txtToDate').val();
+  end_date = new Date(end);
 
-      number_of_days = (end_date - start_date)/(1000*60*60*24);
-      if(number_of_days == 0){
-        number_of_days = 1;
-      }
+  number_of_days = (end_date - start_date)/(1000*60*60*24);
+  if(number_of_days == 0){
+  number_of_days = 1;
+  }
 
-      $('#total_days').text(number_of_days+ " days");
-      $('#total_price').text(calculate_price(number_of_days)+ " €");
-    }
+  $('#total_days').text(number_of_days+ " days");
+  $('#total_price').text(calculate_price(number_of_days)+ " €");
+  }
   }
   function calculate_price(number_of_days){
-    months = Math.floor(number_of_days/30);
-    weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);
-    days = (number_of_days - (30 * months)) - (weeks * 7);
-    return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
+  months = Math.floor(number_of_days/30);
+  weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);
+  days = (number_of_days - (30 * months)) - (weeks * 7);
+  return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
   }
 </script>
 
