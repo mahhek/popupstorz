@@ -83,7 +83,7 @@
     <h1 class="charming">what other people think</h1>
     <p class="charming_text">what other people thinkwhat other people thinkwhat other people thinkwhat other people think</p>
     <div class="line"></div>
-    <div id="comments">
+    <div id="comments" style="height: 200px;">
 
       <%= form_for @comment, :url => "/items/add_comment" do |f| %>
         <% if @comment.errors.any? %>
@@ -103,11 +103,13 @@
         </div>
         <div class="field">
           <%= f.label :comment %><br />
-          <%= f.text_area "comment", :rows => 5 %>
-        </div>
-        <div class ="actions">
+          <%= f.text_area "comment", :rows => 5 %><br />
+
           <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
         </div>
+
+
+
       <% end %>
 
 
