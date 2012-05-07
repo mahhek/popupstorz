@@ -22,7 +22,7 @@ gem 'uuidtools'
 gem 'execjs'
 gem 'therubyracer'
 gem "bcrypt-ruby"
-gem "webbynode", "~> 1.0.5.2"
+#gem "webbynode", "~> 1.0.5.2"
 #gem "geokit-rails3-1beta --pre"
 gem 'nokogiri'
 gem 'feedzirra'
@@ -33,7 +33,7 @@ gem 'dm-aggregates'
 #gem 'formtastic'
 #gem "geocoder"
 gem "ckeditor"
-gem 'sqlite3'
+#gem 'sqlite3'
 gem 'hpricot'
 gem 'pg'
 gem "will_paginate", "~> 3.0.pre2"
@@ -51,7 +51,7 @@ gem 'stripe'
 gem 'clickatell'
 gem 'jquery-rails'
 gem 'rails3-jquery-autocomplete'
-gem 'gmaps4rails'
+#gem 'gmaps4rails'
 gem 'aws-sdk'
 gem 'acts-as-messageable'
 gem 'acts_as_commentable'
