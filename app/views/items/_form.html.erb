@@ -89,38 +89,38 @@
 </div>
 
 <br/>
-
+<div class="xfields">
+  <span>
+    Price Unit:
+  </span>
+  <span>
+    <%= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EUR","EUR"]], @item.price_unit), :onchange => "$('.unit').html($(this).val() == 'USD' ? '$' : '€');" %>
+  </span>
+</div>
+<br/>
+<br/>
 
 <div class="xfields">
   <span>
     Price:
   </span>
   <span>
-    <%= f.text_field :price,  :class => "price", :size =>""%> $ per day
-    <%= f.text_field :price_per_week,  :class => "price",:size =>""  %> $ per week
-    <%= f.text_field :price_per_month,  :class => "price",:size =>"" %> $ per month
+    <%= f.text_field :price,  :class => "price", :size =>""%> <span class="unit">$</span> per day
+    <%= f.text_field :price_per_week,  :class => "price",:size =>""  %> <span class="unit">$</span> per week
+    <%= f.text_field :price_per_month,  :class => "price",:size =>"" %> <span class="unit">$</span> per month
   </span>
 </div>
 <br/>
 <br/>
 
-<div class="xfields">
-  <span>
-    Price Unit:
-  </span>
-  <span>
-    <%= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EUR","EUR"]], @item.price_unit) %>
-  </span>
-</div>
-<br/>
-<br/>
+
 
 <div class="xfields">
   <span>
     Cleaning Fee:
   </span>
   <span>
-    <%= f.text_field :cleaning_fee %> &nbsp;&nbsp;
+    <%= f.text_field :cleaning_fee %> <span class="unit"> $</span> &nbsp;&nbsp;
 <!--    <%= select_tag "item[cleaning_fee]", options_for_select([["$","$"],["€","€"]], @item.cleaning_fee) %>&nbsp;&nbsp; -->
   </span>
 </div>
@@ -132,7 +132,7 @@
     Deposit:
   </span>
   <span>
-    <%= f.text_field :deposit %> &nbsp;&nbsp;
+    <%= f.text_field :deposit %><span class="unit"> $</span> &nbsp;&nbsp;
    <!-- <%= select_tag "item[deposit]", options_for_select([["$","$"],["€","€"]], @item.deposit) %>&nbsp;&nbsp; -->
   </span>
 </div>
