@@ -242,9 +242,8 @@ class ItemsController < ApplicationController
     @comment = Comment.new(params[:comment])
     @comment.user=current_user
     @item =Item.find(params[:id])
-    if @comment.save
-      flash[:notice] = "Comment Added"
-      @item.comments << @comment
+    if @item.comments << @comment
+      flash[:notice] = "Comment Added"      
       redirect_to "/items/show/#{@item.id}"
     else
       flash[:error] = "Not saved"
