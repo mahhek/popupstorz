@@ -11,7 +11,7 @@ class PaymentsController < ApplicationController
       @map.control_init(:map_type => false, :small_zoom => true)
       coordinates = [@item.latitude,@item.longitude]
       @map.center_zoom_init(coordinates, 15)
-#      @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.rentareto_display_name, :info_window => "#{@item.title}"))
+#      @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.popup_storz_display_name, :info_window => "#{@item.title}"))
     else
       @notification = Notification.new(:user_id => @offer.user != current_user ? @offer.user.id : @item.user.id, :notification_type =>"offer_updated", :description => "The <a href='/items/#{@item.id}/offers/#{@offer.id}/edit'>offer</a> you made on #{@item.title} has been modified by #{@offer.user != current_user ? "Owner": "Renter"}. Please review to accept or decline.")
       @notification.save
@@ -28,7 +28,7 @@ class PaymentsController < ApplicationController
 
     if @payment.valid? && @payment.purchase("verify")
       @payment.save
-      @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_sent_to_owner", :description => "You have received an <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> from #{current_user.rentareto_display_name} for the item called #{@item.title}")
+      @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_sent_to_owner", :description => "You have received an <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> from #{current_user.popup_storz_display_name} for the item called #{@item.title}")
       @notification.save
       flash[:notice] = 'Your Offer Has been sent to Owner of item. Thanks.'
       redirect_to root_url

@@ -42,6 +42,8 @@ class User < ActiveRecord::Base
     return"#{self.first_name[0..6]} #{self.last_name[0..0].capitalize} ." if self.last_name
     self.first_name
   end
+
+
   #after_save :send_user_notification
   #  after_save :create_account_just_activated_user
 
@@ -57,9 +59,7 @@ class User < ActiveRecord::Base
   #    end
   #  end
 
-  def popupstorz_display_name
-    "#{self.first_name[0..6]} #{self.last_name[0..0].capitalize}" if self.last_name
-  end
+  
 
   def update_with_password(params={})
     current_password = params.delete(:current_password)
@@ -82,10 +82,7 @@ class User < ActiveRecord::Base
     result
   end
 
-  def rentareto_display_name
-    return"#{self.first_name[0..6]} #{self.last_name[0..0].capitalize} ." if self.last_name
-    self.first_name
-  end
+
 
 
   

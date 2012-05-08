@@ -4,13 +4,13 @@
 
 <div class="listx-bg">
   <% unless @items.blank? %>
-    <%#*<div class="btn-bar" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">%>
-      <%#= link_to 'Messages', inbox_messages_path %>
-      <%#= link_to 'My Listings',items_path %>
-      <%#= link_to 'My Pop Ups',"#" %>
-      <%#= link_to('My Profile', profile_path(current_user.id)) %>
-      <%#= link_to "My Account","#" %>
-    <%#*</div>%>
+  <%#*<div class="btn-bar" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">%>
+  <%#= link_to 'Messages', inbox_messages_path %>
+  <%#= link_to 'My Listings',items_path %>
+  <%#= link_to 'My Pop Ups',"#" %>
+  <%#= link_to('My Profile', profile_path(current_user.id)) %>
+  <%#= link_to "My Account","#" %>
+  <%#*</div>%>
 
     <% @items.each do | item | %>
       <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
@@ -24,11 +24,15 @@
 
         <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
         <div class="name-list" style="margin-bottom: 5px;"><b>Location: </b><%= item.address %></div>
-       
-        
-        <div class="name-list" style="margin-bottom: 5px;"><b>Price: </b><%=item.price%>per day<%=item.price_per_week%>per week<%=item.price_per_month%>per month
-<%#= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>&nbsp;&nbsp;
+
+
+        <div class="name-list" style="margin-bottom: 5px;">
+          <b>Price: </b>
+          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/day,
+          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/week,
+          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
         </div>
+
         <div class="manage-bg" style="margin-bottom: 5px;margin-top: 5px;">
           <div class="btns">
             <%= link_to "Edit Space" , edit_item_path(item)%>&nbsp;|&nbsp;

@@ -44,8 +44,8 @@
 
         <ul class="steps">
           <li class="start"> <span>1</span> Make a Booking</li>
-          <li class="next"><span> &nbsp;&nbsp;2</span>Confirm & Contact</li>
-          <li class="empty"></li>
+          <li class="next"> <span> 2</span>Confirm & Contact</li>
+          
         </ul>
 
         <br class="clear" />
@@ -61,7 +61,7 @@
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>
-          Owner : <%= link_to @item.user.rentareto_display_name, profile_path(@item.user) %><br/><br/>
+          Owner : <%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/>
           <strong>Description</strong><br/>
           <%= raw @item.description %>
           <div class="clear">&nbsp;</div>
@@ -90,12 +90,13 @@
             </div>
 
           </div>
+<br/>
 
-          <strong>I need this... From: *</strong><br/>
+          <strong>I need this... From: *</strong>
 
           <label>Pickup:</label>
           <%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %>
-          <div class="clear"></div>
+          <%#*<div class="clear"></div>%>
           <label>Return:</label>
           <%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %>
 
@@ -109,7 +110,7 @@
               <%= f.radio_button :preferred_location, false, :checked => true,  :class => "radio" %>
             </span>
             <span style="float: left;">
-              <%= label :preferred_location_email, "#{@item.user.rentareto_display_name} Location", :style => "padding-top:0px !important;line-height: 20px;" %> &nbsp;&nbsp;&nbsp;&nbsp;
+              <%= label :preferred_location_email, "#{@item.user.popup_storz_display_name} Location", :style => "padding-top:0px !important;line-height: 20px;" %> &nbsp;&nbsp;&nbsp;&nbsp;
             </span>
             <span style="float: left;">
               <strong>OR</strong>
@@ -154,8 +155,8 @@
           <div class="clear"></div>
 
           <label style="line-height:18px; padding-top:40px;">
-            <strong>Send <%= @item.user.rentareto_display_name %></strong> message:<br/>
-            <small>maybe tell him/her why you need<br/> the item</small></label><br/>
+            <strong>Send <%= @item.user.popup_storz_display_name %></strong> message:<br/>
+            <small>maybe tell him/her why you need<br/> the space</small></label><br/>
           <%= f.fields_for :offer_messages do |offer_message| %>
             <% if offer_message.object.new_record? %>
               <%= offer_message.text_area :message %>

@@ -18,7 +18,7 @@ class OffersController < ApplicationController
     @map.control_init(:map_type => false, :small_zoom => true)
     coordinates = [@item.latitude,@item.longitude]
     @map.center_zoom_init(coordinates, 15)
-    @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.rentareto_display_name, :info_window => "#{@item.title}"))
+    @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.popup_storz_display_name, :info_window => "#{@item.title}"))
 
     #    @offer = Offer.find_by_item_id_and_user_id_and_status(@item.id ,current_user.id,"Pending")
 
@@ -82,7 +82,7 @@ class OffersController < ApplicationController
     @map.control_init(:map_type => false, :small_zoom => true)
     coordinates = [@item.latitude,@item.longitude]
     @map.center_zoom_init(coordinates, 15)
-    @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.rentareto_display_name, :info_window => "#{@item.title}"))
+    @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.popup_storz_display_name, :info_window => "#{@item.title}"))
   end
 
   def update
@@ -126,7 +126,7 @@ class OffersController < ApplicationController
         @offer.update_attribute("status", "Accepted by renter")
         @item.update_attribute("item_status","Reserved")
         flash[:notice] = "Offer accepted"
-        @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_accepted", :description => "The <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.rentareto_display_name} on #{@item.title} has been accepted")
+        @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_accepted", :description => "The <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been accepted")
         @notification.save
         redirect_to "/"
       else
@@ -150,7 +150,7 @@ class OffersController < ApplicationController
     if current_user.id == @offer.user_id
       @offer.update_attribute("status", "Decline by renter")
       flash[:notice] = "Offer declined"
-      @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_declined", :description => "The <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.rentareto_display_name} on #{@item.title} has been declined")
+      @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_declined", :description => "The <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been declined")
       @notification.save
     else
       @offer.update_attribute("status", "Decline by owner")

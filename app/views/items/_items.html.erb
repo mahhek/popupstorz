@@ -18,9 +18,9 @@
     <span class="subheading"><%= item.address %></span><br /><br />
     <span class="details">
       <%= item.description %></span>
-    <div id="favorite_div_<%= item.id %>">
+    <div id="favorite_div_<%= item.id %>"><br/>
       <%= render :partial => "favorite", :locals => {:item => item} %>
-      <p style="text-align:right;"><%= link_to "Book now", item_path(item.id), %></p>
+      <p style="text-align:right; margin-right: 10px;"><%= link_to "Book now", item_path(item.id), %></p>
     </div>
   </div>
 <%end%>

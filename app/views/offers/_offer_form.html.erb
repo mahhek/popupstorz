@@ -24,7 +24,7 @@
 
         <% unless current_user == @offer.user %>
           <h1>
-            We have great news for you! <%= @offer.user.rentareto_display_name %> requested your Item <%= @item.title %>
+            We have great news for you! <%= @offer.user.popup_storz_display_name %> requested your Item <%= @item.title %>
           </h1>
         <% end %>
         <br/>
@@ -36,13 +36,13 @@
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>
-          Owner : <%= link_to @item.user.rentareto_display_name, profile_path(@item.user) %><br/><br/>
+          Owner : <%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/>
           <strong>Description</strong><br/>
           <%= raw @item.description %>
           <div class="clear">&nbsp;</div>
         </div>
 
-        <h3><%= @offer.user.rentareto_display_name %> suggested the following terms:</h3> <br>
+        <h3><%= @offer.user.popup_storz_display_name %> suggested the following terms:</h3> <br>
 
         <div id="booking-form">
 
@@ -72,7 +72,7 @@
           </div>
 
 
-          <%= @offer.user.rentareto_display_name %> needs your item from:<br/>
+          <%= @offer.user.popup_storz_display_name %> needs your item from:<br/>
 
           <label>Pickup:</label>
           <%= f.text_field :rental_start_date, :value => @offer.rental_start_date.strftime("%m/%d/%Y"), :class => "datex", :onchange => "calculateTotalAmount();" %>
@@ -86,7 +86,7 @@
 
           <div style="padding-top:22px; font-size:13px;">
             <%= f.radio_button :preferred_location, false, :checked => @offer.preferred_location,  :class => "radio" %>
-            <%= label :preferred_location_email, "#{@item.user.rentareto_display_name} Location" %> &nbsp;&nbsp;&nbsp;&nbsp;
+            <%= label :preferred_location_email, "#{@item.user.popup_storz_display_name} Location" %> &nbsp;&nbsp;&nbsp;&nbsp;
             <strong>or</strong>&nbsp;&nbsp;&nbsp;&nbsp;
             <%= f.radio_button :preferred_location, true, :checked => @offer.preferred_location,  :class => "radio" %>
             <%= label :preferred_location_sms, 'Choose another location' %>
@@ -126,7 +126,7 @@
 
 
           <label>
-            <strong><%= @offer.user.rentareto_display_name %></strong> message you:<br/>
+            <strong><%= @offer.user.popup_storz_display_name %></strong> message you:<br/>
           </label>
 
           <div style="padding:22px 60px 0 0; font-size:13px;">

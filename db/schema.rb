@@ -153,10 +153,19 @@ ActiveRecord::Schema.define(:version => 20120504112158) do
   end
 
   create_table "offers", :force => true do |t|
+    t.datetime "rental_start_date"
+    t.datetime "rental_end_date"
+    t.string   "pickup_location"
+    t.float    "willingness_to_pay"
+    t.integer  "required_response_by_owner_before"
+    t.string   "additional_message"
+    t.string   "status"
+    t.integer  "item_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "total_amount"
-    t.boolean  "preferred_location", :default => false
+    t.boolean  "preferred_location",                :default => false
     t.string   "preferred_address"
     t.datetime "cancellation_date"
   end

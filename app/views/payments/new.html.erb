@@ -83,7 +83,7 @@
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>
-          Owner : <%= link_to @item.user.rentareto_display_name, profile_path(@item.user) %><br/><br/>
+          Owner : <%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/>
           <strong>Description</strong><br/>
           <%= raw @item.description %>
           <div class="clear">&nbsp;</div>
