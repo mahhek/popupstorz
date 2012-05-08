@@ -91,7 +91,7 @@
               <%= link_to 'Members', "/members", :class => ((params[:controller] == "users" and params[:action] == "members") ? "m_act" : "") %>
               <%= link_to 'Gatherings', "#" %>
 
-              <% if params[:controller] == "accounts" or params[:controller] == "messages" or (params[:controller] == "users" and params[:action] == "show") %>
+              <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" %>
                 <%= link_to 'Messages', inbox_messages_path %>
                 <%= link_to 'My Listings',items_path %>
                 <%= link_to 'My Favorites', favorites_items_path %>

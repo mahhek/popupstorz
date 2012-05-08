@@ -4,13 +4,13 @@
 
 <div class="listx-bg">
   <% unless @items.blank? %>
-    <div class="btn-bar" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
-      <%= link_to 'Messages', inbox_messages_path %>&nbsp;|
-      <%= link_to 'My Listings',items_path %>&nbsp;|
-      <%= link_to 'My Pop Ups',"#" %>&nbsp;|
-      <%= link_to('My Profile', profile_path(current_user.id)) %>&nbsp;|
-      <%= link_to "My Account","#" %>&nbsp;
-    </div>
+    <%#*<div class="btn-bar" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">%>
+      <%#= link_to 'Messages', inbox_messages_path %>
+      <%#= link_to 'My Listings',items_path %>
+      <%#= link_to 'My Pop Ups',"#" %>
+      <%#= link_to('My Profile', profile_path(current_user.id)) %>
+      <%#= link_to "My Account","#" %>
+    <%#*</div>%>
 
     <% @items.each do | item | %>
       <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
