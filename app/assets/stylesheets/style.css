@@ -480,7 +480,7 @@ h2 {
 .available{font-size:18px;color:#000;}
 .daytime{background: url("../assets/plus.png") no-repeat scroll left center transparent;color: #000000; float: left; font-size: 12px; margin-right: 37px; margin-top: 6px; padding-left: 20px; text-align: center;}
 .w212{width:212px;}
-.ml70{margin-left:70px !important;}
+.ml70{margin-left:45px !important;}
 .search {
     background: none repeat scroll 0 0 #CC33CC;
     border-radius: 5px 5px 5px 5px;
@@ -489,7 +489,7 @@ h2 {
     font-size: 20px;
     font-weight: bold;
     margin-left: 105px;
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 5px 25px;}
 
 .pagination {

@@ -107,16 +107,12 @@
 
           <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
         </div>
-
-
-
       <% end %>
-
-
     </div>
-    <%if current_user%>
-      <div id="show_comments">
-        <b>Comments</b><br/>
+<br/><br/>
+<%if current_user%>
+      <div id="show_comments" >
+        <b>Previous Comments:</b><br/>
         <%unless @item.comments.blank? %>
           <%@item.comments.each do|f|%>
             <b><%=f.title  %></b><br/>
@@ -136,6 +132,7 @@
   <%end%>
 
 </div>
+
 
 <div class="fltR">
   <div class="shadowCont w212">
@@ -193,7 +190,7 @@
             </span>
           </div>
 
-          <div class="clear"></div>
+          <%#*<div class="clear"></div>%>
         </div>
         <div id="r-date">
           <div id="pickup" style="margin-top: 10px;float: left;">
