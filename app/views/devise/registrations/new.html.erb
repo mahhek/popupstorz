@@ -19,17 +19,17 @@
 
       <div class="sign_up_input">
         <label>First Name</label>
-        <%= f.text_field :first_name %>
+        <%= f.text_field :first_name, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
         <label>Last Name</label>
-        <%= f.text_field :last_name %>
+        <%= f.text_field :last_name , :autocomplete=> "off"%>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
         <label>Date of Birth</label>
-        <%=  f.text_field :date_of_birth %>
+        <%=  f.text_field :date_of_birth, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
@@ -37,7 +37,7 @@
         <div class="fltL">
           <div style="float: left;">
             <span>
-              <%= f.radio_button :gender, true, :style => "margin-top: 2px;" %>
+              <%= f.radio_button :gender,   true, :style => "margin-top: 2px;" %>
             </span>
             <span style="margin-left: 5px;">Male</span>
           </div>
@@ -53,80 +53,80 @@
       <div class="clear"></div>
       <div class="sign_up_input">
         <label>Email</label>
-        <%= f.email_field :email %>
+        <%= f.email_field :email, :autocomplete=> "off" %>
   <%#*<div class="clear"></div>%>
       </div>
       <div class="sign_up_input">
         <label>Verify Email</label>
-        <%= f.email_field :verify_email %>
+        <%= f.email_field :verify_email, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
 
       <div class="sign_up_input">
         <label>Password</label>
-        <%= f.password_field :password %>
+        <%= f.password_field :password , :autocomplete=> "off"%>
   <%#*<div class="clear"></div>%>
       </div>
       <div class="sign_up_input fltL">
         <label>Conform Password</label>
-        <%= f.password_field :password_confirmation %>
+        <%= f.password_field :password_confirmation, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
 
       <div class="sign_up_input">
         <label>Security Question</label>
-        <%= f.text_field :security_question %>
+        <%= f.text_field :security_question, :autocomplete=> "off" %>
   <%#*<div class="clear"></div>%>
       </div>
       <div class="sign_up_input">
         <label>Security Answer</label>
-        <%= f.text_field :security_answer %>
+        <%= f.text_field :security_answer, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
       <div class="sign_up_input">
         <label>Mobile No</label>
-        <%= f.text_field :mobile_phone %>
+        <%= f.text_field :mobile_phone , :autocomplete=> "off"%>
         <div class="clear"></div>
       </div>
 
       <div class="reqInfo">Optional information</div>
       <div class="sign_up_input">
         <label>Address 1</label>
-        <%= f.text_field :address1 %>
+        <%= f.text_field :address1, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
         <label>Address 2</label>
-        <%= f.text_field :address1 %>
+        <%= f.text_field :address1, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
         <label>City</label>
-        <%= f.text_field :city %>
+        <%= f.text_field :city , :autocomplete=> "off"%>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input fltL">
         <label>Country</label>
-        <%= f.text_field :country %>
+        <%= f.text_field :country, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input fltL">
         <label>Zip code</label>
-        <%= f.text_field :zip_code %>
+        <%= f.text_field :zip_code, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input fltL">
         <label>Activity</label>
-        <%= f.text_field :activity %>
+        <%= f.text_field :activity , :autocomplete=> "off"%>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
       <div class="sign_up_input">
         <label>Description</label>
-        <%= f.text_area :description, :size => "40x4" %>
+        <%= f.text_area :description, :size => "40x4", :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
 

@@ -10,7 +10,7 @@ img {
 }
 
 a {
-    color: #CC33CC;
+    color: #333333;
     text-decoration: none;
 }
 
@@ -427,7 +427,7 @@ h2 {
     -moz-box-shadow: 4px 5px 6px #333333;
     padding: 25px;
 }
-.play_hold h1{font-size:18px;color:#666666;font-weight:bold;margin-bottom:10px;}
+.play_hold h1{font-size:18px;color:#666666;font-weight:bold;margin-bottom:10px;text-align: center}
 .mr100{margin-right:100px;}
 .ml40{margin-left:40px;}
 .text_he{font-size:13px; color:#000;}
