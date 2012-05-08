@@ -1,8 +1,7 @@
-<div style="border: 1px solid gray;padding: 10px;width: auto;margin-bottom: 10px;margin-top: 10px;">
+<div style="padding: 10px;width: auto;margin-bottom: 10px;margin-top: 10px;">
   <ul class='star-rating'>
-    <% my_rating = Rating.find(:first, :conditions =>["rateable_id = ? and user_id = ? and rateable_type = ? ",asset.id,current_user.id,asset.class.to_s]) %>
-    <% if !my_rating.nil? and my_rating.rating > 0 %>
-      <li class="current-rating" style="width:<%= ( my_rating.rating * 20).to_i -%>px;"></li>
+    <% unless user_signed_in? %>
+      <li class="current-rating" style="width:<%= ( asset.rating * 20).to_i -%>px;"></li>
     <%else%>
       <li class='current-rating' style='width:<%= (asset.rating * 20).to_i -%>px;'></li>
       <li>

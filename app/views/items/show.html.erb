@@ -109,28 +109,28 @@
         </div>
       <% end %>
     </div>
-<br/><br/>
-<%if current_user%>
-      <div id="show_comments" >
-        <b>Previous Comments:</b><br/>
-        <%unless @item.comments.blank? %>
-          <%@item.comments.each do|f|%>
-            <b><%=f.title  %></b><br/>
-            <%= f.comment %><br/>
-            <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
-            <br/>
-            <br/>
-          <%end%>
+    <br/><br/>
+<%#if current_user%>
+    <div id="show_comments" >
+      <b>Previous Comments:</b><br/>
+      <%unless @item.comments.blank? %>
+        <%@item.comments.each do|f|%>
+          <b><%=f.title  %></b><br/>
+          <%= f.comment %><br/>
+          <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+          <br/>
+          <br/>
         <%end%>
-      </div>
-      <div>
-        <span id="rating_<%= @item.id %>">
-          <%= render :partial => "/ratings/rating", :locals => {:asset => @item} %>
-        </span>
-      </div>
+      <%end%>
     </div>
-  <%end%>
+    <div>
+      <span id="rating_of_item_<%= @item.id %>">
+        <%= render :partial => "/ratings/rating", :locals => {:asset => @item} %>
+      </span>
+    </div>
 
+<%#end%>
+  </div>
 </div>
 
 
@@ -144,7 +144,14 @@
       <% end %>
     </div>
     <div class="fltR w107">
-      <img src="../assets/rating.png" alt="" />
+<%#*<img src="../assets/rating.png" alt="" />%>
+     
+        <span id="rating_of_user_<%= @item.user.id %>" >
+          <%= render :partial => "/ratings/rating", :locals => {:asset => @item.user} %>
+        </span>
+    
+      
+      
       <h1 class="name"><%= @item.user.popup_storz_display_name %></h1>
       <p class="name_text"><%= @item.user.country %></p>
       <% if current_user != @item.user %>
@@ -190,7 +197,7 @@
             </span>
           </div>
 
-          <%#*<div class="clear"></div>%>
+  <%#*<div class="clear"></div>%>
         </div>
         <div id="r-date">
           <div id="pickup" style="margin-top: 10px;float: left;">
@@ -198,7 +205,7 @@
               <label>Pick up</label>
             </span>
             <span style="float: left;width: 140px;">
-              <input type="text" value="mm/dd/yy" name="pick_up" id="txtFromDate" onchange ="calculateTotalAmount();" size="17" />
+              <input type="text" value="mm/dd/yy" name="pick_up" id="txtFromDate" onchange ="calculateTotalAmount();" size="15" />
             </span>
           </div>
           <div id="return"  style="margin-top: 10px;float: left;">
@@ -206,7 +213,7 @@
               <label>Return</label>
             </span>
             <span style="float: left;width: 140px;">
-              <input type="text" value="mm/dd/yy"  name="return" id="txtToDate" onchange ="calculateTotalAmount();" size="17" />
+              <input type="text" value="mm/dd/yy"  name="return" id="txtToDate" onchange ="calculateTotalAmount();" size="15" />
             </span>
           </div>
           <div class="clear"></div>

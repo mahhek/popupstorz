@@ -14,7 +14,11 @@ class RatingsController < ApplicationController
     respond_to do |format|
       format.js do
         foo = render_to_string(:partial => '/ratings/rating' , :locals=>{ :asset => @asset }).to_json
-        render :js => "$('#rating_#{@asset.id}').html(#{foo});"
+        if @asset.class.to_s == "User"
+          render :js => "$('#rating_of_user_#{@asset.id}').html(#{foo});"
+        elsif @asset.class.to_s == "Item"
+          render :js => "$('#rating_of_item_#{@asset.id}').html(#{foo});"
+        end
       end
     end
   end
