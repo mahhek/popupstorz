@@ -7,7 +7,7 @@ class AvatarsController < ApplicationController
   end
 
   def create
-    (1..3).each do |a|
+    (1..15).each do |a|
       if params['photo_'+a.to_s]
         params[:avatar][:photo] = params['photo_'+a.to_s]
         @avatar = @item.avatars.build(params[:avatar])

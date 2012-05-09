@@ -15,7 +15,7 @@
 
         <div class="name-list">
           <b>Name:</b>
-          <%= member.first_name + " " + member.last_name %>
+          <%=link_to "#{member.first_name + " " + member.last_name}", profile_path(member.id) %>
         </div>
 
         <div class="name-list">

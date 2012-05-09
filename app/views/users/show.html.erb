@@ -32,9 +32,11 @@
   <b> Country:</b>&nbsp;&nbsp;&nbsp<%= @user.country %>
 </div>
 <br/>
+<%if @user==current_user%>
 <li>
   <%= link_to('Edit Profile', edit_user_registration_path) %>
 </li>
+<%end%>
 
 <div id="comments">
 

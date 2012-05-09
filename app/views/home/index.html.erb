@@ -43,7 +43,7 @@
   <div class="paris_hold ml40" style="margin-left: 65px; margin-right: 40px;">
 
     <%= form_tag "/items/search_keyword", :method => :get  do %>
-      <%= select_tag( "location", options_from_collection_for_select( @items_with_uniq_cities, :city, :city), :class => "paris") %>
+      <%= select_tag( "location", options_from_collection_for_select( @items_with_uniq_cities, :city, :city), :prompt => "Select City", :class => "paris") %>
       <div class="fltL start_time">
         <p>From</p>
         <%=  text_field_tag :search_from %>

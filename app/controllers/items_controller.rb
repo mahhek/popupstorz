@@ -252,5 +252,9 @@ class ItemsController < ApplicationController
    
   end
 
+  def my_pop_ups
+    @offers= current_user.offers
+  end
+
   
 end
