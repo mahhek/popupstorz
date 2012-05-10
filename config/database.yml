@@ -24,7 +24,7 @@ test:
 
 production:
   adapter: mysql2
-  database: popup-storz_production
+  database: popup-storz_development
   username: "root"
   password: "123"
   pool: 5
