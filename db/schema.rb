@@ -187,16 +187,11 @@ ActiveRecord::Schema.define(:version => 20120504112158) do
   end
 
   create_table "ratings", :force => true do |t|
-    t.integer  "communication_rating",               :default => 0
-    t.integer  "accuracy_rating",                    :default => 0
-    t.integer  "location_rating",                    :default => 0
-    t.integer  "seriousness_rating",                 :default => 0
-    t.integer  "commodities_rating",                 :default => 0
-    t.integer  "value_rating",                       :default => 0
-    t.string   "rateable_type",        :limit => 50, :default => "", :null => false
-    t.integer  "rateable_id",                        :default => 0,  :null => false
-    t.integer  "user_id",                            :default => 0,  :null => false
-    t.datetime "created_at",                                         :null => false
+    t.integer  "rating",                      :default => 0
+    t.datetime "created_at",                                  :null => false
+    t.string   "rateable_type", :limit => 15, :default => "", :null => false
+    t.integer  "rateable_id",                 :default => 0,  :null => false
+    t.integer  "user_id",                     :default => 0,  :null => false
   end
 
   add_index "ratings", ["user_id"], :name => "fk_ratings_user"
