@@ -17,7 +17,7 @@
     <link rel="stylesheet" type="text/css" href="skin.css" />
 
     <%= javascript_include_tag "geoRssOverlay" %>
-    <%= javascript_include_tag "jquery.tmpl.min.js", "jquery.easing.1.3.js", "jquery.elastislide.js", "gallery.js" %>
+    <%= javascript_include_tag "jquery.tmpl.min", "jquery.easing.1.3", "jquery.elastislide", "gallery" %>
     <%= javascript_include_tag "markerGroup" %>
     <%= javascript_include_tag "ym4r-gm" %>
     <%= javascript_include_tag "https://js.stripe.com/v1/" %>
@@ -143,38 +143,38 @@
 
   function addParamToUrl(param, value)
   {
-  //check if param exists
-  var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
-  result = result && result[1] || "";
+    //check if param exists
+    var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
+    result = result && result[1] || "";
 
-  //added seperately to append ? before params
-  var loc = window.location;
-  var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
+    //added seperately to append ? before params
+    var loc = window.location;
+    var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
 
-  //param doesn't exist in url, add it
-  if (result == '')
-  {
-  //doesn't have any params
-  if (loc.search == '')
-  {
-  url += "?" + param + '=' + value;
-  }
-  else
-  {
-  url += "&" + param + '=' + value;
-  }
-  }
-  else
-  {
+    //param doesn't exist in url, add it
+    if (result == '')
+    {
+      //doesn't have any params
+      if (loc.search == '')
+      {
+        url += "?" + param + '=' + value;
+      }
+      else
+      {
+        url += "&" + param + '=' + value;
+      }
+    }
+    else
+    {
 
-  value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
-  value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
-  url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
+      value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
+      value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
+      url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
 
-  }
+    }
 
-  //return the finished url
-  window.location = url;
+    //return the finished url
+    window.location = url;
   }
 
 </script>
