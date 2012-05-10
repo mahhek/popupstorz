@@ -8,11 +8,12 @@
     <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>    <!-- jsFiddle -->
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->
-    <link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->
-    <%= javascript_include_tag "application" %>
+    <link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->    
     <script src="http://maps.google.com/maps?file=api&amp;&amp;v=2&amp;key=AIzaSyAPEeqlhndG4KU6-bRWegIBrs-v-kFcdgY"
     type="text/javascript"></script>
     <script src="http://www.facebook.com/assets.php/en_US/all.js" type="text/javascript"></script>
+
+    <%= javascript_include_tag "application" %>
 
     <%= javascript_include_tag "geoRssOverlay" %>
     <%= javascript_include_tag "markerGroup" %>
@@ -35,7 +36,30 @@
 
     <%= yield(:head) %>
 
-
+    <noscript>
+      <style>
+        .es-carousel ul{
+          display:block;
+        }
+      </style>
+    </noscript>
+    <script id="img-wrapper-tmpl" type="text/x-jquery-tmpl">
+      <div class="rg-image-wrapper">
+				{{if itemsCount > 1}}
+        <div class="rg-image-nav">
+          <a href="#" class="rg-image-nav-prev">Previous Image</a>
+          <a href="#" class="rg-image-nav-next">Next Image</a>
+        </div>
+				{{/if}}
+        <div class="rg-image"></div>
+        <div class="rg-loading"></div>
+        <div class="rg-caption-wrapper">
+          <div class="rg-caption" style="display:none;">
+            <p></p>
+          </div>
+        </div>
+      </div>
+    </script> 
 
   </head>
 
