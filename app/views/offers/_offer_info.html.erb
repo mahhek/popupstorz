@@ -5,10 +5,17 @@
     <b>Email:</b>  <%= user.email %><br/>
     <b>First Name:</b>  <%= user.first_name %><br/>
     <b>Last Name:</b>  <%= user.last_name %><br/>
-    <b>Gender:</b>  <%= user.gender %><br/>
+    <% if  (user.gender == true) then %>
+    <b>Gender:</b> &nbsp;Male.
+  <%else%>
+    <b>Gender:</b> &nbsp;Female.
+  <%end%>
+    <br/>
     <b>Address 1:</b>  <%= user.address1 %><br/>
-    <b>Address 2:</b>  <%= user.address2 %><br/>
-  </div>  
+      <%if user.address2 %>
+    <b>Address 2:</b><%= user.address2 %>
+    <%end%>
+  </div>
 </div>
 <br/><br/>
 

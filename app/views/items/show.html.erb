@@ -1,18 +1,34 @@
+<noscript>
+  <style>
+    .es-carousel ul{
+      display:block;
+    }
+  </style>
+</noscript>
+<script id="img-wrapper-tmpl" type="text/x-jquery-tmpl">
+  <div class="rg-image-wrapper">
+				{{if itemsCount > 1}}
+    <div class="rg-image-nav">
+      <a href="#" class="rg-image-nav-prev">Previous Image</a>
+      <a href="#" class="rg-image-nav-next">Next Image</a>
+    </div>
+				{{/if}}
+    <div class="rg-image"></div>
+    <div class="rg-loading"></div>
+    <div class="rg-caption-wrapper">
+      <div class="rg-caption" style="display:none;">
+        <p></p>
+      </div>
+    </div>
+  </div>
+</script>
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
-  $(document).ready(function(){
-
-  // jsFiddle
-  $("#txtFromDate").datepicker({minDate: new Date()});
-
-  $("#txtToDate").datepicker({minDate: new Date()});
-  // end jsFiddle
-
-  });
-
-
+    $(document).ready(function(){
+      $("#txtFromDate").datepicker({minDate: new Date()});
+      $("#txtToDate").datepicker({minDate: new Date()});
+    });
   });//]]>
-
 </script>
 
 <a href='#' class="back " onclick='history.back();'>&lt;&lt; Back to results</a>
@@ -34,11 +50,37 @@
     <% unless @item.avatars.size > 0 %>
       <img src="../assets/gallery.png"alt="" class="gallery" />
     <% else %>
-      <%= image_tag(@item.avatars.first.photo.url(:original), :alt=>"", :width => "471px",:height=>"391px", :class => "gallery") %>
+      <div id="rg-gallery" class="rg-gallery">
+        <div class="rg-thumbs">
+          <!-- Elastislide Carousel Thumbnail Viewer -->
+          <div class="es-carousel-wrapper">
+            <div class="es-nav">
+              <span class="es-nav-prev">Previous</span>
+              <span class="es-nav-next">Next</span>
+            </div>
+            <div class="es-carousel">
+              <ul>
+                <% @item.avatars.each do |avatar| %>
+                  <li>
+                    <a href="#">
+                      <img src="<%= avatar.photo.url(:thumb) %>"
+                           data-large="<%= avatar.photo.url(:original) %>"
+                           alt="image01"
+                           data-description="<%= @item.title %>" />
+    <%#= image_tag(, :alt=>"", :width => "471px",:height=>"391px", :class => "gallery") %>
+                    </a>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+          <!-- End Elastislide Carousel Thumbnail Viewer -->
+        </div><!-- rg-thumbs -->
+      </div><!-- rg-gallery -->
     <% end %>
 
 
-    <div class="fltR w200 mt100">
+    <div class="fltR w200 mt100" style="width: 165px;margin-top: 110px;">
       <h1 class="size">Size:</h1>
       <p class="size_text"><%= @item.size %> <%= @item.size_unit %></p>
       <div class="clear"></div>
@@ -142,11 +184,9 @@
       <% end %>
     </div>
     <div class="fltR w107">
+
 <%#       *<img src="../assets/rating.png" alt="" />%>
      
-   
-      
-      
       <h1 class="name"><%= @item.user.popup_storz_display_name %></h1>
       <p class="name_text"><%= @item.user.country %></p>
       <% if current_user != @item.user %>
@@ -282,54 +322,54 @@
 
 <script type="text/javascript">
   function change_price_to_book(elem){
-  $('#price').html(elem.val());
+    $('#price').html(elem.val());
   }
   function check_dates(){
-  if($('#txtFromDate').val() == "" || $('#txtFromDate').val() == "mm/dd/yy" || $('#txtToDate').val() == "" || $('#txtToDate').val() == "mm/dd/yy" ){
-  alert('Please select right date');
-  return false;
-  }else{
-  return true;
-  }
+    if($('#txtFromDate').val() == "" || $('#txtFromDate').val() == "mm/dd/yy" || $('#txtToDate').val() == "" || $('#txtToDate').val() == "mm/dd/yy" ){
+      alert('Please select right date');
+      return false;
+    }else{
+      return true;
+    }
   }
 </script>
 
 <script>
   function calculateTotalAmount(){
-  $("#txtToDate").datepicker('option', 'minDate', new Date($("#txtFromDate").val()));
+    $("#txtToDate").datepicker('option', 'minDate', new Date($("#txtFromDate").val()));
 
-  if($("#txtFromDate").val()=="mm/dd/yy"){
-  alert('Please select pickup date first, thanks.');
-  $("#txtToDate").val("mm/dd/yy");
-  }
-  else
-  {
-  if($("#txtToDate").val()=="")
-  {
-  $("#txtToDate").val($("#txtFromDate").val());
-  }
-  }
+    if($("#txtFromDate").val()=="mm/dd/yy"){
+      alert('Please select pickup date first, thanks.');
+      $("#txtToDate").val("mm/dd/yy");
+    }
+    else
+    {
+      if($("#txtToDate").val()=="")
+      {
+        $("#txtToDate").val($("#txtFromDate").val());
+      }
+    }
 
-  if($('#txtFromDate').val() != 'mm/dd/yy' && $('#txtToDate').val() != 'mm/dd/yy'){
-  start = $('#txtFromDate').val();
-  start_date = new Date(start);
-  end = $('#txtToDate').val();
-  end_date = new Date(end);
+    if($('#txtFromDate').val() != 'mm/dd/yy' && $('#txtToDate').val() != 'mm/dd/yy'){
+      start = $('#txtFromDate').val();
+      start_date = new Date(start);
+      end = $('#txtToDate').val();
+      end_date = new Date(end);
 
-  number_of_days = (end_date - start_date)/(1000*60*60*24);
-  if(number_of_days == 0){
-  number_of_days = 1;
-  }
+      number_of_days = (end_date - start_date)/(1000*60*60*24);
+      if(number_of_days == 0){
+        number_of_days = 1;
+      }
 
-  $('#total_days').text(number_of_days+ " days");
-  $('#total_price').text(calculate_price(number_of_days)+ " €");
-  }
+      $('#total_days').text(number_of_days+ " days");
+      $('#total_price').text(calculate_price(number_of_days)+ " €");
+    }
   }
   function calculate_price(number_of_days){
-  months = Math.floor(number_of_days/30);
-  weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);
-  days = (number_of_days - (30 * months)) - (weeks * 7);
-  return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
+    months = Math.floor(number_of_days/30);
+    weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);
+    days = (number_of_days - (30 * months)) - (weeks * 7);
+    return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
   }
 </script>
 
