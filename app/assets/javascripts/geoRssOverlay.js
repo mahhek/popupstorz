@@ -14,6 +14,7 @@
 //
 // This work is public domain
 
+
 function GeoRssOverlay(rssurl,icon,proxyurl,options){
     this.rssurl = rssurl;
     this.icon = icon;
