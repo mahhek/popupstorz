@@ -26,6 +26,12 @@ PopupStorz::Application.routes.draw do
     end
   end
 
+#  resources :ratings, :only => [:index, :new, :create, :destroy]
+#match '/rating' => 'businesses#rating', :as => :rating
+#  match '/commenting' => 'businesses#commenting', :as => :commenting
+#  match '/ratings/rate' => 'ratings#rate', :as => :rate
+#match '/show_index_ratings' => 'ratings#show_index_ratings', :as => :show_index_ratings
+
   resources :ratings do
     collection do
       get "rate"

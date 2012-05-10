@@ -28,6 +28,7 @@ class PaymentsController < ApplicationController
 
     if @payment.valid? && @payment.purchase("verify")
       @payment.save
+      @offer.update_attribute(:status, "Accepted - Confirmation pending")
       @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_sent_to_owner", :description => "You have received an <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> from #{current_user.popup_storz_display_name} for the item called #{@item.title}")
       @notification.save
       flash[:notice] = 'Your Offer Has been sent to Owner of item. Thanks.'

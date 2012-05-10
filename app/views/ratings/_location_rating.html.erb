@@ -1,0 +1,43 @@
+<div style="width: 100%;float: left;margin-top: 10px;">
+  <span style="width: 150px;float: left;font-size: 18px;">
+    Location:
+  </span>
+  <span style="width: 50px;float: left;font-size: 16px;">
+    Low
+  </span>
+  <span style="width: 125px;float: left;">
+    <ul class='star-rating'>
+      <% if !(user_signed_in?) || asset.user == current_user%>
+        <li class="current-rating" style="width:<%= ( asset.location_rating * 20).to_i -%>px;"></li>
+      <%else%>
+        <li class='current-rating' style='width:<%= (asset.location_rating * 20).to_i -%>px;'></li>
+        <li>
+          <%= link_to_function "#", only_view == false ? "send_rating('/ratings/rate?id=#{asset.id}&location_rating=1&class_name=#{asset.class}', 'location_rating');" : "javascript:void(0);" ,
+            :class => 'one-star', :name => '1 star out of 5' %>
+        </li>
+        <li>
+          <%= link_to_function "#", only_view == false ? "send_rating('/ratings/rate?id=#{asset.id}&location_rating=2&class_name=#{asset.class}', 'location_rating');" : "javascript:void(0);" ,
+            :class => 'two-stars', :name => '2 stars out of 5' %>
+        </li>
+        <li>
+          <%= link_to_function "#", only_view == false ? "send_rating('/ratings/rate?id=#{asset.id}&location_rating=3&class_name=#{asset.class}', 'location_rating');" : "javascript:void(0);" ,
+            :class => 'three-stars', :name => '3 stars out of 5' %>
+        </li>
+        <li>
+          <%= link_to_function "#", only_view == false ? "send_rating('/ratings/rate?id=#{asset.id}&location_rating=4&class_name=#{asset.class}', 'location_rating');" : "javascript:void(0);" ,
+            :class => 'four-stars', :name => '4 stars out of 5' %>
+        </li>
+        <li>
+          <%= link_to_function "#", only_view == false ? "send_rating('/ratings/rate?id=#{asset.id}&location_rating=5&class_name=#{asset.class}', 'location_rating');" : "javascript:void(0);" ,
+            :class => 'five-stars', :name => '5 stars out of 5' %>
+        </li>
+      <%end%>
+    </ul>
+  </span>
+  <span style="width: 50px;float: left;font-size: 16px;">
+    High
+  </span>
+  <span id="location_rating_ajax_loader" style="display: none;width: 50px;float: left;">
+    <%= image_tag "ajax-loader.gif" %>
+  </span>
+</div>

@@ -1,31 +1,13 @@
-<div style="padding: 10px;width: auto;margin-bottom: 10px;margin-top: 10px;">
-  <ul class='star-rating'>
-    <% if !(user_signed_in?) || asset == current_user%>
-      <li class="current-rating" style="width:<%= ( asset.rating * 20).to_i -%>px;"></li>
-    <%else%>
-      <li class='current-rating' style='width:<%= (asset.rating * 20).to_i -%>px;'></li>
-      <li>
-        <%= link_to( "#", rate_ratings_path(:id => asset.id, :rating => 1, :class_name=>asset.class),
-          :remote => true, :class => 'one-star', :name => '1 star out of 5', :success => "alert('Rating given Successfully!');") %>
-      </li>
-      <li>
-        <%= link_to( "#", rate_ratings_path(:id => asset.id, :rating => 2, :class_name=>asset.class),
-          :remote => true, :class => 'two-stars', :name => '2 stars out of 5', :success => "alert('Rating given Successfully!');") %>
-      </li>
-      <li>
-        <%= link_to( "#", rate_ratings_path(:id => asset.id, :rating => 3, :class_name=>asset.class),
-          :remote => true, :class => 'three-stars', :name => '3 stars out of 5', :success => "alert('Rating given Successfully!');") %>
-      </li>
-      <li>
-        <%= link_to( "#", rate_ratings_path(:id => asset.id, :rating => 4, :class_name=>asset.class),
-          :remote => true, :class => 'four-stars', :name => '4 stars out of 5', :success => "alert('Rating given Successfully!');") %>
-      </li>
-      <li>
-        <%= link_to( "#", rate_ratings_path(:id => asset.id, :rating => 5, :class_name=>asset.class),
-          :remote => true, :class => 'five-stars', :name => '5 stars out of 5', :success => "alert('Rating given Successfully!');") %>
-      </li>
-    <%end%>
-  </ul>
+<%= render :partial => "/ratings/communication_rating", :locals => { :asset => asset, :only_view => false } %>
 
-</div>
+<%= render :partial => "/ratings/accuracy_rating", :locals => { :asset => asset, :only_view => false } %>
 
+<%= render :partial => "/ratings/location_rating", :locals => { :asset => asset, :only_view => false } %>
+
+<%= render :partial => "/ratings/seriousness_rating", :locals => { :asset => asset, :only_view => false } %>
+
+<%= render :partial => "/ratings/commodities_rating", :locals => { :asset => asset, :only_view => false } %>
+
+<%= render :partial => "/ratings/value_rating", :locals => { :asset => asset, :only_view => false } %>
+
+<%= render :partial => "/ratings/average_rating", :locals => { :asset => asset, :only_view => false } %>

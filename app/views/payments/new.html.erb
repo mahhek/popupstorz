@@ -77,9 +77,10 @@
 
 
         <div id="details-panel">
+          <%unless @item.avatars.blank?%>
 
           <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" , :alt => "no image available") %>
-
+<%end%>
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>

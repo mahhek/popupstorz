@@ -13,7 +13,7 @@
   <%#*</div>%>
 
     <% @offers.each do | offer | %>
-    <%item=offer.Item%>
+      <%item=offer.item%>
       <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
         <div class="imgx">
           <% if item.avatars.size > 0 %>
@@ -33,15 +33,13 @@
           <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/week,
           <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
         </div>
-
-        <div class="manage-bg" style="margin-bottom: 5px;margin-top: 5px;">
-          <div class="btns">
-            <%= link_to "Edit Space" , edit_item_path(item)%>&nbsp;|&nbsp;
-            <%= link_to "Preview Space" , item_path(item)%>&nbsp;|&nbsp;
-            <%= link_to "Create New Space" , new_item_path %>&nbsp;|&nbsp;
-            <%= link_to "Delete this Item", item_path(item), :method => :delete, :confirm => "Are you sure?" %>
-          </div>
+        <div>
+          Your Offer: <%= number_to_currency(exchange_currency(offer.willingness_to_pay, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
+          <br/>
+          status: <%= offer.status %>
         </div>
+
+        
       </div>
     <%end%>
   <%else%>

@@ -1,0 +1,32 @@
+
+<div style="width: 100%;float: left;margin-top: 10px;">
+  <span style="width: 150px;float: left;font-size: 18px;">
+    Average :
+  </span>
+  <span style="width: 50px;float: left;font-size: 16px;">
+    Low
+  </span>
+  <span style="width: 125px;float: left;">
+    <ul class='star-rating'>
+      <% @rating = Rating.find(:first, :conditions =>["rateable_id = ? and user_id = ? and rateable_type = ?",asset.id,current_user.id,asset.class.to_s]) %>
+      <% if @rating.blank? %>
+        <li class="current-rating" style="width:0px;"></li>
+      <%else%>
+        <% total = 0 %>
+        <% total = total + 1 unless asset.communication_rating == 0 %>
+        <% total = total + 1 unless asset.accuracy_rating == 0 %>
+        <% total = total + 1 unless asset.location_rating == 0 %>
+        <% total = total + 1 unless asset.commodities_rating == 0 %>
+        <% total = total + 1 unless asset.value_rating == 0 %>
+        <% total = total + 1 unless asset.seriousness_rating == 0 %>
+        <%average_rating = (asset.communication_rating + asset.accuracy_rating + asset.location_rating + asset.seriousness_rating + asset.commodities_rating + asset.value_rating) / total%>
+        <li class="current-rating" style="width:<%= ( average_rating * 20).to_i -%>px;"></li>
+      <%end%>
+    </ul>
+  </span>
+  <span style="width: 50px;float: left;font-size: 16px;">
+    High 
+
+  </span>
+
+</div>

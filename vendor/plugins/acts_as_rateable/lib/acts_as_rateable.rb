@@ -65,27 +65,94 @@ module Juixe
         
         # Helper method that returns the average rating
         # 
-        def rating
+        def communication_rating
           average = 0.0
           ratings.each { |r|
-            average = average + r.rating
+            average = average + r.communication_rating
           }
           if ratings.size != 0
-            average = average / ratings.size 
+            average = average / ratings.size
           end
           average
         end
 
-#        def rating(sub_asset)
-#          average = 0.0
-#          ratings.each { |r|
-#            average = average + r.rating
-#          }
-#          if ratings.size != 0
-#            average = average / ratings.size
-#          end
-#          average
-#        end
+        def accuracy_rating
+          average = 0.0
+          ratings.each { |r|
+            average = average + r.accuracy_rating
+          }
+          if ratings.size != 0
+            average = average / ratings.size
+          end
+          average
+        end
+
+        def location_rating
+          average = 0.0
+          ratings.each { |r|
+            average = average + r.location_rating
+          }
+          if ratings.size != 0
+            average = average / ratings.size
+          end
+          average
+        end
+
+        def seriousness_rating
+          average = 0.0
+          ratings.each { |r|
+            average = average + r.seriousness_rating
+          }
+          if ratings.size != 0
+            average = average / ratings.size
+          end
+          average
+        end
+
+        def value_rating
+          average = 0.0
+          ratings.each { |r|
+            average = average + r.value_rating
+          }
+          if ratings.size != 0
+            average = average / ratings.size
+          end
+          average
+        end
+
+        def commodities_rating
+          average = 0.0
+          ratings.each { |r|
+            average = average + r.commodities_rating
+          }
+          if ratings.size != 0
+            average = average / ratings.size
+          end
+          average
+        end
+
+          def rating
+          average = 0.0
+          ratings.each { |r|
+            average = average + r. rating
+          }
+          if ratings.size != 0
+            average = average / ratings.size
+          end
+          average
+        end
+
+
+        #        def rating(sub_asset)
+        #          average = 0.0
+        #          ratings.each { |r|
+        #            average = average + r.rating
+        #          }
+        #          if ratings.size != 0
+        #            average = average / ratings.size
+        #          end
+        #          average
+        #        end
         
         # Check to see if a user already rated this rateable
         def rated_by_user?(user)

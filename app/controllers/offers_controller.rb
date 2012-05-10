@@ -51,6 +51,9 @@ class OffersController < ApplicationController
       if @offer.save!
         session[:return] = nil
         session[:pick_up] = nil
+
+        @offer.update_attribute(:status, "Applied")
+
         #        @offer.update_attributes(:cancellation_date => (@offer.updated_at + 24.hours))
         redirect_to  new_item_offer_payment_path(@item,@offer)
       else
@@ -123,14 +126,12 @@ class OffersController < ApplicationController
     if payment.purchase("charge").status == 3
       payment.save!
       if current_user.id == @offer.user_id
-        @offer.update_attribute("status", "Accepted by renter")
         @item.update_attribute("item_status","Reserved")
         flash[:notice] = "Offer accepted"
         @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_accepted", :description => "The <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been accepted")
         @notification.save
         redirect_to "/"
       else
-        @offer.update_attribute("status", "Accepted by owner")
         @item.update_attribute("item_status","Reserved")
         flash[:notice] = "Offer accepted."
         @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_accepted", :description => "The <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.")
@@ -138,6 +139,7 @@ class OffersController < ApplicationController
         flash[:flash] = "Offer accepted."
         redirect_to "/"
       end
+       @offer.update_attribute("status", "Accepted - Payment pending")
     else
       flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
       redirect_to "/"
@@ -148,12 +150,12 @@ class OffersController < ApplicationController
     @item = Item.find params[:item_id]
     @offer = Offer.find params[:id]
     if current_user.id == @offer.user_id
-      @offer.update_attribute("status", "Decline by renter")
+      @offer.update_attribute("status", "Declined by renter")
       flash[:notice] = "Offer declined"
       @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_declined", :description => "The <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been declined")
       @notification.save
     else
-      @offer.update_attribute("status", "Decline by owner")
+      @offer.update_attribute("status", "Declined by owner")
       flash[:notice] = "Offer declined"
       @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_declined", :description => "The <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been declined by the owner")
       @notification.save
