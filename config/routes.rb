@@ -17,6 +17,7 @@ PopupStorz::Application.routes.draw do
   match "/items/show/:id" => "items#show"
   match "/users/add_comment" => "users#add_comment"
   match "/items/pop_ups" => "items#my_pop_ups"
+  match "/items/payment_charge/:id" => "items#payment_charge"
   
   devise_for :users, :controllers => {:registrations => "registrations"}
 

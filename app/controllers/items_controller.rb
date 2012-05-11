@@ -256,5 +256,19 @@ class ItemsController < ApplicationController
     @offers= current_user.offers
   end
 
+  def payment_charge
+    p "aaaaaaaaaaaaaaa", params[:id]
+
+    @offer= Offer.find(params[:id])
+    payment = @offer.payment
+    if payment.purchase("charge").status == 3
+      @offer.update_attribute(:status, "Paid but waiting for FeedBack")
+      redirect_to "/"
+    else
+      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
+      redirect_to "/"
+    end
+  end
+
   
 end

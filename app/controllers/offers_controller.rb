@@ -123,7 +123,7 @@ class OffersController < ApplicationController
     @item = Item.find params[:item_id]
     @offer = Offer.find params[:id]
     payment = @offer.payment
-    if payment.purchase("charge").status == 3
+#    if payment.purchase("charge").status == 3
       payment.save!
       if current_user.id == @offer.user_id
         @item.update_attribute("item_status","Reserved")
@@ -140,10 +140,10 @@ class OffersController < ApplicationController
         redirect_to "/"
       end
        @offer.update_attribute("status", "Accepted - Payment pending")
-    else
-      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
-      redirect_to "/"
-    end
+#    else
+#      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
+#      redirect_to "/"
+#    end
   end
 
   def decline
@@ -163,6 +163,15 @@ class OffersController < ApplicationController
     redirect_to "/"
   end
 
+#  def payment_charge
+#    sdfdsf
+#    if payment.purchase("charge").status == 3
+#    else
+#      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
+#      redirect_to "/"
+#    end
+#  end
+
   protected
 
   def calculate_price(number_of_days, item)
@@ -174,6 +183,14 @@ class OffersController < ApplicationController
     weeks = (number_of_days-(30 * months))/7
     days = number_of_days - (30 * months) - (weeks * 7)
     months * ppm  + weeks * ppw + days * ppd
+  end
+
+  def payment_charge
+    if payment.purchase("charge").status == 3
+    else
+      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
+      redirect_to "/"
+    end
   end
 
 
