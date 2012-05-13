@@ -1,0 +1,46 @@
+<div id="get-list-header">
+  <h2>Members</h2>
+</div>
+<div class="listx-bg">
+  <% unless @members.blank? %>
+    <% @members.each do | member | %>
+      <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
+        <div class="imgx">
+          <% if member.avatars.size > 0 %>
+            <%= link_to image_tag(member.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo"), profile_path(member.id) %>
+          <% else %>
+            NO IMAGE PROVIDED YET.
+          <% end %>
+        </div>
+
+        <div class="name-list">
+          <b>Name:</b>
+          <%=link_to "#{member.first_name + " " + member.last_name}", profile_path(member.id) %>
+        </div>
+
+        <div class="name-list">
+          <b>Activity:</b>
+          <%= member.activity %>
+        </div>
+
+        <div class="name-list">
+          <b>City:</b>
+          <%= member.city %>
+        </div>
+
+        <div class="name-list">
+          <b>Country:</b>
+          <%= member.country %>
+        </div>
+        <div class="manage-bg">
+        </div>
+      </div>
+    <%end%>
+  <%else%>
+    No Member with given criteria found!
+  <%end%>
+</div>
+
+<div class="btn-bar">
+
+</div>

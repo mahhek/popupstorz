@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateOfferMessages < ActiveRecord::Migration
   def change
     create_table :offer_messages do |t|

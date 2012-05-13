@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddFieldsToListings < ActiveRecord::Migration
   def self.up
     add_column :items, :show_on_home, :boolean, :default => false

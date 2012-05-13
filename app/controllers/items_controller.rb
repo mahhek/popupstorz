@@ -1,9 +1,29 @@
+# -*- encoding : utf-8 -*-
 class ItemsController < ApplicationController
+  include ActionView::Helpers::NumberHelper
 
-  before_filter :authenticate_user!, :except => [:new, :create, :show, :search_via_price_range, :search_keyword, :search_category, :autocomplete_item_city, :autocomplete_item_title]
-
+  before_filter :authenticate_user!, :except => [:set_dates, :exchange_price, :new, :create, :show, :search_via_price_range, :search_keyword, :search_category, :autocomplete_item_city, :autocomplete_item_title]
   autocomplete :item, :title
   autocomplete :item, :city
+
+  def set_dates
+    session[:start_date] = params[:start_date]
+    session[:end_date] = params[:end_date]
+    respond_to do |format|
+      format.js do        
+        render :nothing => true
+      end
+    end
+  end
+
+  def exchange_price
+    exchanged_price = number_to_currency(exchange_currency(params[:calculated_price].to_i, params[:price_unit]),:unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)
+    respond_to do |format|
+      format.js do
+        render :js => "$('#total_price').text('#{exchanged_price}');"
+      end
+    end
+  end
 
   def add_to_favorite
     @item = Item.find params[:id]
@@ -63,9 +83,9 @@ class ItemsController < ApplicationController
       @map = GMap.new("map")
       @map.control_init(:map_type => true, :small_zoom => true)
       @map.center_zoom_init([48.48, 2.20], 6)
-    else      
+    else
       @item = Item.new(session[:items])
-      5.times { @item.avatars.build }      
+      5.times { @item.avatars.build }
       @map = GMap.new("map")
       @map.control_init(:map_type => true, :small_zoom => false)
       @map.center_zoom_init([48.48, 2.20], 6)
@@ -130,13 +150,13 @@ class ItemsController < ApplicationController
   def update
     @countries = Country.all
     @item = Item.find(params[:id])
-    @item.availability_option_ids = params[:availability_options]       
-    if @item.update_attributes(params[:item])      
+    @item.availability_option_ids = params[:availability_options]
+    if @item.update_attributes(params[:item])
       flash[:notice] = "Thanks for updating your space."
       redirect_to edit_item_avatar_path(@item,@item.avatars.first)
     else
       @listing_types = ListingType.all :order =>"name asc"
-      @availability_options = AvailabilityOption.all 
+      @availability_options = AvailabilityOption.all
       flash[:notice] = "We couldn't update your space. Please check your listing for missing information."
       render :action => "edit"
     end
@@ -163,6 +183,9 @@ class ItemsController < ApplicationController
 
 
   def search_keyword
+    session[:start_date] = nil
+    session[:end_date] = nil
+
     @min_price = Item.minimum("price")
     @max_price = Item.maximum("price")
     conds = "1=1 "
@@ -180,7 +203,7 @@ class ItemsController < ApplicationController
     end
     
     #    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => ["Date(availability_from) >= ? AND Date(availability_to) <= ? AND LOWER(address) LIKE ?","#{params[:search_from].to_date}","#{params[:search_to].to_date}","%#{params[:location].strip.downcase}%"], :order => "price")
-    case params[:sort_option]      
+    case params[:sort_option]
     when "1"
       order_by = "is_recommended, price DESC"
     when "2"
@@ -220,7 +243,7 @@ class ItemsController < ApplicationController
         foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
         render :js => "$('#searched-items-div').html(#{foo});$.setAjaxPagination();"
       end
-    end 
+    end
   
   end
 
@@ -243,7 +266,7 @@ class ItemsController < ApplicationController
     @comment.user=current_user
     @item =Item.find(params[:id])
     if @item.comments << @comment
-      flash[:notice] = "Comment Added"      
+      flash[:notice] = "Comment Added"
       redirect_to "/items/show/#{@item.id}"
     else
       flash[:error] = "Not saved"
@@ -252,8 +275,16 @@ class ItemsController < ApplicationController
    
   end
 
+  def listings_home
+    
+  end
+  
   def my_pop_ups
     @offers= current_user.offers
+  end
+
+  def overview
+    @offers= Offer.find(:all, :conditions => ["owner_id=?",current_user.id])
   end
 
   def payment_charge

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Geokit
   module Geocoders
     # Yahoo geocoder implementation.  Requires the Geokit::Geocoders::YAHOO variable to

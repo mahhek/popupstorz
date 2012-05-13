@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddMorePriceColumnsInItems < ActiveRecord::Migration
   def up
     add_column :items, :price_per_week, :float

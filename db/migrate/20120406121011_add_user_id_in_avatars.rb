@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddUserIdInAvatars < ActiveRecord::Migration
   def up
     add_column :avatars, :user_id, :integer

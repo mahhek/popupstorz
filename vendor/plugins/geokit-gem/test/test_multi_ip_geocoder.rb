@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require File.join(File.dirname(__FILE__), 'test_base_geocoder')
 
 Geokit::Geocoders::ip_provider_order=[:geo_plugin,:ip]

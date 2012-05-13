@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddTotalAmountInOffers < ActiveRecord::Migration
   def up
     add_column :offers, :total_amount, :float

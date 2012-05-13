@@ -5,7 +5,7 @@
     <b><i style="color: green;"><%= @offer.user == current_user ? "Owner" : "Renter" %>'s Information</i></b>
     <br/><br/>
     <%= render "offer_info" %>
-  <%elsif @offer.status == "Accepted by owner" || @offer.status == "Accepted by renter" %>
+  <% elsif @offer.status == "Accepted - Payment pending" || @offer.status == "Paid but waiting for FeedBack" %>
     <b><i style="color: green;">This Offer is accepted !</i></b>
     <br/>
     <b><i style="color: green;"><%= @offer.user == current_user ? "Owner" : "Renter" %>'s Information</i></b>
@@ -15,5 +15,3 @@
     <%= render "offer_form" %>
   <%end%>
 </div>
-
-

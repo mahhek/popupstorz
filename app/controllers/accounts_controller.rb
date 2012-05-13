@@ -1,7 +1,9 @@
+# -*- encoding : utf-8 -*-
 class AccountsController < ApplicationController
 
-def dashboard
+  def dashboard
     @notifications = current_user.notifications
+    @notifications.update_all(:is_read => true)
   end
 
   def new

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddColumnsToAccounts < ActiveRecord::Migration
   def up
     add_column :accounts, :stripe_card_token, :string

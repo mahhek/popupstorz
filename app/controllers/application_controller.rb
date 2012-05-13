@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'utility'
 require 'google'
 require 'pp'
@@ -13,11 +14,16 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   helper_method :account_verified
   helper_method :message_user
+  helper_method :exchange_currency
   before_filter :currency_conversion
 
   def currency_conversion
     session[:curr] = params[:curr] if params[:curr]
     session[:curr] = "USD" if session[:curr].blank?
+  end
+
+  def exchange_currency(amount, currency)
+    Money.new(amount * 100, currency).exchange_to(session[:curr])
   end
 
   def set_locale

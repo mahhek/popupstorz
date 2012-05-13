@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Payment < ActiveRecord::Base
     PROCESSING, FAILED, SUCCESS, VERIFIED = 1, 2, 3, 4
   attr_accessible :stripe_card_token,:amount, :stripe_card_token, :seller_id, :renter_id,:rentareto_fee,:seller_amount,:offer_id

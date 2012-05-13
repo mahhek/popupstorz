@@ -42,7 +42,7 @@
           <div class="clear">&nbsp;</div>
         </div>
 
-        <h3><%= @offer.user.popup_storz_display_name %> suggested the following terms:</h3> <br>
+        <h3><%= @offer.user.popup_storz_display_name %> suggested the following terms:</h3> <br/>
 
         <div id="booking-form">
 
@@ -77,25 +77,37 @@
           <label>Pickup:</label>
           <%= f.text_field :rental_start_date, :value => @offer.rental_start_date.strftime("%m/%d/%Y"), :class => "datex", :onchange => "calculateTotalAmount();" %>
           <div class="clear"></div>
+          <br/>
           <label>Return:</label>
           <%= f.text_field :rental_end_date, :value => @offer.rental_end_date.strftime("%m/%d/%Y"), :class => "datex", :onchange => "calculateTotalAmount();" %>
           <br/>
           <div class="clear"></div>
           <br/>
-          <label>Preferred Location:</label>
+          <label>Meeting Location:</label>
 
-          <div style="padding-top:22px; font-size:13px;">
-            <%= f.radio_button :preferred_location, false, :checked => @offer.preferred_location,  :class => "radio" %>
-            <%= label :preferred_location_email, "#{@item.user.popup_storz_display_name} Location" %> &nbsp;&nbsp;&nbsp;&nbsp;
-            <strong>or</strong>&nbsp;&nbsp;&nbsp;&nbsp;
-            <%= f.radio_button :preferred_location, true, :checked => @offer.preferred_location,  :class => "radio" %>
-            <%= label :preferred_location_sms, 'Choose another location' %>
+          <div style="padding-top:12px; font-size:13px;">
+            <span style="float: left;">
+              <%= f.radio_button :preferred_location, false, :checked => @offer.preferred_location,  :class => "radio" %>
+            </span>
+            <span style="float: left;">
+              <%= label :preferred_location_email, "#{@item.user.popup_storz_display_name} Location", :style => "padding-top:0px !important;line-height: 20px;" %> &nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span style="float: left;">
+              <strong>OR</strong>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span style="float: left;">
+              <%= f.radio_button :preferred_location, true, :checked => @offer.preferred_location,  :class => "radio" %>
+            </span>
+            <span style="float: left;">
+              <%= label :preferred_location_sms, 'Choose another location', :style => "padding-top:0px !important;line-height: 20px;"  %>
+            </span>
           </div>
           <br/>
 
           <div class="clear"></div>
 
-          <div style="padding-left:390px; font-size:13px; font-style:italic;">Please Enter Preferred <strong>Address</strong> :<br/>
+          <div id="preferred_address" style="display: <%= @offer.preferred_location.to_s == "true" ? 'block' : 'none' %>; font-size:13px; font-style:italic;">Please Enter Meeting <strong>Location</strong> :
             <%= f.text_field :preferred_address %>
             <div id="item_advanced_container" style="display:none;">
               <div id="item_advanced" style="display:none;">
@@ -109,11 +121,37 @@
             </div>
           </div>
           <br/>
+
           <div class="clear"></div>
 
-          <label>Willingness to Pay: </label>
-          <%= f.text_field :willingness_to_pay %>
-          € &nbsp;&nbsp;&nbsp;<font size="2"><em>For the whole rental period</em></font><br/>
+          <label>Want to Bargain:</label>
+
+          <div style="padding-top:12px; font-size:13px;">
+            <span style="float: left;">
+              <%= f.radio_button :want_to_bargain, false, :checked => @offer.want_to_bargain,  :class => "bargain_radio" %>
+            </span>
+            <span style="float: left;">
+              <%= label :want_to_bargain_no, "No", :style => "padding-top:0px !important;line-height: 20px;" %> &nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span style="float: left;">
+              <strong>OR</strong>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span style="float: left;">
+              <%= f.radio_button :want_to_bargain, true, :checked => @offer.want_to_bargain,  :class => "bargain_radio" %>
+            </span>
+            <span style="float: left;">
+              <%= label :want_to_bargain_yes, 'Yes', :style => "padding-top:0px !important;line-height: 20px;"  %>
+            </span>
+          </div>
+          <br/>
+          <div class="clear"></div>
+
+          <div id="bargain_div" style="display:  <%= @offer.want_to_bargain.to_s == "true" ? 'block' : 'none' %>; font-size:13px; font-style:italic;">Please Enter Meeting <strong>Willing to Pay</strong> :
+            <%= f.text_field :willingness_to_pay %>
+            <%= session[:curr] == "USD" ? "$" : "€" %> &nbsp;&nbsp;&nbsp;<font size="2"><em>For the whole rental period</em></font><br/>
+          </div>
+          <br/>
 
 
           <label style="line-height:18px;">She needs a response from you by:</label>
@@ -144,7 +182,7 @@
             <a class="large-max button orange" href="<%= accept_item_offer_path(params[:item_id], params[:id]) %>"  >
               Accept <%= current_user ==  @offer.user ? "Change" : "Request" %>
             </a> &nbsp; - &nbsp;
-            <button class="large button blue" type="submit"> Suggest other terms </button><br><br>
+            <button class="large button blue" type="submit"> Suggest other terms </button><br/><br/>
             or <a href="<%= decline_item_offer_path(params[:item_id], params[:id]) %>">Decline</a>
           </div>
 
@@ -166,19 +204,22 @@
     if($(this).val() == "true")
     {
       $('#preferred_address').show();
-      $('#photo_div').hide();
-      $('#my_map_div').css('visibility','visible');
-      $('#my_map_div').css('position','');
     }
     else
     {
       $('#preferred_address').hide();
       $('#offer_preferred_address').val('');
-      if($('#photo_div').is(':hidden')){
-        $('#photo_div').show();
-        $('#my_map_div').css('visibility','hidden');
-        $('#my_map_div').css('position','absolute');
-      }
+    }
+  });
+  $('.bargain_radio').change(function(){
+    if($(this).val() == "true")
+    {
+      $('#bargain_div').show();
+    }
+    else
+    {
+      $('#bargain_div').hide();
+      $('#offer_willingness_to_pay').val('');
     }
   });
   function checkPrefferedAddress(){

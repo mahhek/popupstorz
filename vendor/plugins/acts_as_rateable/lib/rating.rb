@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Rating < ActiveRecord::Base
   belongs_to :rateable, :polymorphic => true
   

@@ -1,9 +1,21 @@
-
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
     $(document).ready(function(){
-      $("#txtFromDate").datepicker({minDate: new Date()});
-      $("#txtToDate").datepicker({minDate: new Date()});
+      if('<%= session[:start_date] %>' == ""){
+        $("#txtFromDate").datepicker({minDate: new Date()});
+      }else{
+        $("#txtFromDate").val('<%= session[:start_date] %>');
+        $("#txtFromDate").datepicker({minDate: new Date()});
+      }
+      if('<%= session[:start_date] %>' == ""){
+        $("#txtToDate").datepicker({minDate: new Date()});
+      }else{
+        $("#txtToDate").val('<%= session[:end_date] %>');
+        $("#txtToDate").datepicker({minDate: new Date()});
+      }
+      if('<%= session[:start_date] %>' != "" && '<%= session[:end_date] %>' != ""){
+        calculateTotalAmount();
+      }
     });
   });//]]>
 </script>
@@ -102,7 +114,7 @@
     <h1 class="charming">what other people think</h1>
     <p class="charming_text">what other people thinkwhat other people thinkwhat other people thinkwhat other people think</p>
     <div class="line"></div>
-    <div id="comments" style="height: 200px;">
+    <div id="comments" style="height: 200px;display: none;">
 
       <%= form_for @comment, :url => "/items/add_comment" do |f| %>
         <% if @comment.errors.any? %>
@@ -130,7 +142,7 @@
     </div>
     <br/><br/>
 <%#if current_user%>
-    <div id="show_comments" >
+    <div id="show_comments" style="display: none;" >
       <b>Previous Comments:</b><br/>
       <%unless @item.comments.blank? %>
         <%@item.comments.each do|f|%>
@@ -142,9 +154,9 @@
         <%end%>
       <%end%>
     </div>
-    <%#*<div id="rating_of_item_<%= @item.id %>
-       <%#= render :partial => "/ratings/rating", :locals => { :asset => @item, :only_view => false } 
-    <%#*</div>%>
+<%#*<div id="rating_of_item_<%= @item.id %>
+<%#= render :partial => "/ratings/rating", :locals => { :asset => @item, :only_view => false } 
+<%#*</div>%>
 
 <%#end%>
   </div>
@@ -163,7 +175,7 @@
     <div class="fltR w107">
 
 <%#       *<img src="../assets/rating.png" alt="" />%>
-     
+
       <h1 class="name"><%= @item.user.popup_storz_display_name %></h1>
       <p class="name_text"><%= @item.user.country %></p>
       <% if current_user != @item.user %>
@@ -245,7 +257,7 @@
               <label>Total Price</label>
             </span>
             <span style="float: left;width: 100px;">
-              <div id="total_price" class="price_to_book" style="margin-left: 10px;font-size: 14px;">0 &nbsp;€</div>
+              <div id="total_price" class="price_to_book" style="margin-left: 10px;font-size: 14px;">0</div>
             </span>
           </div>
           <div class="clear"></div>
@@ -328,20 +340,40 @@
     }
 
     if($('#txtFromDate').val() != 'mm/dd/yy' && $('#txtToDate').val() != 'mm/dd/yy'){
+      
       start = $('#txtFromDate').val();
       start_date = new Date(start);
       end = $('#txtToDate').val();
       end_date = new Date(end);
+      
+      
 
       number_of_days = (end_date - start_date)/(1000*60*60*24);
       if(number_of_days == 0){
         number_of_days = 1;
       }
 
+      
+
       $('#total_days').text(number_of_days+ " days");
-      $('#total_price').text(calculate_price(number_of_days)+ " €");
+      calculated_price = calculate_price(number_of_days);
+
+      jQuery.ajax({
+        type:"GET",
+        url: '/items/set_dates?start_date='+start+'&end_date='+end,
+        success: function(){
+          jQuery.ajax({
+            type:"GET",
+            url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= @item.price_unit %>'
+          });
+        }
+        });
+      
+      
+      
     }
   }
+  
   function calculate_price(number_of_days){
     months = Math.floor(number_of_days/30);
     weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Ym4r
   module GmPlugin
     #Representing the Google Maps API class GMap2.

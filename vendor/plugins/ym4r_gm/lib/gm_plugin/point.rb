@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Ym4r
   module GmPlugin
     #A point in pixel coordinates

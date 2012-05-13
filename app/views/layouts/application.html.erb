@@ -17,8 +17,6 @@
 
     <%= javascript_include_tag "geoRssOverlay" %>
 
-    <%= javascript_include_tag "jquery.tmpl.min", "jquery.easing.1.3", "jquery.elastislide", "gallery" %>
-
     <%= javascript_include_tag "markerGroup" %>
     <%= javascript_include_tag "ym4r-gm" %>
     <%= javascript_include_tag "https://js.stripe.com/v1/" %>
@@ -87,14 +85,17 @@
               <% end %>
             <% else %>
               <%= link_to "Hi #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
+              <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
+              <% if unread_notifications_count > 0 %>
+                (<%= link_to unread_notifications_count, dashboard_path(current_user) %>)
+              <% end %>
+
               <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
             <% end %>
           </div>
 
           <div class="logo">
-            <a href="/">
-              <%= image_tag "Objet-dynamique-vectoriel.png" %>
-            </a>
+            <%= link_to image_tag("Objet-dynamique-vectoriel.png"), root_path %>
           </div>
           <div class="menubar">
             <div class="dropdowns">
@@ -120,19 +121,21 @@
 
             <% if user_signed_in? %>
               <span style="float: left;">
-                <%= link_to "Hi #{current_user.first_name}!", dashboard_path(current_user.id), :class => ((params[:controller] == "accounts" ) ? "m_act" : "") %>
-
-                <%= link_to 'Messages', inbox_messages_path, :class => ((params[:controller] == "messages" and params[:action] == "inbox") ? "m_act" : "") %>
-                <%= link_to 'Members', "/members", :class => ((params[:controller] == "users" and params[:action] == "members") ? "m_act" : "") %>
-                <%= link_to 'Gatherings', "#" %>
+                <%= link_to "Dashboard", dashboard_path(current_user.id), :class => ((params[:controller] == "accounts" or params[:controller] == "items" ) ? "m_act" : "") %>
+                <%= link_to 'Search', search_home_searches_path, :class => ((params[:controller] == "searches") ? "m_act" : "") %>
               </span>
-
+              <div class="clear"></div>
+              <span style="float: left;margin-left: 100px;">
+                <% if params[:controller] == "searches" %>
+                  <%#= link_to 'Members', members_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "members" or params[:action] == "search_members" )) ? "m_act" : "") %>
+                  <%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
+                <% end %>
+              </span>
               <span style="float: left;">
                 <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" %>
                   <%= link_to 'Messages', inbox_messages_path %>
-                  <%= link_to 'My Listings',items_path %>
-                  <%= link_to 'My Favorites', favorites_items_path %>
-                  <%= link_to 'My Pop Ups',"/items/pop_ups" %>
+                  <%= link_to 'My Listings', listings_home_items_path %>
+                  <%= link_to 'My Favorites', favorites_items_path %>                  
                   <%= link_to('My Profile', profile_path(current_user.id)) %>
                   <%= link_to "My Account","#" %>
                 <% end %>

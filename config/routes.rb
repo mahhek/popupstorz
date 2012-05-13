@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 PopupStorz::Application.routes.draw do
   get "users/show"
   
@@ -27,11 +28,24 @@ PopupStorz::Application.routes.draw do
     end
   end
 
-#  resources :ratings, :only => [:index, :new, :create, :destroy]
-#match '/rating' => 'businesses#rating', :as => :rating
-#  match '/commenting' => 'businesses#commenting', :as => :commenting
-#  match '/ratings/rate' => 'ratings#rate', :as => :rate
-#match '/show_index_ratings' => 'ratings#show_index_ratings', :as => :show_index_ratings
+  resources :searches do
+    collection do
+      get "search_home"
+      get "gatherings"
+      get "members"
+      get "search_gatherings"
+      get "search_members"
+    end
+  end
+
+  #  resources :ratings, :only => [:index, :new, :create, :destroy]
+  #match '/rating' => 'businesses#rating', :as => :rating
+  #  match '/commenting' => 'businesses#commenting', :as => :commenting
+  #  match '/ratings/rate' => 'ratings#rate', :as => :rate
+  #match '/show_index_ratings' => 'ratings#show_index_ratings', :as => :show_index_ratings
+
+  match '/items/set_dates' => "items#set_dates", :as => :set_dates
+  match '/items/exchange_price' => "items#exchange_price", :as => :exchange_price
 
   resources :ratings do
     collection do
@@ -102,9 +116,13 @@ PopupStorz::Application.routes.draw do
   end
 
   resources :items do
+    collection do
+      get "overview"
+      get "listings_home"
+    end
     resources :avatars
     collection do
-      get "sent_requests"
+      get "sent_requests"      
     end
     get :autocomplete_item_title, :on => :collection
     get :autocomplete_item_city, :on => :collection

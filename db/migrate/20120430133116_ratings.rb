@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Ratings < ActiveRecord::Migration
    def self.up
     create_table "ratings", :force => true do |t|

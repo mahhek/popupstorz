@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddRecipientPermanentDeleteAndSenderPermanentDeleteToMessages < ActiveRecord::Migration
   def self.up
     add_column :messages, :recipient_permanent_delete, :boolean, :default => false

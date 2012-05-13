@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Ym4r
   module GmPlugin
     #The module where all the Ruby-to-JavaScript conversion takes place. It is included by all the classes in the YM4R library.

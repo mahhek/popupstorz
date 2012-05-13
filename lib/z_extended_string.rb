@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'iconv'
 module ExtendedString
   # Remove the accents from the string. Uses String::ACCENTS_MAPPING as the source map.

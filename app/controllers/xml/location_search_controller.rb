@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Xml::LocationSearchController < Xml::XmlController
   def index
     return nil unless params[:q]

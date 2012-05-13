@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Xml::LocationTimezoneSearchController < Xml::XmlController
 
 ################################################################################

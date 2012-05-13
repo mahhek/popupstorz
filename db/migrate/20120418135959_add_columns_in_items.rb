@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddColumnsInItems < ActiveRecord::Migration
   def self.up
     add_column :items, :cleaning_fee, :float

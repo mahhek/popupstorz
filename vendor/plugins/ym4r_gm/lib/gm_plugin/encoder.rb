@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 #--
 #
 # Utility for creating Google Maps Encoded GPolylines

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateAvatars < ActiveRecord::Migration
   def change
     create_table :avatars do |t|

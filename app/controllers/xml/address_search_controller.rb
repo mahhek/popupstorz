@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Xml::AddressSearchController < Xml::XmlController
   def index
     return unless params[:lat] and params[:lon]

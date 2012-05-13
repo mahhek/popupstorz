@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateListingTypes < ActiveRecord::Migration
   def change
     create_table :listing_types do |t|

@@ -45,7 +45,7 @@
         <ul class="steps">
           <li class="start"> <span>1</span> Make a Booking</li>
           <li class="next"> <span> 2</span>Confirm & Contact</li>
-          
+
         </ul>
 
         <br class="clear" />
@@ -90,22 +90,22 @@
             </div>
 
           </div>
-<br/>
+          <br/>
 
           <strong>I need this... From: *</strong>
 
           <label>Pickup:</label>
           <%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %>
-          <%#*<div class="clear"></div>%>
+  <%#*<div class="clear"></div>%>
           <label>Return:</label>
           <%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %>
 
           <br/>
           <div class="clear"></div>
           <br/>
-          <label>Preferred Location:</label>
+          <label>Meeting Location:</label>
 
-          <div style="padding-top:22px; font-size:13px;">
+          <div style="padding-top:12px; font-size:13px;">
             <span style="float: left;">
               <%= f.radio_button :preferred_location, false, :checked => true,  :class => "radio" %>
             </span>
@@ -114,7 +114,6 @@
             </span>
             <span style="float: left;">
               <strong>OR</strong>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
             <span style="float: left;">
@@ -128,7 +127,7 @@
 
           <div class="clear"></div>
 
-          <div style="padding-left:545px; font-size:13px; font-style:italic;">Please Enter Preferred <strong>Address</strong> :<br/>
+          <div id="preferred_address" style="display: none; font-size:13px; font-style:italic;">Please Enter Meeting <strong>Location</strong> :
             <%= f.text_field :preferred_address %>
             <div id="item_advanced_container" style="display:none;">
               <div id="item_advanced" style="display:none;">
@@ -145,18 +144,44 @@
 
           <div class="clear"></div>
 
-          <label>Willingness to Pay: </label>
-          <%= f.text_field :willingness_to_pay %>
-          € &nbsp;&nbsp;&nbsp;<font size="2"><em>For the whole rental period</em></font><br/>
+          <label>Want to Bargain:</label>
 
-          <label style="line-height:18px;">I need a response <br/>from the Owner  by:</label>
-          <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%>
-          <br/><br/>
+          <div style="padding-top:12px; font-size:13px;">
+            <span style="float: left;">
+              <%= f.radio_button :want_to_bargain, false, :checked => true,  :class => "bargain_radio" %>
+            </span>
+            <span style="float: left;">
+              <%= label :want_to_bargain_no, "No", :style => "padding-top:0px !important;line-height: 20px;" %> &nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span style="float: left;">
+              <strong>OR</strong>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span style="float: left;">
+              <%= f.radio_button :want_to_bargain, true, :checked => false ,  :class => "bargain_radio" %>
+            </span>
+            <span style="float: left;">
+              <%= label :want_to_bargain_yes, 'Yes', :style => "padding-top:0px !important;line-height: 20px;"  %>
+            </span>
+          </div>
+          <br/>
           <div class="clear"></div>
 
-          <label style="line-height:18px; padding-top:40px;">
-            <strong>Send <%= @item.user.popup_storz_display_name %></strong> message:<br/>
-            <small>maybe tell him/her why you need<br/> the space</small></label><br/>
+          <div id="bargain_div" style="display: none; font-size:13px; font-style:italic;">Please Enter Meeting <strong>Willing to Pay</strong> :
+            <%= f.text_field :willingness_to_pay %>
+            <%= session[:curr] == "USD" ? "$" : "€" %> &nbsp;&nbsp;&nbsp;<font size="2"><em>For the whole rental period</em></font><br/>
+          </div>
+
+          <br/>
+          <label style="line-height:18px;">I need a response from the Owner  by:</label>
+          <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%>
+          <br/><br/>
+
+          <div class="clear"></div>
+
+          <label style="line-height:18px; ">
+            <strong>Send <%= @item.user.popup_storz_display_name %></strong> message:
+            <small>maybe tell him/her why you need the space</small></label><br/><br/>
           <%= f.fields_for :offer_messages do |offer_message| %>
             <% if offer_message.object.new_record? %>
               <%= offer_message.text_area :message %>
@@ -189,19 +214,22 @@
     if($(this).val() == "true")
     {
       $('#preferred_address').show();
-      $('#photo_div').hide();
-      $('#my_map_div').css('visibility','visible');
-      $('#my_map_div').css('position','');
     }
     else
     {
       $('#preferred_address').hide();
-      $('#offer_preferred_address').val('');
-      if($('#photo_div').is(':hidden')){
-        $('#photo_div').show();
-        $('#my_map_div').css('visibility','hidden');
-        $('#my_map_div').css('position','absolute');
-      }
+      $('#offer_preferred_address').val('');      
+    }
+  });
+  $('.bargain_radio').change(function(){
+    if($(this).val() == "true")
+    {
+      $('#bargain_div').show();
+    }
+    else
+    {
+      $('#bargain_div').hide();
+      $('#offer_willingness_to_pay').val('');
     }
   });
   function checkPrefferedAddress(){

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Ym4r
   module GmPlugin
     #A graphical marker positionned through geographic coordinates (in the WGS84 datum). An HTML info window can be set to be displayed when the marker is clicked on.

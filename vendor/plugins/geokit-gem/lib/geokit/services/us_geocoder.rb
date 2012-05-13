@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 # Geocoder Us geocoder implementation.  Requires the Geokit::Geocoders::GEOCODER_US variable to
 # contain true or false based upon whether authentication is to occur.  Conforms to the
 # interface set by the Geocoder class.

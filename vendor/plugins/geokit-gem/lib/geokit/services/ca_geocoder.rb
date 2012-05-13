@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 
 # Geocoder CA geocoder implementation.  Requires the Geokit::Geocoders::GEOCODER_CA variable to
 # contain true or false based upon whether authentication is to occur.  Conforms to the

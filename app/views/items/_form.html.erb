@@ -71,7 +71,7 @@
 
 <div class="xfields" style="width: 100%;">Size of Space:
   <%= f.text_field :size, :style => "width:80px;", :onchange => "update_units()" %>
-  <%= select_tag "item[size_unit]", options_for_select([["SQMT","SQMT"],["SQFT","SQFT"]], @item.size_unit),:onchange => "update_units()" %>
+  <%= select_tag "item[size_unit]", options_for_select([["SQMT","SQMT"],["SQFT","SQFT"]], @item.size_unit),:onchange => "update_units()" , :style => "width:100px;"%>
   <div id="other_unit">
     SQFT
   </div>
@@ -94,7 +94,7 @@
     Price Unit:
   </span>
   <span>
-    <%= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EUR","EUR"]], @item.price_unit), :onchange => "$('.unit').html($(this).val() == 'USD' ? '$' : '€');" %>
+    <%= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EUR","EUR"]], @item.price_unit), :onchange => "$('.unit').html($(this).val() == 'USD' ? '$' : '€');", :style => "width:100px;" %>
   </span>
 </div>
 <br/>

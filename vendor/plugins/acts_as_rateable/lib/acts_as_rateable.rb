@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 # ActsAsRateable
 module Juixe
   module Acts #:nodoc:

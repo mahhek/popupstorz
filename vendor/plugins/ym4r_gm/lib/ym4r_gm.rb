@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'gm_plugin/key'
 require 'gm_plugin/mapping'
 require 'gm_plugin/map'

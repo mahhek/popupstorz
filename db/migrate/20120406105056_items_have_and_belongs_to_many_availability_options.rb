@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ItemsHaveAndBelongsToManyAvailabilityOptions < ActiveRecord::Migration
   def up
     create_table :availability_options_items, :id =>  false do |t|

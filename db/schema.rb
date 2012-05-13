@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120504112158) do
+ActiveRecord::Schema.define(:version => 20120513160712) do
 
   create_table "accounts", :force => true do |t|
     t.datetime "created_at"
@@ -45,12 +45,12 @@ ActiveRecord::Schema.define(:version => 20120504112158) do
   end
 
   create_table "comments", :force => true do |t|
-    t.string   "title",            :limit => 50, :default => ""
-    t.string   "comment",                        :default => ""
+    t.string   "title",            :limit => 50
+    t.string   "comment"
     t.datetime "created_at"
-    t.integer  "commentable_id",                 :default => 0,  :null => false
-    t.string   "commentable_type", :limit => 15, :default => "", :null => false
-    t.integer  "user_id",                        :default => 0,  :null => false
+    t.integer  "commentable_id",                 :default => 0, :null => false
+    t.string   "commentable_type", :limit => 15,                :null => false
+    t.integer  "user_id",                        :default => 0, :null => false
     t.datetime "updated_at"
   end
 
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(:version => 20120504112158) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_read",           :default => false
   end
 
   create_table "offer_messages", :force => true do |t|
@@ -168,6 +169,8 @@ ActiveRecord::Schema.define(:version => 20120504112158) do
     t.boolean  "preferred_location",                :default => false
     t.string   "preferred_address"
     t.datetime "cancellation_date"
+    t.boolean  "want_to_bargain",                   :default => false
+    t.integer  "owner_id"
   end
 
   create_table "payments", :force => true do |t|
@@ -187,11 +190,16 @@ ActiveRecord::Schema.define(:version => 20120504112158) do
   end
 
   create_table "ratings", :force => true do |t|
-    t.integer  "rating",                      :default => 0
-    t.datetime "created_at",                                  :null => false
-    t.string   "rateable_type", :limit => 15, :default => "", :null => false
-    t.integer  "rateable_id",                 :default => 0,  :null => false
-    t.integer  "user_id",                     :default => 0,  :null => false
+    t.integer  "communication_rating",               :default => 0
+    t.integer  "accuracy_rating",                    :default => 0
+    t.integer  "location_rating",                    :default => 0
+    t.integer  "seriousness_rating",                 :default => 0
+    t.integer  "commodities_rating",                 :default => 0
+    t.integer  "value_rating",                       :default => 0
+    t.string   "rateable_type",        :limit => 50,                :null => false
+    t.integer  "rateable_id",                        :default => 0, :null => false
+    t.integer  "user_id",                            :default => 0, :null => false
+    t.datetime "created_at",                                        :null => false
   end
 
   add_index "ratings", ["user_id"], :name => "fk_ratings_user"
@@ -212,8 +220,8 @@ ActiveRecord::Schema.define(:version => 20120504112158) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "",    :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
+    t.string   "email",                                                    :null => false
+    t.string   "encrypted_password",     :limit => 128,                    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

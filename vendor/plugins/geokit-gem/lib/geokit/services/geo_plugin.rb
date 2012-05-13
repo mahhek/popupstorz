@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Geokit
   module Geocoders
     # Provides geocoding based upon an IP address.  The underlying web service is geoplugin.net

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 
 Ym4r::GmPlugin::GPolyline.class_eval do
   #Creates a GPolyline object from a georuby line string. Assumes the points of the line strings are stored in Longitude(x)/Latitude(y) order.

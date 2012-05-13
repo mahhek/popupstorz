@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddCancellationDateInOffers < ActiveRecord::Migration
   def up
     add_column :offers, :cancellation_date, :datetime

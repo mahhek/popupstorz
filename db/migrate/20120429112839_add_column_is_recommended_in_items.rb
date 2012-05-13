@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddColumnIsRecommendedInItems < ActiveRecord::Migration
   def self.up
     add_column :items, :is_recommended, :boolean, :default => false

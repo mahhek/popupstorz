@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 
 require File.expand_path(File.dirname(__FILE__) + "/../../../../config/environment")

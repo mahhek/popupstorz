@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 # Get loaded locales conveniently # See http://rails-i18n.org/wiki/pages/i18n-available_locales
 module I18n
   class << self

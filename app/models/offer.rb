@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Offer < ActiveRecord::Base
   validate :rental_start_date, :presence => true
   validate :rental_end_date, :presence => true
@@ -8,11 +9,16 @@ class Offer < ActiveRecord::Base
   belongs_to :item
   belongs_to :user
   has_one :payment
-  scope :my_offers, lambda { |user_id, item_id|
-    { :conditions => ["user_id = ? and item_id = ?", user_id, item_id] }
-  }
+
+  
   has_many :offer_messages, :dependent => :destroy
   accepts_nested_attributes_for :offer_messages, :allow_destroy => true
+
+  before_save :set_owner_of_item
+
+  def set_owner_of_item
+    self.owner_id = self.item.user_id
+  end
 
 
   def latest_message
