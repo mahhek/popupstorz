@@ -33,8 +33,8 @@ PopupStorz::Application.routes.draw do
       get "search_home"
       get "gatherings"
       get "members"
-      get "search_gatherings"
-      get "search_members"
+      post "search_gatherings"
+      post "search_members"
     end
   end
 
