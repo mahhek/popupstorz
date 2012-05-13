@@ -15,6 +15,10 @@ class UsersController < ApplicationController
     end
 
   end
+
+  def show
+    @user = User.find_by_id(param[:id])
+  end
   
   
 end
