@@ -1,4 +1,5 @@
 class AddWantToBargainInOffers < ActiveRecord::Migration
+  
   def up
     add_column :offers, :want_to_bargain, :boolean, :default => false
   end
@@ -6,4 +7,5 @@ class AddWantToBargainInOffers < ActiveRecord::Migration
   def down
     remove_column :offers, :want_to_bargain
   end
+  
 end
