@@ -1,8 +1,10 @@
 <h1>Profile</h1>
 
 <div class="existingPaperclipFiles">
-  <% @user.avatars.each  do |avatar| %>
-    <%= link_to(image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
+  <% if @user.avatars.size > 0 %>
+    <% @user.avatars.each  do |avatar| %>
+      <%= link_to(image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
+    <% end %>
   <% end %>
 </div>
 
@@ -33,9 +35,9 @@
 </div>
 <br/>
 <%if @user==current_user%>
-<li>
-  <%= link_to('Edit Profile', edit_user_registration_path) %>
-</li>
+  <li>
+    <%= link_to('Edit Profile', edit_user_registration_path) %>
+  </li>
 <%end%>
 
 <div id="comments">
