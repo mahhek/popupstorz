@@ -3,7 +3,7 @@
 <br/>
 
 <div id="get-list-header">
-  <h2>Your Offers</h2>
+  <h2>The Offers you got</h2>
 </div>
 
 <div class="listx-bg">
@@ -22,7 +22,7 @@
       <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
 
         <div class="imgx">
-          <%=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
+          <%#=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
           <% if item.avatars.size > 0 %>
             <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo")  %>
           <% else %>
