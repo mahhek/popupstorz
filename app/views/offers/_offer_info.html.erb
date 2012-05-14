@@ -24,7 +24,7 @@
   <br/>
   Rental End Date: <%= @offer.rental_end_date.strftime("%d-%m-%Y %I:%M %p") %>
   <br/>
-  Total Amount: <%= @offer.total_amount %>
+  Total Amount: <%= number_to_currency(exchange_currency(@offer.total_amount.to_i, @offer.item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
   <br/>
   Additional Message: <%= @offer.latest_message.message %>
   <br/>

@@ -75,7 +75,7 @@ class OffersController < ApplicationController
       session[:edit_item] = nil
       session[:edit_offer] = nil
     end
-
+    @comment = Comment.new
     @item = Item.find params[:item_id]
     @offer = Offer.find params[:id]
     @offer.offer_messages.build

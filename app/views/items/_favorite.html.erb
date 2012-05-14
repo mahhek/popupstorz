@@ -1,6 +1,6 @@
 <%if !current_user%>
 <%= link_to "Add to favorite", "#", :onclick=> "return no_login()" %>
-<%elsif current_user.items.include?(item)%>
+<%elsif current_user.favorites.include?(item)%>
 <%= link_to "Remove from favorite", remove_from_favorite_item_path(item), :remote => true %>
 <%else%>
 <%= link_to "Add to favorite", add_to_favorite_item_path(item), :remote => true %>

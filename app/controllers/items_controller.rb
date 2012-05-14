@@ -288,12 +288,18 @@ class ItemsController < ApplicationController
   end
 
   def payment_charge
-    p "aaaaaaaaaaaaaaa", params[:id]
+    
 
     @offer= Offer.find(params[:id])
+    @item=@offer.item
+    
     payment = @offer.payment
     if payment.purchase("charge").status == 3
       @offer.update_attribute(:status, "Paid but waiting for FeedBack")
+      
+      @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_updated", :description => "The <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!")
+      @notification.save
+      p "aaaaaaaaaaaaaaaaaaaaaaaaaaa", @notification
       redirect_to "/"
     else
       flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."

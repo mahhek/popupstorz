@@ -45,12 +45,12 @@ ActiveRecord::Schema.define(:version => 20120513160712) do
   end
 
   create_table "comments", :force => true do |t|
-    t.string   "title",            :limit => 50
-    t.string   "comment"
+    t.string   "title",            :limit => 50, :default => ""
+    t.string   "comment",                        :default => ""
     t.datetime "created_at"
-    t.integer  "commentable_id",                 :default => 0, :null => false
-    t.string   "commentable_type", :limit => 15,                :null => false
-    t.integer  "user_id",                        :default => 0, :null => false
+    t.integer  "commentable_id",                 :default => 0,  :null => false
+    t.string   "commentable_type", :limit => 15, :default => "", :null => false
+    t.integer  "user_id",                        :default => 0,  :null => false
     t.datetime "updated_at"
   end
 
@@ -196,10 +196,10 @@ ActiveRecord::Schema.define(:version => 20120513160712) do
     t.integer  "seriousness_rating",                 :default => 0
     t.integer  "commodities_rating",                 :default => 0
     t.integer  "value_rating",                       :default => 0
-    t.string   "rateable_type",        :limit => 50,                :null => false
-    t.integer  "rateable_id",                        :default => 0, :null => false
-    t.integer  "user_id",                            :default => 0, :null => false
-    t.datetime "created_at",                                        :null => false
+    t.string   "rateable_type",        :limit => 50, :default => "", :null => false
+    t.integer  "rateable_id",                        :default => 0,  :null => false
+    t.integer  "user_id",                            :default => 0,  :null => false
+    t.datetime "created_at",                                         :null => false
   end
 
   add_index "ratings", ["user_id"], :name => "fk_ratings_user"
@@ -220,8 +220,8 @@ ActiveRecord::Schema.define(:version => 20120513160712) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                                    :null => false
-    t.string   "encrypted_password",     :limit => 128,                    :null => false
+    t.string   "email",                                 :default => "",    :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
