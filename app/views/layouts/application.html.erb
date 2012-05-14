@@ -122,20 +122,25 @@
             <% if user_signed_in? %>
               <span style="float: left;">
                 <%= link_to "Dashboard", dashboard_path(current_user.id), :class => ((params[:controller] == "accounts" or params[:controller] == "items" ) ? "m_act" : "") %>
+                <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
+                <% if unread_notifications_count > 0 %>
+                  (<%= link_to unread_notifications_count, dashboard_path(current_user) %>)
+                <% end %>
                 <%= link_to 'Search', search_home_searches_path, :class => ((params[:controller] == "searches") ? "m_act" : "") %>
               </span>
               <div class="clear"></div>
               <span style="float: left;margin-left: 100px;">
                 <% if params[:controller] == "searches" %>
-                  <%#= link_to 'Members', members_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "members" or params[:action] == "search_members" )) ? "m_act" : "") %>
-                  <%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
+    <%#= link_to 'Members', members_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "members" or params[:action] == "search_members" )) ? "m_act" : "") %>
+    <%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
                 <% end %>
               </span>
               <span style="float: left;">
                 <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" %>
                   <%= link_to 'Messages', inbox_messages_path %>
                   <%= link_to 'My Listings', listings_home_items_path %>
-                  <%= link_to 'My Favorites', favorites_items_path %>                  
+                  <%= link_to 'My bookings', "/items/pop_ups"%>
+                  <%= link_to 'My Favorites', favorites_items_path %>
                   <%= link_to('My Profile', profile_path(current_user.id)) %>
                   <%= link_to "My Account","#" %>
                 <% end %>
@@ -177,38 +182,38 @@
 
   function addParamToUrl(param, value)
   {
-    //check if param exists
-    var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
-    result = result && result[1] || "";
+  //check if param exists
+  var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
+  result = result && result[1] || "";
 
-    //added seperately to append ? before params
-    var loc = window.location;
-    var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
+  //added seperately to append ? before params
+  var loc = window.location;
+  var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
 
-    //param doesn't exist in url, add it
-    if (result == '')
-    {
-      //doesn't have any params
-      if (loc.search == '')
-      {
-        url += "?" + param + '=' + value;
-      }
-      else
-      {
-        url += "&" + param + '=' + value;
-      }
-    }
-    else
-    {
+  //param doesn't exist in url, add it
+  if (result == '')
+  {
+  //doesn't have any params
+  if (loc.search == '')
+  {
+  url += "?" + param + '=' + value;
+  }
+  else
+  {
+  url += "&" + param + '=' + value;
+  }
+  }
+  else
+  {
 
-      value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
-      value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
-      url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
+  value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
+  value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
+  url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
 
-    }
+  }
 
-    //return the finished url
-    window.location = url;
+  //return the finished url
+  window.location = url;
   }
 
 </script>

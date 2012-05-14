@@ -34,7 +34,7 @@
           <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
         </div>
         <div>
-          Your Offer: <%= number_to_currency(exchange_currency(offer.willingness_to_pay, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
+          <%#*Your Offer: <%= number_to_currency(exchange_currency(offer.willingness_to_pay, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
           <br/>
           status: <%= offer.status %>
           <%if offer.status=="Accepted - Payment pending"%>

@@ -215,7 +215,8 @@ class ItemsController < ApplicationController
     else
       order_by = "price ASC"
     end
-    
+#    p "aaaaaaaaaaaaaaaaaaaaaaaaaaa",conds
+#    ff
     @items = Item.paginate(:page => params[:page], :per_page => 3, :conditions => [ conds ], :order => order_by )
     
     @map = GMap.new("map")
