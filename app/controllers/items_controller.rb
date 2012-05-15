@@ -193,10 +193,10 @@ class ItemsController < ApplicationController
       new_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_time
       conds += " AND (availability_from) >= '" + new_time.to_s + "'"
     end
-    unless params[:search_to].blank?
-      new_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_time + 1.day
-      conds += " AND (availability_to) <= '" + new_time.to_s + "'"
-    end
+#    unless params[:search_to].blank?
+#      new_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_time + 1.day
+#      conds += " AND (availability_to) <= '" + new_time.to_s + "'"
+#    end
     unless params[:location].blank?
      
       conds += " AND (city LIKE  " + "'%%" + "#{params[:location]}" + "%%'" +")"
