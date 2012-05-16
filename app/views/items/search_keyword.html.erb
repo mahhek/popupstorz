@@ -5,19 +5,19 @@
 <script type="text/javascript">
 
   $(function() {
-    $( "#amount-slider-range" ).slider({
-      range: true,
-      min: <%= @min_price %>,
-      max: <%= @max_price %>,
-      values: [ <%= @min_price %>, <%= @max_price %> ],
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-      },
-      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
-        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));$('#price_range_form').submit();}
-    });
-    $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
-      " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
+  $( "#amount-slider-range" ).slider({
+  range: true,
+  min: <%= @min_price %>,
+  max: <%= @max_price %>,
+  values: [ <%= @min_price %>, <%= @max_price %> ],
+  slide: function( event, ui ) {
+  $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+  },
+  stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
+  $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));$('#price_range_form').submit();}
+  });
+  $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
+  " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
   });
 
 
@@ -90,7 +90,7 @@
 </div>
 <div class="leftcontent">
   <%= form_tag "/items/search_keyword", :method => :get, :id => "search_form"  do %>
-  
+
     <div class="refinesearchresults">
       <%= select_tag( "location", options_from_collection_for_select(@items_with_uniq_cities, :city, :city, params[:location]), :prompt => "Select City", :class => "search_dd") %>
       <span>from</span>
@@ -101,7 +101,7 @@
     </div>
 
     <div class="sortby">
-      <%= select_tag "sort_option", options_for_select([["Recommended" , "1"],["Hight to Low" ,"2"],["Low to High", "3"],["Newest","4"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#search_form').submit();" %>
+      <%= select_tag "sort_option", options_for_select([["Recommended" , "1"],["High to Low" ,"2"],["Low to High", "3"],["Newest","4"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#search_form').submit();" %>
       <span>sort by</span>
     </div>
 
