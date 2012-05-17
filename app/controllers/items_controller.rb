@@ -203,54 +203,46 @@ class ItemsController < ApplicationController
     if !params[:search_from].blank? and !params[:search_to].blank? 
       conds += " OR ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
     end
-        
-    unless params[:location].blank?
-      conds += " AND (city LIKE  " + "'%%" + "#{params[:location]}" + "%%'" +")"
-    end
-    
+
     conds += " AND status = 'applied'"
     
     booked_items = []
     offers = Offer.find(:all,:conditions => [ conds ])
     offers.each do|offer|
-      booked_items << offer.item
+      if params[:location].blank?
+        booked_items << offer.item
+      else
+        booked_items << offer.item(:conditions => ["city LIKE '%#{params[:location]}%'"])
+      end      
     end
     
-#    p "aaaaaaaaaaaaaaaaaaaaaaaa",booked_items.inspect
-
-#    items = Item.all(:conditions => ["availability_from >= '#{start_time.to_s}' and availability_to <= '#{end_time.to_s}'"])
-    items = Item.find(:all,:conditions => ["'#{start_time.to_s}' >= availability_from"])
+    item_conds = "1=1 "
+    unless params[:search_from].blank?
+      item_conds += " AND '#{start_time.to_s}' >= availability_from"
+    end
     
-#    p "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",items.inspect
-#    hh
+    unless params[:location].blank?
+      item_conds += " AND (city LIKE  " + "'%%" + "#{params[:location]}" + "%%'" +")"
+    end
     
+    items = Item.find(:all,:conditions => [ item_conds ])
+        
     @items = items - booked_items
-#    offers = Offer.find(:all, :conditions => ["(('#{start_time.to_s}' < rental_start_date and '#{end_time.to_s}' < rental_start_date) OR ('#{start_time.to_s}' > rental_end_date and '#{end_time.to_s}' > rental_end_date) ) and status = 'applied'"])
-#    p "aaaaaaaaaaaaaaaaaaaaaaaaaa",items.inspect
-#    ff
-#    items = Item.find_by_sql("Select * from items i left outer join offers o on i.id = o.item_id where ((#{start_time.to_s} < o.rental_start_date and #{end_time.to_s} < o.rental_start_date) OR (#{start_time.to_s} > o.rental_end_date and #{end_time.to_s} > o.rental_end_date) )")
-#    offers.each do|offer|
-#      p "qqqqqqqqqqqqqqqqqq",item.id
-#    end
     
-#    unless params[:location].blank?
-#      conds += " AND (city LIKE  " + "'%%" + "#{params[:location]}" + "%%'" +")"
-#    end
-    
-    #    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => ["Date(availability_from) >= ? AND Date(availability_to) <= ? AND LOWER(address) LIKE ?","#{params[:search_from].to_date}","#{params[:search_to].to_date}","%#{params[:location].strip.downcase}%"], :order => "price")
-#    case params[:sort_option]
-#    when "1"
-#      order_by = "is_recommended, price DESC"
-#    when "2"
-#      order_by = "price DESC"
-#    when "3"
-#      order_by = "price ASC"
-#    when "4"
-#      order_by = "created_at DESC"
-#    else
-#      order_by = "price ASC"
-#    end
-#  
+    @items = Item.paginate(:page => params[:page], :per_page => 4, :order => "price")
+    case params[:sort_option]
+    when "1"
+      order_by = "is_recommended, price DESC"
+    when "2"
+      order_by = "price DESC"
+    when "3"
+      order_by = "price ASC"
+    when "4"
+      order_by = "created_at DESC"
+    else
+      order_by = "price ASC"
+    end
+
 #    @items = Item.paginate(:page => params[:page], :per_page => 3, :conditions => [ conds ], :order => order_by )
     
     @map = GMap.new("map")
