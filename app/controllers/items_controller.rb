@@ -219,7 +219,7 @@ class ItemsController < ApplicationController
 #    p "aaaaaaaaaaaaaaaaaaaaaaaa",booked_items.inspect
 
 #    items = Item.all(:conditions => ["availability_from >= '#{start_time.to_s}' and availability_to <= '#{end_time.to_s}'"])
-    items = Item.find(:all,:conditions => ["availability_from <= '#{start_time.to_s}'"])
+    items = Item.find(:all,:conditions => ["'#{start_time.to_s}' >= availability_from"])
     
 #    p "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",items.inspect
 #    hh
