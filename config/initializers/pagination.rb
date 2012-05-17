@@ -1,4 +1,6 @@
 # -*- encoding : utf-8 -*-
+require 'will_paginate/array'
+
 module WillPaginate::ViewHelpers
   # default options that can be overridden on the global level
   @@pagination_options = {

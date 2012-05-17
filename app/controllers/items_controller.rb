@@ -204,7 +204,7 @@ class ItemsController < ApplicationController
       conds += " OR ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
     end
 
-    conds += " AND status = 'applied'"
+#    conds += " AND status = 'applied'"
     
     booked_items = []
     offers = Offer.find(:all,:conditions => [ conds ])
@@ -226,7 +226,7 @@ class ItemsController < ApplicationController
     end
     
     items = Item.find(:all,:conditions => [ item_conds ])
-        
+    
     @items = items - booked_items
     
 #    @items = Item.paginate(:page => params[:page], :per_page => 4, :order => "price")
@@ -243,7 +243,7 @@ class ItemsController < ApplicationController
       order_by = "price ASC"
     end
 
-#    @items = Item.paginate(:page => params[:page], :per_page => 4, :order => order_by )
+    @items = @items.paginate(:page => params[:page], :per_page => 4, :order => order_by )
     
     @map = GMap.new("map")
     @map.control_init(:map_type => true, :small_zoom => true)
