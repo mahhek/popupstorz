@@ -222,14 +222,14 @@ class ItemsController < ApplicationController
     end
     
     unless params[:location].blank?
-      item_conds += " AND (city LIKE  " + "'%%" + "#{params[:location]}" + "%%'" +")"
+      item_conds += " AND (city LIKE " + "'%%" + "#{params[:location]}" + "%%'" +")"
     end
     
     items = Item.find(:all,:conditions => [ item_conds ])
         
     @items = items - booked_items
     
-    @items = Item.paginate(:page => params[:page], :per_page => 4, :order => "price")
+#    @items = Item.paginate(:page => params[:page], :per_page => 4, :order => "price")
     case params[:sort_option]
     when "1"
       order_by = "is_recommended, price DESC"
@@ -243,7 +243,7 @@ class ItemsController < ApplicationController
       order_by = "price ASC"
     end
 
-#    @items = Item.paginate(:page => params[:page], :per_page => 3, :conditions => [ conds ], :order => order_by )
+#    @items = Item.paginate(:page => params[:page], :per_page => 4, :order => order_by )
     
     @map = GMap.new("map")
     @map.control_init(:map_type => true, :small_zoom => true)
