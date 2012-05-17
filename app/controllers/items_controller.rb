@@ -189,35 +189,69 @@ class ItemsController < ApplicationController
     @min_price = Item.minimum("price")
     @max_price = Item.maximum("price")
     conds = "1=1 "
+    
     unless params[:search_from].blank?
-      new_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_time
-      conds += " AND (availability_from) >= '" + new_time.to_s + "'"
+      start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
+      conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
     end
-#    unless params[:search_to].blank?
-#      new_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_time + 1.day
-#      conds += " AND (availability_to) <= '" + new_time.to_s + "'"
-#    end
+    
+    unless params[:search_to].blank?
+      end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
+      conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
+    end
+    
+    if !params[:search_from].blank? and !params[:search_to].blank? 
+      conds += " OR ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
+    end
+        
     unless params[:location].blank?
-     
       conds += " AND (city LIKE  " + "'%%" + "#{params[:location]}" + "%%'" +")"
     end
     
-    #    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => ["Date(availability_from) >= ? AND Date(availability_to) <= ? AND LOWER(address) LIKE ?","#{params[:search_from].to_date}","#{params[:search_to].to_date}","%#{params[:location].strip.downcase}%"], :order => "price")
-    case params[:sort_option]
-    when "1"
-      order_by = "is_recommended, price DESC"
-    when "2"
-      order_by = "price DESC"
-    when "3"
-      order_by = "price ASC"
-    when "4"
-      order_by = "created_at DESC"
-    else
-      order_by = "price ASC"
+    conds += " AND status = 'applied'"
+    
+    booked_items = []
+    offers = Offer.find(:all,:conditions => [ conds ])
+    offers.each do|offer|
+      booked_items << offer.item
     end
-#    p "aaaaaaaaaaaaaaaaaaaaaaaaaaa",conds
+    
+#    p "aaaaaaaaaaaaaaaaaaaaaaaa",booked_items.inspect
+
+#    items = Item.all(:conditions => ["availability_from >= '#{start_time.to_s}' and availability_to <= '#{end_time.to_s}'"])
+    items = Item.find(:all,:conditions => ["availability_from <= '#{start_time.to_s}'"])
+    
+#    p "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",items.inspect
+#    hh
+    
+    @items = items - booked_items
+#    offers = Offer.find(:all, :conditions => ["(('#{start_time.to_s}' < rental_start_date and '#{end_time.to_s}' < rental_start_date) OR ('#{start_time.to_s}' > rental_end_date and '#{end_time.to_s}' > rental_end_date) ) and status = 'applied'"])
+#    p "aaaaaaaaaaaaaaaaaaaaaaaaaa",items.inspect
 #    ff
-    @items = Item.paginate(:page => params[:page], :per_page => 3, :conditions => [ conds ], :order => order_by )
+#    items = Item.find_by_sql("Select * from items i left outer join offers o on i.id = o.item_id where ((#{start_time.to_s} < o.rental_start_date and #{end_time.to_s} < o.rental_start_date) OR (#{start_time.to_s} > o.rental_end_date and #{end_time.to_s} > o.rental_end_date) )")
+#    offers.each do|offer|
+#      p "qqqqqqqqqqqqqqqqqq",item.id
+#    end
+    
+#    unless params[:location].blank?
+#      conds += " AND (city LIKE  " + "'%%" + "#{params[:location]}" + "%%'" +")"
+#    end
+    
+    #    @items = Item.paginate(:page => params[:page], :per_page => 4, :conditions => ["Date(availability_from) >= ? AND Date(availability_to) <= ? AND LOWER(address) LIKE ?","#{params[:search_from].to_date}","#{params[:search_to].to_date}","%#{params[:location].strip.downcase}%"], :order => "price")
+#    case params[:sort_option]
+#    when "1"
+#      order_by = "is_recommended, price DESC"
+#    when "2"
+#      order_by = "price DESC"
+#    when "3"
+#      order_by = "price ASC"
+#    when "4"
+#      order_by = "created_at DESC"
+#    else
+#      order_by = "price ASC"
+#    end
+#  
+#    @items = Item.paginate(:page => params[:page], :per_page => 3, :conditions => [ conds ], :order => order_by )
     
     @map = GMap.new("map")
     @map.control_init(:map_type => true, :small_zoom => true)
@@ -300,7 +334,6 @@ class ItemsController < ApplicationController
       
       @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_updated", :description => "The <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!")
       @notification.save
-      p "aaaaaaaaaaaaaaaaaaaaaaaaaaa", @notification
       redirect_to "/"
     else
       flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
