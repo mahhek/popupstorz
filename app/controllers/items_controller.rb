@@ -77,7 +77,6 @@ class ItemsController < ApplicationController
   end
   
   def new
-
     if session[:items].blank?
       @item =  Item.new
       @map = GMap.new("map")
@@ -92,8 +91,7 @@ class ItemsController < ApplicationController
     end
     @countries = Country.all
     @listing_types = ListingType.all :order =>"name asc"
-    @availability_options = AvailabilityOption.all
-    
+    @availability_options = AvailabilityOption.all    
   end
 
   def create
@@ -203,8 +201,8 @@ class ItemsController < ApplicationController
     if !params[:search_from].blank? and !params[:search_to].blank? 
       conds += " OR ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
     end
-
-    #    conds += " AND status = 'applied'"
+    
+    conds += " AND status != 'applied'"
     
     booked_items = []
     unless conds == "1=1 "
