@@ -220,8 +220,11 @@ class ItemsController < ApplicationController
     
     item_conds = "1=1 "
     unless params[:search_from].blank?
-      item_conds += " AND '#{start_time.to_s}' >= availability_from"
-      item_conds += " OR '#{start_time.to_s}' <= availability_to"
+      item_conds += " AND ('#{start_time.to_s}' >= availability_from OR '#{start_time.to_s}' <= availability_to)"      
+    end
+    
+    unless params[:search_to].blank?
+      item_conds += " AND ('#{end_time.to_s}' >= availability_from  OR '#{end_time.to_s}' <= availability_to )"      
     end
 
     unless params[:location].blank?
