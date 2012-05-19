@@ -162,6 +162,13 @@ class ItemsController < ApplicationController
 
   def show
     @item = Item.find(params[:id])
+    @booked_dates = []
+    offers = @item.offers(:conditions => ["status != 'applied'"])    
+    offers.each do|offer|
+      @booked_dates << offer.rental_start_date.strftime("%m-%d-%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m-%d-%Y").to_s.strip
+    end
+    @booked_dates = @booked_dates
+        
     @comment = Comment.new
    
     @user = @item.user

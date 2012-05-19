@@ -1,17 +1,59 @@
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
     $(document).ready(function(){
+      
+      var disabledDaysRange = "[<%= @booked_dates %>]";
+      <%#*var disabledDaysRange = disabledDaysRange.replace(/&quot;/gi,"\"");%>
+      <%#*alert(disabledDaysRange);%>
+      var disabledDaysRange = [["05-11-2012 to 05-31-2012", "06-29-2012 to 06-29-2012"]]
+      
+      function disableRangeOfDays(d) {
+        for(var i = 0; i < disabledDaysRange.length; i++) {
+          if($.isArray(disabledDaysRange[i])) {
+            for(var j = 0; j < disabledDaysRange[i].length; j++) {
+              var r = disabledDaysRange[i][j].split(" to ");
+              r[0] = r[0].split("-");
+              r[1] = r[1].split("-");
+              if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {
+                return [false];
+              }
+            }
+          }else{
+            if(((d.getMonth()+1) + '-' + d.getDate() + '-' + d.getFullYear()) == disabledDaysRange[i]) {
+              return [false];
+            }
+          }
+        }
+        return [true];
+      }
+            
       if('<%= session[:start_date] %>' == ""){
-        $("#txtFromDate").datepicker({minDate: new Date()});
+        $("#txtFromDate").datepicker({
+          minDate: new Date(),
+          dateFormat: 'mm-dd-yy',
+          beforeShowDay: disableRangeOfDays
+        });
       }else{
         $("#txtFromDate").val('<%= session[:start_date] %>');
-        $("#txtFromDate").datepicker({minDate: new Date()});
+        $("#txtFromDate").datepicker({
+          minDate: new Date(),
+          dateFormat: 'mm-dd-yy',
+          beforeShowDay: disableRangeOfDays
+        });
       }
       if('<%= session[:start_date] %>' == ""){
-        $("#txtToDate").datepicker({minDate: new Date()});
+        $("#txtToDate").datepicker({
+          minDate: new Date(),
+          dateFormat: 'mm-dd-yy',
+          beforeShowDay: disableRangeOfDays
+        });
       }else{
         $("#txtToDate").val('<%= session[:end_date] %>');
-        $("#txtToDate").datepicker({minDate: new Date()});
+        $("#txtToDate").datepicker({
+          minDate: new Date(),
+          dateFormat: 'mm-dd-yy',
+          beforeShowDay: disableRangeOfDays
+        });
       }
       if('<%= session[:start_date] %>' != "" && '<%= session[:end_date] %>' != ""){
         calculateTotalAmount();
@@ -127,7 +169,7 @@
             </ul>
           </div>
         <% end %>
-      
+
         <%= hidden_field_tag "id",@item.id %>
         <div class="field">
           <%= f.label :title %><br/>
@@ -291,12 +333,12 @@
 <div id="datepicker"></div>
 
 <script type="text/javascript">
-$("#datepicker").datepicker({
-   onSelect: function(dateText, inst) {
+  $("#datepicker").datepicker({
+    onSelect: function(dateText, inst) {
       $("#datepicker_value").val(dateText);
-   }
+    }
    
-});
+  });
 </script>
 
 <script type="text/javascript">
@@ -377,7 +419,7 @@ $("#datepicker").datepicker({
             url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= @item.price_unit %>'
           });
         }
-        });
+      });
       
       
       
