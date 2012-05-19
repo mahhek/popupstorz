@@ -2,11 +2,8 @@
   $(window).load(function(){
     $(document).ready(function(){
       
-      var disabledDaysRange = "[<%= @booked_dates %>]";
-      <%#*var disabledDaysRange = disabledDaysRange.replace(/&quot;/gi,"\"");%>
-      <%#*alert(disabledDaysRange);%>
-      var disabledDaysRange = [["05-11-2012 to 05-31-2012", "06-29-2012 to 06-29-2012"]]
-      
+      var disabledDaysRange = new Array;
+      disabledDaysRange = <%= raw @manage_dates_array %>;      
       function disableRangeOfDays(d) {
         for(var i = 0; i < disabledDaysRange.length; i++) {
           if($.isArray(disabledDaysRange[i])) {
