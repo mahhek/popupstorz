@@ -160,13 +160,13 @@ class ItemsController < ApplicationController
     end
   end
 
-  def show
+  def show    
     @item = Item.find(params[:id])
     @booked_dates = []
     @manage_dates_array = []
     offers = @item.offers(:conditions => ["status != 'applied'"])    
     offers.each do|offer|
-      @booked_dates << offer.rental_start_date.strftime("%m-%d-%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m-%d-%Y").to_s.strip
+      @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
     @manage_dates_array << @booked_dates
         
@@ -240,6 +240,9 @@ class ItemsController < ApplicationController
     items = Item.find(:all,:conditions => [ item_conds ])
 
     @items = items - booked_items
+    
+    session[:start_date] = params[:search_from]
+    session[:end_date] = params[:search_to]
     
     #    @items = Item.paginate(:page => params[:page], :per_page => 4, :order => "price")
     case params[:sort_option]

@@ -9,14 +9,14 @@
           if($.isArray(disabledDaysRange[i])) {
             for(var j = 0; j < disabledDaysRange[i].length; j++) {
               var r = disabledDaysRange[i][j].split(" to ");
-              r[0] = r[0].split("-");
-              r[1] = r[1].split("-");
+              r[0] = r[0].split("/");
+              r[1] = r[1].split("/");
               if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {
                 return [false];
               }
             }
           }else{
-            if(((d.getMonth()+1) + '-' + d.getDate() + '-' + d.getFullYear()) == disabledDaysRange[i]) {
+            if(((d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear()) == disabledDaysRange[i]) {
               return [false];
             }
           }
@@ -27,28 +27,28 @@
       if('<%= session[:start_date] %>' == ""){
         $("#txtFromDate").datepicker({
           minDate: new Date(),
-          dateFormat: 'mm-dd-yy',
+          dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays
         });
       }else{
         $("#txtFromDate").val('<%= session[:start_date] %>');
         $("#txtFromDate").datepicker({
           minDate: new Date(),
-          dateFormat: 'mm-dd-yy',
+          dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays
         });
       }
       if('<%= session[:start_date] %>' == ""){
         $("#txtToDate").datepicker({
           minDate: new Date(),
-          dateFormat: 'mm-dd-yy',
+          dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays
         });
       }else{
         $("#txtToDate").val('<%= session[:end_date] %>');
         $("#txtToDate").datepicker({
           minDate: new Date(),
-          dateFormat: 'mm-dd-yy',
+          dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays
         });
       }
@@ -390,20 +390,16 @@
 
     if($('#txtFromDate').val() != 'mm/dd/yy' && $('#txtToDate').val() != 'mm/dd/yy'){
       
-      start = $('#txtFromDate').val();
+      start = $('#txtFromDate').val();      
       start_date = new Date(start);
       end = $('#txtToDate').val();
       end_date = new Date(end);
       
-      
-
       number_of_days = (end_date - start_date)/(1000*60*60*24);
       if(number_of_days == 0){
         number_of_days = 1;
       }
-
       
-
       $('#total_days').text(number_of_days+ " days");
       calculated_price = calculate_price(number_of_days);
 
