@@ -210,7 +210,9 @@ class ItemsController < ApplicationController
       conds += " OR ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
     end
     
-    conds += " AND status != 'applied'"
+    if !params[:search_from].blank? or !params[:search_to].blank? 
+      conds += " AND status != 'applied'"
+    end    
     
     booked_items = []
     unless conds == "1=1 "
