@@ -304,15 +304,13 @@
         </div>
 
         <div id="submit-book">
-          <% if @item.item_status == "Available" %>
+          
             <% unless (@item.user == current_user) %>
               <a href="#" onclick="$('#book_it_form').submit();" class="search ml70"> Book it </a>
             <% else %>
               <a href="#" onclick="alert('You are owner, You can not book it, Thanks.');return false;" class="search ml70">Book it</a>
             <% end %>
-          <% else %>
-            <a href="#" onclick="alert('Item is already Reserved and not Available, Thanks.');return false;" class="search ml70"> Reserved </a>
-          <% end %>
+          
         </div>
       <% end %>
     </div>
@@ -395,7 +393,7 @@
       end = $('#txtToDate').val();
       end_date = new Date(end);
       
-      number_of_days = (end_date - start_date)/(1000*60*60*24);
+      number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;
       if(number_of_days == 0){
         number_of_days = 1;
       }
