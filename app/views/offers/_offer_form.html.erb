@@ -1,3 +1,51 @@
+<script type='text/javascript'>//<![CDATA[
+  $(window).load(function(){
+    $(document).ready(function(){
+      
+      var disabledDaysRange = new Array;
+      disabledDaysRange = <%= raw @manage_dates_array %>;      
+      function disableRangeOfDays(d) {
+        for(var i = 0; i < disabledDaysRange.length; i++) {
+          if($.isArray(disabledDaysRange[i])) {
+            for(var j = 0; j < disabledDaysRange[i].length; j++) {
+              var r = disabledDaysRange[i][j].split(" to ");
+              r[0] = r[0].split("/");
+              r[1] = r[1].split("/");
+              if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {
+                return [false];
+              }
+            }
+          }else{
+            if(((d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear()) == disabledDaysRange[i]) {
+              return [false];
+            }
+          }
+        }
+        return [true];
+      }
+
+      // jsFiddle
+      $("#offer_rental_start_date").datepicker({
+        minDate: new Date(),
+        dateFormat: 'mm/dd/yy',
+        beforeShowDay: disableRangeOfDays
+      });
+
+      $("#offer_rental_end_date").datepicker({
+        minDate: new Date(),
+        dateFormat: 'mm/dd/yy',
+        beforeShowDay: disableRangeOfDays
+      });
+      // end jsFiddle
+      $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
+
+    });
+
+    calculateTotalAmount();    
+
+  });//]]>
+
+</script>
 <div id="hd-result">
   <div class="container_12">
     <div id="r-nav" class="grid_9"> <a href="/">Home</a> &nbsp;&gt;&nbsp; Make a booking</div>
@@ -32,7 +80,9 @@
         <div class="clear">&nbsp;</div>
 
         <div id="details-panel">
-          <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" ) %>
+          <% unless @item.avatars.blank? %>
+            <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" ) %>
+          <% end %>
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>
@@ -174,7 +224,7 @@
 
 
           <div style="padding-left:200px; padding-top:20px;">
-            <input type="checkbox" value="" name=""/>
+            <input type="checkbox" value="" id="terms_of_user" name="terms_use" />
             <font size="2">I agree to the <a href="#">terms of use.</a></font>
             <br/>
             <br/>
@@ -223,6 +273,7 @@
     }
   });
   function checkPrefferedAddress(){
+    
     if($("input[@name=offer[preferred_location]]:checked").val() == "true"){
       if($("#offer_preferred_address").val() == "") {
         alert('Please enter some preferred location first!.');
@@ -232,6 +283,10 @@
           alert('Please enter response date.');
           return false;
         }else{
+          if($("#terms_of_user").attr('checked') != 'checked'){
+            alert("Have to accept terms and conditions first!");
+            return false;
+          }
           return true;
         }
       }
@@ -240,6 +295,10 @@
         alert('Please enter response date.');
         return false;
       }else{
+        if($("#terms_of_user").attr('checked') != 'checked'){
+          alert("Have to accept terms and conditions first!");
+          return false;
+        }
         return true;
       }
     }
@@ -263,7 +322,7 @@
       start_date = new Date(start);
       end = $('#offer_rental_end_date').val();
       end_date = new Date(end);
-      number_of_days = (end_date - start_date)/(1000*60*60*24);
+      number_of_days = (end_date - start_date)/(1000*60*60*24) +1;
       if(number_of_days == 0){
         number_of_days = 1;
       }

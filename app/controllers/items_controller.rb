@@ -227,6 +227,10 @@ class ItemsController < ApplicationController
     end
     
     item_conds = "1=1 "
+    if !params[:min_price].blank? and !params[:max_price].blank?
+      item_conds += "AND price >= #{params[:min_price].to_f} AND price <= #{params[:max_price].to_f}"
+    end
+    
     unless params[:search_from].blank?
       item_conds += " AND ('#{start_time.to_s}' >= availability_from OR '#{start_time.to_s}' <= availability_to)"      
     end
@@ -287,12 +291,17 @@ class ItemsController < ApplicationController
         foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
         render :js => "$('#searched-items-div').html(#{foo});$.setAjaxPagination();"
       end
-    end
-  
+    end  
   end
 
   def search_via_price_range
-    @items = Item.paginate(:page => params[:page], :per_page => 2, :conditions => ["price >= ? AND price <= ?", params[:min_price].to_f, params[:max_price].to_f], :order => "price")
+    
+    conds = "1=1 "
+    conds += "AND price >= #{params[:min_price].to_f} AND price <= #{params[:max_price].to_f}"
+    unless params[:city].blank?
+      conds += " AND (city LIKE " + "'%%" + "#{params[:city]}" + "%%'" +")"
+    end
+    @items = Item.paginate(:page => params[:page], :per_page => 2, :conditions => [ conds ], :order => "price")
     respond_to do |format|
       format.js do
         foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json

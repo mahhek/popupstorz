@@ -42,3 +42,21 @@
     <%= link_to('Edit Profile', edit_user_registration_path) %>
   </li>
 <%end%>
+
+<% if current_user != @user %>
+  <div id="store-btn">
+    <%= link_to_function "Send Message", "$('#contact_me_div').toggle('slow');", :class => "send"  %>
+  </div>
+<% end %>  
+<div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
+  <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
+    <%= hidden_field_tag :topic, "Inquiry" %>
+    <%= hidden_field_tag :user_id, @user.id %>
+    <span style="width: auto;float: left;">
+      <%= text_area_tag  :body, "", :style => "width:450px;height:150px;" %>
+    </span>
+    <div style="float: left;margin-top: 5px;clear:both;">
+      <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
+    </div>
+  <% end %>
+</div>

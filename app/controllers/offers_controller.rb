@@ -17,6 +17,15 @@ class OffersController < ApplicationController
     session[:end_date] = nil
     
     @item = Item.find params[:item_id]
+    
+    @booked_dates = []
+    @manage_dates_array = []
+    offers = @item.offers(:conditions => ["status != 'applied'"])    
+    offers.each do|offer|
+      @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
+    end
+    @manage_dates_array << @booked_dates
+    
     @map = GMap.new("map")
     @map.control_init(:map_type => false, :small_zoom => true)
     coordinates = [@item.latitude,@item.longitude]
@@ -37,6 +46,15 @@ class OffersController < ApplicationController
 
     @offer = Offer.find_by_item_id_and_user_id_and_status(params[:item_id],current_user.id,"Pending")
     @item = Item.find params[:item_id]
+    
+    @booked_dates = []
+    @manage_dates_array = []
+    offers = @item.offers(:conditions => ["status != 'applied'"])    
+    offers.each do|offer|
+      @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
+    end
+    @manage_dates_array << @booked_dates
+    
     unless @offer.blank?
       params[:offer][:rental_start_date] = DateTime.strptime(params[:offer][:rental_start_date], "%m/%d/%Y").to_time
       params[:offer][:rental_end_date] = DateTime.strptime(params[:offer][:rental_end_date], "%m/%d/%Y").to_time
@@ -77,6 +95,15 @@ class OffersController < ApplicationController
     end
     @comment = Comment.new
     @item = Item.find params[:item_id]
+    
+    @booked_dates = []
+    @manage_dates_array = []
+    offers = @item.offers(:conditions => ["status != 'applied'"])    
+    offers.each do|offer|
+      @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
+    end
+    @manage_dates_array << @booked_dates
+    
     @offer = Offer.find params[:id]
     @offer.offer_messages.build
     load_map
@@ -95,7 +122,13 @@ class OffersController < ApplicationController
     @item = Item.find params[:item_id]
     @offer = Offer.find params[:id]
 
-
+    @booked_dates = []
+    @manage_dates_array = []
+    offers = @item.offers(:conditions => ["status != 'applied'"])    
+    offers.each do|offer|
+      @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
+    end
+    @manage_dates_array << @booked_dates
 
     params[:offer][:rental_start_date] = DateTime.strptime(params[:offer][:rental_start_date], "%m/%d/%Y").to_time
     params[:offer][:rental_end_date] = DateTime.strptime(params[:offer][:rental_end_date], "%m/%d/%Y").to_time

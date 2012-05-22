@@ -1,16 +1,50 @@
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
     $(document).ready(function(){
+      
+      var disabledDaysRange = new Array;
+      disabledDaysRange = <%= raw @manage_dates_array %>;      
+      function disableRangeOfDays(d) {
+        for(var i = 0; i < disabledDaysRange.length; i++) {
+          if($.isArray(disabledDaysRange[i])) {
+            for(var j = 0; j < disabledDaysRange[i].length; j++) {
+              var r = disabledDaysRange[i][j].split(" to ");
+              r[0] = r[0].split("/");
+              r[1] = r[1].split("/");
+              if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {
+                return [false];
+              }
+            }
+          }else{
+            if(((d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear()) == disabledDaysRange[i]) {
+              return [false];
+            }
+          }
+        }
+        return [true];
+      }
 
       // jsFiddle
-      $("#offer_rental_start_date").datepicker({minDate: new Date()});
+      $("#offer_rental_start_date").datepicker({
+        minDate: new Date(),
+          dateFormat: 'mm/dd/yy',
+          beforeShowDay: disableRangeOfDays
+      });
 
-      $("#offer_rental_end_date").datepicker({minDate: new Date()});
+      $("#offer_rental_end_date").datepicker({
+        minDate: new Date(),
+          dateFormat: 'mm/dd/yy',
+          beforeShowDay: disableRangeOfDays
+      });
       // end jsFiddle
       $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
 
     });
 
+
+    if('<%= params[:pick_up] %>' != "" && '<%= params[:return] %>' != ""){
+        calculateTotalAmount();
+      }
 
   });//]]>
 
@@ -40,7 +74,6 @@
         <% end %>
       </div>
       <div class="grid_12">
-
 
         <ul class="steps">
           <li class="start"> <span>1</span> Make a Booking</li>
@@ -206,9 +239,6 @@
   </div>
 </div>
 
-
-
-
 <script type="text/javascript">
   $('.radio').change(function(){
     if($(this).val() == "true")
@@ -232,6 +262,7 @@
       $('#offer_willingness_to_pay').val('');
     }
   });
+  
   function checkPrefferedAddress(){
     if($("input[@name=offer[preferred_location]]:checked").val() == "true"){
       if($("#offer_preferred_address").val() == "") {
@@ -273,7 +304,7 @@
       start_date = new Date(start);
       end = $('#offer_rental_end_date').val();
       end_date = new Date(end);
-      number_of_days = (end_date - start_date)/(1000*60*60*24);
+      number_of_days = (end_date - start_date)/(1000*60*60*24) + 1;
       if(number_of_days == 0){
         number_of_days = 1;
       }
@@ -290,12 +321,6 @@
     return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
   }
 </script>
-
-
-
-
-
-
 
 <script>
   var marker = null;

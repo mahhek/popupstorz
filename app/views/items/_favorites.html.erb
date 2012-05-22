@@ -11,7 +11,9 @@
           <% end %>
         </div>
 
-        <div class="name-list" style="margin-bottom: 5px;"><h4><%= link_to item.title, item_path(item) %></h4></div>
+        <div class="name-list" style="margin-bottom: 5px;">
+          <h4><%= link_to item.title, item_path(item) %></h4>
+        </div>
         <div class="name-list" style="margin-bottom: 5px;"><b>Location: </b><%= item.address %></div>
         <div class="name-list" style="margin-bottom: 5px;"><b>Price: </b><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>&nbsp;&nbsp;<%=  item.time_for_unit_price %></div>
 
