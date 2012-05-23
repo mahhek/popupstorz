@@ -29,7 +29,7 @@
       </div>
       <div class="sign_up_input">
         <label>Date of Birth</label>
-        <%=  f.text_field :date_of_birth, :autocomplete=> "off" %>
+        <%=  f.date_select :date_of_birth, :start_year => 1970 %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
@@ -69,7 +69,7 @@
   <%#*<div class="clear"></div>%>
       </div>
       <div class="sign_up_input fltL">
-        <label>Conform Password</label>
+        <label>Confirm Password</label>
         <%= f.password_field :password_confirmation, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
@@ -88,7 +88,8 @@
       <div class="clear"></div>
       <div class="sign_up_input">
         <label>Mobile No</label>
-        <%= f.text_field :mobile_phone , :autocomplete=> "off"%>
+        <%= f.text_field :mobile_phone , :autocomplete=> "off"%><br />
+        <div style="float:left;clear:both;margin-left: 130px;margin-top: 10px;">Please use international format, i.e. +01234567890</div>
         <div class="clear"></div>
       </div>
 

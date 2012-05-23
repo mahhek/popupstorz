@@ -1,3 +1,9 @@
+<style type="text/css">
+  .ui-datepicker-today 
+  {
+    background: #83C948
+  }
+</style>
 <%= javascript_include_tag "items" %>
 <style type="text/css">
   #demo-frame > div.demo { padding: 10px !important; };
@@ -6,19 +12,19 @@
 <script type="text/javascript">
 
   $(function() {
-  $( "#amount-slider-range" ).slider({
-  range: true,
-  min: <%= @min_price %>,
-  max: <%= @max_price %>,
-  values: [ <%= @min_price %>, <%= @max_price %> ],
-  slide: function( event, ui ) {
-  $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-  },
-  stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
-  $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));$('#price_range_form').submit();}
-  });
-  $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
-  " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
+    $( "#amount-slider-range" ).slider({
+      range: true,
+      min: <%= @min_price %>,
+      max: <%= @max_price %>,
+      values: [ <%= @min_price %>, <%= @max_price %> ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      },
+      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
+        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));$('#price_range_form').submit();}
+    });
+    $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
   });
 
 
@@ -35,10 +41,13 @@
     <p>
       <label for="amount">Price range:</label>
       <input type="text" id="amount" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
-    <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
-    <%= form_tag "/search_via_price_range", {:remote => true, :method => :get, :id => "price_range_form" } do %>
+    <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>    
+    <%= form_tag "/items/search_keyword", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
       <%= hidden_field_tag "min_price", "" %>
       <%= hidden_field_tag "max_price", "" %>
+      <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '' %>
+      <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '' %>
+      <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '' %>
     <% end %>
     </p>
   </div>
@@ -121,7 +130,32 @@
 <%#*- e per day - <%= link_to "Book now", item_path(item.id) %>
 
 <script type="text/javascript">
-  $('#search_from').datepicker();
+  
+  var disabledDaysRange = [["05-12-2012 to 05-19-2012", "05-09-2012 to 05-10-2012", "05-27-2012 to 05-30-2012"]];
+  function disableRangeOfDays(d) {
+    for(var i = 0; i < disabledDaysRange.length; i++) {
+      if($.isArray(disabledDaysRange[i])) {
+        for(var j = 0; j < disabledDaysRange[i].length; j++) {
+          var r = disabledDaysRange[i][j].split(" to ");
+          r[0] = r[0].split("-");
+          r[1] = r[1].split("-");
+          if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {
+            return [false];
+          }
+        }
+      }else{
+        if(((d.getMonth()+1) + '-' + d.getDate() + '-' + d.getFullYear()) == disabledDaysRange[i]) {
+          return [false];
+        }
+      }
+    }
+    return [true];
+  }  
+  
+  $('#search_from').datepicker({
+    <%#*dateFormat: 'mm-dd-yy',%>
+    <%#*beforeShowDay: disableRangeOfDays%>
+  });  
+  
   $('#search_to').datepicker();
 </script>
-

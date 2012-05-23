@@ -27,14 +27,14 @@
       // jsFiddle
       $("#offer_rental_start_date").datepicker({
         minDate: new Date(),
-          dateFormat: 'mm/dd/yy',
-          beforeShowDay: disableRangeOfDays
+        dateFormat: 'mm/dd/yy',
+        beforeShowDay: disableRangeOfDays
       });
 
       $("#offer_rental_end_date").datepicker({
         minDate: new Date(),
-          dateFormat: 'mm/dd/yy',
-          beforeShowDay: disableRangeOfDays
+        dateFormat: 'mm/dd/yy',
+        beforeShowDay: disableRangeOfDays
       });
       // end jsFiddle
       $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
@@ -43,8 +43,8 @@
 
 
     if('<%= params[:pick_up] %>' != "" && '<%= params[:return] %>' != ""){
-        calculateTotalAmount();
-      }
+      calculateTotalAmount();
+    }
 
   });//]]>
 
@@ -117,9 +117,17 @@
               <%= hidden_field_tag :per_week_price, @item.price_per_week %>
               <%= hidden_field_tag :per_month_price, @item.price_per_month %>
               <%= f.hidden_field :total_amount, :value => @calculated_price %>
-              <div style="float: left;width: 100px;" id="daily_price">€<%= @item.price %></div>
-              <div style="float: left;width: 100px;" id="duration"><%= "#{@number_of_days} days" %></div>
-              <div style="float: left;width: 100px;" id="total_price">€<%= @calculated_price %></div>
+
+              <div style="float: left;width: 100px;" id="daily_price">
+  <%#*€<%= @item.price %>
+                <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+              </div>
+              <div style="float: left;width: 100px;" id="duration">
+                <%= "#{@number_of_days} days" %>
+              </div>
+              <div style="float: left;width: 100px;" id="total_price">
+                €<%= @calculated_price %>
+              </div>
             </div>
 
           </div>
@@ -304,16 +312,30 @@
       start_date = new Date(start);
       end = $('#offer_rental_end_date').val();
       end_date = new Date(end);
-      number_of_days = (end_date - start_date)/(1000*60*60*24) + 1;
+      number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;
       if(number_of_days == 0){
         number_of_days = 1;
       }
-
+      
       $('#duration').text(number_of_days+ " days");
-      $('#offer_total_amount').val(calculate_price(number_of_days));
-      $('#total_price').text($('#offer_total_amount').val()+ " €");
+      calculated_price = calculate_price(number_of_days);
+      
+      $('#offer_total_amount').val(calculated_price);
+      
+      jQuery.ajax({
+        type:"GET",
+        url: '/items/set_dates?start_date='+start+'&end_date='+end,
+        success: function(){
+          jQuery.ajax({
+            type:"GET",
+            url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= @item.price_unit %>'
+          });
+        }
+      });
+
     }
   }
+  
   function calculate_price(number_of_days){
     months = Math.floor(number_of_days/30);
     weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);
