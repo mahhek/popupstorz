@@ -4,10 +4,10 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   acts_as_commentable
-   acts_as_rateable
+  acts_as_rateable
   has_many :avatars, :dependent => :destroy
   accepts_nested_attributes_for :avatars, :allow_destroy => true
-#  belongs_to :country
+  #  belongs_to :country
 
   devise :database_authenticatable, :registerable, :confirmable,
     :recoverable, :rememberable, :trackable, :validatable

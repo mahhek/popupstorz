@@ -7,7 +7,7 @@
       <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
         <div class="imgx">
           <% if member.avatars.size > 0 %>
-            <%= link_to image_tag(member.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo"), profile_path(member.id) %>
+            <%= link_to image_tag(member.avatars.first.photo.url(:thumb), :width => "105", :height => "105", :alt => "Space-Photo"), profile_path(member.id) %>
           <% else %>
             NO IMAGE PROVIDED YET.
           <% end %>

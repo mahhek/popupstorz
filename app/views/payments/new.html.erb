@@ -102,24 +102,28 @@
             </noscript>
           </div>
 
-          <% rentareto_fee = @offer.total_amount.blank? ? 0 : (( @offer.total_amount * 10 ) / 100 )%>
-          <% owner_amount = @offer.total_amount.blank? ? 0 : ( @offer.total_amount - (( @offer.total_amount * 10 ) / 100)) %>
-          <% total_amount = @offer.total_amount %>
+          <% rentareto_fee = @offer.total_amount.blank? ? 0 : (( @offer.total_amount * 10 ) / 100 ) %>
+          <%# owner_amount = @offer.total_amount.blank? ? 0 : ( @offer.total_amount - (( @offer.total_amount * 10 ) / 100)) %>
+          <% owner_amount = @offer.total_amount %>
+          <%# total_amount = @offer.total_amount %>
+          <% total_amount = rentareto_fee + owner_amount %>
 
           <%= f.hidden_field :seller_id, :value => @item.user_id %>
           <%= f.hidden_field :renter_id, :value => current_user.id  %>
           <%= f.hidden_field :offer_id, :value => @offer.id  %>
+
           <%= f.hidden_field :rentareto_fee, :value => rentareto_fee %>
           <%= f.hidden_field :seller_amount, :value => owner_amount %>
           <%= f.hidden_field :stripe_card_token,  %>
+          
           <br/>
-          Total ( <b><%= total_amount %></b>  )<br/>
-          Reservation Fee to be paid now ( <b><%= rentareto_fee %></b>   )<br/>
+          Reservation Fee ( <b><%= rentareto_fee %></b>   )<br/>
           Remaining balance to be paid to owner: ( <b><%= owner_amount %></b> )<br/>
+          Total ( <b><%= total_amount %></b> )<br/>
           <br/>
           <div class="field">
             <%= f.label :amount, "Amount to Pay" %>
-            <%= f.text_field :amount, :value => rentareto_fee, :readonly => true %>
+            <%= f.text_field :amount, :value => total_amount, :readonly => true %>
           </div>
           <h3>Enter Credit Card</h3>
           <%=label_tag :card_number, "Credit Card Number"%>
