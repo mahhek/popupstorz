@@ -43,11 +43,52 @@
   </li>
 <%end%>
 
+<b>Items:</b>
+<% items = @user.items %>
+<% count = 0 %>
+<% items.each do |item| %>  
+  <div style="float:left;width: 100%;clear:both;margin-top: 10px;margin-bottom: 5px;">
+    Title:  <%= item.title %><br />
+    Description:  <%= item.description %><br />
+    Price:  <%= item.price.to_s+" "+item.price_unit.to_s %><br />    
+    Availability: <%=item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.strftime("%m/%y")%>
+    <div style="width:200px;border-bottom: 1px solid black;height:0px;"></div>
+    
+    <div style="width:100%;float:left;clear:both;margin-bottom: 10px;">
+      <h4><label onclick='$("#show_comments_<%= count.to_s %>").toggle();' style="cursor: pointer;">Show Comments</label></h4>
+    <div id="show_comments_<%= count.to_s %>" style="display: none;border: 1px solid #606060">
+      <b>Comments:</b><br/>
+      <%unless item.comments.blank? %>
+        <%item.comments.each do|f|%>
+          <b><%=f.title  %></b><br/>
+          <%= f.comment %><br/>
+          <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+          <br/>
+          <br/>
+        <%end%>
+      <% else %>
+        No Comments yet!
+      <%end%>
+    </div>
+    </div>
+    
+    <div style="width:100%;float:left;clear:both;margin-bottom: 10px;">      
+      <h4><label onclick='$("#show_rating_<%= count.to_s %>").toggle();' style="cursor: pointer;">Show Rating</label></h4>
+      <div id="show_rating_<%= count.to_s %>" style="display: none;border: 1px solid #606060;height:250px;padding-left: 10px;width:500px;">
+        <b>Ratings</b>
+        <%= render :partial => "/ratings/rating", :locals => { :asset => item, :only_view => false } %>
+      </div>
+    </div>
+
+  </div>
+  <% count += 1 %>
+<% end %>
+
 <% if current_user != @user %>
   <div id="store-btn">
     <%= link_to_function "Send Message", "$('#contact_me_div').toggle('slow');", :class => "send"  %>
   </div>
-<% end %>  
+<% end %>
 <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
   <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
     <%= hidden_field_tag :topic, "Inquiry" %>
