@@ -1,5 +1,15 @@
 <%= render "message_header" %>
 <div id="message_detail_div" style="width:650px;float:left;margin-top:10px;">
+  
+  <% conversations = @message.conversation.sort_by{|e| e[:id]} %>
+  <% conversations.each do|conv| %>
+    <div style="margin-top:10px;margin-bottom: 10px;">
+      Subject: <%= conv.topic %><br />
+      Body: <%= conv.body %><br />
+      Date: <%= conv.created_at.strftime("%d %b %y") %><br />
+      <div style="height: 0px;border: 1px solid black;"></div>
+    </div>
+  <% end %>
 
   <span style="font-size: 20px;font-weight: bold;">Reply</span>
   <br/><br/>
@@ -36,8 +46,6 @@
         <a><span><div>Cancel</div></span></a>
       </div>
     </div>
-
-
   <% end %>
 </div>
 
