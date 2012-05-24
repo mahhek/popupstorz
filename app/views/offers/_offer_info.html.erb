@@ -24,9 +24,11 @@
   <br/>
   Rental End Date: <%= @offer.rental_end_date.strftime("%d-%m-%Y %I:%M %p") %>
   <br/>
-  Total Amount: <%= number_to_currency(exchange_currency(@offer.total_amount.to_i, @offer.item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+  Total Offer Amount: <%= number_to_currency(exchange_currency(@offer.total_amount.to_i, @offer.item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
   <br/>
-  Additional Message: <%= @offer.latest_message.message %>
+  Reservation Fee: <%= number_to_currency(exchange_currency(@offer.payment.rentareto_fee.to_i, @offer.item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+  <br/>
+  Toal \Amount <%= number_to_currency(exchange_currency(@offer.payment.amount.to_i, @offer.item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
   <br/>
   Status: <%= @offer.status %>
   <br/>
