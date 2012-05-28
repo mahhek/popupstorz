@@ -1,9 +1,17 @@
+require 'date'
+<style>
+  .odd { 
+    background: #f93;
+    border: 4px solid;
+    color: #07c9c9; }
+</style>
+
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
     $(document).ready(function(){
       
       var disabledDaysRange = new Array;
-      disabledDaysRange = <%= raw @manage_dates_array %>;      
+      disabledDaysRange = <%= raw @manage_dates_array %>;
       function disableRangeOfDays(d) {
         for(var i = 0; i < disabledDaysRange.length; i++) {
           if($.isArray(disabledDaysRange[i])) {
@@ -12,30 +20,43 @@
               r[0] = r[0].split("/");
               r[1] = r[1].split("/");
               if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {
-                return [false];
+                return [false, d.getDate() % 2 == 1 ? 'odd' : 'odd'];
               }
             }
           }else{
             if(((d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear()) == disabledDaysRange[i]) {
-              return [false];
+              return [false, d.getDate() % 2 == 1 ? 'odd' : 'odd'];
             }
           }
         }
         return [true];
+      }
+
+      function highlightSearch(d){
+      <% date1 = session[:start_date]
+         date2 = session[:end_date]
+         dates = (date1..date2).to_a
+      %>
+      alert(<%= raw(Date.parse("2009-10-01")) %>);
+      var selectedDays = new Array;
+      selectedDays = <%= raw dates %>
       }
             
       if('<%= session[:start_date] %>' == ""){
         $("#txtFromDate").datepicker({
           minDate: new Date(),
           dateFormat: 'mm/dd/yy',
-          beforeShowDay: disableRangeOfDays
+          beforeShowDay: disableRangeOfDays,
+          beforeShowDay: highlightSearch
         });
       }else{
         $("#txtFromDate").val('<%= session[:start_date] %>');
         $("#txtFromDate").datepicker({
           minDate: new Date(),
           dateFormat: 'mm/dd/yy',
-          beforeShowDay: disableRangeOfDays
+          beforeShowDay: disableRangeOfDays,
+          beforeShowDay: highlightSearch
+
         });
       }
       if('<%= session[:start_date] %>' == ""){
