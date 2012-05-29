@@ -14,27 +14,18 @@ def destroy
     redirect_to services_path
   end
 
- def create
+ def create   
     request.env['omniauth.auth']['provider'] ? service_route = request.env['omniauth.auth']['provider'] : service_route = 'no service (invalid callback)'
     omniauth = request.env['omniauth.auth']
     if omniauth and omniauth['provider']
       service_route = omniauth['provider']
 
-      if service_route == 'facebook'
-        unless omniauth['extra']['raw_info']['education'].blank?
-          school = omniauth['extra']['raw_info']['education'].first['school'].name ? omniauth['extra']['raw_info']['education'].first['school'].name : ""
-        else
-          school = ""
-        end
-        unless omniauth['extra']['raw_info']['work'].blank?
-          worked_at = omniauth['extra']['raw_info']['work'].first['employer'].name ? omniauth['extra']['raw_info']['work'].first['employer'].name : ""
-        else
-          worked_at = ""
-        end
-        omniauth['extra']['raw_info']['email'] ? email = omniauth['extra']['raw_info']['email'] : email = ''
-        omniauth['extra']['raw_info']['first_name'] ? f_name = omniauth['extra']['raw_info']['first_name'] : f_name = ''
-        omniauth['extra']['raw_info']['last_name'] ? l_name = omniauth['extra']['raw_info']['last_name'] : l_name = ''
-        omniauth['extra']['raw_info']['gender'] ? gender = omniauth['extra']['raw_info']['gender'] : gender = ''
+      if service_route == 'facebook'      
+        email = omniauth['extra']['raw_info']['email'] ?  omniauth['extra']['raw_info']['email'] :  ''
+        f_name = omniauth['extra']['raw_info']['first_name'] ? omniauth['extra']['raw_info']['first_name'] : ''
+        l_name = omniauth['extra']['raw_info']['last_name'] ?  omniauth['extra']['raw_info']['last_name'] :  ''
+        gender = omniauth['extra']['raw_info']['gender'] ? omniauth['extra']['raw_info']['gender'] : ''
+        gender == "male" ? 1 : 0
         #        omniauth['extra']['raw_info']["hometown"]["name"] ? addr = omniauth['extra']['raw_info']["hometown"]["name"] : addr = ''
         omniauth['extra']['raw_info']['id'] ? uid = omniauth['extra']['raw_info']['id'] : uid = ''
         omniauth['provider'] ? provider = omniauth['provider'] : provider = ''
@@ -57,7 +48,7 @@ def destroy
             flash[:notice] = 'Signed in successfully via ' + provider.capitalize + '.'
             sign_in_and_redirect(:user, auth.user)
           else
-            if email != '' || (service_route == 'twitter' && name != '')
+            if email != '' || (service_route == 'twitter' && name != '')              
               existinguser = User.find_by_email(email)
               if existinguser
                 existinguser.services.create(:provider => provider, :uid => uid, :uname => name, :uemail => email)
@@ -68,10 +59,10 @@ def destroy
                 if email.blank?
                   email = "a@a.com"
                 end
-                user = User.new :email => email, :password => 'password', :first_name => f_name, :last_name => l_name, :gender => gender, :school => school, :works_at => worked_at
+                user = User.new :email => email, :verify_email => email, :password => 'password', :first_name => f_name, :last_name => l_name
                 user.services.build(:provider => provider, :uid => uid, :uname => name, :uemail => email)
-
-                if user.save
+                
+                if user.save( :validate => false )
                   if service_route == 'twitter'
                     user.update_attribute("email",'')
                   end
