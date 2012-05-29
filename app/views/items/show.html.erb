@@ -40,6 +40,8 @@
             }
           }
         }
+        
+        <% if !session[:start_date].blank? && !session[:end_date].blank? %>
 
         <% 
           date1 = session[:start_date]
@@ -59,6 +61,7 @@
           }          
         }
         
+        <% end %>
         
         return [true];
       }

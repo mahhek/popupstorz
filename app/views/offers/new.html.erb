@@ -1,3 +1,36 @@
+<style>
+  .booked { 
+    border: 4px solid;
+    color: red; 
+  }
+  .booked span{ 
+    background: darkgray !important;
+    color: red !important;
+    font-weight: bold !important;
+  }
+  .selected{    
+  }
+  .selected a{ 
+    background: aquamarine !important;
+    font-weight: bold !important;
+  }
+</style><style>
+  .booked { 
+    border: 4px solid;
+    color: red; 
+  }
+  .booked span{ 
+    background: darkgray !important;
+    color: red !important;
+    font-weight: bold !important;
+  }
+  .selected{    
+  }
+  .selected a{ 
+    background: aquamarine !important;
+    font-weight: bold !important;
+  }
+</style>
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
     $(document).ready(function(){
@@ -12,15 +45,38 @@
               r[0] = r[0].split("/");
               r[1] = r[1].split("/");
               if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {
-                return [false];
+                return [false,'booked'];
               }
             }
           }else{
             if(((d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear()) == disabledDaysRange[i]) {
-              return [false];
+              return [false,'booked'];
             }
           }
         }
+        
+        <% if !params[:pick_up].blank? && !params[:return].blank? %>
+        
+        <% 
+          date1 = params[:pick_up]
+          date2 = params[:return]
+          dates = (Date.strptime(date1,'%m/%d/%Y')..Date.strptime(date2,'%m/%d/%Y')).to_a
+          dates = dates.map{ |date_map| date_map.strftime('%m/%d/%Y') }
+        %>
+        var selectedDays = new Array;
+        selectedDays = <%= raw dates %>
+        
+        for(var i = 0; i < selectedDays.length; i++) {
+          
+          var r = selectedDays[i];
+          r = r.split("/");
+          if(String(new Date(r[2], (r[0]-1), r[1])) == String(d)) {
+            return [true, 'selected'];
+          }          
+        }
+        
+        <% end %>
+        
         return [true];
       }
 
