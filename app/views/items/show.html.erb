@@ -1,18 +1,29 @@
-require 'date'
 <style>
-  .odd { 
-    background: #f93;
+  .booked { 
     border: 4px solid;
-    color: #07c9c9; }
+    color: red; 
+  }
+  .booked span{ 
+    background: darkgray !important;
+    color: red !important;
+    font-weight: bold !important;
+  }
+  .selected{    
+  }
+  .selected a{ 
+    background: aquamarine !important;
+    font-weight: bold !important;
+  }
 </style>
+
 
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
-    $(document).ready(function(){
-      
+    $(document).ready(function(){      
       var disabledDaysRange = new Array;
       disabledDaysRange = <%= raw @manage_dates_array %>;
       function disableRangeOfDays(d) {
+        
         for(var i = 0; i < disabledDaysRange.length; i++) {
           if($.isArray(disabledDaysRange[i])) {
             for(var j = 0; j < disabledDaysRange[i].length; j++) {
@@ -20,42 +31,50 @@ require 'date'
               r[0] = r[0].split("/");
               r[1] = r[1].split("/");
               if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {
-                return [false, d.getDate() % 2 == 1 ? 'odd' : 'odd'];
+                return [false, 'booked'];
               }
             }
           }else{
             if(((d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear()) == disabledDaysRange[i]) {
-              return [false, d.getDate() % 2 == 1 ? 'odd' : 'odd'];
+              return [false, 'booked'];
             }
           }
         }
+
+        <% 
+          date1 = session[:start_date]
+          date2 = session[:end_date]
+          dates = (Date.strptime(date1,'%m/%d/%Y')..Date.strptime(date2,'%m/%d/%Y')).to_a
+          dates = dates.map{ |date_map| date_map.strftime('%m/%d/%Y') }
+        %>
+        var selectedDays = new Array;
+        selectedDays = <%= raw dates %>
+        
+        for(var i = 0; i < selectedDays.length; i++) {
+          
+          var r = selectedDays[i];
+          r = r.split("/");
+          if(String(new Date(r[2], (r[0]-1), r[1])) == String(d)) {
+            return [true, 'selected'];
+          }          
+        }
+        
+        
         return [true];
       }
-
-      function highlightSearch(d){
-      <% date1 = session[:start_date]
-         date2 = session[:end_date]
-         dates = (date1..date2).to_a
-      %>
-      alert(<%= raw(Date.parse("2009-10-01")) %>);
-      var selectedDays = new Array;
-      selectedDays = <%= raw dates %>
-      }
-            
+                  
       if('<%= session[:start_date] %>' == ""){
         $("#txtFromDate").datepicker({
           minDate: new Date(),
           dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays,
-          beforeShowDay: highlightSearch
         });
       }else{
         $("#txtFromDate").val('<%= session[:start_date] %>');
         $("#txtFromDate").datepicker({
           minDate: new Date(),
           dateFormat: 'mm/dd/yy',
-          beforeShowDay: disableRangeOfDays,
-          beforeShowDay: highlightSearch
+          beforeShowDay: disableRangeOfDays
 
         });
       }
@@ -325,13 +344,13 @@ require 'date'
         </div>
 
         <div id="submit-book">
-          
-            <% unless (@item.user == current_user) %>
-              <a href="#" onclick="$('#book_it_form').submit();" class="search ml70"> Book it </a>
-            <% else %>
-              <a href="#" onclick="alert('You are owner, You can not book it, Thanks.');return false;" class="search ml70">Book it</a>
-            <% end %>
-          
+
+          <% unless (@item.user == current_user) %>
+            <a href="#" onclick="$('#book_it_form').submit();" class="search ml70"> Book it </a>
+          <% else %>
+            <a href="#" onclick="alert('You are owner, You can not book it, Thanks.');return false;" class="search ml70">Book it</a>
+          <% end %>
+
         </div>
       <% end %>
     </div>
