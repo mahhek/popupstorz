@@ -338,7 +338,7 @@ h2 {
 }
 .g_hold img{
     height: 100px;
-    width: 175px;
+    width: 135px;
 }
 .g_hold h1{font-size:12px;font-weight:bold;color:#3f3f3f;text-align:center;margin-top:5px;}
 .g_hold p{font-size:12px;font-weight:bold;color:#3f3f3f;text-align:center;margin-top:5px;}
@@ -440,7 +440,8 @@ h2 {
 .footer a{text-decoration:none;color:#353631; margin-right:10px;}
 .footer a:last-child{margin-right:0;}
 .right{right:0;position:absolute;top:200px;}
-.right .mail, .right .facebook, .right .google, .right .twiter{background:url(../assets/icon_sprit.png) no-repeat scroll 0 0 transparent;display: block; height: 20px; margin-bottom: 7px; width: 22px;}
+.right .mail, .right .facebook, .right .google, 
+.right .twiter{background:url(../assets/icon_sprit.png) no-repeat scroll 0 0 transparent;display: block; height: 20px; margin-bottom: 7px; width: 22px;}
 .right .facebook{background:url(../assets/icon_sprit.png) no-repeat scroll 0 -45px transparent;}
 .right .google{background:url(../assets/icon_sprit.png) no-repeat scroll 0 -90px transparent;}
 .right .mail{background:url(../assets/icon_sprit.png) no-repeat scroll 0 -134px transparent;}
