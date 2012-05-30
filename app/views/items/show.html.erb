@@ -250,9 +250,9 @@
   <div class="shadowCont w212">
     <div class="fltL">
       <% if @item.user.avatars.size > 0 %>
-        <%= image_tag(@item.user.avatars.first.photo.url(:thumb), :height => "56", :alt => "Seller-Image" )%>
+        <%= link_to image_tag(@item.user.avatars.first.photo.url(:thumb), :height => "56", :alt => "Seller-Image" ), profile_path(@item.user) %>
       <% else %>
-        <%= image_tag("User.png", :height => "56") %>
+        <%= link_to image_tag("User.png", :height => "56"), profile_path(@item.user) %>
       <% end %>
     </div>
     <div class="fltR w107">
