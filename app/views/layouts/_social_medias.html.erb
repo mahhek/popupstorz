@@ -1,0 +1,40 @@
+<script>
+  function fbs_click()
+  {
+    u=location.href; t=document.title;
+    window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),' sharer', 'toolbar=0, status=0, width=626, height=436'); return false;
+  }
+</script>
+<div class="right">
+<%#*<a href="/auth/twitter" class="twiter"></a>%>
+<%#*<a href="/auth/facebook" class="facebook"></a>%>
+<%#*<a href="/auth/google" class="google"></a>%>
+<%#*<a href="/auth/email" class="mail"></a>%>
+  
+  <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+  <script type="text/javascript" src="http://static.ak.fbcdn.net/connect.php/js/FB.Share"></script>
+
+  <div class='spread'>
+    <div class='twshare left'>
+      <% if params[:controller] == "items" && params[:action] == "show" %>
+        <a href='http://twitter.com/share?text=<%= request.host_with_port+"/"+request.fullpath  %>' class="twitter-share-button" data-count="horizontal">Tweet</a><br /><br />
+        <a href='http://www.facebook.com/sharer.php' expr:share_url='<%= request.host_with_port+"/"+request.fullpath%>' name='fb_share' rel='nofollow' type='button_countt'></a>
+      <% else %>
+        <a href="http://twitter.com/share?text=<%= request.host_with_port %>" class="twitter-share-button" data-count="horizontal">Tweet</a><br /><br />
+        <a href='http://www.facebook.com/sharer.php' expr:share_url='<%= request.host_with_port+"/"+request.fullpath%>' name='fb_share' rel='nofollow' type='button_countt'></a>
+      <% end %>
+
+
+    </div>
+
+  </div>
+
+  <!-- AddThis Button BEGIN -->
+<%#*<div class='spread'>%>        
+<%#*<a class="addthis_button_preferred_1" addthis:url="localhost:3000"></a>%>
+<%#*<a class="addthis_button_preferred_2" addthis:url="localhost:3000"></a>%>
+<%#*</div>%>      
+<%#*<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>%>
+  <!-- AddThis Button END -->
+
+</div>
