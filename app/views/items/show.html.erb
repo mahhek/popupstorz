@@ -259,7 +259,7 @@
 
 <%#       *<img src="../assets/rating.png" alt="" />%>
 
-      <h1 class="name"><%= @item.user.popup_storz_display_name %></h1>
+      <h1 class="name"><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %></h1>
       <p class="name_text"><%= @item.user.country %></p>
       <% if current_user != @item.user %>
         <div id="store-btn">
