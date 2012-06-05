@@ -1,34 +1,75 @@
 # -*- encoding : utf-8 -*-
 class ServicesController < ApplicationController
- before_filter :authenticate_user!, :except => [:create]
+  before_filter :authenticate_user!, :except => [:create]
 
 
   def index
     @services = current_user.services.all
   end
 
-def destroy
+  def destroy
     @service = current_user.services.find(params[:id])
     @service.destroy
 
     redirect_to services_path
   end
 
- def create   
+  def create   
     request.env['omniauth.auth']['provider'] ? service_route = request.env['omniauth.auth']['provider'] : service_route = 'no service (invalid callback)'
     omniauth = request.env['omniauth.auth']
     if omniauth and omniauth['provider']
       service_route = omniauth['provider']
 
-      if service_route == 'facebook'      
+      if service_route == 'facebook'
+        friends, fb_pic_url,fb_friends_count = ""
+        
+        unless omniauth['extra']['raw_info']['education'].blank?          
+          #          school = omniauth['extra']['raw_info']['education'].first['school'].name ? omniauth['extra']['raw_info']['education'].first['school'].name : ""
+          education = omniauth['extra']['raw_info']['education'].collect(&:school).collect(&:name).to_sentence
+        else
+          education = ""
+        end
+
+        unless omniauth['extra']['raw_info']['work'].blank?
+          #          worked_at = omniauth['extra']['raw_info']['work'].first['employer'].name ? omniauth['extra']['raw_info']['work'].first['employer'].name : ""
+          worked_at = omniauth['extra']['raw_info']['work'].collect(&:employer).collect(&:name).to_sentence
+        else
+          worked_at = ""
+        end
+              
         email = omniauth['extra']['raw_info']['email'] ?  omniauth['extra']['raw_info']['email'] :  ''
         f_name = omniauth['extra']['raw_info']['first_name'] ? omniauth['extra']['raw_info']['first_name'] : ''
         l_name = omniauth['extra']['raw_info']['last_name'] ?  omniauth['extra']['raw_info']['last_name'] :  ''
         gender = omniauth['extra']['raw_info']['gender'] ? omniauth['extra']['raw_info']['gender'] : ''
-        gender == "male" ? 1 : 0
+        
+        if gender == "male" 
+          gender = true
+        else
+          gender = false
+        end
         #        omniauth['extra']['raw_info']["hometown"]["name"] ? addr = omniauth['extra']['raw_info']["hometown"]["name"] : addr = ''
         omniauth['extra']['raw_info']['id'] ? uid = omniauth['extra']['raw_info']['id'] : uid = ''
         omniauth['provider'] ? provider = omniauth['provider'] : provider = ''
+        
+        
+        graph = Koala::Facebook::GraphAPI.new(omniauth['credentials']['token'])
+        friends = graph.get_connections("me", "friends")
+        pages = graph.get_connections("me", "accounts")
+        pages_name = ""
+        pages.each do|page|
+          if page == pages.last && pages.size > 1
+            pages_name += " and"
+          else
+            if page != pages.first
+              pages_name += " ,"
+            end
+          end          
+          pages_name += page["name"]
+        end
+        fb_friends_count = friends.size
+        fb_pic_url = omniauth['info']['image'] ? omniauth['info']['image'] : ''
+        
+        
       elsif service_route == 'twitter'
         email = '' # Twitter API never returns the email address
         omniauth['info']['name'] ? name = omniauth['info']['name'] : name = ''
@@ -59,9 +100,9 @@ def destroy
                 if email.blank?
                   email = "a@a.com"
                 end
-                user = User.new :email => email, :verify_email => email, :password => 'password', :first_name => f_name, :last_name => l_name
+                user = User.new :email => email, :verify_email => email, :password => 'password', :first_name => f_name, :last_name => l_name, :studied_at => education, :works_at => worked_at, :fb_pic_url => fb_pic_url, :fb_friends_count => fb_friends_count, :gender => gender, :fb_pages => pages_name
                 user.services.build(:provider => provider, :uid => uid, :uname => name, :uemail => email)
-                
+               
                 if user.save( :validate => false )
                   if service_route == 'twitter'
                     user.update_attribute("email",'')
