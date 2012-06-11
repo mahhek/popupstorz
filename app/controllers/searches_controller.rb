@@ -9,6 +9,7 @@ class SearchesController < ApplicationController
 
   def members
     @users_with_uniq_cities = User.select("distinct(city)")
+    @users_with_uniq_activites = User.select("distinct(activity)").where("activity is not NULL and activity != ''")
   end
 
   def search_gatherings

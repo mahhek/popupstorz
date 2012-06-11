@@ -54,28 +54,28 @@
             }
           }
         }
+
+<% if !params[:pick_up].blank? && !params[:return].blank? %>
+
+  <% 
+  date1 = params[:pick_up]
+  date2 = params[:return]
+  dates = (Date.strptime(date1,'%m/%d/%Y')..Date.strptime(date2,'%m/%d/%Y')).to_a
+  dates = dates.map{ |date_map| date_map.strftime('%m/%d/%Y') }
+%>
+          var selectedDays = new Array;
+          selectedDays = <%= raw dates %>
         
-        <% if !params[:pick_up].blank? && !params[:return].blank? %>
-        
-        <% 
-          date1 = params[:pick_up]
-          date2 = params[:return]
-          dates = (Date.strptime(date1,'%m/%d/%Y')..Date.strptime(date2,'%m/%d/%Y')).to_a
-          dates = dates.map{ |date_map| date_map.strftime('%m/%d/%Y') }
-        %>
-        var selectedDays = new Array;
-        selectedDays = <%= raw dates %>
-        
-        for(var i = 0; i < selectedDays.length; i++) {
+          for(var i = 0; i < selectedDays.length; i++) {
           
-          var r = selectedDays[i];
-          r = r.split("/");
-          if(String(new Date(r[2], (r[0]-1), r[1])) == String(d)) {
-            return [true, 'selected'];
-          }          
-        }
-        
-        <% end %>
+            var r = selectedDays[i];
+            r = r.split("/");
+            if(String(new Date(r[2], (r[0]-1), r[1])) == String(d)) {
+              return [true, 'selected'];
+            }          
+          }
+
+<% end %>
         
         return [true];
       }
@@ -94,6 +94,7 @@
       });
       // end jsFiddle
       $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
+      $("#offer_gathering_deadline").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
 
     });
 
@@ -154,6 +155,11 @@
           <strong>Description</strong><br/>
           <%= raw @item.description %>
           <div class="clear">&nbsp;</div>
+        </div>
+
+        <div style="width:100%; margin: 10px;">
+          <br><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> Standard Booking
+          <%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> Create a Gathering
         </div>
 
         <h3>Suggest Terms</h3> <br/>
@@ -290,6 +296,19 @@
           <!--<input name="" type="checkbox" value="" /> <font size="2">I agree to the <a href="#">terms of use.</a></font><br />
           -->
           <br/>
+
+          <div id="gathering_fields" style="display:none;">
+            <label>Persons in Gathering:</label>
+            <%= f.text_field :persons_in_gathering, :onchange => "check_persons(this.value,#{@item.maximum_members.to_i})" %><br /><br />
+            <label>Gathering Rental Price:</label>
+            <%= f.text_field :gathering_rental_price, :readonly=>true %> / person<br /><br />
+            <label>Gathering Description:</label>
+            <%= f.text_area  :gathering_description %>    <br/><br/>
+            <label style="line-height:18px;">Joining Deadline:</label>
+            <%= f.text_field :gathering_deadline, :class => "datex", :value => "mm/dd/yy"%>
+
+          </div>
+
           <div style="padding-left:200px;">
             <button class="large-max button orange"> Send request </button>
           </div>
@@ -337,6 +356,20 @@
           alert('Please enter response date.');
           return false;
         }else{
+          if($("#gathering_fields").is(":hidden") == false){
+            if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
+              alert("Please enter persons in gathering");
+              return false;
+            }
+            if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
+              alert('Please enter gathering deadline date.');
+              return false;
+            }
+            if(parseInt($("#offer_persons_in_gathering").val()) > parseInt('<%= @item.maximum_members %>')){
+              alert("Persons in gathering should not exceed maximum persons allowed.");
+              return false;
+            }
+          }
           return true;
         }
       }
@@ -345,10 +378,26 @@
         alert('Please enter response date.');
         return false;
       }else{
+        if($("#gathering_fields").is(":hidden") == false){
+          if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
+            alert("Please enter persons in gathering");
+            return false;
+          }
+          if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
+            alert('Please enter gathering deadline date.');
+            return false;
+          }
+          if(parseInt($("#offer_persons_in_gathering").val()) > parseInt('<%= @item.maximum_members %>')){
+            alert("Persons in gathering should not exceed maximum persons allowed.");
+            return false;
+          }
+        }
         return true;
       }
     }
   }
+  
+  
   function calculateTotalAmount(){
     $("#offer_rental_end_date").datepicker('option', 'minDate', new Date($("#offer_rental_start_date").val()));
 
@@ -377,6 +426,15 @@
       calculated_price = calculate_price(number_of_days);
       
       $('#offer_total_amount').val(calculated_price);
+      
+      if($("#gathering_fields").is(":hidden") == false){
+        if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
+            alert("Please enter persons in gathering");            
+          }
+          else{
+             $("#offer_gathering_rental_price").val(parseInt(calculated_price)/parseInt($("#offer_persons_in_gathering").val()));
+          }
+      }
       
       jQuery.ajax({
         type:"GET",
@@ -433,8 +491,6 @@
 
 
       if(resolveName) {
-
-
         var get_location_name_fun = function() {
           $.ajax({
             url: "/xml/address_search.xml?lat=" + latlng.lat() + "&lon=" + latlng.lng(),
@@ -524,4 +580,28 @@
     });
     //$('#new_location').validate();
   });
+  
+  function show_gathering(){
+    $("#gathering_fields").show();
+  }
+  
+  function hide_gathering(){
+    $("#gathering_fields").hide();
+  }
+  
+  function check_persons(obj,val){
+    if(obj == '' || obj == 0){
+      alert("Please enter number of persons in gathering.");
+    }
+    else{
+      if(parseInt(obj) > parseInt(val)){
+        alert("Persons in gathering should not exceed maximum persons allowed.");
+      }
+      else{
+        var total= $("#offer_total_amount").val();
+        $("#offer_gathering_rental_price").val(parseInt(total)/parseInt(obj));
+      }
+    }
+  }
+  
 </script>

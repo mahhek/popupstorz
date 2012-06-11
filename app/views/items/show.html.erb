@@ -40,28 +40,28 @@
             }
           }
         }
-        
-        <% if !session[:start_date].blank? && !session[:end_date].blank? %>
 
-        <% 
-          date1 = session[:start_date]
-          date2 = session[:end_date]
-          dates = (Date.strptime(date1,'%m/%d/%Y')..Date.strptime(date2,'%m/%d/%Y')).to_a
-          dates = dates.map{ |date_map| date_map.strftime('%m/%d/%Y') }
-        %>
-        var selectedDays = new Array;
-        selectedDays = <%= raw dates %>
+<% if !session[:start_date].blank? && !session[:end_date].blank? %>
+
+  <% 
+  date1 = session[:start_date]
+  date2 = session[:end_date]
+  dates = (Date.strptime(date1,'%m/%d/%Y')..Date.strptime(date2,'%m/%d/%Y')).to_a
+  dates = dates.map{ |date_map| date_map.strftime('%m/%d/%Y') }
+%>
+          var selectedDays = new Array;
+          selectedDays = <%= raw dates %>
         
-        for(var i = 0; i < selectedDays.length; i++) {
+          for(var i = 0; i < selectedDays.length; i++) {
           
-          var r = selectedDays[i];
-          r = r.split("/");
-          if(String(new Date(r[2], (r[0]-1), r[1])) == String(d)) {
-            return [true, 'selected'];
-          }          
-        }
-        
-        <% end %>
+            var r = selectedDays[i];
+            r = r.split("/");
+            if(String(new Date(r[2], (r[0]-1), r[1])) == String(d)) {
+              return [true, 'selected'];
+            }          
+          }
+
+<% end %>
         
         return [true];
       }
@@ -192,7 +192,31 @@
     <p class="charming_text mt30"><%= @item.description %></p>
 
     <div class="line"></div>
+    <h1 class="charming">Gatherings</h1>
+    <p class="charming_text">
+      <% gatherings = @offers.where("persons_in_gathering is NOT NULL and gathering_deadline >= #{Date.today.strftime("%Y-%d-%m")}") %>
+    <div style="width: 100%;clear: both;">
+      <% gatherings.each do|gathering|%>
+        <div style="border-bottom: 1px solid">
+          Start Date: <%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
+          End Date: <%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
+          Total required Persons: <%= gathering.persons_in_gathering %><br />
+          Joined Persons: <%= gathering.members.size %><br/>
+  <%#*Rental Price per person: <%= gathering.gathering_rental_price %>
+  <%#*<br />%>
+          Gathering Deadline: <%= gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
 
+          <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>
+            <% if !gathering.members.include?(current_user) %>
+              <%= link_to "Join", "/join_gathering/#{gathering.id}" %>
+            <% end %>
+          <% end %>
+        </div>        
+      <% end %>
+    </div>
+    </p>
+
+    <div class="line"></div>
     <h1 class="charming">what other people think</h1>
     <p class="charming_text">what other people think what other people thinkwhat other people thinkwhat other people think</p>
     <div class="line"></div>
@@ -218,7 +242,6 @@
         <div class="field">
           <%= f.label :comment %><br />
           <%= f.text_area "comment", :rows => 5 %><br />
-
           <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
         </div>
       <% end %>

@@ -15,6 +15,7 @@ gem 'json'
 gem 'magic_encoding'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
+gem 'koala'
 gem "omniauth-facebook"
 gem 'omniauth-twitter'
 gem "omniauth"
@@ -22,7 +23,10 @@ gem 'crack'
 gem 'uuidtools'
 gem 'execjs'
 gem 'therubyracer'
+gem 'paypal_adaptive'
 gem "bcrypt-ruby"
+gem "active_paypal_adaptive_payment"
+gem "activemerchant", '1.23.0'
 #gem "webbynode", "~> 1.0.5.2"
 #gem "geokit-rails3-1beta --pre"
 gem 'nokogiri'

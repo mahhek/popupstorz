@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   def add_comment
     @comment = Comment.new(params[:comment])
     @comment.user=current_user
-    @user =User.find(params[:id])
+    @user = User.find(params[:id])
     if @comment.save
       flash[:notice] = "Comment Added"
       @user.comments << @comment
@@ -18,6 +18,17 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by_id(params[:id])
+  end
+  
+  def send_invitation
+    @invitation = Invitation.new
+    @invitation.user = current_user
+    @invitation.email = params[:email]
+    @invitation.token =  (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
+    @invitation.save
+    UserMailer.send_invitation_email(@invitation).deliver
+    flash[:notice] = "Invitations have been sent successfully."
+    redirect_to "/invitation"
   end
     
 end

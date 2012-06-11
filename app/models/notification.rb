@@ -7,4 +7,8 @@ class Notification < ActiveRecord::Base
   def send_email_notification
     UserMailer.send_notification(self).deliver
   end
+  
+  def send_invitation_notification
+    UserMailer.send_invitation_email(self).deliver
+  end
 end

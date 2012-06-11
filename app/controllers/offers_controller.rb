@@ -20,7 +20,7 @@ class OffersController < ApplicationController
     
     @booked_dates = []
     @manage_dates_array = []
-    offers = @item.offers(:conditions => ["status != 'applied'"])    
+    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])
     offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
@@ -49,7 +49,7 @@ class OffersController < ApplicationController
     
     @booked_dates = []
     @manage_dates_array = []
-    offers = @item.offers(:conditions => ["status != 'applied'"])    
+    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
     offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
@@ -98,7 +98,7 @@ class OffersController < ApplicationController
     
     @booked_dates = []
     @manage_dates_array = []
-    offers = @item.offers(:conditions => ["status != 'applied'"])    
+    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
     offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
@@ -124,7 +124,7 @@ class OffersController < ApplicationController
 
     @booked_dates = []
     @manage_dates_array = []
-    offers = @item.offers(:conditions => ["status != 'applied'"])    
+    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
     offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
@@ -207,7 +207,45 @@ class OffersController < ApplicationController
   #      redirect_to "/"
   #    end
   #  end
-
+  
+  def join_gathering
+    @offer = Offer.find(params[:id])
+  end
+  
+  def join
+    offer = Offer.find(params[:id])
+    message = params[:user_message]
+    offer.members << current_user
+    gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",offer.id,current_user.id])
+    gathering_member.update_attribute("user_message",message)
+    flash[:notice] = "Successfully joined the gathering."
+    redirect_to "/items/show/#{offer.item_id}"
+  end
+  
+  def approve_gathering_request
+    offer = Offer.find(params[:id])
+    new_offer = Offer.new
+    new_offer = offer.dup
+    new_offer.parent_id = offer.id
+    new_offer.user_id = params[:mem]
+    if new_offer.save
+      flash[:notice] = "Offer accepted successfully!"
+    else
+      flash[:notice] = "Offer can't be accepted right now.Please try again or later."
+    end
+    redirect_to gatherings_items_path
+  end
+  
+  def decline_gathering_request
+    gathering_member = GatheringMember.find(:first, :conditions => ["offer_id = ? and user_id = ?",params[:id],params[:mem]])
+    if gathering_member.destroy
+      flash[:notice] = "Request declined."
+    else
+      flash[:notice] = "Request can't be declined now. Please try again or later."
+    end
+    redirect_to gatherings_items_path
+  end
+  
   protected
 
   def calculate_price(number_of_days, item)

@@ -3,9 +3,6 @@ class Offer < ActiveRecord::Base
   validate :rental_start_date, :presence => true
   validate :rental_end_date, :presence => true
 
-  
-  
-  
   belongs_to :item
   belongs_to :user
   has_one :payment
@@ -13,6 +10,8 @@ class Offer < ActiveRecord::Base
   
   has_many :offer_messages, :dependent => :destroy
   accepts_nested_attributes_for :offer_messages, :allow_destroy => true
+  
+  has_and_belongs_to_many :members, :class_name => 'User', :join_table => 'gathering_members', :association_foreign_key => 'user_id'
 
   before_save :set_owner_of_item
 

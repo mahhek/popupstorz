@@ -71,6 +71,11 @@ class ItemsController < ApplicationController
   def favorites
     @items = current_user.favorites
   end
+  
+  def gatherings    
+    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
+  end
+  
 
   def index
     @items = current_user.items
@@ -164,8 +169,8 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
     @booked_dates = []
     @manage_dates_array = []
-    offers = @item.offers(:conditions => ["status != 'applied'"])    
-    offers.each do|offer|
+    @offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
+    @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
     @manage_dates_array << @booked_dates
@@ -196,6 +201,10 @@ class ItemsController < ApplicationController
     @max_price = Item.maximum("price")
     conds = "1=1 "
     
+    @sizes = Item.select("distinct(size)").where("size is not NULL")
+    @types = Item.select("distinct(type)").where("type is not NULL")
+    @shareable = Item.select("distinct(is_shareable)")
+    
     unless params[:search_from].blank?
       start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
       conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
@@ -212,10 +221,11 @@ class ItemsController < ApplicationController
     
     if !params[:search_from].blank? or !params[:search_to].blank? 
       conds += " AND status != 'applied'"
-    end    
+    end
     
     booked_items = []
     unless conds == "1=1 "
+      conds += "and parent_id is NULL"
       offers = Offer.find(:all,:conditions => [ conds ])
       offers.each do|offer|
         if params[:location].blank?
@@ -241,6 +251,18 @@ class ItemsController < ApplicationController
 
     unless params[:location].blank?
       item_conds += " AND (city LIKE " + "'%%" + "#{params[:location]}" + "%%'" +")"
+    end
+    
+    unless params[:sizes].blank?
+      item_conds += " AND (size = '#{params[:sizes]}')"
+    end
+    
+    unless params[:type].blank?
+      item_conds += " AND (type = '#{params[:type]}')"
+    end
+    
+    unless params[:shareable].blank?
+      item_conds += " AND (is_shareable = true)"
     end
     
     items = Item.find(:all,:conditions => [ item_conds ])
@@ -337,7 +359,7 @@ class ItemsController < ApplicationController
   end
 
   def overview
-    @offers= Offer.find(:all, :conditions => ["owner_id=?",current_user.id])
+    @offers= Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is NULL",current_user.id])
   end
 
   def payment_charge

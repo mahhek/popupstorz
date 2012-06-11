@@ -3,7 +3,7 @@ class Payment < ActiveRecord::Base
     PROCESSING, FAILED, SUCCESS, VERIFIED = 1, 2, 3, 4
   attr_accessible :stripe_card_token,:amount, :stripe_card_token, :seller_id, :renter_id,:rentareto_fee,:seller_amount,:offer_id
   validates :amount, :presence => true, :numericality => { :greater_than => 0 }
-  validates :stripe_card_token, :presence => true
+#  validates :stripe_card_token, :presence => true
   belongs_to :offer
 
   def owner

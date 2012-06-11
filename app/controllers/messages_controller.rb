@@ -36,6 +36,18 @@ class MessagesController < ApplicationController
     end
     
   end
+  
+  
+  def gathering_message    
+    user = User.find_by_id(params[:user_id])
+    current_user.send_message(user, :topic => params[:topic], :body => params[:body])
+    respond_to do |format|
+      format.js do
+        render :js => "alert('You message sent successfully, we will let owner know, thanks.');$('#contact_me_div').toggle('slow');$('#body').val('');"
+      end
+    end
+    
+  end
 
 
   def trash
@@ -99,6 +111,7 @@ class MessagesController < ApplicationController
   end
 
   def send_message
+    
     recipients = params[:to].split(/;|,/)
     users = User.all :conditions => ["email in(?)", recipients]
     unless users.blank?

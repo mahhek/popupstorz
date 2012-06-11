@@ -27,6 +27,15 @@
 
   </head>
   <body>
+    
+     <div class='spread'>
+      <div class='twshare left'> 
+        <%= params[:controller] %>
+        <a href="http://twitter.com/share?text=aaaaaaaaaa" class="twitter-share-button" data-count="horizontal" data="qqqqqqqq">Tweet</a>
+        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+      </div>
+    </div>
+    
     <div>
       Admin Panel &nbsp;|&nbsp;
       <% if user_signed_in? %>

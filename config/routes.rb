@@ -19,7 +19,16 @@ PopupStorz::Application.routes.draw do
   match "/users/add_comment" => "users#add_comment"
   match "/items/pop_ups" => "items#my_pop_ups"
   match "/items/payment_charge/:id" => "items#payment_charge"
-  
+  match "/home/pay" => "home#pay"
+  match "/join_gathering/:id" => "offers#join_gathering"
+  match "/join/:id" => "offers#join"
+  match "/approve_gathering_request/:id" => "offers#approve_gathering_request"
+  match "/decline_gathering_request/:id" => "offers#decline_gathering_request"
+  match "/products/cancelled_payment_request" => "products#cancelled_payment_request", :as  => :cancel_request
+  match "products/completed_payment_request" => "products#completed_payment_request", :as => :complete_request
+  match "/send_invitation" => "users#send_invitation"
+  match "/invitation" => "users#invitations"
+   
   devise_for :users, :controllers => {:registrations => "registrations"}
 
   resources :accounts do
@@ -68,6 +77,7 @@ PopupStorz::Application.routes.draw do
       post 'manage'
       post 'send_message'
       post 'contact_me'
+      post 'gathering_message'
     end
   end
 
@@ -118,6 +128,7 @@ PopupStorz::Application.routes.draw do
   resources :items do
     collection do
       get "overview"
+      get "gatherings"
       get "listings_home"
     end
     resources :avatars

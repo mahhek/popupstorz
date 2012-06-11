@@ -15,6 +15,7 @@
 <div style="margin: 5px;">
   <b>Last Name:</b>&nbsp;&nbsp;&nbsp;<%= @user.last_name %>
 </div>
+
 <br/>
 <div style="margin: 5px;">
   <% if  (@user.gender == true) then %>
@@ -37,6 +38,21 @@
   <b> Activity:</b>&nbsp;&nbsp;&nbsp<%= @user.activity %>
 </div>
 <br/>
+
+<% if @user.show_fb_info %>
+<b>Facebook Info:</b>  <br />
+<img src="<%= @user.fb_pic_url %>" /><br />
+<b>Work Info:</b>
+  <%= @user.works_at %><br /><br />
+<b>Educartion Info:</b>
+  <%= @user.studied_at %><br /><br />
+  <b>Facebook Pages:</b>
+  <%= @user.fb_pages %><br /><br />
+  <b>Facebook Friends</b>
+  <%= @user.fb_friends_count %>
+<% end %>
+
+
 <%if @user==current_user%>
   <li>
     <%= link_to('Edit Profile', edit_user_registration_path) %>

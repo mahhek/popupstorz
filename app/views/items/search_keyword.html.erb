@@ -26,7 +26,8 @@
     $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
       " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
   });
-
+  
+  
 
 </script>
 
@@ -48,6 +49,34 @@
       <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '' %>
       <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '' %>
       <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '' %>
+      <%= hidden_field_tag "sizes", !params[:sizes].blank? ? params[:sizes] : '' %>
+      <%= hidden_field_tag "types", !params[:types].blank? ? params[:types] : '' %>
+      <%#= hidden_field_tag "shareable", !params[:shareable].blank? ? params[:shareable] : '' %>
+      
+      <div class="pannelright">
+        <img class="closepannel" src="../assets/-.png" />
+        <div class="heading_right">Is Shareable</div>      
+        <div class="twocol">
+          <%= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "this.form.submit()" %>
+        </div>
+      </div>
+      
+      <div class="pannelright">
+        <img class="closepannel" src="../assets/-.png" />
+        <div class="heading_right">Sizes</div>
+        <div class="twocol">
+          <%= select_tag( "sizes", options_from_collection_for_select( @sizes, :size, :size, params[:sizes]? params[:sizes] : ''), :prompt => "Select Sizes", :onchange => "this.form.submit()") %>
+        </div>
+      </div>
+
+      <div class="pannelright">
+        <img class="closepannel" src="../assets/-.png" />
+        <div class="heading_right">Types</div>
+        <div class="twocol">
+          <%= select_tag( "types", options_from_collection_for_select( @types, :type, :type, params[:types]? params[:types] : ''), :prompt => "Select Types") %>
+        </div>
+      </div>
+
     <% end %>
     </p>
   </div>
@@ -76,24 +105,15 @@
 
   </div>
 
-  <div class="pannelright">
-    <img class="closepannel" src="../assets/-.png" />
-    <div class="heading_right">Price</div>
-    <div class="twocol">
-      <div class="leftrow">
-        <div class="unselected"></div><span>Neighbourhood</span>
-        <div class="unselected"></div><span>Neighbourhood</span>
-        <div class="selected"></div><span>Neighbourhood</span>
-        <div class="unselected"></div><span>Neighbourhood</span>
-      </div><div class="rightrow">
-        <div class="unselected"></div><span>Neighbourhood</span>
-        <div class="unselected"></div><span>Neighbourhood</span>
-        <div class="unselected"></div><span>Neighbourhood</span>
-        <div class="selected"></div><span>Neighbourhood</span>
-      </div>
-    </div>
 
-  </div>
+
+<%#*<div class="pannelright">%>
+<%#*<img class="closepannel" src="../assets/-.png" />%>
+<%#*<div class="heading_right">Sizes</div>%>
+<%#*<div class="twocol">%>
+<%#= select_tag( "sizes", options_from_collection_for_select( @sizes, :size, :size), :prompt => "Select Sizes") %>
+<%#*</div>%>
+<%#*</div>%>
 
 </div>
 <div class="leftcontent">
@@ -152,9 +172,24 @@
     return [true];
   }  
   
+  
+  function refine_search(){
+    alert("aaa");
+<%#*$.ajax({%>
+<%#*url: "/xml/location_search.xml?q=" + request.term,%>
+<%#*dataType: 'xml',%>
+<%#*success: function(resp) {%>
+<%#*cb($("location", resp).map(function() {%>
+<%#*return {label: $("address", this).text(), id: $("longitude", this).text() + ";" + $("latitude", this).text()%>
+<%#*};%>
+<%#*}).get());%>
+<%#*}%>
+<%#*});%>
+  }
+  
   $('#search_from').datepicker({
-    <%#*dateFormat: 'mm-dd-yy',%>
-    <%#*beforeShowDay: disableRangeOfDays%>
+<%#*dateFormat: 'mm-dd-yy',%>
+<%#*beforeShowDay: disableRangeOfDays%>
   });  
   
   $('#search_to').datepicker();
