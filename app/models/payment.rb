@@ -17,7 +17,7 @@ class Payment < ActiveRecord::Base
   def purchase(do_action)
     if do_action == "verify"
       self.status = PROCESSING
-      customer = Stripe::Customer.create(description:email, card: stripe_card_token)
+#      customer = Stripe::Customer.create(description:email, card: stripe_card_token)
 
       unless customer.nil?
         self.stripe_customer_token = customer.id

@@ -14,7 +14,6 @@
     background: aquamarine !important;
     font-weight: bold !important;
   }
-</style><style>
   .booked { 
     border: 4px solid;
     color: red; 
@@ -179,6 +178,7 @@
               <%= hidden_field_tag :per_week_price, @item.price_per_week %>
               <%= hidden_field_tag :per_month_price, @item.price_per_month %>
               <%= f.hidden_field :total_amount, :value => @calculated_price %>
+              <%= hidden_field_tag "offer[is_gathering]", false %>
 
               <div style="float: left;width: 100px;" id="daily_price">
   <%#*€<%= @item.price %>
@@ -582,10 +582,12 @@
   });
   
   function show_gathering(){
+    $("#offer_is_gathering").val(true);
     $("#gathering_fields").show();
   }
   
   function hide_gathering(){
+    $("#offer_is_gathering").val(false);
     $("#gathering_fields").hide();
   }
   

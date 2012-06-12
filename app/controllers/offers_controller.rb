@@ -43,7 +43,6 @@ class OffersController < ApplicationController
   end
 
   def create
-
     @offer = Offer.find_by_item_id_and_user_id_and_status(params[:item_id],current_user.id,"Pending")
     @item = Item.find params[:item_id]
     
@@ -66,7 +65,8 @@ class OffersController < ApplicationController
       params[:offer][:rental_start_date] = DateTime.strptime(params[:offer][:rental_start_date], "%m/%d/%Y").to_time
       params[:offer][:rental_end_date] = DateTime.strptime(params[:offer][:rental_end_date], "%m/%d/%Y").to_time
       params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time if params[:offer][:cancellation_date] != "mm/dd/yy"
-
+      params[:offer][:gathering_deadline] = DateTime.strptime(params[:offer][:gathering_deadline], "%m/%d/%Y").to_time if params[:offer][:cancellation_date] != "mm/dd/yy"
+            
       @offer = Offer.new(params[:offer].merge(:item_id => params[:item_id]).merge(:user_id => current_user.id).merge(:status => "pending"))
 
       if @offer.save!
@@ -213,13 +213,15 @@ class OffersController < ApplicationController
   end
   
   def join
-    offer = Offer.find(params[:id])
+    @offer = Offer.find(params[:id])
+    @item = @offer.item
     message = params[:user_message]
-    offer.members << current_user
-    gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",offer.id,current_user.id])
-    gathering_member.update_attribute("user_message",message)
+    @offer.members << current_user
+    gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",@offer.id,current_user.id])
+    gathering_member.update_attributes({"user_message" => message, "status" => "applied"})
     flash[:notice] = "Successfully joined the gathering."
-    redirect_to "/items/show/#{offer.item_id}"
+    redirect_to  new_item_offer_payment_path(@item,@offer)
+#    redirect_to "/items/show/#{offer.item_id}"
   end
   
   def approve_gathering_request

@@ -20,7 +20,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 
     <%= javascript_include_tag "markerGroup" %>
     <%= javascript_include_tag "ym4r-gm" %>
-    <%= javascript_include_tag "https://js.stripe.com/v1/" %>
+    <%#= javascript_include_tag "https://js.stripe.com/v1/" %>
 
     <%= javascript_include_tag "tmpl" %>
     <%= javascript_include_tag "easing" %>
@@ -34,10 +34,12 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
     <%= GMap.header(:with_vml => false, :host => request.host).html_safe %>
     <%= raw(@map.to_html) if @map %>
     <%= csrf_meta_tags %>
-    <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
-
+    <%#= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
+    
+    <script type="text/javascript" src="https://www.paypalobjects.com/js/external/dg.js"></script>
+    
     <%= yield(:head) %>
-
+    
     <noscript>
       <style>
         .es-carousel ul{
@@ -141,10 +143,12 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                   <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" %>
                     <%= link_to 'Messages', inbox_messages_path %>
                     <%= link_to 'My Listings', listings_home_items_path %>
-                    <%= link_to 'My bookings', "/items/pop_ups"%>
+                    <%= link_to 'My Bookings', "/items/pop_ups"%>
+                    <%= link_to 'My Gatherings', "/items/gatherings"%>
                     <%= link_to 'My Favorites', favorites_items_path %>
                     <%= link_to('My Profile', profile_path(current_user.id)) %>
                     <%= link_to "My Account","#" %>
+                    <%= link_to "Send Invitations","/invitation" %>
                   <% end %>
                 </span>
               <% end %>

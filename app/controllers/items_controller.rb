@@ -169,7 +169,7 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
     @booked_dates = []
     @manage_dates_array = []
-    @offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
+    @offers = @item.offers(:conditions => ["status != 'Applied' and parent_id is NULL"])    
     @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end

@@ -205,12 +205,14 @@
   <%#*Rental Price per person: <%= gathering.gathering_rental_price %>
   <%#*<br />%>
           Gathering Deadline: <%= gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
-
-          <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>
-            <% if !gathering.members.include?(current_user) %>
-              <%= link_to "Join", "/join_gathering/#{gathering.id}" %>
+          <% unless current_user.blank? %>
+            <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>
+              <% if !gathering.members.include?(current_user) %>
+                <%= link_to "Join", "/join_gathering/#{gathering.id}" %>
+              <% end %>
             <% end %>
           <% end %>
+
         </div>        
       <% end %>
     </div>
