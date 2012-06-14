@@ -1,0 +1,38 @@
+development:
+  environment: "sandbox"
+  username: "mahhek_1279027745_biz_api1.gmail.com"
+  password: "1279027750"
+  signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31Ag6.CqYSgn8EyK3CdTmtUhOYGaKK "
+  application_id: "APP-80W284485P519543T"
+  
+#  environment: "sandbox"
+#  login: "mahhek_1279027745_biz_api1.gmail.com"
+#  password: "1279027750"
+#  signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31Ag6.CqYSgn8EyK3CdTmtUhOYGaKK "
+#  appid: "APP-80W284485P519543T"
+test:
+  environment: "sandbox"
+  username: "sandbox_username"
+  password: "sandbox_password"
+  signature: "sandbox_signature"
+  application_id: "sandbox_app_id"
+#  environment: "sandbox"
+#  login: "mahhek_1279027745_biz_api1.gmail.com"
+#  password: "1279027750"
+#  signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31Ag6.CqYSgn8EyK3CdTmtUhOYGaKK "
+#  appid: "APP-80W284485P519543T"
+
+production:
+  environment: "sandbox"
+  username: "mahhek_1279027745_biz_api1.gmail.com"
+  password: "1279027750"
+  signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31Ag6.CqYSgn8EyK3CdTmtUhOYGaKK "
+  application_id: "APP-80W284485P519543T"
+#  environment: "sandbox"
+#  login: "mahhek_1279027745_biz_api1.gmail.com"
+#  password: "1279027750"
+#  signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31Ag6.CqYSgn8EyK3CdTmtUhOYGaKK "
+#  appid: "APP-80W284485P519543T"
+# Seller Credentials
+#email address: mahhek_1309001639_per@gmail.com
+#password: 326638535

@@ -1,0 +1,23 @@
+<script type="text/javascript">
+  function check_email() {    
+    email = $("#email").val();
+    var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if(regex.test(email) == false){
+      alert("Invalid Email Address.");
+    }
+    return regex.test(email);
+  }
+</script>
+
+<div style="float: left;width: 100%;margin-top: 10px;" id="invitation_div">
+  <%= form_tag "send_invitation", :url => "/send_invitation" , :onsubmit => "return check_email();" do %>
+    <%= hidden_field_tag :user_id, current_user.id %>
+    <span style="width: auto;float: left;">
+      <b>Send Invitation to:</b><br />
+      <%= text_field_tag  :email %>
+    </span>
+    <div style="float: left;margin-top: 5px;clear:both;">
+      <%= submit_tag "Send Invitation" %>&nbsp;&nbsp;&nbsp;
+    </div>
+  <% end %>
+</div>
