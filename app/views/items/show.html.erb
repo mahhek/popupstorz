@@ -194,7 +194,7 @@
     <div class="line"></div>
     <h1 class="charming">Gatherings</h1>
     <p class="charming_text">
-      <% gatherings = @offers.where("persons_in_gathering is NOT NULL and gathering_deadline >= '#{Date.today.strftime("%Y-%d-%m")}'") %>
+      <% gatherings = @offers.where("persons_in_gathering is NOT NULL and gathering_deadline >= #{Date.today.strftime("%Y-%d-%m").to_s.strip}") %>
     <div style="width: 100%;clear: both;">
       <% gatherings.each do|gathering|%>
         <div style="border-bottom: 1px solid">
