@@ -12,8 +12,11 @@
   <%#= link_to "My Account","#" %>
   <%#*</div>%>
 
-    <% @offers.each do | offer | %>
-      <%item = offer.item%>
+    <% @offers.each do | offer | %>    
+    <% if !offer.parent_id.blank? %>
+      <% offer = Offer.find(offer.parent_id) %>
+    <% end %>
+      <%item = offer.item %>
       <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
         <div class="imgx">
           <% if item.avatars.size > 0 %>

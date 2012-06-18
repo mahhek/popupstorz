@@ -359,19 +359,22 @@ class ItemsController < ApplicationController
   end
 
   def overview
-    @offers= Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is NULL",current_user.id])
+    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is NULL",current_user.id])
   end
 
   def payment_charge
-    
-
-    @offer= Offer.find(params[:id])
-    @item=@offer.item
-    
-    payment = @offer.payment
-    if payment.purchase("charge").status == 3
-      @offer.update_attribute(:status, "Paid but waiting for FeedBack")
-      
+    @offer = Offer.find(params[:id])
+    @item = @offer.item    
+#    payment = @offer.payment
+#    if payment.purchase("charge").status == 3
+#      @offer.update_attribute(:status, "Paid but waiting for FeedBack")
+      payment = PaymentsController.new
+      if @offer.is_gathering        
+        payment.capture_gathering_commission_and_payment(@offer)
+      else
+        payment.capture_offer_commission_and_payment(@offer)
+      end
+      if @offer.update_attribute(:status, "Paid but waiting for FeedBack")
       @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_updated", :description => "The <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!")
       @notification.save
       redirect_to "/"

@@ -73,10 +73,13 @@
               <% end %>
             </div>
             <% count += 1 %>
-
-            <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
-            <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
-
+            
+            <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>            
+            <% if request.status == "confirmed" %>
+              <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
+              <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
+            <% end %>
+              
           <% end %>
         </div>
 

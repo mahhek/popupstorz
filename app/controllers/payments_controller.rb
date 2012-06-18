@@ -22,29 +22,18 @@ class PaymentsController < ApplicationController
 
   end
 
-  def create
+  def create    
     renter = User.find(params[:payment][:renter_id])
     @item = Item.find_by_id(params[:item_id])
     @offer = Offer.find_by_id(params[:offer_id])
     @payment = Payment.new(params[:payment])
-
-    #    if @payment.valid? && @payment.purchase("verify")
-    #      @payment.save
-    #      
-    #      @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_sent_to_owner", :description => "You have received an <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> from #{current_user.popup_storz_display_name} for the item called #{@item.title}")
-    #      @notification.save
-    #      flash[:notice] = 'Your Offer Has been sent to Owner of item. Thanks.'
-    #      redirect_to root_url
-    #    else
-    #      render :action => :new
-    #    end
 
     pay_request = PaypalAdaptive::Request.new
     data = {
       "returnUrl" => complete_request_url,
       "requestEnvelope" => {"errorLanguage" => "en_US"},
       "currencyCode"=>"USD",
-      "receiverList" => {"receiver"=> [{ "email"=> renter.email.to_s, "amount"=>params[:payment][:amount].to_s}]},
+      "receiverList" => {"receiver"=> [{ "email"=> renter.email.to_s, "amount" => params[:payment][:amount].to_s}]},
       "cancelUrl"=> cancel_request_url,
       "actionType"=>"PAY",
       "startingDate" => Date.today,
@@ -69,14 +58,71 @@ class PaymentsController < ApplicationController
       redirect_to failed_payment_url
     end
     
-  end  
+  end
   
   def check_gathering_state(offer)
     unless offer.members.where("status = ?","confirmed").size.to_i < offer.persons_in_gathering.to_i
       offer.update_attribute("status","Accepted - Confirmation pending")
-    end    
-#    p "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",offer.members.where("status = ?","confirmed").size.to_i
-#    dd
+      recipients = offer.item.user.email
+      users = User.all :conditions => ["email in(?)", recipients]
+      unless users.blank?
+        users.each do |user|
+          current_user.send_message(user, :topic => "Gathering Confirmation Request", :body => "Please confirm the gathering as the required members have joined.")
+        end
+      end    
+    end
   end
+  
+  
+  def capture_gathering_commission(offer)
+    receivers = []    
+    
+#    offers = Offer.find(:all, :conditions => ["status = 'Approved' and parent_id = #{offer.id}"])
+    members = GatheringMember.find(:all, :conditions => ["status = 'Approved'"])
+    
+    if offer.persons_in_gathering.to_i <= members.size.to_i
+   
+      offer.update_attribute("status","Accepted - Payment pending")
+      offer.members.each do|mem|
+        obj = {"email" => mem.email.to_s, "amount" => ((offer.total_amount.to_f*10)/100).to_s}
+        receivers << obj
+      end
+      pay_request = PaypalAdaptive::Request.new
+      data = {
+        "returnUrl" => "http://testserver.com/payments/completed_payment_request", 
+        "requestEnvelope" => {"errorLanguage" => "en_US"},
+        "currencyCode"=>"USD",
+        "receiverList" => {"receiver"=> receivers},
+        "cancelUrl"=> "http://testserver.com/payments/canceled_payment_request",
+        "actionType"=>"PAY",
+        "startingDate" => Date.today,
+        "ipnNotificationUrl"=>"http://localhost:3000/products/ipn_notification"
+      }
+    end
+              
+    #    pay_response = pay_request.pay(data)
+    ##    p "aaaaaaaaaaaaaaaaa",pay_response.inspect
+    ##    f
+    #    if pay_response.success?
+    #      redirect_to pay_response.approve_paypal_payment_url
+    #    end
+  end
+  
+  def capture_gathering_commission_and_payment(offer)
+    commission = ((offer.total_amount.to_f*10)/100).to_s
+    transfer_amount = offer.total_amount.to_f - commission.to_f
+#    p "aaaaaaaaaaaaaaaaaaa",commission
+#    p "bbbbbbbbbbbbbbbbbbb",transfer_amount
+#    g
+    
+#    ff
+  end
+  
+  def capture_offer_commission_and_payment(offer)
+#    a
+    offer.update_attribute(:status, "Paid but waiting for FeedBack")
+#    ff
+  end
+  
   
 end

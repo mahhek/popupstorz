@@ -221,19 +221,28 @@ class OffersController < ApplicationController
     gathering_member.update_attributes({"user_message" => message, "status" => "applied"})
     flash[:notice] = "Successfully joined the gathering."
     redirect_to  new_item_offer_payment_path(@item,@offer)
-#    redirect_to "/items/show/#{offer.item_id}"
+    #    redirect_to "/items/show/#{offer.item_id}"
   end
   
   def approve_gathering_request
     offer = Offer.find(params[:id])
-    new_offer = Offer.new
-    new_offer = offer.dup
-    new_offer.parent_id = offer.id
-    new_offer.user_id = params[:mem]
-    if new_offer.save
-      flash[:notice] = "Offer accepted successfully!"
-    else
-      flash[:notice] = "Offer can't be accepted right now.Please try again or later."
+    if offer.is_gathering
+      
+      gathering_member = GatheringMember.find(:first, :conditions => ["offer_id = ? and user_id = ?",params[:id],params[:mem]])
+      gathering_member.update_attribute("status", "Approved")
+      new_offer = Offer.new
+      new_offer = offer.dup
+      new_offer.parent_id = offer.id
+      new_offer.user_id = params[:mem]
+      new_offer.status = "Approved"
+        
+      if new_offer.save
+        payment = PaymentsController.new
+        payment.capture_gathering_commission(offer)
+        flash[:notice] = "Offer accepted successfully!"
+      else
+        flash[:notice] = "Offer can't be accepted right now.Please try again or later."
+      end
     end
     redirect_to gatherings_items_path
   end
