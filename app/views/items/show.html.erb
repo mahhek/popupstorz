@@ -196,25 +196,25 @@
     <p class="charming_text">
       <% gatherings = @offers.where("persons_in_gathering is NOT NULL and gathering_deadline >= #{Date.parse("#{Date.today}","%Y-%d-%m")}") %>
     <div style="width: 100%;clear: both;">
-      <% gatherings.each do|gathering|%>
-        <div style="border-bottom: 1px solid">
-          Start Date: <%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
-          End Date: <%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
-          Total required Persons: <%= gathering.persons_in_gathering %><br />
-          Joined Persons: <%= gathering.members.size %><br/>
+      <%# gatherings.each do|gathering|%>
+        <%#*<div style="border-bottom: 1px solid">%>
+          <%#*Start Date: <%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />%>
+          <%#*End Date: <%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />%>
+          <%#*Total required Persons: <%= gathering.persons_in_gathering %><br />%>
+          <%#*Joined Persons: <%= gathering.members.size %><br/>%>
   <%#*Rental Price per person: <%= gathering.gathering_rental_price %>
   <%#*<br />%>
-          Gathering Deadline: <%= gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
-          <% unless current_user.blank? %>
-            <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>          
-              <% if !gathering.members.include?(current_user) %>
-                <%= link_to "Join", "/join_gathering/#{gathering.id}" %>
-              <% end %>
-            <% end %>
-          <% end %>
+          <%#*Gathering Deadline: <%= gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />%>
+          <%# unless current_user.blank? %>
+            <%# if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>          
+              <%# if !gathering.members.include?(current_user) %>
+                <%#= link_to "Join", "/join_gathering/#{gathering.id}" %>
+              <%# end %>
+            <%# end %>
+          <%# end %>
 
-        </div>        
-      <% end %>
+        <%#*</div>%>        
+      <%# end %>
     </div>
     </p>
 
