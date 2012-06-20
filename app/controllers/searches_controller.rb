@@ -5,6 +5,8 @@ class SearchesController < ApplicationController
 
   def gatherings
     @sizes = Item.select("distinct(size)").where("size is not NULL")
+    @start_size = @sizes.first
+    @last_size = @sizes.last
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
 #    @users_with_uniq_cities = User.select("distinct(city)")
   end
