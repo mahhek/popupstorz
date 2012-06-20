@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 class HomeController < ApplicationController
-
+  
   def index
     if current_user && current_user.admin?
       redirect_to admin_items_path
@@ -19,9 +19,8 @@ class HomeController < ApplicationController
     end
   end
 
-
   def about
     
   end
-  
+
 end
