@@ -1,4 +1,23 @@
 <%= render :partial => "search_header" %>
+
+<script type="text/javascript">
+  $(function() {
+    $( "#sizes-slider-range" ).slider({
+      range: true,
+      min: <%= @sizes.first.size %>,
+      max: <%= @sizes.last.size %>,
+      values: [ <%= @sizes.first.size %>, <%= @sizes.last.size %> ],
+      slide: function( event, ui ) {
+        $( "#size" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      },
+      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
+        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));}
+    });
+    $( "#size" ).val( "$" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#sizes-slider-range" ).slider( "values", 1 ) );
+  });
+  
+</script>
 <div class="clear"></div>
 <br/>
 
@@ -10,21 +29,28 @@
       <div style="width:70%;float:left;">
         <%= select_tag( "search[location]", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
       </div>
+      <%= hidden_field_tag "min_size", "" %>
+      <%= hidden_field_tag "max_size", "" %>
+      <label for="size">Sizes:</label>
+        <input type="text" id="size" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
+        <div class="twocol">
+          <div id="sizes-slider-range" style="width: 90%;margin-left: 8px;"></div>
+        </div>
     </div>
 
-    <%#*<div style="width:90%;float:left;clear:both;margin:10px;">%>
-      <%#*<div style="float:left;margin-right: 10px;font-weight: bold;">Name or Email:</div>%>
-      <%#*<div style="width:65%;float:right;">%>
-        <%#= f.text_field "user" %>
-      <%#*</div>%>
-    <%#*</div>%>
+  <%#*<div style="width:90%;float:left;clear:both;margin:10px;">%>
+  <%#*<div style="float:left;margin-right: 10px;font-weight: bold;">Name or Email:</div>%>
+  <%#*<div style="width:65%;float:right;">%>
+  <%#= f.text_field "user" %>
+  <%#*</div>%>
+  <%#*</div>%>
 
-    <%#*<div style="width:90%;float:left;clear:both;margin:10px;">%>
-      <%#*<div style="width:20%;float:left;margin-right: 10px;font-weight: bold;">Type:</div>%>
-      <%#*<div style="width:70%;float:left;">%>
-        <%#= select_tag "search[type]", options_for_select([['All',''], ['Fashion Designer','Fashion Designer'], ['Painter','Painter'], ['Jeweler','Jeweler'], ['Photographer','Photographer']]) %>
-      <%#*</div>%>
-    <%#*</div>%>
+  <%#*<div style="width:90%;float:left;clear:both;margin:10px;">%>
+  <%#*<div style="width:20%;float:left;margin-right: 10px;font-weight: bold;">Type:</div>%>
+  <%#*<div style="width:70%;float:left;">%>
+  <%#= select_tag "search[type]", options_for_select([['All',''], ['Fashion Designer','Fashion Designer'], ['Painter','Painter'], ['Jeweler','Jeweler'], ['Photographer','Photographer']]) %>
+  <%#*</div>%>
+  <%#*</div>%>
 
     <div style="width:85%;float:left;clear:both;margin:10px;text-align:right;">
       <%= f.submit "Search!" %>

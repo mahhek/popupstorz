@@ -1,3 +1,17 @@
+<div style="float: left;width: 100%;border: 1px solid black;padding: 5px;">
+  <h2>
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'index' or params[:action] == 'index') ? 'silver' : '' %>">
+      <%= link_to 'Inbox', inbox_messages_path, :class => ((params[:controller] == "messages" and ( params[:action] == "inbox" or params[:action] == "index" )) ? "m_act" : "") %>
+    </span>
+    <span style="float: left;padding: 5px">
+      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    </span>
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'overview' or params[:action] == 'overview') ? 'silver' : '' %>">
+      <%= link_to 'Notifications', dashboard_path(current_user.id), :class => ((params[:controller] == "accounts" and ( params[:action] == "dashboard" )) ? "m_act" : "") %>
+    </span>
+  </h2>
+</div>
+
 <% unless @messages.blank? %>
   <%= form_tag manage_messages_path, :name => "message_form" do %>
 

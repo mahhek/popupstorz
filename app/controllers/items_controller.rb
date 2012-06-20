@@ -71,11 +71,6 @@ class ItemsController < ApplicationController
   def favorites
     @items = current_user.favorites
   end
-  
-  def gatherings    
-    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
-  end
-  
 
   def index
     @items = current_user.items
@@ -196,7 +191,7 @@ class ItemsController < ApplicationController
   def search_keyword
     session[:start_date] = nil
     session[:end_date] = nil
-
+  
     @min_price = Item.minimum("price")
     @max_price = Item.maximum("price")
     conds = "1=1 "
@@ -252,9 +247,13 @@ class ItemsController < ApplicationController
     unless params[:location].blank?
       item_conds += " AND (city LIKE " + "'%%" + "#{params[:location]}" + "%%'" +")"
     end
+        
+    unless params[:min_size].blank?
+      item_conds += " AND (size >= '#{params[:min_size]}')"
+    end
     
-    unless params[:sizes].blank?
-      item_conds += " AND (size = '#{params[:sizes]}')"
+    unless params[:max_size].blank?
+      item_conds += " AND (size <= '#{params[:max_size]}')"
     end
     
     unless params[:type].blank?
@@ -355,11 +354,15 @@ class ItemsController < ApplicationController
   end
   
   def my_pop_ups
-    @offers= current_user.offers
+    @offers = current_user.offers
   end
 
   def overview
     @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is NULL",current_user.id])
+  end
+      
+  def gatherings
+    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
   end
 
   def payment_charge

@@ -42,22 +42,21 @@
           <%#*Your Offer: <%= number_to_currency(exchange_currency(offer.willingness_to_pay, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
           <br/>
           status: <%= offer.status %>
-          <%if offer.status=="Accepted - Payment pending"%>
-            <form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>">
-              <input TYPE="submit" VALUE="check in">
-            </form>
-          <%end%>
+          <%#if offer.status=="Accepted - Payment pending"%>
+            <%#*<form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>">%>
+              <%#*<input TYPE="submit" VALUE="check in">%>
+            <%#*</form>%>
+          <%#end%>
         </div>
-        <%if offer.rental_end_date<Date.today%>
+        
+        <% if offer.rental_end_date < Date.today %>
           <div id="rating_of_item_<%= offer.item.id %>">
             <%= render :partial => "/ratings/rating", :locals => { :asset => offer.item, :only_view => false } %>
           </div>
-        <%end%>
-
-
+        <% end %>
       </div>
-    <%end%>
-  <%else%>
+    <% end %>
+  <% else %>
     You don't currently have any offers listed with PopupStorz.
-  <%end%>
+  <% end %>
 </div>

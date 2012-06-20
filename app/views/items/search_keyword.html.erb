@@ -28,7 +28,22 @@
   });
   
   
-
+  $(function() {
+    $( "#sizes-slider-range" ).slider({
+      range: true,
+      min: <%= @sizes.first.size %>,
+      max: <%= @sizes.last.size %>,
+      values: [ <%= @sizes.first.size %>, <%= @sizes.last.size %> ],
+      slide: function( event, ui ) {
+        $( "#size" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      },
+      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
+        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));$('#price_range_form').submit();}
+    });
+    $( "#size" ).val( "$" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#sizes-slider-range" ).slider( "values", 1 ) );
+  });
+  
 </script>
 
 
@@ -42,17 +57,20 @@
     <p>
       <label for="amount">Price range:</label>
       <input type="text" id="amount" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
-    <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>    
+    <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
+
     <%= form_tag "/items/search_keyword", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
       <%= hidden_field_tag "min_price", "" %>
       <%= hidden_field_tag "max_price", "" %>
+      <%= hidden_field_tag "min_size", "" %>
+      <%= hidden_field_tag "max_size", "" %>
       <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '' %>
       <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '' %>
       <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '' %>
       <%= hidden_field_tag "sizes", !params[:sizes].blank? ? params[:sizes] : '' %>
       <%= hidden_field_tag "types", !params[:types].blank? ? params[:types] : '' %>
-      <%#= hidden_field_tag "shareable", !params[:shareable].blank? ? params[:shareable] : '' %>
-      
+  <%#= hidden_field_tag "shareable", !params[:shareable].blank? ? params[:shareable] : '' %>
+
       <div class="pannelright">
         <img class="closepannel" src="../assets/-.png" />
         <div class="heading_right">Is Shareable</div>      
@@ -60,12 +78,14 @@
           <%= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "this.form.submit()" %>
         </div>
       </div>
-      
+
       <div class="pannelright">
         <img class="closepannel" src="../assets/-.png" />
-        <div class="heading_right">Sizes</div>
+        <label for="size">Sizes:</label>
+        <input type="text" id="size" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
         <div class="twocol">
-          <%= select_tag( "sizes", options_from_collection_for_select( @sizes, :size, :size, params[:sizes]? params[:sizes] : ''), :prompt => "Select Sizes", :onchange => "this.form.submit()") %>
+          <div id="sizes-slider-range" style="width: 90%;margin-left: 8px;"></div>
+  <%#= select_tag( "sizes", options_from_collection_for_select( @sizes, :size, :size, params[:sizes]? params[:sizes] : ''), :prompt => "Select Sizes", :onchange => "this.form.submit()") %>
         </div>
       </div>
 
@@ -80,30 +100,30 @@
     <% end %>
     </p>
   </div>
-  <div class="pannelright">
-    <img class="closepannel" src="../assets/-.png" />
-    <div class="heading_right">Price</div>
-    <img src="../assets/350.png" />
-  </div>
+  <%#*<div class="pannelright">%>
+    <%#*<img class="closepannel" src="../assets/-.png" />%>
+    <%#*<div class="heading_right">Price</div>%>
+    <%#*<img src="../assets/350.png" />%>
+  <%#*</div>%>
 
-  <div class="pannelright">
-    <img class="closepannel" src="../assets/-.png" />
-    <div class="heading_right">Price</div>
-    <div class="twocol">
-      <div class="leftrow">
-        <div class="unselected"></div><span>Neighbourhood</span>
-        <div class="unselected"></div><span>Neighbourhood</span>
-        <div class="selected"></div><span>Neighbourhood</span>
-        <div class="unselected"></div><span>Neighbourhood</span>
-      </div><div class="rightrow">
-        <div class="unselected"></div><span>Neighbourhood</span>
-        <div class="unselected"></div><span>Neighbourhood</span>
-        <div class="unselected"></div><span>Neighbourhood</span>
-        <div class="selected"></div><span>Neighbourhood</span>
-      </div>
-    </div>
+  <%#*<div class="pannelright">%>
+    <%#*<img class="closepannel" src="../assets/-.png" />%>
+    <%#*<div class="heading_right">Price</div>%>
+    <%#*<div class="twocol">%>
+      <%#*<div class="leftrow">%>
+        <%#*<div class="unselected"></div><span>Neighbourhood</span>%>
+        <%#*<div class="unselected"></div><span>Neighbourhood</span>%>
+        <%#*<div class="selected"></div><span>Neighbourhood</span>%>
+        <%#*<div class="unselected"></div><span>Neighbourhood</span>%>
+      <%#*</div><div class="rightrow">%>
+        <%#*<div class="unselected"></div><span>Neighbourhood</span>%>
+        <%#*<div class="unselected"></div><span>Neighbourhood</span>%>
+        <%#*<div class="unselected"></div><span>Neighbourhood</span>%>
+        <%#*<div class="selected"></div><span>Neighbourhood</span>%>
+      <%#*</div>%>
+    <%#*</div>%>
 
-  </div>
+  <%#*</div>%>
 
 
 
