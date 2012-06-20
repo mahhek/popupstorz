@@ -196,7 +196,7 @@ class ItemsController < ApplicationController
     @max_price = Item.maximum("price")
     conds = "1=1 "
     
-    @sizes = Item.select("distinct(size)").where("size is not NULL")
+    @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @types = Item.select("distinct(type)").where("type is not NULL")
     @shareable = Item.select("distinct(is_shareable)")
     

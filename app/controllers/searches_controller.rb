@@ -4,7 +4,7 @@ class SearchesController < ApplicationController
   end
 
   def gatherings
-    @sizes = Item.select("distinct(size)").where("size is not NULL")
+    @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @start_size = @sizes.first
     @last_size = @sizes.last
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
