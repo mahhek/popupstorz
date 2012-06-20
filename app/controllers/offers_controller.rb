@@ -210,6 +210,10 @@ class OffersController < ApplicationController
   
   def join_gathering
     @offer = Offer.find(params[:id])
+    if @offer.blank?
+      flash[:notice] = "Some error occured. Please try again or later"
+      redirect_to "/"
+    end
   end
   
   def join

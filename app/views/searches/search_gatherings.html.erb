@@ -4,49 +4,25 @@
 <div class="listx-bg">
   <% unless @gatherings.blank? %>
     <% @gatherings.each do | gathering | %>
-      <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
-        <div class="imgx">
-          <% if gathering.avatars.size > 0 %>
-            <%= link_to image_tag(gathering.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo"), item_path(gathering.id) %>
-          <% else %>
-            NO IMAGE PROVIDED YET.
+      <div style="border-bottom: 1px solid;">
+          Start Date: <%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
+          End Date: <%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
+          Total required Persons: <%= gathering.persons_in_gathering %><br />
+          Joined Persons: <%= gathering.members.size %><br/>
+          Rental Price per person: <%= gathering.gathering_rental_price %><br />
+         
+          Gathering Deadline: <%= gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
+          <% unless current_user.blank? %>
+            <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>
+              <% if !gathering.members.include?(current_user) %>
+                <%= link_to "Join", "/join_gathering/#{gathering.id}" %>
+              <% end %>
+            <% end %>
           <% end %>
         </div>
-
-        <div class="name-list">
-          <b>Name:</b>
-          <%=link_to "#{gathering.title}", item_path(gathering.id) %>
-        </div>
-
-        <div class="name-list">
-          <b>Description:</b>
-          <%= gathering.description %>
-        </div>
-
-        <div class="name-list">
-          <b>City:</b>
-          <%= gathering.city %>
-        </div>
-
-        <div class="name-list">
-          <b>Address:</b>
-          <%= gathering.address %>
-        </div>
-        
-        <div class="name-list">
-          <b>Available From:</b>
-          <%= gathering.availability_from.strftime("%Y-%m-%d") %>
-        </div>
-        <div class="name-list">
-          <b>Available To:</b>
-          <%= gathering.availability_to.strftime("%Y-%m-%d") %>
-        </div>
-        <div class="manage-bg">
-        </div>
-      </div>
     <%end%>
   <%else%>
-    No Member with given criteria found!
+    No gathering with given criteria found!
   <%end%>
 </div>
 

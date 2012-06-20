@@ -4,9 +4,9 @@
   $(function() {
     $( "#sizes-slider-range" ).slider({
       range: true,
-      min: <%= @start_size.size %>,
-      max: <%= @last_size.size %>,
-      values: [ <%= @sizes.first.size %>, <%= @sizes.last.size %> ],
+      min: <%= @start_size.price %>,
+      max: <%= @last_size.price %>,
+      values: [ <%= @sizes.first.price %>, <%= @sizes.last.price %> ],
       slide: function( event, ui ) {
         $( "#size" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
       },
@@ -32,7 +32,7 @@
       <%= hidden_field_tag "min_size", "" %>
       <%= hidden_field_tag "max_size", "" %>
       <br /><br />
-      <label for="size"><b>Sizes:</b></label>
+      <label for="size"><b>Price:</b></label>
         <input type="text" id="size" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
         <div class="twocol">
           <div id="sizes-slider-range" style="width: 90%;margin-left: 8px;"></div>
