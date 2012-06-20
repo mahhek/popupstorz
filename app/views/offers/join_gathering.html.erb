@@ -22,11 +22,11 @@
         <% end %>
         <div style="width:100%;clear:both;float: left;margin-bottom: 20px;">
           <b>Orgainzer:</b><br /><br />
-          <%# if @offer.user.avatars.size > 0 %>
-            <%#= link_to image_tag(@offer.user.avatars.first.photo.url(:thumb), :height => "56", :alt => "Seller-Image" ), profile_path(@user.user) %>
-          <%# else %>
-            <%#= link_to image_tag("User.png", :height => "56"), profile_path(@offer.user) %>
-          <%# end %>
+          <% if @offer.user.avatars.size > 0 %>
+            <%= link_to image_tag(@offer.user.avatars.first.photo.url(:thumb), :height => "56", :alt => "Seller-Image" ), profile_path(@offer.user) %>
+          <% else %>
+            <%= link_to image_tag("User.png", :height => "56"), profile_path(@offer.user) %>
+          <% end %>
           <div class="fltR w107">
             <h1 class="name"><%= link_to @offer.user.popup_storz_display_name, profile_path(@offer.user) %></h1>
             <p class="name_text"><%= @offer.user.country %></p>          
