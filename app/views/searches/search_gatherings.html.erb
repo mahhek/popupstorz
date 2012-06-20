@@ -1,13 +1,13 @@
 <div id="get-list-header">
-  <h2>Members</h2>
+  <h2>Gatherings</h2>
 </div>
 <div class="listx-bg">
-  <% unless @members.blank? %>
-    <% @members.each do | member | %>
+  <% unless @gatherings.blank? %>
+    <% @gatherings.each do | gathering | %>
       <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
         <div class="imgx">
-          <% if member.avatars.size > 0 %>
-            <%= link_to image_tag(member.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo"), profile_path(member.id) %>
+          <% if gathering.avatars.size > 0 %>
+            <%= link_to image_tag(gathering.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo"), item_path(gathering.id) %>
           <% else %>
             NO IMAGE PROVIDED YET.
           <% end %>
@@ -15,22 +15,31 @@
 
         <div class="name-list">
           <b>Name:</b>
-          <%=link_to "#{member.first_name + " " + member.last_name}", profile_path(member.id) %>
+          <%=link_to "#{gathering.title}", item_path(gathering.id) %>
         </div>
 
         <div class="name-list">
-          <b>Activity:</b>
-          <%= member.activity %>
+          <b>Description:</b>
+          <%= gathering.description %>
         </div>
 
         <div class="name-list">
           <b>City:</b>
-          <%= member.city %>
+          <%= gathering.city %>
         </div>
 
         <div class="name-list">
-          <b>Country:</b>
-          <%= member.country %>
+          <b>Address:</b>
+          <%= gathering.address %>
+        </div>
+        
+        <div class="name-list">
+          <b>Available From:</b>
+          <%= gathering.availability_from.strftime("%Y-%m-%d") %>
+        </div>
+        <div class="name-list">
+          <b>Available To:</b>
+          <%= gathering.availability_to.strftime("%Y-%m-%d") %>
         </div>
         <div class="manage-bg">
         </div>

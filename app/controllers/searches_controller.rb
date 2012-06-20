@@ -4,7 +4,8 @@ class SearchesController < ApplicationController
   end
 
   def gatherings
-    @users_with_uniq_cities = User.select("distinct(city)")
+    @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
+#    @users_with_uniq_cities = User.select("distinct(city)")
   end
 
   def members
@@ -15,7 +16,7 @@ class SearchesController < ApplicationController
   def search_gatherings
     conds = ""
     if params[:search][:location]
-      conds += "(LOWER(city) LIKE " + "'%%" + params[:search][:location].strip.downcase.to_s+ "%%'" + "or LOWER(country) LIKE " + "'%%" +params[:search][:location].strip.downcase.to_s + "%%'" +")"
+      conds += "(LOWER(city) LIKE " + "'%%" + params[:search][:location].strip.downcase.to_s+ "%%'" +")"
     end
     if params[:search][:type]
       if !conds.blank? and !params[:search][:type].blank?
@@ -36,8 +37,10 @@ class SearchesController < ApplicationController
         conds += "((LOWER(first_name) LIKE "+ "'%%"+ user[0].strip.downcase.to_s + "%%'" + " and LOWER(last_name) LIKE "  + "'%%" + user[1].strip.downcase.to_s + "%%'"+ ") or LOWER(email) LIKE "  + "'%%" +  params[:search][:user].strip.downcase.to_s + "%%'" +")"
       end
     end
-
-    @members = User.find(:all, :conditions => [conds])
+#    conds += " and is_gathering = true and status != 'Applied'"
+    @gatherings = Item.find(:all,:conditions => [conds])
+    
+#    @members = User.find(:all, :conditions => [conds])
     #    @members = User.paginate(:page => params[:page], :per_page => 4, :conditions => [conds])
   end
 

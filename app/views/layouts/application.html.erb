@@ -138,7 +138,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
     <%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
                 <% end %>
               </span>
-              <% if params[:action] == "dashboard" %>
+              <% if params[:action] == "dashboard" || (params[:action] == "inbox" && params[:controller] == "messages") || (params[:action] == "listings_home"&& params[:controller] == "items") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") %>
                 <span style="float: left;">
                   <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" %>
                     <%= link_to 'Messages', inbox_messages_path %>

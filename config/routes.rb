@@ -10,6 +10,7 @@ PopupStorz::Application.routes.draw do
   match '/notifications/destroy/:id' => 'notifications#destroy'
   match '/members' => 'users#members'
   match '/search_members' => 'users#search_members'
+  match '/search_gatherings' => 'searches#search_gatherings'
   match '/admin_destroy_user/:id' => "admin/users#destroy_user"
   match '/delete_listings' => "admin/items#delete_listings"
   match "/search_via_price_range" => "items#search_via_price_range"

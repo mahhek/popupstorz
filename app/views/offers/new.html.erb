@@ -156,10 +156,14 @@
           <div class="clear">&nbsp;</div>
         </div>
 
+        <% if @item.is_shareable %>
         <div style="width:100%; margin: 10px;">
           <br><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> Standard Booking
           <%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> Create a Gathering
         </div>
+        <% else %>
+        <br><%= radio_button_tag 'plan', 'standard_booking', true %> Standard Booking
+        <% end %>
 
         <h3>Suggest Terms</h3> <br/>
 
