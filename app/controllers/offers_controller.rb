@@ -216,6 +216,10 @@ class OffersController < ApplicationController
     @offer = Offer.find(params[:id])
     @item = @offer.item
     message = params[:user_message]
+    new_offer = @offer.dup
+    new_offer.user_id = current_user.id
+    new_offer.parent_id = @offer.id
+    new_offer.save
     @offer.members << current_user
     gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",@offer.id,current_user.id])
     gathering_member.update_attributes({"user_message" => message, "status" => "applied"})
