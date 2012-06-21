@@ -17,7 +17,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name,
     :verify_email, :mobile_phone, :gender, :date_of_birth, :activity, :security_question,
     :security_answer, :city_country, :description, :avatars_attributes, :address1, :address2,
-    :zip_code, :city, :country, :neighbourhood, :fb_pic_url, :fb_friends_count, :fb_pages, :works_at, :studied_at, :fb_interests, :show_fb_info, :receiver
+    :zip_code, :city, :country, :neighbourhood, :fb_pic_url, :fb_friends_count, :fb_pages, :works_at, :studied_at, :fb_interests, :show_fb_info
+#  , :receiver
   
   acts_as_messageable :table_name => "messages",
     :required => [:topic, :body],
@@ -32,8 +33,9 @@ class User < ActiveRecord::Base
   validates :security_answer, :presence => true
   validates :date_of_birth, :presence => true
 
-  validates :receiver,
-            :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }  
+#  validates :receiver,
+#            :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }, :unless => :receiver?
+
   
   
   has_many :services
