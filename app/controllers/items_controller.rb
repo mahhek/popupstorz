@@ -354,7 +354,9 @@ class ItemsController < ApplicationController
   end
   
   def my_pop_ups
-    @offers = current_user.offers
+#    @offers = current_user.offers
+    @offers = Offer.find(:all, :conditions => ["user_id = ?",current_user.id])
+    @offers = @offers.uniq
   end
 
   def overview

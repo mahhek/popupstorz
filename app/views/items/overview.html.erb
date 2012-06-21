@@ -51,7 +51,7 @@
           <%end%>
         </div>
 
-        <% if request.status == "confirmed" %>
+        <% if offer.status == "confirmed" %>
           <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{offer.user.id}" %> | 
           <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{offer.user.id}" %>
         <% end %>
