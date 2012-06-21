@@ -5,8 +5,8 @@
     $( "#sizes-slider-range" ).slider({
       range: true,
       min: <%= @start_size.price %>,
-      max: <%= @last_size.price %>,
-      values: [ <%= @sizes.first.price %>, <%= @sizes.last.price %> ],
+      max: <%= @last_price %>,
+      values: [ <%= @sizes.first.price %>, <%= @last_price %> ],
       slide: function( event, ui ) {
         $( "#size" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
       },

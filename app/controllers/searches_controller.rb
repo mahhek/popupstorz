@@ -8,6 +8,8 @@ class SearchesController < ApplicationController
     @sizes = Item.select("distinct(price)").where("price is not NULL").order("price ASC")
     @start_size = @sizes.first
     @last_size = @sizes.last
+    @last_price = @last_size.price.to_f > 10000 ? @last_size.price : 10000
+    
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     #    @users_with_uniq_cities = User.select("distinct(city)")
   end
@@ -46,7 +48,7 @@ class SearchesController < ApplicationController
     end
     unless @gatherings.blank?
       @gatherings = @gatherings.uniq
-    end    
+    end
     #    @members = User.find(:all, :conditions => [conds])
     #    @members = User.paginate(:page => params[:page], :per_page => 4, :conditions => [conds])
   end

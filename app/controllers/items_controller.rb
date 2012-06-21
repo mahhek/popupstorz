@@ -193,7 +193,7 @@ class ItemsController < ApplicationController
     session[:end_date] = nil
   
     @min_price = Item.minimum("price")
-    @max_price = Item.maximum("price")
+    @max_price = Item.maximum("price")    
     conds = "1=1 "
     
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
@@ -364,7 +364,8 @@ class ItemsController < ApplicationController
   end
       
   def gatherings
-    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
+#    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
+    @offers = Offer.find(:all, :conditions => ["user_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
   end
 
   def payment_charge
