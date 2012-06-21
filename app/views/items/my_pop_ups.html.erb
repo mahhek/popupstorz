@@ -16,6 +16,7 @@
     <% if !offer.parent_id.blank? %>
       <% offer = Offer.find(offer.parent_id) %>
     <% end %>
+      <%= offer.id %>
       <%item = offer.item %>
       <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
         <div class="imgx">
