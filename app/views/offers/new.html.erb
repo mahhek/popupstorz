@@ -178,9 +178,9 @@
             </div>
             <br/>
             <div style="padding-top:4px; color:#f55c00;" class="xfields">
-              <%= hidden_field_tag :per_day_price, @item.price %>
-              <%= hidden_field_tag :per_week_price, @item.price_per_week %>
-              <%= hidden_field_tag :per_month_price, @item.price_per_month %>
+              <%= hidden_field_tag :per_day_price, number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+              <%= hidden_field_tag :per_week_price, number_to_currency(exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+              <%= hidden_field_tag :per_month_price, number_to_currency(exchange_currency(@item.price_per_month, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
               <%= f.hidden_field :total_amount, :value => @calculated_price %>
               <%= hidden_field_tag "offer[is_gathering]", false %>
 
