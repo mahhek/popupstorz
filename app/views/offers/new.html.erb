@@ -178,10 +178,10 @@
             </div>
             <br/>
             <div style="padding-top:4px; color:#f55c00;" class="xfields">
-              <%= hidden_field_tag :per_day_price, number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-              <%= hidden_field_tag :per_week_price, number_to_currency(exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-              <%= hidden_field_tag :per_month_price, number_to_currency(exchange_currency(@item.price_per_month, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-              <%= f.hidden_field :total_amount, :value => (exchange_currency(@calculated_price.to_i, @item.price_unit)) %>
+              <%= hidden_field_tag :per_day_price, exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
+              <%= hidden_field_tag :per_week_price, exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
+              <%= hidden_field_tag :per_month_price, exchange_currency(@item.price_per_month, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
+              <%= f.hidden_field :total_amount, :value => exchange_currency(@calculated_price.to_i, @item.price_unit) %>
               <%= hidden_field_tag "offer[is_gathering]", false %>
 
               <div style="float: left;width: 100px;" id="daily_price">
@@ -432,6 +432,7 @@
       calculated_price = calculate_price(number_of_days);
       
       $('#offer_total_amount').val(calculated_price);
+      $('#total_price').val(calculated_price);
       
       if($("#gathering_fields").is(":hidden") == false){
         if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
@@ -460,7 +461,7 @@
     months = Math.floor(number_of_days/30);
     weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);
     days = (number_of_days - (30 * months)) - (weeks * 7);    
-    return (months * <%= (exchange_currency(@item.price_per_month.to_i, @item.price_unit)) %>  + weeks * <%= (exchange_currency(@item.price_per_week.to_i, @item.price_unit)) %> + days * <%= (exchange_currency(@item.price.to_i, @item.price_unit)) %>);
+    return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
   }
 </script>
 
