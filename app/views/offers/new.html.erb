@@ -192,7 +192,7 @@
                 <%= "#{@number_of_days} days" %>
               </div>
               <div style="float: left;width: 100px;" id="total_price">
-                <%= number_to_currency(exchange_currency(@calculated_price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+                <%#= number_to_currency(exchange_currency(@calculated_price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
               </div>
             </div>
 
@@ -460,7 +460,7 @@
   function calculate_price(number_of_days){
     months = Math.floor(number_of_days/30);
     weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);
-    days = (number_of_days - (30 * months)) - (weeks * 7);    
+    days = (number_of_days - (30 * months)) - (weeks * 7);
     return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
   }
 </script>
