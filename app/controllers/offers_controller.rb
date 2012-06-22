@@ -39,6 +39,7 @@ class OffersController < ApplicationController
       @offer.offer_messages.build
     end
     @number_of_days = (DateTime.strptime(params[:return], "%m/%d/%Y").to_datetime - DateTime.strptime(params[:pick_up], "%m/%d/%Y").to_datetime).to_i
+    @number_of_days += 1
     @calculated_price = calculate_price(@number_of_days, @item)
   end
 
