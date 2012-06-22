@@ -113,7 +113,6 @@
     <div class="clear">&nbsp;</div>
   </div>
 </div>
-
 <div id="booking-content">
   <div class="container_12">
     <%= form_for [@item, @offer], :html => {:name => "offer_form", :onsubmit => "return checkPrefferedAddress();"} do|f| %>
@@ -192,6 +191,7 @@
                 <%= "#{@number_of_days} days" %>
               </div>
               <div style="float: left;width: 100px;" id="total_price">
+                <%#= session[:curr] == "USD" ? "$" : "€" %> 
                 <%#= number_to_currency(exchange_currency(@calculated_price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
               </div>
             </div>
@@ -449,7 +449,7 @@
         success: function(){
           jQuery.ajax({
             type:"GET",
-            url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= @item.price_unit %>'
+            url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= session[:curr] %>'
           });
         }
       });
