@@ -193,12 +193,11 @@ class ItemsController < ApplicationController
     session[:start_date] = nil
     session[:end_date] = nil
   
-    @min_price = Item.minimum("price")
-    @max_price = Item.maximum("price")    
+     
     conds = "1=1 "
     
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
-    @types = Item.select("distinct(type)").where("type is not NULL")
+    @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @shareable = Item.select("distinct(is_shareable)")
     
     unless params[:search_from].blank?
@@ -257,17 +256,21 @@ class ItemsController < ApplicationController
       item_conds += " AND (size <= '#{params[:max_size]}')"
     end
     
-    unless params[:type].blank?
-      item_conds += " AND (type = '#{params[:type]}')"
+    unless params[:types].blank?
+      item_conds += " AND (listing_type_id = '#{params[:types]}')"
     end
     
     unless params[:shareable].blank?
       item_conds += " AND (is_shareable = true)"
     end
-    
     items = Item.find(:all,:conditions => [ item_conds ])
 
     @items = items - booked_items
+    @items = @items.sort_by{|e| e[:price]}
+    @min_price = @items.blank? ? 0 : @items.first.price
+    @max_price = @items.blank? ? 0 : @items.last.price
+    
+    @items = @items.sort_by{|e| e[:size]}
     
     session[:start_date] = params[:search_from]
     session[:end_date] = params[:search_to]
@@ -355,7 +358,7 @@ class ItemsController < ApplicationController
   end
   
   def my_pop_ups
-#    @offers = current_user.offers
+    #    @offers = current_user.offers
     @offers = Offer.find(:all, :conditions => ["user_id = ?",current_user.id])
     @offers = @offers.uniq
   end
@@ -365,23 +368,23 @@ class ItemsController < ApplicationController
   end
       
   def gatherings
-#    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
+    #    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
     @offers = Offer.find(:all, :conditions => ["user_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
   end
 
   def payment_charge
     @offer = Offer.find(params[:id])
     @item = @offer.item    
-#    payment = @offer.payment
-#    if payment.purchase("charge").status == 3
-#      @offer.update_attribute(:status, "Paid but waiting for FeedBack")
-      payment = PaymentsController.new
-      if @offer.is_gathering        
-        payment.capture_gathering_commission_and_payment(@offer)
-      else
-        payment.capture_offer_commission_and_payment(@offer)
-      end
-      if @offer.update_attribute(:status, "Paid but waiting for FeedBack")
+    #    payment = @offer.payment
+    #    if payment.purchase("charge").status == 3
+    #      @offer.update_attribute(:status, "Paid but waiting for FeedBack")
+    payment = PaymentsController.new
+    if @offer.is_gathering        
+      payment.capture_gathering_commission_and_payment(@offer)
+    else
+      payment.capture_offer_commission_and_payment(@offer)
+    end
+    if @offer.update_attribute(:status, "Paid but waiting for FeedBack")
       @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_updated", :description => "The <a href='#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!")
       @notification.save
       redirect_to "/"

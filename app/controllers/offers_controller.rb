@@ -20,7 +20,7 @@ class OffersController < ApplicationController
     
     @booked_dates = []
     @manage_dates_array = []
-    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])
+    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%') and parent_id is NULL")
     offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
@@ -49,7 +49,8 @@ class OffersController < ApplicationController
     
     @booked_dates = []
     @manage_dates_array = []
-    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
+#    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
+    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%') and parent_id is NULL")
     offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
@@ -101,7 +102,7 @@ class OffersController < ApplicationController
     
     @booked_dates = []
     @manage_dates_array = []
-    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
+    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%') and parent_id is NULL")   
     offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
@@ -127,7 +128,7 @@ class OffersController < ApplicationController
 
     @booked_dates = []
     @manage_dates_array = []
-    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
+    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%') and parent_id is NULL")
     offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end

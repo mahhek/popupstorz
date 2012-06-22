@@ -31,17 +31,17 @@
   $(function() {
     $( "#sizes-slider-range" ).slider({
       range: true,
-      min: <%= @sizes.first.size %>,
-      max: <%= @sizes.last.size %>,
+      min: <%= @items.blank? ? 0 : @items.first.size %>,
+      max: <%= @items.blank? ? 0 : @items.last.size %>,
       values: [ <%= @sizes.first.size %>, <%= @sizes.last.size %> ],
       slide: function( event, ui ) {
-        $( "#size" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+        $( "#size" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
       },
       stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
         $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));$('#price_range_form').submit();}
     });
-    $( "#size" ).val( "$" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
-      " - $" + $( "#sizes-slider-range" ).slider( "values", 1 ) );
+    $( "#size" ).val( $( "#sizes-slider-range" ).slider( "values", 0 ) +
+      " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
   });
   
 </script>
@@ -68,7 +68,7 @@
       <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '' %>
       <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '' %>
       <%= hidden_field_tag "sizes", !params[:sizes].blank? ? params[:sizes] : '' %>
-      <%= hidden_field_tag "types", !params[:types].blank? ? params[:types] : '' %>
+      <%#= hidden_field_tag "types", !params[:types].blank? ? params[:types] : '' %>
   <%#= hidden_field_tag "shareable", !params[:shareable].blank? ? params[:shareable] : '' %>
 
       <div class="pannelright">
@@ -81,8 +81,10 @@
 
       <div class="pannelright">
         <img class="closepannel" src="../assets/-.png" />
-        <label for="size">Sizes:</label>
+        
+        <label for="size">Sizes<small>(SQMT)</small>:</label>        
         <input type="text" id="size" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
+        
         <div class="twocol">
           <div id="sizes-slider-range" style="width: 90%;margin-left: 8px;"></div>
   <%#= select_tag( "sizes", options_from_collection_for_select( @sizes, :size, :size, params[:sizes]? params[:sizes] : ''), :prompt => "Select Sizes", :onchange => "this.form.submit()") %>
@@ -93,7 +95,7 @@
         <img class="closepannel" src="../assets/-.png" />
         <div class="heading_right">Types</div>
         <div class="twocol">
-          <%= select_tag( "types", options_from_collection_for_select( @types, :type, :type, params[:types]? params[:types] : ''), :prompt => "Select Types") %>
+          <%= select_tag( "types", options_from_collection_for_select( @types, :id, :name, params[:types]? params[:types] : ''), :prompt => "Select Types", :onchange => "this.form.submit()") %>
         </div>
       </div>
 
