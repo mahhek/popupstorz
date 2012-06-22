@@ -431,7 +431,8 @@
       $('#duration').text(number_of_days+ " days");
       calculated_price = calculate_price(number_of_days);
       
-      $('#offer_total_amount').val(calculated_price);
+      <%#*$('#offer_total_amount').val(calculated_price);%>
+      $('#offer_total_amount').val('<%= @calculated_price %>');
       
       if($("#gathering_fields").is(":hidden") == false){
         if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
