@@ -461,7 +461,8 @@
     months = Math.floor(number_of_days/30);
     weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);
     days = (number_of_days - (30 * months)) - (weeks * 7);
-    return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
+    
+    return months * <%= @item.price_per_month.to_i %>  + weeks * <%= @item.price_per_week.to_i %> + days * <%= @item.price.to_i %>;
   }
 </script>
 
@@ -608,8 +609,6 @@
       }
       else{
         var total= $("#offer_total_amount").val();
-        alert("Total Amount is"+parseInt(total));
-        alert("Total persons are:"+parseInt(obj));
         $("#offer_gathering_rental_price").val(parseInt(total)/parseInt(obj));
       }
     }
