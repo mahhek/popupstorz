@@ -432,7 +432,7 @@
       calculated_price = calculate_price(number_of_days);
       
       $('#offer_total_amount').val(calculated_price);
-      $('#total_price').val(calculated_price);
+      <%#*$('#total_price').val(calculated_price);%>
       
       if($("#gathering_fields").is(":hidden") == false){
         if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){

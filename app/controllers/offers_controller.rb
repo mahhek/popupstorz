@@ -66,7 +66,9 @@ class OffersController < ApplicationController
       params[:offer][:rental_start_date] = DateTime.strptime(params[:offer][:rental_start_date], "%m/%d/%Y").to_time
       params[:offer][:rental_end_date] = DateTime.strptime(params[:offer][:rental_end_date], "%m/%d/%Y").to_time
       params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time if params[:offer][:cancellation_date] != "mm/dd/yy"
-      params[:offer][:gathering_deadline] = DateTime.strptime(params[:offer][:gathering_deadline], "%m/%d/%Y").to_time if params[:offer][:cancellation_date] != "mm/dd/yy"
+      if params[:offer][:gathering_deadline] != "mm/dd/yy" and !params[:offer][:gathering_deadline].blank?
+        params[:offer][:gathering_deadline] = DateTime.strptime(params[:offer][:gathering_deadline], "%m/%d/%Y").to_time
+      end
             
       @offer = Offer.new(params[:offer].merge(:item_id => params[:item_id]).merge(:user_id => current_user.id).merge(:status => "pending"))
 
@@ -248,16 +250,31 @@ class OffersController < ApplicationController
       else
         flash[:notice] = "Offer can't be accepted right now.Please try again or later."
       end
+    else
+      if offer.update_attribute("status", "Approved")
+        flash[:notice] = "Offer accepted successfully!"
+      else
+        flash[:notice] = "Offer can't be accepted right now.Please try again or later."
+      end
     end
     redirect_to gatherings_items_path
   end
   
   def decline_gathering_request
-    gathering_member = GatheringMember.find(:first, :conditions => ["offer_id = ? and user_id = ?",params[:id],params[:mem]])
-    if gathering_member.destroy
-      flash[:notice] = "Request declined."
+    offer = Offer.find(params[:id])
+    if offer.is_gathering
+      gathering_member = GatheringMember.find(:first, :conditions => ["offer_id = ? and user_id = ?",params[:id],params[:mem]])
+      if gathering_member.destroy
+        flash[:notice] = "Request declined."
+      else
+        flash[:notice] = "Request can't be declined now. Please try again or later."
+      end      
     else
-      flash[:notice] = "Request can't be declined now. Please try again or later."
+      if offer.update_attribute("status", "Rejected")
+        flash[:notice] = "Offer rejected successfully!"
+      else
+        flash[:notice] = "Offer can't be rejected right now.Please try again or later."
+      end
     end
     redirect_to gatherings_items_path
   end

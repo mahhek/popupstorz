@@ -50,6 +50,8 @@ class PaymentsController < ApplicationController
         gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",@offer.id,current_user.id])
         gathering_member.update_attribute("status","confirmed")
         check_gathering_state(@offer)
+      else
+        @offer.update_attribute("status","confirmed")
       end
       flash[:notice] = "Offer sent successfully!"
       redirect_to "/items/#{@item.id}"
