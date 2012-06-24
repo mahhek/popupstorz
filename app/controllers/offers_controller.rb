@@ -21,7 +21,7 @@ class OffersController < ApplicationController
     @booked_dates = []
     @manage_dates_array = []
     @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%') and parent_id is NULL")
-    offers.each do|offer|
+    @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
     @manage_dates_array << @booked_dates
@@ -49,9 +49,9 @@ class OffersController < ApplicationController
     
     @booked_dates = []
     @manage_dates_array = []
-#    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
+    #    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
     @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%') and parent_id is NULL")
-    offers.each do|offer|
+    @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
     @manage_dates_array << @booked_dates
@@ -76,7 +76,7 @@ class OffersController < ApplicationController
       if @offer.save!
         session[:return] = nil
         session[:pick_up] = nil
-
+        
         @offer.update_attribute(:status, "Applied")
 
         #        @offer.update_attributes(:cancellation_date => (@offer.updated_at + 24.hours))
@@ -164,7 +164,7 @@ class OffersController < ApplicationController
     @offer = Offer.find params[:id]
     payment = @offer.payment
     #    if payment.purchase("charge").status == 3
-    payment.save!
+#    payment.save!
     if current_user.id == @offer.user_id
       @item.update_attribute("item_status","Reserved")
       flash[:notice] = "Offer accepted"
@@ -227,6 +227,10 @@ class OffersController < ApplicationController
     @offer.members << current_user
     gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",@offer.id,current_user.id])
     gathering_member.update_attributes({"user_message" => message, "status" => "applied"})
+    
+    @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"gathering_joined", :description => "A new <a href='#{dashboard_path(current_user.id)}'>user </a> have joined your <a href='/items/#{@item.id}'> gathering</a>")
+    @notification.save
+    
     flash[:notice] = "Successfully joined the gathering."
     redirect_to  new_item_offer_payment_path(@item,@offer)
     #    redirect_to "/items/show/#{offer.item_id}"
@@ -238,15 +242,25 @@ class OffersController < ApplicationController
       
       gathering_member = GatheringMember.find(:first, :conditions => ["offer_id = ? and user_id = ?",params[:id],params[:mem]])
       gathering_member.update_attribute("status", "Approved")
+      
       new_offer = Offer.new
       new_offer = offer.dup
       new_offer.parent_id = offer.id
       new_offer.user_id = params[:mem]
       new_offer.status = "Approved"
-        
+      
       if new_offer.save
         payment = PaymentsController.new
         payment.capture_gathering_commission(offer)
+        
+        reqs = GatheringMember.find(:all, :conditions => ["status = 'Approved' and offer_id = #{offer.id}"])
+        if reqs.size == offer.persons_in_gathering.to_i
+          offer.update_attribute("status","joinings approved")
+        end
+        
+        @notification = Notification.new(:user_id => gathering_member.user_id, :notification_type =>"joining_approved", :description => "Your joining request for <a href='/items/#{offer.item.id}'> gathering</a> is approved.")
+        @notification.save
+        
         flash[:notice] = "Offer accepted successfully!"
       else
         flash[:notice] = "Offer can't be accepted right now.Please try again or later."
@@ -267,6 +281,8 @@ class OffersController < ApplicationController
       gathering_member = GatheringMember.find(:first, :conditions => ["offer_id = ? and user_id = ?",params[:id],params[:mem]])
       if gathering_member.destroy
         flash[:notice] = "Request declined."
+        @notification = Notification.new(:user_id => gathering_member.user_id, :notification_type =>"joining_declined", :description => "Your joining request for <a href='/items/#{offer.item.id}'> gathering</a> is declined.")
+        @notification.save
       else
         flash[:notice] = "Request can't be declined now. Please try again or later."
       end      

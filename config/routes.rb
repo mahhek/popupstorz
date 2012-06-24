@@ -27,6 +27,8 @@ PopupStorz::Application.routes.draw do
   match "/join/:id" => "offers#join"
   match "/approve_gathering_request/:id" => "offers#approve_gathering_request"
   match "/decline_gathering_request/:id" => "offers#decline_gathering_request"
+  match "/accept_gathering/:id" => "offers#accept"
+  match "/reject_gathering/:id" => "offers#decline"
   match "/products/cancelled_payment_request" => "products#cancelled_payment_request", :as  => :cancel_request
   match "products/completed_payment_request" => "products#completed_payment_request", :as => :complete_request
   match "/send_invitation" => "users#send_invitation"

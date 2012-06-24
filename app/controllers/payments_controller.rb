@@ -53,6 +53,12 @@ class PaymentsController < ApplicationController
       else
         @offer.update_attribute("status","confirmed")
       end
+      
+      if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
+        @notification = Notification.new(:user_id => @offer.owner_id, :notification_type =>"gathering_created", :description => "A new <a href='/items/#{(@offer.item.id)}'>gathering</a> is created by #{current_user.first_name}")
+        @notification.save
+      end
+      
       flash[:notice] = "Offer sent successfully!"
       redirect_to "/items/#{@item.id}"
     else
@@ -79,7 +85,7 @@ class PaymentsController < ApplicationController
   def capture_gathering_commission(offer)
     receivers = []    
     
-#    offers = Offer.find(:all, :conditions => ["status = 'Approved' and parent_id = #{offer.id}"])
+    #    offers = Offer.find(:all, :conditions => ["status = 'Approved' and parent_id = #{offer.id}"])
     members = GatheringMember.find(:all, :conditions => ["status = 'Approved'"])
     
     if offer.persons_in_gathering.to_i <= members.size.to_i
@@ -113,17 +119,17 @@ class PaymentsController < ApplicationController
   def capture_gathering_commission_and_payment(offer)
     commission = ((offer.total_amount.to_f*10)/100).to_s
     transfer_amount = offer.total_amount.to_f - commission.to_f
-#    p "aaaaaaaaaaaaaaaaaaa",commission
-#    p "bbbbbbbbbbbbbbbbbbb",transfer_amount
-#    g
+    #    p "aaaaaaaaaaaaaaaaaaa",commission
+    #    p "bbbbbbbbbbbbbbbbbbb",transfer_amount
+    #    g
     
-#    ff
+    #    ff
   end
   
   def capture_offer_commission_and_payment(offer)
-#    a
+    #    a
     offer.update_attribute(:status, "Paid but waiting for FeedBack")
-#    ff
+    #    ff
   end
   
   

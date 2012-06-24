@@ -93,7 +93,7 @@ class ItemsController < ApplicationController
     @listing_types = ListingType.all :order =>"name asc"
     @availability_options = AvailabilityOption.all    
   end
-
+  
   def create
     @countries = Country.all
     @item = Item.new(params[:item])
@@ -173,6 +173,8 @@ class ItemsController < ApplicationController
         
     @comment = Comment.new
    
+    @curr_offers = @item.offers.where("(status != 'Approved' or status NOT LIKE '%Paid%') and parent_id is NULL")
+    
     @user = @item.user
     @map = GMap.new("map")
     @map.control_init(:map_type => true, :small_zoom => true)
@@ -369,7 +371,7 @@ class ItemsController < ApplicationController
       
   def gatherings
     #    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
-    @offers = Offer.find(:all, :conditions => ["user_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
+    @offers = Offer.find(:all, :conditions => ["(user_id = ? or owner_id = ?) and persons_in_gathering is not NULL and parent_id is NULL",current_user.id,current_user.id])
   end
 
   def payment_charge
