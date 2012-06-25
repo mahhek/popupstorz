@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
   has_many :notifications
   has_many :offers
   has_one  :account
+  has_one  :email_setting
   has_and_belongs_to_many :favorites, :class_name => 'Item', :join_table => 'items_users', :association_foreign_key => 'item_id'
   has_and_belongs_to_many :gatherings, :class_name => 'Offer', :join_table => 'gathering_members', :association_foreign_key => 'offer_id'
   

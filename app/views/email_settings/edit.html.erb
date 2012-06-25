@@ -1,0 +1,29 @@
+<h1>Update Email Settings:</h1>
+<%= form_for @email_setting,:url => "/email_settings/update/#{@email_setting.id}"  do|f| %>
+  <br /><br />
+  <%= f.check_box :receive_person_message %>
+  <label>I receive a message from another person</label>
+  <br /><br />
+  
+  <%= f.check_box :booking_request_update %>
+  <label>An outstanding booking request is accepted or declined.</label>
+  <br /><br />
+  
+  <%= f.check_box :receive_booking_request %>
+  <label>I receive a booking request</label>
+  <br /><br />
+  
+  <%= f.check_box :upcoming_booking %>
+  <label>I have an upcoming booking</label>
+  <br /><br />
+  
+  <%= f.check_box :new_review %>
+  <label>I have received a new review</label>
+  <br /><br />
+  
+  <%= f.check_box :review_required %>
+  <label>I need to leave a review </label>
+  <br /><br />
+  
+  <%= f.submit "Submit" %>
+<% end %>

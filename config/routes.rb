@@ -23,6 +23,7 @@ PopupStorz::Application.routes.draw do
   match "/home/contact" => "home#contact"
   match "/home/feedback" => "home#feedback"
   match "/home/send_feedback" => "home#send_feedback"
+  match "/email_settings" => "email_settings#index"
   
   match "/items/payment_charge/:id" => "items#payment_charge"
   match "/home/pay" => "home#pay"
@@ -36,7 +37,13 @@ PopupStorz::Application.routes.draw do
   match "products/completed_payment_request" => "products#completed_payment_request", :as => :complete_request
   match "/send_invitation" => "users#send_invitation"
   match "/invitation" => "users#invitations"
-   
+  
+  match "/email_settings/index" => "email_settings#index"
+  match "/email_settings/show" => "email_settings#show"
+  match "/email_settings/create" => "email_settings#create"
+  match "/email_settings/edit" => "email_settings#edit"
+  match "/email_settings/update/:id" => "email_settings#update"
+     
   devise_for :users, :controllers => {:registrations => "registrations"}
 
   resources :accounts do
@@ -54,7 +61,10 @@ PopupStorz::Application.routes.draw do
       post "search_members"
     end
   end
-
+  
+  resources :email_settings do    
+  end
+  
   #  resources :ratings, :only => [:index, :new, :create, :destroy]
   #match '/rating' => 'businesses#rating', :as => :rating
   #  match '/commenting' => 'businesses#commenting', :as => :commenting
@@ -95,7 +105,6 @@ PopupStorz::Application.routes.draw do
 
   devise_for :users do
     get '/users/sign_out' => 'devise/sessions#destroy'
-
   end
 
   get "home/index"

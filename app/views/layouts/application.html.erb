@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://opengraphprotocol.org/schema/"
-xmlns:fb="http://www.facebook.com/2008/fbml">
+      xmlns:fb="http://www.facebook.com/2008/fbml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>PopUpStorz</title>
@@ -20,7 +20,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 
     <%= javascript_include_tag "markerGroup" %>
     <%= javascript_include_tag "ym4r-gm" %>
-    <%#= javascript_include_tag "https://js.stripe.com/v1/" %>
+<%#= javascript_include_tag "https://js.stripe.com/v1/" %>
 
     <%= javascript_include_tag "tmpl" %>
     <%= javascript_include_tag "easing" %>
@@ -34,12 +34,12 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
     <%= GMap.header(:with_vml => false, :host => request.host).html_safe %>
     <%= raw(@map.to_html) if @map %>
     <%= csrf_meta_tags %>
-    <%#= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
-    
+<%#= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
+
     <script type="text/javascript" src="https://www.paypalobjects.com/js/external/dg.js"></script>
-    
+
     <%= yield(:head) %>
-    
+
     <noscript>
       <style>
         .es-carousel ul{
@@ -82,6 +82,8 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                 <%= text_field_tag 'user[email]' %>
                 <%= password_field_tag 'user[password]' %>
                 <input type="submit" value="Login" />
+                <%= link_to "Forgot your password?", new_password_path(User) %><br />
+                
               <% end %>
             <% else %>
               <%= link_to "Hi #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
@@ -124,11 +126,11 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                 <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
 
                 <%=
-                  link_to "Dashboard", inbox_messages_path, :class => ((params[:controller] == "accounts" or params[:controller] == "items" ) ? "m_act" : "")
-                %>
-                <%#=
-                  link_to "Dashboard", dashboard_path(current_user.id), :class => ((params[:controller] == "accounts" or params[:controller] == "items" ) ? "m_act" : "")
-                %>
+                link_to "Dashboard", inbox_messages_path, :class => ((params[:controller] == "accounts" or params[:controller] == "items" ) ? "m_act" : "")
+              %>
+  <%#=
+  link_to "Dashboard", dashboard_path(current_user.id), :class => ((params[:controller] == "accounts" or params[:controller] == "items" ) ? "m_act" : "")
+  %>
                 <% if unread_notifications_count > 0 %>
                   <%= link_to "("+ unread_notifications_count.to_s+")", dashboard_path(current_user), :style=>["padding-left: 2px;text-align: left !important;"] %>
                 <% end %>
@@ -141,16 +143,17 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
     <%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
                 <% end %>
               </span>
-              <% if params[:action] == "dashboard" || (params[:action] == "inbox" && params[:controller] == "messages") || (params[:action] == "listings_home" && params[:controller] == "items") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items")%>
+              <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || (params[:action] == "listings_home" && params[:controller] == "items") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") %>
                 <span style="float: left;">
-                  <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" %>
+                  <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" or (params[:controller] == "email_settings") %>
                     <%= link_to 'Messages', inbox_messages_path %>
                     <%= link_to 'My Listings', listings_home_items_path %>
                     <%= link_to 'My Bookings', "/items/pop_ups"%>
-                    <%#= link_to 'My Gatherings', "/items/gatherings"%>
+      <%#= link_to 'My Gatherings', "/items/gatherings"%>
                     <%= link_to 'My Favorites', favorites_items_path %>
                     <%= link_to('My Profile', profile_path(current_user.id)) %>                    
                     <%= link_to "Send Invitations","/invitation" %>
+                    <%= link_to "Email Settings","/email_settings/index" %>
                   <% end %>
                 </span>
               <% end %>
