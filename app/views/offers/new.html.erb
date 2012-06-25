@@ -608,7 +608,7 @@
       }
       else{
         var total= $("#offer_total_amount").val();
-        $("#offer_gathering_rental_price").val(parseInt(total)/parseInt(obj));
+        $("#offer_gathering_rental_price").val((parseInt(total)/parseInt(obj)).toFixed(2));
       }
     }
   }

@@ -34,9 +34,12 @@
         <div>
           Your Offer: <%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
           <br/>
-          status: <%= offer.status %>
+          <b>Status:</b> <%= offer.status %>
           <br/>
           <b>Time:</b> <%= offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= offer.rental_end_date.strftime("%m-%d-%Y") %>
+          <br/>
+          <% joined = GatheringMember.where("status = 'Approved' and offer_id = #{offer.id}") %>
+          <b>Users Joined:</b> <%= joined.size.to_s + "/ #{offer.persons_in_gathering}"%>
           <%if offer.status == "Accepted - Payment pending" && offer.item.user_id != current_user.id %>
             <form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>">
               <input TYPE="submit" VALUE="check in">
@@ -74,18 +77,21 @@
               <% end %>
             </div>
             <% count += 1 %>
-            
-            <%# if offer.persons_in_gathering.to_i < offer.members.where("status = 'Approved'").size %>
-              
-              <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
-              <% if request.status == "confirmed" %>
+
+      <%# if offer.persons_in_gathering.to_i < offer.members.where("status = 'Approved'").size %>
+
+            <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
+            <% if request.status == "confirmed" %>
+              <% if joined.size <  offer.persons_in_gathering.to_i %>
                 <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
                 <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
+                <br /><br />
               <% end %>
-                                
             <% end %>
 
-          <%# end %>
+          <% end %>
+
+    <%# end %>
         </div>
       </div>
     <%end%>

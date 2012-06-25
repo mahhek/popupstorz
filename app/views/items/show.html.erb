@@ -206,7 +206,7 @@
          
           Gathering Deadline: <%= gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
           <% unless current_user.blank? %>
-            <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>
+            <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
               <% if !gathering.members.include?(current_user) %>
                 <%= link_to "Join", "/join_gathering/#{gathering.id}" %>
               <% end %>
