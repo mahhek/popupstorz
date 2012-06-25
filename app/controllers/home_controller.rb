@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 class HomeController < ApplicationController
+  before_filter :authenticate_user!, :only => [:feedback]
   
   def index
     if current_user && current_user.admin?
@@ -21,6 +22,16 @@ class HomeController < ApplicationController
 
   def about
     
+  end
+  
+  def feedback
+    
+  end
+  
+  def send_feedback
+    UserMailer.send_feedback(params[:feedback]).deliver
+    flash[:notice] = "Feedback sent successfully!"
+    redirect_to "/"   
   end
 
 end

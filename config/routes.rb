@@ -21,6 +21,9 @@ PopupStorz::Application.routes.draw do
   match "/items/pop_ups" => "items#my_pop_ups"
   match "/home/terms" => "home#terms"
   match "/home/contact" => "home#contact"
+  match "/home/feedback" => "home#feedback"
+  match "/home/send_feedback" => "home#send_feedback"
+  
   match "/items/payment_charge/:id" => "items#payment_charge"
   match "/home/pay" => "home#pay"
   match "/join_gathering/:id" => "offers#join_gathering"
