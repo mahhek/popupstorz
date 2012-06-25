@@ -1,0 +1,113 @@
+<%= render :partial => "items_header" %>
+<div class="clear"></div>
+<br/>
+
+<div id="get-list-header">
+  <h2>The Gatherings you have</h2>
+</div>
+
+<div class="listx-bg">
+  <% unless @offers.blank? %>
+    <% @offers.each do | offer | %>
+      <% item = offer.item%>
+      <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;float:left;clear: both;">
+
+        <div class="imgx">
+    <%#=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
+          <% if item.avatars.size > 0 %>
+            <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo")  %>
+          <% else %>
+            NO IMAGE PROVIDED YET.
+          <% end %>
+        </div>
+
+        <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
+        <div class="name-list" style="margin-bottom: 5px;"><b>Location: </b><%= item.address %></div>
+
+
+        <div class="name-list" style="margin-bottom: 5px;">
+          <b>Price: </b>
+          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/day,
+          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/week,
+          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
+        </div>
+        <div>
+          Your Offer: <%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
+          <br/>
+          status: <%= offer.status %>
+          <br/>
+          <b>Time:</b> <%= offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= offer.rental_end_date.strftime("%m-%d-%Y") %>
+          <%if offer.status == "Accepted - Payment pending" && offer.item.user_id != current_user.id %>
+            <form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>">
+              <input TYPE="submit" VALUE="check in">
+            </form>
+          <%end%>
+
+        </div>
+
+        <%if offer.rental_end_date<Date.today%>
+          <div id="rating_of_item_<%= offer.item.id %>">
+            <%= render :partial => "/ratings/rating", :locals => { :asset => offer.item, :only_view => false } %>
+          </div>
+        <%end%>
+
+        <div style="width:100%;margin-top:10px;margin-bottom: 10px;">
+          <b>Join Requests</b>
+          <% count = 1 %>
+          <% offer.members.each do|member| %>
+            <h1 class="name"><%= link_to member.popup_storz_display_name, profile_path(member) %></h1>
+            <p class="name_text"><%= member.country %></p>
+
+            <div id="store-btn">
+              <%= link_to_function "Send Message", "$('#contact_me_div_#{member.id}_#{count}').toggle('slow');", :class => "send"  %>
+            </div>
+            <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= member.id %>_<%= count %>">
+              <%= form_tag gathering_message_messages_path , :html => {:remote => true, :id => "contact_me_form"}, :remote  => true do %>
+                <%= hidden_field_tag :topic, "Gathering Inquiry" %>
+                <%= hidden_field_tag :user_id, member.id %>
+                <span style="width: auto;float: left;">
+                  <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
+                </span><br />
+                <div style="float: left;margin-top: 5px;clear:both;">
+                  <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{member.id}_#{count}').toggle('slow');"  %>
+                </div>
+              <% end %>
+            </div>
+            <% count += 1 %>
+            
+            <%# if offer.persons_in_gathering.to_i < offer.members.where("status = 'Approved'").size %>
+              
+              <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
+              <% if request.status == "confirmed" %>
+                <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
+                <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
+              <% end %>
+                                
+            <% end %>
+
+          <%# end %>
+        </div>
+      </div>
+    <%end%>
+  <%else%>
+    You don't currently have any offers listed with PopupStorz.
+  <%end%>
+</div>
+
+<script>
+  function defineDelete(){
+    isChecked = "false";
+    jQuery(".checkBoxClass").each(function(){
+      alert($(this).checked);
+      if($(this).checked == "checked"){
+        isChecked = "true";
+      }
+    });
+    if(isChecked == "true"){
+      alert('showDelete');
+
+    }else{
+      alert('hideDelete');
+    }
+  }
+</script>

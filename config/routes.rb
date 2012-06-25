@@ -136,7 +136,8 @@ PopupStorz::Application.routes.draw do
   resources :items do
     collection do
       get "overview"
-      get "gatherings"
+      get "created_gatherings"
+      get "gatherings_at_my_place"
       get "listings_home"
     end
     resources :avatars
