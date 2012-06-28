@@ -17,7 +17,7 @@ class UserMailer < ActionMailer::Base
     @suggestion = params[:suggestion]
     @description = params[:description]
     @user = params[:user_name]
-    @email = params[:email]
-    mail(:to => "mahhek.khan@gmail.com", :subject => "A feedback is sent by #{params[:email]} for PopUpStorz")
+    @email = params[:email]    
+    mail(:to => "[john.aghayan@gmail.com,aboukhater@gmail.com]", :subject => "A feedback is sent by #{params[:email]} for PopUpStorz")
   end
 end
