@@ -307,7 +307,7 @@
             <label>Persons in Gathering:</label>
             <%= f.text_field :persons_in_gathering, :onchange => "check_persons(this.value,#{@item.maximum_members.to_i})" %><br /><br />
             <label>Gathering Rental Price:</label>
-            <%= f.text_field :gathering_rental_price, :readonly=>true %> / person<br /><br />
+            <%= f.text_field :gathering_rental_price, :readonly=>true %> <%= session[:curr] == "USD" ? "$" : "€" %> / person<br /><br />
             <label>Gathering Description:</label>
             <%= f.text_area  :gathering_description %>    <br/><br/>
             <label style="line-height:18px;">Joining Deadline:</label>
