@@ -1,0 +1,13 @@
+<div style="float: left;width: 100%;border: 1px solid black;padding: 5px;">
+  <h2>
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'gatherings') ? 'silver' : '' %>">
+      <%= link_to 'My Created Gatherings', created_gatherings_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "gatherings" )) ? "m_act" : "") %>
+    </span>
+    <span style="float: left;padding: 5px">
+      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    </span>
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'gatherings') ? 'silver' : '' %>">
+      <%= link_to 'Gatherings at My Place', gatherings_at_my_place_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "gatherings" )) ? "m_act" : "") %>
+    </span>
+  </h2>
+</div>

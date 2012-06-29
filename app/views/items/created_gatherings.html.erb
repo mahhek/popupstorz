@@ -1,4 +1,4 @@
-<%= render :partial => "items_header" %>
+<%= render :partial => "gatherings_header" %>
 <div class="clear"></div>
 <br/>
 
@@ -48,7 +48,7 @@
 
         </div>
 
-        <%if offer.rental_end_date<Date.today%>
+        <%if offer.rental_end_date < Date.today%>
           <div id="rating_of_item_<%= offer.item.id %>">
             <%= render :partial => "/ratings/rating", :locals => { :asset => offer.item, :only_view => false } %>
           </div>
@@ -89,18 +89,25 @@
               <% end %>
             <% end %>
 
+            <% if offer.status == "all joinings approved" %>     
+              <%= link_to "Send Response Request", "/send_gathering_deadline/#{offer.id}" %> 
+            <% end %>
+
           <% end %>
 
-    <%# end %>
         </div>
+    <%# end %>
       </div>
-    <%end%>
-  <%else%>
-    You don't currently have any offers listed with PopupStorz.
+    </div>
   <%end%>
+<%else%>
+  You don't currently have any offers listed with PopupStorz.
+<%end%>
 </div>
 
 <script>
+
+  
   function defineDelete(){
     isChecked = "false";
     jQuery(".checkBoxClass").each(function(){
@@ -116,4 +123,13 @@
       alert('hideDelete');
     }
   }
+  
+  function check_request_form(){
+    if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy") {
+      alert('Please enter response date.');
+      return false;
+    }
+  }
+  
+  
 </script>

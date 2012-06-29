@@ -14,7 +14,7 @@ class PaymentsController < ApplicationController
       @map.center_zoom_init(coordinates, 15)
       #      @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.popup_storz_display_name, :info_window => "#{@item.title}"))
     else
-      @notification = Notification.new(:user_id => @offer.user != current_user ? @offer.user.id : @item.user.id, :notification_type =>"offer_updated", :description => "The <a href='/items/#{@item.id}/offers/#{@offer.id}/edit'>offer</a> you made on #{@item.title} has been modified by #{@offer.user != current_user ? "Owner": "Renter"}. Please review to accept or decline.")
+      @notification = Notification.new(:user_id => @offer.user != current_user ? @offer.user.id : @item.user.id, :notification_type =>"offer_updated", :description => "The <a href='http://#{request.host_with_port}/items/#{@item.id}/offers/#{@offer.id}/edit'>offer</a> you made on #{@item.title} has been modified by #{@offer.user != current_user ? "Owner": "Renter"}. Please review to accept or decline.".html_safe)
       @notification.save
       flash[:notice] = "Your suggestion has been sent to owner, thanks."
       redirect_to "/"
@@ -52,13 +52,20 @@ class PaymentsController < ApplicationController
         if gathering_member.user_id == current_user.id
           gathering_member.update_attribute("status","Approved")
         end
+        
+        reqs = GatheringMember.find(:all, :conditions => ["status = 'Approved' and offer_id = #{@offer.id}"])
+        if reqs.size == @offer.persons_in_gathering.to_i
+#          offer.update_attribute("status","joinings approved")
+          @offer.update_attribute("status","all joinings approved")
+        end
+        
         check_gathering_state(@offer)
       else
         @offer.update_attribute("status","confirmed")
       end
       
       if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
-        @notification = Notification.new(:user_id => @offer.owner_id, :notification_type =>"gathering_created", :description => "A new <a href='/items/#{(@offer.item.id)}'>gathering</a> is created by #{current_user.first_name}")
+        @notification = Notification.new(:user_id => @offer.owner_id, :notification_type =>"gathering_created", :description => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a> is created by #{current_user.first_name}".html_safe)
         @notification.save
       end
       

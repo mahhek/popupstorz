@@ -156,12 +156,12 @@
         </div>
 
         <% if @item.is_shareable %>
-        <div style="width:100%; margin: 10px;">
-          <br><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> Standard Booking
-          <%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> Create a Gathering
-        </div>
+          <div style="width:100%; margin: 10px;">
+            <br><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> Standard Booking
+            <%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> Create a Gathering
+          </div>
         <% else %>
-        <br><%= radio_button_tag 'plan', 'standard_booking', true %> Standard Booking
+          <br><%= radio_button_tag 'plan', 'standard_booking', true %> Standard Booking
         <% end %>
 
         <h3>Suggest Terms</h3> <br/>
@@ -191,8 +191,8 @@
                 <%= "#{@number_of_days} days" %>
               </div>
               <div style="float: left;width: 100px;" id="total_price">
-                <%#= session[:curr] == "USD" ? "$" : "€" %> 
-                <%#= number_to_currency(exchange_currency(@calculated_price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+  <%#= session[:curr] == "USD" ? "$" : "€" %> 
+  <%#= number_to_currency(exchange_currency(@calculated_price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
               </div>
             </div>
 
@@ -208,29 +208,29 @@
           <%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %>
 
           <br/>
-          <%#*<div class="clear"></div>%>
-          <%#*<br/>%>
-          <%#*<label>Meeting Location:</label>%>
+  <%#*<div class="clear"></div>%>
+  <%#*<br/>%>
+  <%#*<label>Meeting Location:</label>%>
 
-          <%#*<div style="padding-top:12px; font-size:13px;">%>
-            <%#*<span style="float: left;">%>
-              <%#= f.radio_button :preferred_location, false, :checked => true,  :class => "radio" %>
-            <%#*</span>%>
-            <%#*<span style="float: left;">%>
-              <%#= label :preferred_location_email, "#{@item.user.popup_storz_display_name} Location", :style => "padding-top:0px !important;line-height: 20px;" %> &nbsp;&nbsp;&nbsp;&nbsp;
-            <%#*</span>%>
-            <%#*<span style="float: left;">%>
-              <%#*<strong>OR</strong>%>
-              <%#*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%>
-            <%#*</span>%>
-            <%#*<span style="float: left;">%>
-              <%#= f.radio_button :preferred_location, true, :checked => false ,  :class => "radio" %>
-            <%#*</span>%>
-            <%#*<span style="float: left;">%>
-              <%#= label :preferred_location_sms, 'Choose another location', :style => "padding-top:0px !important;line-height: 20px;"  %>
-            <%#*</span>%>
-          <%#*</div>%>
-          <%#*<br/>%>
+  <%#*<div style="padding-top:12px; font-size:13px;">%>
+  <%#*<span style="float: left;">%>
+  <%#= f.radio_button :preferred_location, false, :checked => true,  :class => "radio" %>
+  <%#*</span>%>
+  <%#*<span style="float: left;">%>
+  <%#= label :preferred_location_email, "#{@item.user.popup_storz_display_name} Location", :style => "padding-top:0px !important;line-height: 20px;" %> &nbsp;&nbsp;&nbsp;&nbsp;
+  <%#*</span>%>
+  <%#*<span style="float: left;">%>
+  <%#*<strong>OR</strong>%>
+  <%#*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%>
+  <%#*</span>%>
+  <%#*<span style="float: left;">%>
+  <%#= f.radio_button :preferred_location, true, :checked => false ,  :class => "radio" %>
+  <%#*</span>%>
+  <%#*<span style="float: left;">%>
+  <%#= label :preferred_location_sms, 'Choose another location', :style => "padding-top:0px !important;line-height: 20px;"  %>
+  <%#*</span>%>
+  <%#*</div>%>
+  <%#*<br/>%>
 
           <div class="clear"></div>
 
@@ -249,30 +249,30 @@
           </div>
           <br/>
 
-          <%#*<div class="clear"></div>%>
+  <%#*<div class="clear"></div>%>
 
-          <%#*<label>Want to Bargain:</label>%>
+  <%#*<label>Want to Bargain:</label>%>
 
-          <%#*<div style="padding-top:12px; font-size:13px;">%>
-            <%#*<span style="float: left;">%>
-              <%#= f.radio_button :want_to_bargain, false, :checked => true,  :class => "bargain_radio" %>
-            <%#*</span>%>
-            <%#*<span style="float: left;">%>
-              <%#= label :want_to_bargain_no, "No", :style => "padding-top:0px !important;line-height: 20px;" %> 
-          <%#*&nbsp;&nbsp;&nbsp;&nbsp;%>
-            <%#*</span>%>
-            <%#*<span style="float: left;">%>
-              <%#*<strong>OR</strong>%>
-              <%#*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%>
-            <%#*</span>%>
-            <%#*<span style="float: left;">%>
-              <%#= f.radio_button :want_to_bargain, true, :checked => false ,  :class => "bargain_radio" %>
-            <%#*</span>%>
-            <%#*<span style="float: left;">%>
-              <%#= label :want_to_bargain_yes, 'Yes', :style => "padding-top:0px !important;line-height: 20px;"  %>
-            <%#*</span>%>
-          <%#*</div>%>
-          <%#*<br/>%>
+  <%#*<div style="padding-top:12px; font-size:13px;">%>
+  <%#*<span style="float: left;">%>
+  <%#= f.radio_button :want_to_bargain, false, :checked => true,  :class => "bargain_radio" %>
+  <%#*</span>%>
+  <%#*<span style="float: left;">%>
+  <%#= label :want_to_bargain_no, "No", :style => "padding-top:0px !important;line-height: 20px;" %> 
+  <%#*&nbsp;&nbsp;&nbsp;&nbsp;%>
+  <%#*</span>%>
+  <%#*<span style="float: left;">%>
+  <%#*<strong>OR</strong>%>
+  <%#*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%>
+  <%#*</span>%>
+  <%#*<span style="float: left;">%>
+  <%#= f.radio_button :want_to_bargain, true, :checked => false ,  :class => "bargain_radio" %>
+  <%#*</span>%>
+  <%#*<span style="float: left;">%>
+  <%#= label :want_to_bargain_yes, 'Yes', :style => "padding-top:0px !important;line-height: 20px;"  %>
+  <%#*</span>%>
+  <%#*</div>%>
+  <%#*<br/>%>
           <div class="clear"></div>
 
           <div id="bargain_div" style="display: none; font-size:13px; font-style:italic;">Please Enter Meeting <strong>Willing to Pay</strong> :
@@ -281,8 +281,10 @@
           </div>
 
           <br/>
-          <label style="line-height:18px;">I need a response from the Owner  by:</label>
-          <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%>
+          <div id="response_div">
+            <label style="line-height:18px;">I need a response from the Owner  by:</label>
+            <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%>
+          </div>
           <br/><br/>
 
           <div class="clear"></div>
@@ -358,9 +360,15 @@
         alert('Please enter some preferred location first!.');
         return false;
       }else{
-        if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy") {
-          alert('Please enter response date.');
-          return false;
+        
+        if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy") {          
+          if($("#gathering_fields").is(":hidden") == false){
+            return true;
+          }
+          else{
+            alert('Please enter response date.');
+            return false;
+          }
         }else{
           if($("#gathering_fields").is(":hidden") == false){
             if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
@@ -381,8 +389,13 @@
       }
     }else{
       if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy") {
-        alert('Please enter response date.');
-        return false;
+        if($("#gathering_fields").is(":hidden") == false){
+          return true;
+        }
+        else{
+          alert('Please enter response date.');
+          return false;
+        }
       }else{
         if($("#gathering_fields").is(":hidden") == false){
           if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
@@ -432,15 +445,15 @@
       calculated_price = calculate_price(number_of_days);
       
       $('#offer_total_amount').val(calculated_price);
-      <%#*$('#total_price').val(calculated_price);%>
+<%#*$('#total_price').val(calculated_price);%>
       
       if($("#gathering_fields").is(":hidden") == false){
         if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
-            alert("Please enter persons in gathering");            
-          }
-          else{
-             $("#offer_gathering_rental_price").val(parseInt(calculated_price)/parseInt($("#offer_persons_in_gathering").val()));
-          }
+          alert("Please enter persons in gathering");            
+        }
+        else{
+          $("#offer_gathering_rental_price").val(parseInt(calculated_price)/parseInt($("#offer_persons_in_gathering").val()));
+        }
       }
       
       jQuery.ajax({
@@ -591,11 +604,13 @@
   function show_gathering(){
     $("#offer_is_gathering").val(true);
     $("#gathering_fields").show();
+    $("#response_div").hide();
   }
   
   function hide_gathering(){
     $("#offer_is_gathering").val(false);
     $("#gathering_fields").hide();
+    $("#response_div").show();
   }
   
   function check_persons(obj,val){

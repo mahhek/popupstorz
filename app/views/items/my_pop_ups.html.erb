@@ -1,3 +1,5 @@
+
+<%= render :partial => "gatherings_header" %>
 <div id="get-list-header">
   <h2>Your Offers</h2>
 </div>
@@ -13,9 +15,9 @@
   <%#*</div>%>
 
     <% @offers.each do | offer | %>    
-    <% if !offer.parent_id.blank? %>
-      <% offer = Offer.find(offer.parent_id) %>
-    <% end %>
+      <% if !offer.parent_id.blank? %>
+        <% offer = Offer.find(offer.parent_id) %>
+      <% end %>
       <%item = offer.item %>
       <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
         <div class="imgx">
@@ -39,17 +41,17 @@
           <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
         </div>
         <div>
-          <%#*Your Offer: <%= number_to_currency(exchange_currency(offer.willingness_to_pay, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
+    <%#*Your Offer: <%= number_to_currency(exchange_currency(offer.willingness_to_pay, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
           <br/>
           status: <%= offer.status %>
-          <%#if offer.status=="Accepted - Payment pending"%>
-            <%#*<form METHOD="LINK" ACTION="/items/payment_charge/%>
-            <%#=offer.id%>
-              <%#*<input TYPE="submit" VALUE="check in">%>
-            <%#*</form>%>
-          <%#end%>
+    <%#if offer.status=="Accepted - Payment pending"%>
+    <%#*<form METHOD="LINK" ACTION="/items/payment_charge/%>
+    <%#=offer.id%>
+    <%#*<input TYPE="submit" VALUE="check in">%>
+    <%#*</form>%>
+    <%#end%>
         </div>
-        
+
         <% if offer.rental_end_date < Date.today %>
           <div id="rating_of_item_<%= offer.item.id %>">
             <%= render :partial => "/ratings/rating", :locals => { :asset => offer.item, :only_view => false } %>

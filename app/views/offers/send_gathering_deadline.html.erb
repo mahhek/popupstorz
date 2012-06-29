@@ -1,0 +1,64 @@
+<style>
+  .booked { 
+    border: 4px solid;
+    color: red; 
+  }
+  .booked span{ 
+    background: darkgray !important;
+    color: red !important;
+    font-weight: bold !important;
+  }
+  .selected{    
+  }
+  .selected a{ 
+    background: aquamarine !important;
+    font-weight: bold !important;
+  }
+</style>
+
+<div class="leftcontent">
+  <div class="shadowCont">
+
+    <div style="width: 100%;clear: both;">      
+      <div style="border-bottom: 1px solid;">
+        Start Date: <%= @gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
+        End Date: <%= @gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
+        Total required Persons: <%= @gathering.persons_in_gathering %><br />
+        Joined Persons: <%= @gathering.members.size %><br/>
+        Rental Price per person: <%= @gathering.gathering_rental_price %><br />
+
+        Gathering Deadline: <%= @gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
+
+      </div>
+    </div>
+
+    <div style="width:100%;clear:both;">
+      <div id="response_date">
+        <%= form_for @gathering, :url => "/update_gathering_deadline", :html => {:onsubmit => "return check_request_form();"} do|f|  %>
+          <%= f.hidden_field "id", :value => @gathering.id %>  
+          <%= f.text_field :cancellation_date, :class => "offer_cancellation_date", :value => "mm/dd/yy"%>
+          <%= f.submit "Send Request"%>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date() });
+  $("#datepicker").datepicker({
+    onSelect: function(dateText, inst) {
+      $("#datepicker_value").val(dateText);
+    }
+   
+  });
+
+  function check_request_form(){
+    if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy") {
+      alert('Please enter response date.');
+      return false;
+    }
+  }
+</script>
+

@@ -154,6 +154,7 @@
                     <%= link_to('My Profile', profile_path(current_user.id)) %>                    
                     <%= link_to "Send Invitations","/invitation" %>
                     <%= link_to "Email Settings","/email_settings/index" %>
+                    <%= link_to "Delete My Account","/users/delete_account", :confirm => "Are you sure you want to delete your account permanently?" %>
                   <% end %>
                 </span>
               <% end %>

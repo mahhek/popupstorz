@@ -30,5 +30,55 @@ class UsersController < ApplicationController
     flash[:notice] = "Invitations have been sent successfully."
     redirect_to "/invitation"
   end
+  
+  def delete_account
+    user = current_user
     
+    unless user.avatars.blank?
+      user.avatars.destroy_all
+    end
+    
+    unless user.notifications.blank?
+      user.notifications.destroy_all
+    end
+    
+    unless user.invitations.blank?
+      user.invitations.destroy_all
+    end
+    
+    unless user.services.blank?
+      user.services.destroy_all
+    end
+    
+    unless user.services.blank?
+      user.services.destroy_all
+    end
+    
+    unless user.items.blank?
+      user.items.destroy_all
+    end
+    
+    unless user.notifications.blank?
+      user.notifications.destroy_all
+    end
+    
+    unless user.offers.blank?
+      user.offers.destroy_all
+    end
+    
+    unless user.account.blank?
+      user.account.destroy_all
+    end
+    
+    unless user.email_setting.blank?
+      user.email_setting.destroy_all
+    end
+    
+    user.destroy
+    
+    
+    flash[:notice] = "Account deleted successfully!"
+    redirect_to "/users/sign_out"
+  end
+  
 end

@@ -8,18 +8,6 @@
     </span>
     <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'overview' or params[:action] == 'overview') ? 'silver' : '' %>">
       <%= link_to 'Bookings Overview', overview_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "overview" or params[:action] == "overview" )) ? "m_act" : "") %>
-    </span>
-    <span style="float: left;padding: 5px">
-      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-    </span>
-    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'gatherings') ? 'silver' : '' %>">
-      <%= link_to 'My Created Gatherings', created_gatherings_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "gatherings" )) ? "m_act" : "") %>
-    </span>
-    <span style="float: left;padding: 5px">
-      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-    </span>
-    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'gatherings') ? 'silver' : '' %>">
-      <%= link_to 'Gatherings at My Place', gatherings_at_my_place_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "gatherings" )) ? "m_act" : "") %>
-    </span>
+    </span>    
   </h2>
 </div>
