@@ -78,8 +78,6 @@
             </div>
             <% count += 1 %>
 
-      <%# if offer.persons_in_gathering.to_i < offer.members.where("status = 'Approved'").size %>
-
             <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
             <% if request.status == "confirmed" %>
               <% if joined.size <  offer.persons_in_gathering.to_i %>
@@ -89,15 +87,14 @@
               <% end %>
             <% end %>
 
-            <% if offer.status == "all joinings approved" %>     
-              <%= link_to "Send Response Request", "/send_gathering_deadline/#{offer.id}" %> 
-            <% end %>
-
           <% end %>
-
         </div>
-    <%# end %>
+        <% if offer.status == "all joinings approved" %>     
+          <%= link_to "Send Response Request", "/send_gathering_deadline/#{offer.id}" %> 
+        <% end %>
+
       </div>
+
     </div>
   <%end%>
 <%else%>

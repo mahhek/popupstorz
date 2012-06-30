@@ -226,7 +226,7 @@ class OffersController < ApplicationController
     new_offer.save
     @offer.members << current_user
     gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",@offer.id,current_user.id])
-    gathering_member.update_attributes({"user_message" => message, "status" => "applied"})
+    gathering_member.update_attributes({"user_message" => message, "status" => "Applied"})
     
     @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"gathering_joined", :description => "A new <a href='http://#{request.host_with_port}/#{dashboard_path(current_user.id)}'>user </a> have joined your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
     @notification.save
@@ -273,7 +273,7 @@ class OffersController < ApplicationController
         flash[:notice] = "Offer can't be accepted right now.Please try again or later."
       end
     end
-    redirect_to gatherings_items_path
+    redirect_to "/items/created_gatherings"
   end
   
   def decline_gathering_request

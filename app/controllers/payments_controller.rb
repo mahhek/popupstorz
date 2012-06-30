@@ -49,14 +49,15 @@ class PaymentsController < ApplicationController
         end
         gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",@offer.id,current_user.id])
         gathering_member.update_attribute("status","confirmed")
-        if gathering_member.user_id == current_user.id
+        
+        if gathering_member.offer.user_id == current_user.id
           gathering_member.update_attribute("status","Approved")
         end
         
         reqs = GatheringMember.find(:all, :conditions => ["status = 'Approved' and offer_id = #{@offer.id}"])
-        if reqs.size == @offer.persons_in_gathering.to_i
+        if reqs.size == @offer.persons_in_gathering.to_i and @offer.persons_in_gathering == 1
 #          offer.update_attribute("status","joinings approved")
-          @offer.update_attribute("status","all joinings approved")
+          @offer.update_attribute("status","joinings approved")
         end
         
         check_gathering_state(@offer)
