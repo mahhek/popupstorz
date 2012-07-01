@@ -1,9 +1,9 @@
-<%= render :partial => "items_header" %>
+<%= render :partial => "gatherings_header" %>
 <div class="clear"></div>
 <br/>
 
 <div id="get-list-header">
-  <h2>The Gatherings you have</h2>
+  <h2>The Previous Gatherings you have</h2>
 </div>
 
 <div class="listx-bg">
@@ -32,15 +32,14 @@
           <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
         </div>
         <div>
-          <b>Your Offer:</b> <%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
+          Your Offer: <%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
           <br/>
-          <b>status:</b> <%= offer.status %>
+          <b>Status:</b> <%= offer.status %>
           <br/>
           <b>Time:</b> <%= offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= offer.rental_end_date.strftime("%m-%d-%Y") %>
           <br/>
           <% joined = GatheringMember.where("status = 'Approved' and offer_id = #{offer.id}") %>
           <b>Users Joined:</b> <%= joined.size.to_s + "/ #{offer.persons_in_gathering}"%>
-          
           <%if offer.status == "Accepted - Payment pending" && offer.item.user_id != current_user.id %>
             <form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>">
               <input TYPE="submit" VALUE="check in">
@@ -49,7 +48,7 @@
 
         </div>
 
-        <%if offer.rental_end_date<Date.today%>
+        <%if offer.rental_end_date < Date.today%>
           <div id="rating_of_item_<%= offer.item.id %>">
             <%= render :partial => "/ratings/rating", :locals => { :asset => offer.item, :only_view => false } %>
           </div>
@@ -78,31 +77,34 @@
               <% end %>
             </div>
             <% count += 1 %>
-      <%# if offer.persons_in_gathering.to_i < offer.members.where("status = 'Approved'").size %>
 
-            <%# request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
-            <%# if request.status == "confirmed" %>
-              <%#= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %>
-              <%#= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
-            <%# end %>
+            <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
+            <% if request.status == "confirmed" %>
+              <% if joined.size <  offer.persons_in_gathering.to_i %>
+                <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
+                <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
+                <br /><br />
+              <% end %>
+            <% end %>
 
           <% end %>
-
-    <%# end %>
         </div>
-        <% if offer.owner_id == current_user.id && offer.status == "joinings approved" %>
-          <%= link_to "Approve", "/accept_gathering/#{offer.id}?item_id=#{offer.item.id}" %> | 
-          <%= link_to "Decline", "/reject_gathering/#{offer.id}?item_id=#{offer.item.id}" %>
-        <% end %>  
+        <% if offer.status == "all joinings approved" %>     
+          <%= link_to "Send Response Request", "/send_gathering_deadline/#{offer.id}" %> 
+        <% end %>
+
       </div>
-  <br /><br />
-    <%end%>  
-  <%else%>
-    You don't currently have any offers listed with PopupStorz.
+
+    </div>
   <%end%>
+<%else%>
+  You don't currently have any offers listed with PopupStorz.
+<%end%>
 </div>
 
 <script>
+
+  
   function defineDelete(){
     isChecked = "false";
     jQuery(".checkBoxClass").each(function(){
@@ -118,4 +120,13 @@
       alert('hideDelete');
     }
   }
+  
+  function check_request_form(){
+    if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy") {
+      alert('Please enter response date.');
+      return false;
+    }
+  }
+  
+  
 </script>

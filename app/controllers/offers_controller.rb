@@ -143,6 +143,7 @@ class OffersController < ApplicationController
 
     if @offer.changed?
       if @offer.save
+        current_user.send_message(@offer.user != current_user ? @offer.user : @item.user, :topic => "Offer Updated", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been modified by #{@offer.user != current_user ? "Owner": "Renter"}. Please review to accept or decline.".html_safe)
         @notification = Notification.new(:user_id => @offer.user != current_user ? @offer.user.id : @item.user.id, :notification_type =>"offer_updated", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been modified by #{@offer.user != current_user ? "Owner": "Renter"}. Please review to accept or decline.".html_safe)
         @notification.save
         flash[:notice] = "Offer updated and notification sent"
@@ -168,12 +169,14 @@ class OffersController < ApplicationController
     if current_user.id == @offer.user_id
       @item.update_attribute("item_status","Reserved")
       flash[:notice] = "Offer accepted"
+      current_user.send_message(@item.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been accepted".html_safe)
       @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_accepted", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been accepted".html_safe)
       @notification.save
       redirect_to "/"
     else
       @item.update_attribute("item_status","Reserved")
       flash[:notice] = "Offer accepted."
+      current_user.send_message(@offer.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
       @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_accepted", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
       @notification.save
       flash[:flash] = "Offer accepted."
@@ -192,11 +195,13 @@ class OffersController < ApplicationController
     if current_user.id == @offer.user_id
       @offer.update_attribute("status", "Declined by renter")
       flash[:notice] = "Offer declined"
+      current_user.send_message(@item.user, :topic => "Offer Declined", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been declined".html_safe)
       @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_declined", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been declined".html_safe)
       @notification.save
     else
       @offer.update_attribute("status", "Declined by owner")
       flash[:notice] = "Offer declined"
+      current_user.send_message(@offer.user, :topic => "Offer Declined", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been declined by the owner".html_safe)
       @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_declined", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been declined by the owner".html_safe)
       @notification.save
     end
@@ -228,6 +233,7 @@ class OffersController < ApplicationController
     gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",@offer.id,current_user.id])
     gathering_member.update_attributes({"user_message" => message, "status" => "Applied"})
     
+    current_user.send_message(@offer.user, :topic => "Gathering Joined", :body => "A new <a href='http://#{request.host_with_port}/#{dashboard_path(current_user.id)}'>user </a> have joined your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
     @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"gathering_joined", :description => "A new <a href='http://#{request.host_with_port}/#{dashboard_path(current_user.id)}'>user </a> have joined your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
     @notification.save
     
@@ -258,7 +264,8 @@ class OffersController < ApplicationController
 #          offer.update_attribute("status","joinings approved")
           offer.update_attribute("status","all joinings approved")
         end
-                
+        user =User.find(gathering_member.user_id)
+        current_user.send_message(user, :topic => "Joining Approved", :body => "Your joining request for <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> gathering</a> is approved.".html_safe)
         @notification = Notification.new(:user_id => gathering_member.user_id, :notification_type =>"joining_approved", :description => "Your joining request for <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> gathering</a> is approved.".html_safe)
         @notification.save
         
@@ -282,6 +289,8 @@ class OffersController < ApplicationController
       gathering_member = GatheringMember.find(:first, :conditions => ["offer_id = ? and user_id = ?",params[:id],params[:mem]])
       if gathering_member.destroy
         flash[:notice] = "Request declined."
+        user = User.find(gathering_member.user_id)
+        current_user.send_message(user, :topic => "Joining Declined", :body => "Your joining request for <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> gathering</a> is declined.".html_safe)
         @notification = Notification.new(:user_id => gathering_member.user_id, :notification_type =>"joining_declined", :description => "Your joining request for <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> gathering</a> is declined.".html_safe)
         @notification.save
       else

@@ -369,9 +369,14 @@ class ItemsController < ApplicationController
     @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is NULL",current_user.id])
   end
       
-  def created_gatherings
-     @offers = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL",current_user.id,current_user.id])
+  def created_prev_gatherings
+     @offers = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])
+     
 #    @offers = Offer.find(:all, :conditions => ["(user_id = ? or owner_id = ?) and persons_in_gathering is not NULL and parent_id is NULL",current_user.id,current_user.id])
+  end
+  
+  def created_coming_gatherings
+    @offers = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])
   end
   
   def gatherings_at_my_place
@@ -392,6 +397,9 @@ class ItemsController < ApplicationController
       payment.capture_offer_commission_and_payment(@offer)
     end
     if @offer.update_attribute(:status, "Paid but waiting for FeedBack")
+      
+      current_user.send_message(@offer.user, :topic => "Offer Updated", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!".html_safe)
+      
       @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_updated", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!".html_safe)
       @notification.save
       redirect_to "/"

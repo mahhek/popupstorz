@@ -14,6 +14,7 @@ class PaymentsController < ApplicationController
       @map.center_zoom_init(coordinates, 15)
       #      @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.popup_storz_display_name, :info_window => "#{@item.title}"))
     else
+      current_user.send_message(@offer.user != current_user ? @offer.user : @item.user, :topic => "Offer Updated", :body => "The <a href='http://#{request.host_with_port}/items/#{@item.id}/offers/#{@offer.id}/edit'>offer</a> you made on #{@item.title} has been modified by #{@offer.user != current_user ? "Owner": "Renter"}. Please review to accept or decline.".html_safe)
       @notification = Notification.new(:user_id => @offer.user != current_user ? @offer.user.id : @item.user.id, :notification_type =>"offer_updated", :description => "The <a href='http://#{request.host_with_port}/items/#{@item.id}/offers/#{@offer.id}/edit'>offer</a> you made on #{@item.title} has been modified by #{@offer.user != current_user ? "Owner": "Renter"}. Please review to accept or decline.".html_safe)
       @notification.save
       flash[:notice] = "Your suggestion has been sent to owner, thanks."
@@ -66,6 +67,8 @@ class PaymentsController < ApplicationController
       end
       
       if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
+        user = User.find(@offer.owner_id)
+        current_user.send_message(user, :topic => "Gathering Created", :body => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a> is created by #{current_user.first_name}".html_safe)
         @notification = Notification.new(:user_id => @offer.owner_id, :notification_type =>"gathering_created", :description => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a> is created by #{current_user.first_name}".html_safe)
         @notification.save
       end
