@@ -317,7 +317,7 @@ class OffersController < ApplicationController
   def update_gathering_deadline
     offer = Offer.find(params[:offer][:id])
     params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time
-    offer.update_attributes({"cancellation_date"=>params[:offer][:cancellation_date], "status" => "joinings approved"})
+    offer.update_attributes({"cancellation_date" => params[:offer][:cancellation_date], "status" => "joinings approved"})
     flash[:notice] = "Response date updated successfully"
     redirect_to "/items/created_coming_gatherings"
   end

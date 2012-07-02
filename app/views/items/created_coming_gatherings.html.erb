@@ -36,7 +36,7 @@
           <br/>
           <b>Status:</b>          
           <% if offer.status == "Accepted - Payment pending" or offer.status == "all joinings approved" or offer.status == "Accepted - Confirmation pending" or offer.status == "joinings approved" or offer.status == "Applied" or offer.status == "confirmed" %>
-            <% if joined.size.to_i < offer.persons_in_gathering.to_i %>
+            <% if joined.size.to_i < offer.persons_in_gathering.to_i or offer.cancellation_date.blank? %>
               <%= "Creating" %>
             <% else %>
               <%= "Applied" %>
