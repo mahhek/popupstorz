@@ -397,7 +397,7 @@ class ItemsController < ApplicationController
   
     
   def pending_gathering_acceptance
-    @gatherings = current_user.gatherings.where("offer.user_id = #{current_user.id} and offers.status = 'Applied' or offers.status = 'all joinings approved' or offers.status ='joinings approved'")
+    @gatherings = current_user.gatherings.where("offers.user_id = #{current_user.id} and offers.status = 'Applied' or offers.status = 'all joinings approved' or offers.status ='joinings approved'")
     @gatherings = @gatherings.uniq
   end  
   
