@@ -164,7 +164,7 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
     @booked_dates = []
     @manage_dates_array = []
-    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%' or status LIKE '%Confirmed%' or status LIKE '%Accepted%') and parent_id is NULL")
+    @offers = @item.offers.where("(status LIKE '%Confirmed%') and parent_id is NULL")
     
     @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
@@ -173,7 +173,7 @@ class ItemsController < ApplicationController
         
     @comment = Comment.new
    
-    @curr_offers = @item.offers.where("(status != 'Approved' or status NOT LIKE '%Paid%' or status NOT LIKE '%Confirmed%' or status NOT LIKE '%Accepted%') and parent_id is NULL")
+    @curr_offers = @item.offers.where("(status NOT LIKE '%Confirmed%') and parent_id is NULL")
     
     @user = @item.user
     @map = GMap.new("map")
