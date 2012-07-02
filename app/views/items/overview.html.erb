@@ -50,10 +50,10 @@
             </form>
           <%end%>
         </div>
-        
-          <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{offer.user.id}" %> | 
-          <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{offer.user.id}" %>
-        
+        <% unless offer.status == "Approved" or offer.status == "Accepted" %>
+          <%= link_to "Approve", "/accept_gathering/#{offer.id}?mem=#{offer.user.id}" %> | 
+          <%= link_to "Decline", "/reject_gathering/#{offer.id}?mem=#{offer.user.id}" %>
+        <% end %> 
 
         <%if offer.rental_end_date<Date.today%>
           <div id="rating_of_item_<%= offer.item.id %>">

@@ -47,6 +47,7 @@ PopupStorz::Application.routes.draw do
   match "/send_resposne_request" => "offers#send_resposne_request"
   match "/send_gathering_deadline/:id" => "offers#send_gathering_deadline"
   match "/update_gathering_deadline" => "offers#update_gathering_deadline"
+  match "/pending_gathering_acceptance" => "offers#pending_gathering_acceptance"
      
   devise_for :users, :controllers => {:registrations => "registrations"}
 
@@ -151,6 +152,7 @@ PopupStorz::Application.routes.draw do
       get "overview"
       get "created_prev_gatherings"
       get "created_coming_gatherings"
+      get "pending_gathering_acceptance"
       get "gatherings_at_my_place"
       get "listings_home"
     end

@@ -43,7 +43,7 @@ class PaymentsController < ApplicationController
               
     pay_response = pay_request.preapproval(data)
     if pay_response.success?
-      if @offer.is_gathering        
+      if @offer.is_gathering
         gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",@offer.id,current_user.id])
         if gathering_member.blank?
           @offer.members << current_user
@@ -95,12 +95,11 @@ class PaymentsController < ApplicationController
     end
   end
   
-  
   def capture_gathering_commission(offer)
     receivers = []    
     
     #    offers = Offer.find(:all, :conditions => ["status = 'Approved' and parent_id = #{offer.id}"])
-    members = GatheringMember.find(:all, :conditions => ["status = 'Approved'"])
+    members = GatheringMember.find(:all, :conditions => ["status = 'Approved' and offer_id =  #{offer.id}"])
     
     if offer.persons_in_gathering.to_i <= members.size.to_i
    

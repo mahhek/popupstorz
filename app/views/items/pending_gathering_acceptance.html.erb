@@ -3,7 +3,7 @@
 <br/>
 
 <div id="get-list-header">
-  <h2>The Previous Bookings</h2>
+  <h2>The Pending Gatherings</h2>
 </div>
 
 <div class="listx-bg">
@@ -11,7 +11,7 @@
     <% @gatherings.each do | offer | %>
       <% item = offer.item%>
       <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;float:left;clear: both;">
-
+        
         <div class="imgx">
     <%#=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
           <% if item.avatars.size > 0 %>

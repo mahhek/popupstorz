@@ -20,7 +20,7 @@ class OffersController < ApplicationController
     
     @booked_dates = []
     @manage_dates_array = []
-    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%') and parent_id is NULL")
+    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%' or status LIKE '%Confirmed%' or status LIKE '%Accepted%') and parent_id is NULL")
     @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
@@ -50,7 +50,7 @@ class OffersController < ApplicationController
     @booked_dates = []
     @manage_dates_array = []
     #    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
-    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%') and parent_id is NULL")
+    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%' or status LIKE '%Confirmed%' or status LIKE '%Accepted%') and parent_id is NULL")
     @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
@@ -102,7 +102,7 @@ class OffersController < ApplicationController
     
     @booked_dates = []
     @manage_dates_array = []
-    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%') and parent_id is NULL")   
+    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%' or status LIKE '%Confirmed%' or status LIKE '%Accepted%') and parent_id is NULL")   
     offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
@@ -128,7 +128,7 @@ class OffersController < ApplicationController
 
     @booked_dates = []
     @manage_dates_array = []
-    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%') and parent_id is NULL")
+    @offers = @item.offers.where("(status = 'Approved' or status LIKE '%Paid%' or status LIKE '%Confirmed%' or status LIKE '%Accepted%') and parent_id is NULL")
     offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
@@ -161,28 +161,32 @@ class OffersController < ApplicationController
   end
 
   def accept
-    @item = Item.find params[:item_id]
+    unless params[:item_id].blank?
+      @item = Item.find params[:item_id]
+    end
     @offer = Offer.find params[:id]
     payment = @offer.payment
     #    if payment.purchase("charge").status == 3
-#    payment.save!
-    if current_user.id == @offer.user_id
-      @item.update_attribute("item_status","Reserved")
-      flash[:notice] = "Offer accepted"
-      current_user.send_message(@item.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been accepted".html_safe)
-      @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_accepted", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been accepted".html_safe)
-      @notification.save
-      redirect_to "/"
-    else
-      @item.update_attribute("item_status","Reserved")
-      flash[:notice] = "Offer accepted."
-      current_user.send_message(@offer.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
-      @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_accepted", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
-      @notification.save
-      flash[:flash] = "Offer accepted."
-      redirect_to "/"
+    #    payment.save!
+    unless @item.blank?
+      if current_user.id == @offer.user_id
+        @item.update_attribute("item_status","Reserved")
+        flash[:notice] = "Offer accepted"
+        current_user.send_message(@item.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been accepted".html_safe)
+        @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_accepted", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been accepted".html_safe)
+        @notification.save      
+      else
+        @item.update_attribute("item_status","Reserved")
+        flash[:notice] = "Offer accepted."
+        current_user.send_message(@offer.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
+        @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_accepted", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
+        @notification.save
+        flash[:flash] = "Offer accepted."
+        #      redirect_to "/"
+      end
     end
-    @offer.update_attribute("status", "Accepted - Payment pending")
+    @offer.update_attribute("status", "Accepted")
+    redirect_to "/"
     #    else
     #      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
     #      redirect_to "/"
@@ -193,13 +197,13 @@ class OffersController < ApplicationController
     @item = Item.find params[:item_id]
     @offer = Offer.find params[:id]
     if current_user.id == @offer.user_id
-      @offer.update_attribute("status", "Declined by renter")
+      @offer.update_attribute("status", "Declined")
       flash[:notice] = "Offer declined"
       current_user.send_message(@item.user, :topic => "Offer Declined", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been declined".html_safe)
       @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_declined", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been declined".html_safe)
       @notification.save
     else
-      @offer.update_attribute("status", "Declined by owner")
+      @offer.update_attribute("status", "Declined")
       flash[:notice] = "Offer declined"
       current_user.send_message(@offer.user, :topic => "Offer Declined", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been declined by the owner".html_safe)
       @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_declined", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been declined by the owner".html_safe)
@@ -233,11 +237,11 @@ class OffersController < ApplicationController
     gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",@offer.id,current_user.id])
     gathering_member.update_attributes({"user_message" => message, "status" => "Applied"})
     
-    current_user.send_message(@offer.user, :topic => "Gathering Joined", :body => "A new <a href='http://#{request.host_with_port}/#{dashboard_path(current_user.id)}'>user </a> have joined your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
-    @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"gathering_joined", :description => "A new <a href='http://#{request.host_with_port}/#{dashboard_path(current_user.id)}'>user </a> have joined your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
+    current_user.send_message(@offer.user, :topic => "Applied for Gathering", :body => "A new <a href='http://#{request.host_with_port}/#{dashboard_path(current_user.id)}'>user </a> have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
+    @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"gathering_joined", :description => "A new <a href='http://#{request.host_with_port}/#{dashboard_path(current_user.id)}'>user </a> have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
     @notification.save
     
-    flash[:notice] = "Successfully joined the gathering."
+    flash[:notice] = "Successfully applied for the gathering."
     redirect_to  new_item_offer_payment_path(@item,@offer)
     #    redirect_to "/items/show/#{offer.item_id}"
   end
@@ -261,7 +265,7 @@ class OffersController < ApplicationController
         
         reqs = GatheringMember.find(:all, :conditions => ["status = 'Approved' and offer_id = #{offer.id}"])
         if reqs.size == offer.persons_in_gathering.to_i
-#          offer.update_attribute("status","joinings approved")
+          #          offer.update_attribute("status","joinings approved")
           offer.update_attribute("status","all joinings approved")
         end
         user =User.find(gathering_member.user_id)
@@ -274,13 +278,13 @@ class OffersController < ApplicationController
         flash[:notice] = "Offer can't be accepted right now.Please try again or later."
       end
     else
-      if offer.update_attribute("status", "Approved")
+      if offer.update_attribute("status", "Confirmed")
         flash[:notice] = "Offer accepted successfully!"
       else
         flash[:notice] = "Offer can't be accepted right now.Please try again or later."
       end
     end
-    redirect_to "/items/created_gatherings"
+    redirect_to "/items/created_coming_gatherings"
   end
   
   def decline_gathering_request
@@ -315,9 +319,8 @@ class OffersController < ApplicationController
     params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time
     offer.update_attributes({"cancellation_date"=>params[:offer][:cancellation_date], "status" => "joinings approved"})
     flash[:notice] = "Response date updated successfully"
-    redirect_to "/items/created_gatherings"
+    redirect_to "/items/created_coming_gatherings"
   end
-  
   
   protected
 
