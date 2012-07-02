@@ -160,7 +160,7 @@ class OffersController < ApplicationController
     end
   end
 
-  def accept
+  def accept    
     unless params[:item_id].blank?
       @item = Item.find params[:item_id]
     end
@@ -168,25 +168,35 @@ class OffersController < ApplicationController
     payment = @offer.payment
     #    if payment.purchase("charge").status == 3
     #    payment.save!
-    unless @item.blank?
-      if current_user.id == @offer.user_id
-        @item.update_attribute("item_status","Reserved")
-        flash[:notice] = "Offer accepted"
-        current_user.send_message(@item.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been accepted".html_safe)
-        @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_accepted", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been accepted".html_safe)
-        @notification.save      
-      else
-        @item.update_attribute("item_status","Reserved")
-        flash[:notice] = "Offer accepted."
-        current_user.send_message(@offer.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
-        @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_accepted", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
-        @notification.save
-        flash[:flash] = "Offer accepted."
-        #      redirect_to "/"
+    unless @offer.is_gathering
+      unless @item.blank?
+        if current_user.id == @offer.user_id
+          @item.update_attribute("item_status","Reserved")
+          flash[:notice] = "Offer accepted"
+          current_user.send_message(@item.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been accepted".html_safe)
+          @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_accepted", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been accepted".html_safe)
+          @notification.save      
+        else
+          @item.update_attribute("item_status","Reserved")
+          flash[:notice] = "Offer accepted."
+          current_user.send_message(@offer.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
+          @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_accepted", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
+          @notification.save
+          flash[:flash] = "Offer accepted."
+          redirect_to "/"
+        end
       end
+      @offer.update_attribute("status", "Confirmed")
+    else      
+      @item = @offer.item
+      members = GatheringMember.find(:all, :conditions => "offer_id = #{@offer.id} and status = 'Approved'")
+      members.each do|m|
+        current_user.send_message(m.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
+      end
+      @offer.update_attribute("status", "Confirmed")
+      redirect_to "/items/gatherings_at_my_place"
     end
-    @offer.update_attribute("status", "Accepted")
-    redirect_to "/"
+    
     #    else
     #      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
     #      redirect_to "/"
@@ -196,20 +206,32 @@ class OffersController < ApplicationController
   def decline
     @item = Item.find params[:item_id]
     @offer = Offer.find params[:id]
-    if current_user.id == @offer.user_id
+    unless @offer.is_gathering
+      if current_user.id == @offer.user_id
+        @offer.update_attribute("status", "Declined")
+        flash[:notice] = "Offer declined"
+        current_user.send_message(@item.user, :topic => "Offer Declined", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been declined".html_safe)
+        @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_declined", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been declined".html_safe)
+        @notification.save
+      else
+        @offer.update_attribute("status", "Declined")
+        flash[:notice] = "Offer declined"
+        current_user.send_message(@offer.user, :topic => "Offer Declined", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been declined by the owner".html_safe)
+        @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_declined", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been declined by the owner".html_safe)
+        @notification.save
+        
+      end
+      redirect_to "/"
+    else      
+      @item = @offer.item
+      members = GatheringMember.find(:all, :conditions => "offer_id = #{@offer.id} and status = 'Approved'")
+      members.each do|m|
+        current_user.send_message(m.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
+      end      
       @offer.update_attribute("status", "Declined")
-      flash[:notice] = "Offer declined"
-      current_user.send_message(@item.user, :topic => "Offer Declined", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been declined".html_safe)
-      @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"offer_declined", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} on #{@item.title} has been declined".html_safe)
-      @notification.save
-    else
-      @offer.update_attribute("status", "Declined")
-      flash[:notice] = "Offer declined"
-      current_user.send_message(@offer.user, :topic => "Offer Declined", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been declined by the owner".html_safe)
-      @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_declined", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been declined by the owner".html_safe)
-      @notification.save
+      redirect_to "/items/gatherings_at_my_place"
     end
-    redirect_to "/"
+    
   end
 
   #  def payment_charge
