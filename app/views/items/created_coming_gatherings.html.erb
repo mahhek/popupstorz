@@ -34,7 +34,7 @@
         <div>
           Your Offer: <%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
           <br/>
-          <b>Status:</b>
+          <b>Status:</b>          
           <% if offer.status == "Accepted - Payment pending" or offer.status == "all joinings approved" or offer.status == "Accepted - Confirmation pending" or offer.status == "joinings approved" or offer.status == "Applied" or offer.status == "confirmed" %>
             <% if joined.size.to_i < offer.persons_in_gathering.to_i %>
               <%= "Creating" %>

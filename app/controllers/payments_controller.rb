@@ -66,12 +66,12 @@ class PaymentsController < ApplicationController
         @offer.update_attribute("status","confirmed")
       end
       
-      if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
-        user = User.find(@offer.owner_id)
-        current_user.send_message(user, :topic => "Gathering Created", :body => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a> is created by #{current_user.first_name}".html_safe)
-        @notification = Notification.new(:user_id => @offer.owner_id, :notification_type =>"gathering_created", :description => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a> is created by #{current_user.first_name}".html_safe)
-        @notification.save
-      end
+#      if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
+#        user = User.find(@offer.owner_id)
+#        current_user.send_message(user, :topic => "Gathering Created", :body => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a> is created by #{current_user.first_name}".html_safe)
+#        @notification = Notification.new(:user_id => @offer.owner_id, :notification_type =>"gathering_created", :description => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a> is created by #{current_user.first_name}".html_safe)
+#        @notification.save
+#      end
       
       flash[:notice] = "Offer sent successfully!"
       redirect_to "/items/#{@item.id}"
