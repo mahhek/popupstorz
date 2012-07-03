@@ -1,3 +1,35 @@
+<%= form_for([@item, @avatar], :html => { :multipart => true, :class => "new_avatar_form"}) do |f|%>
+  <div id="thumnail-details">
+    <span class="familar-photo">Photos</span>
+    <br/>
+    <br/>
+    <span class="gray-14">gif / jpeg / png acceptable</span>
+    <br/>
+    <br/>
+    <%= file_field_tag :photo_1 if @item.avatars.size == 0 or @item.avatars.size < 16 %><br />
+    <%= file_field_tag :photo_2 if @item.avatars.size == 0 or @item.avatars.size < 15 %><br />
+    <%= file_field_tag :photo_3 if @item.avatars.size == 0 or @item.avatars.size < 14  %><br />
+    <%= file_field_tag :photo_4 if @item.avatars.size == 0 or @item.avatars.size < 13  %><br />
+    <%= file_field_tag :photo_5 if @item.avatars.size == 0 or @item.avatars.size < 12  %><br />
+
+    <%= file_field_tag :photo_6 if @item.avatars.size == 0 or @item.avatars.size < 11  %><br />
+    <%= file_field_tag :photo_7 if @item.avatars.size == 0 or @item.avatars.size < 10  %><br />
+    <%= file_field_tag :photo_8 if @item.avatars.size == 0 or @item.avatars.size < 9  %><br />
+    <%= file_field_tag :photo_9 if @item.avatars.size == 0 or @item.avatars.size < 8  %><br />
+    <%= file_field_tag :photo_10 if @item.avatars.size == 0 or @item.avatars.size < 7  %><br />
+
+    <%= file_field_tag :photo_11 if @item.avatars.size == 0 or @item.avatars.size < 6  %><br />
+    <%= file_field_tag :photo_12 if @item.avatars.size == 0 or @item.avatars.size < 5  %><br />
+    <%= file_field_tag :photo_13 if @item.avatars.size == 0 or @item.avatars.size < 4  %><br />
+    <%= file_field_tag :photo_14 if @item.avatars.size == 0 or @item.avatars.size < 3  %><br />
+    <%= file_field_tag :photo_15 if @item.avatars.size == 0 or @item.avatars.size < 2  %><br />
+    <%= f.hidden_field:photo %><br />
+
+    <center><button type="submit" class="large-max button orange"> Upload Picture</button></center>
+
+  </div>
+<% end %>
+
 <div style="padding: 20px;">
   <div id="get-list-header">
     <div class="white-button" style="float: left;margin-right: 10px;">
@@ -29,16 +61,16 @@
     <br/>
     <br/>
 
+    <br/>
+    <br/>
+    <%@avatars.each do |avatar|%>
+      <%= image_tag(avatar.photo.url(:large) )%>
       <br/>
       <br/>
-      <%@avatars.each do |avatar|%>
-        <%= image_tag(avatar.photo.url(:large) )%>
-        <br/>
-        <br/>
-        <%= link_to "Delete photo", item_avatar_path(@item,avatar), :method => :delete, :confirm => "Are you sure?" %>
-        <br/>
-        <br/>
-      <%end%>
+      <%= link_to "Delete photo", item_avatar_path(@item,avatar), :method => :delete, :confirm => "Are you sure?" %>
+      <br/>
+      <br/>
+    <%end%>
     <br/>
     <br/>
   </div>

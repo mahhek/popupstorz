@@ -55,13 +55,6 @@
           <%= link_to "Decline", "/reject_gathering/#{offer.id}?mem=#{offer.user.id}" %>
         <% end %> 
 
-        <%if offer.rental_end_date<Date.today%>
-          <div id="rating_of_item_<%= offer.item.id %>">
-            <%= render :partial => "/ratings/rating", :locals => { :asset => offer.item, :only_view => false } %>
-          </div>
-        <%end%>
-
-
       </div>
     <%end%>
   <%else%>
