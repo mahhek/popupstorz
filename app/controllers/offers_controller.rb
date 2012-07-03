@@ -187,7 +187,7 @@ class OffersController < ApplicationController
         end
       end
       @offer.update_attribute("status", "Confirmed")
-    else      
+    else
       @item = @offer.item
       members = GatheringMember.find(:all, :conditions => "offer_id = #{@offer.id} and status = 'Approved'")
       members.each do|m|

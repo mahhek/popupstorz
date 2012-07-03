@@ -65,41 +65,89 @@
         <%end%>
 
         <% if offer.is_gathering %>
+          <% approved = offer.members.where("status = 'Approved'") %>
+          <% applied = offer.members.where("status = 'Applied'") %>
           <div style="width:100%;margin-top:10px;margin-bottom: 10px;">
-            <b>Join Requests</b>
-            <% count = 1 %>
-            <% offer.members.each do|member| %>
-              <h1 class="name"><%= link_to member.popup_storz_display_name, profile_path(member) %></h1>
-              <p class="name_text"><%= member.country %></p>
+            <b>Confirmed Members</b>
+            <% unless approved.blank? %>
+              <% count = 1 %>
+              <% approved.each do|member| %>
+                <h1 class="name"><%= link_to member.popup_storz_display_name, profile_path(member) %></h1>
+                <p class="name_text"><%= member.country %></p>
 
-              <% if current_user.id != member.id %>
-                <div id="store-btn">
-                  <%= link_to_function "Send Message", "$('#contact_me_div_#{member.id}_#{count}').toggle('slow');", :class => "send"  %>
-                </div>
-              <% end %>
-              <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= member.id %>_<%= count %>">
-                <%= form_tag gathering_message_messages_path , :html => {:remote => true, :id => "contact_me_form"}, :remote  => true do %>
-                  <%= hidden_field_tag :topic, "Gathering Inquiry" %>
-                  <%= hidden_field_tag :user_id, member.id %>
-                  <span style="width: auto;float: left;">
-                    <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
-                  </span><br />
-                  <div style="float: left;margin-top: 5px;clear:both;">
-                    <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{member.id}_#{count}').toggle('slow');"  %>
+                <% if current_user.id != member.id %>
+                  <div id="store-btn">
+                    <%= link_to_function "Send Message", "$('#contact_me_div_#{member.id}_#{count}').toggle('slow');", :class => "send"  %>
                   </div>
                 <% end %>
-              </div>
-              <% count += 1 %>
+                <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= member.id %>_<%= count %>">
+                  <%= form_tag gathering_message_messages_path , :html => {:remote => true, :id => "contact_me_form"}, :remote  => true do %>
+                    <%= hidden_field_tag :topic, "Gathering Inquiry" %>
+                    <%= hidden_field_tag :user_id, member.id %>
+                    <span style="width: auto;float: left;">
+                      <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
+                    </span><br />
+                    <div style="float: left;margin-top: 5px;clear:both;">
+                      <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{member.id}_#{count}').toggle('slow');"  %>
+                    </div>
+                  <% end %>
+                </div>
+                <% count += 1 %>
 
-        <%# request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
-        <%# if request.status == "confirmed" %>
-        <%# if joined.size <  offer.persons_in_gathering.to_i %>
-        <%#= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %>
-        <%#= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
-        <%#*<br /><br />%>
-        <%# end %>
-        <%# end %>
+                <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
+                <% if request.status == "confirmed" && current_user.id == offer.user_id %>
+                  <% if joined.size <  offer.persons_in_gathering.to_i %>
+                    <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
+                    <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
+                    <br /><br />
+                  <% end %>
+                <% end %>
 
+              <% end %>
+            <% else %>
+              No Member joined yet
+            <% end %>
+          </div>
+
+          <div style="width:100%;margin-top:10px;margin-bottom: 10px;">
+            <b>Applied</b>
+            <% unless applied.blank? %>
+              <% count = 1 %>
+              <% applied.each do|member| %>
+                <h1 class="name"><%= link_to member.popup_storz_display_name, profile_path(member) %></h1>
+                <p class="name_text"><%= member.country %></p>
+
+                <% if current_user.id != member.id %>
+                  <div id="store-btn">
+                    <%= link_to_function "Send Message", "$('#contact_me_div_#{member.id}_#{count}').toggle('slow');", :class => "send"  %>
+                  </div>
+                <% end %>
+                <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= member.id %>_<%= count %>">
+                  <%= form_tag gathering_message_messages_path , :html => {:remote => true, :id => "contact_me_form"}, :remote  => true do %>
+                    <%= hidden_field_tag :topic, "Gathering Inquiry" %>
+                    <%= hidden_field_tag :user_id, member.id %>
+                    <span style="width: auto;float: left;">
+                      <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
+                    </span><br />
+                    <div style="float: left;margin-top: 5px;clear:both;">
+                      <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{member.id}_#{count}').toggle('slow');"  %>
+                    </div>
+                  <% end %>
+                </div>
+                <% count += 1 %>
+
+                <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
+                <% if request.status == "confirmed" && current_user.id == offer.user_id %>
+                  <% if joined.size <  offer.persons_in_gathering.to_i %>
+                    <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
+                    <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
+                    <br /><br />
+                  <% end %>
+                <% end %>
+
+              <% end %>
+            <% else %>
+              No joining requests yet
             <% end %>
           </div>
 

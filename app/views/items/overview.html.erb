@@ -43,7 +43,12 @@
         <div>
           Your Offer: <%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
           <br/>
-          status: <%= offer.status %>
+          status: 
+          <% if  offer.status == 'joinings approved'  %>
+            <%= "Applied" %>
+          <% else %>
+          <%= offer.status %>
+          <% end %>
           <%if offer.status=="Accepted - Payment pending" && offer.item.user_id != current_user.id %>
             <form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>">
               <input TYPE="submit" VALUE="check in">
