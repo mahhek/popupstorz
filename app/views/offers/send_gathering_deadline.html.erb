@@ -28,7 +28,7 @@
         Rental Price per person: <%= @gathering.gathering_rental_price %><br />
 
         Gathering Deadline: <%= @gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
-
+        
       </div>
     </div>
 
@@ -36,7 +36,8 @@
       <div id="response_date">
         <%= form_for @gathering, :url => "/update_gathering_deadline", :html => {:onsubmit => "return check_request_form();"} do|f|  %>
           <%= f.hidden_field "id", :value => @gathering.id %>  
-          <%= f.text_field :cancellation_date, :class => "offer_cancellation_date", :value => "mm/dd/yy"%>
+          <%= f.text_field :cancellation_date, :class => "offer_cancellation_date", :value => "mm/dd/yy" %>
+          <%= hidden_field_tag "deadline", @gathering.gathering_deadline.strftime("%m/%d/%Y") %>
           <%= f.submit "Send Request"%>
         <% end %>
       </div>
@@ -46,7 +47,7 @@
 </div>
 
 <script type="text/javascript">
-  $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date() });
+  $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#deadline").val()) });
   $("#datepicker").datepicker({
     onSelect: function(dateText, inst) {
       $("#datepicker_value").val(dateText);

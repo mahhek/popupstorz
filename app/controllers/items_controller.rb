@@ -366,7 +366,7 @@ class ItemsController < ApplicationController
   end
 
   def overview
-    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is NULL",current_user.id])
+    @offers = Offer.find(:all, :conditions => ["owner_id = ? and status='joinings approved'",current_user.id])
   end
       
   def created_prev_gatherings
@@ -415,7 +415,7 @@ class ItemsController < ApplicationController
   
   def gatherings_at_my_place
     #    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
-    @offers = Offer.find(:all, :conditions => ["(owner_id = ? and user_id != ?) and persons_in_gathering is not NULL and parent_id is NULL",current_user.id,current_user.id])
+    @offers = Offer.find(:all, :conditions => ["(owner_id = ? and user_id != ?) and persons_in_gathering is not NULL and parent_id is NULL and status != 'joinings approved'",current_user.id,current_user.id])
   end
 
   def payment_charge
