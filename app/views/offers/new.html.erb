@@ -361,18 +361,23 @@
         return false;
       }else{
         
-        if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy") {          
+        if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {          
           if($("#gathering_fields").is(":hidden") == false){
             return true;
           }
           else{
-            alert('Please enter response date.');
+            alert('Please enter gathering joining deadline date.');
             return false;
           }
         }else{
           if($("#gathering_fields").is(":hidden") == false){
+            alert($("#offer_persons_in_gathering").val());
             if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
               alert("Please enter persons in gathering");
+              return false;
+            }
+            if($("#offer_persons_in_gathering").val() == 1){
+              alert("Persons in gathering must be more than 1");
               return false;
             }
             if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
@@ -387,19 +392,24 @@
           return true;
         }
       }
-    }else{
-      if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy") {
-        if($("#gathering_fields").is(":hidden") == false){
+    }else{    
+      if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {        
+        if($("#gathering_fields").is(":hidden") == true){
           return true;
         }
         else{
-          alert('Please enter response date.');
+          alert('Please enter gathering joining deadline date.');
           return false;
         }
-      }else{
+      }
+      else{
         if($("#gathering_fields").is(":hidden") == false){
           if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
             alert("Please enter persons in gathering");
+            return false;
+          }
+          if($("#offer_persons_in_gathering").val() == 1){
+            alert("Persons in gathering must be more than 1");
             return false;
           }
           if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
@@ -417,7 +427,7 @@
   }
   
   
-  function calculateTotalAmount(){
+  function calculateTotalAmount(){  
     $("#offer_rental_end_date").datepicker('option', 'minDate', new Date($("#offer_rental_start_date").val()));
 
     if($("#offer_rental_start_date").val()=="mm/dd/yy"){
@@ -450,6 +460,9 @@
       if($("#gathering_fields").is(":hidden") == false){
         if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
           alert("Please enter persons in gathering");            
+        }
+        else if($("#offer_persons_in_gathering").val() == 1){
+          alert("Persons in gathering must be more than 1");          
         }
         else{
           $("#offer_gathering_rental_price").val(parseInt(calculated_price)/parseInt($("#offer_persons_in_gathering").val()));
