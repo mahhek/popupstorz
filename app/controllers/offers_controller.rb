@@ -344,6 +344,18 @@ class OffersController < ApplicationController
     redirect_to "/items/created_coming_gatherings"
   end
   
+  def cancel_booking
+    offer = Offer.find(params[:id])
+    unless offer.blank?
+      if offer.update_attribute("status","Cancelled")
+        flash[:notice] = "Booking cancelled successfully"
+      else
+        flash[:notice] = "Booking can't be cancelled at this time please try again or later!"
+      end
+    end
+    redirect_to "/items/created_coming_gatherings"
+  end
+  
   protected
 
   def calculate_price(number_of_days, item)

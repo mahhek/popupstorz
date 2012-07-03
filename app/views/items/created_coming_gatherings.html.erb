@@ -148,7 +148,7 @@
 
                 <% end %>
               <% else %>
-                No joining requests yet
+                No pending applications
               <% end %>
             </div>
           <% end %>
@@ -158,7 +158,11 @@
             <%= link_to "Send Response Request", "/send_gathering_deadline/#{offer.id}" %> 
           <% end %>
         <% end %>
-
+        
+        <br /><br />
+        <% if (offer.status != "all joinings approved" and offer.status != "Cancelled") && current_user.id == offer.user_id %>     
+        <%= link_to "Cancel Booking", "/cancel_booking/#{offer.id}" %>
+        <% end %>
       </div>
 
     <%end%>
