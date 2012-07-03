@@ -48,6 +48,7 @@ PopupStorz::Application.routes.draw do
   match "/send_gathering_deadline/:id" => "offers#send_gathering_deadline"
   match "/update_gathering_deadline" => "offers#update_gathering_deadline"
   match "/pending_gathering_acceptance" => "offers#pending_gathering_acceptance"
+  match "/cancel_booking/:id" => "offers#cancel_booking"
      
   devise_for :users, :controllers => {:registrations => "registrations"}
 

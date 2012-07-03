@@ -259,8 +259,8 @@ class OffersController < ApplicationController
     gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",@offer.id,current_user.id])
     gathering_member.update_attributes({"user_message" => message, "status" => "Applied"})
     
-    current_user.send_message(@offer.user, :topic => "Applied for Gathering", :body => "A new <a href='http://#{request.host_with_port}/#{dashboard_path(current_user.id)}'>user </a> have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
-    @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"gathering_joined", :description => "A new <a href='http://#{request.host_with_port}/#{dashboard_path(current_user.id)}'>user </a> have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
+    current_user.send_message(@offer.user, :topic => "Applied for Gathering", :body => "A new User #{current_user.popup_storz_display_name} have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
+    @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"gathering_joined", :description => "A new User #{current_user.popup_storz_display_name} have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
     @notification.save
     
     flash[:notice] = "Successfully applied for the gathering."
