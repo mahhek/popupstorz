@@ -66,7 +66,7 @@
 
         <% if offer.is_gathering %>
           <% approved = offer.members.where("status = 'Approved'") %>
-          <% applied = offer.members.where("status = 'Applied'") %>
+          <% applied = offer.members.where("status = 'Applied' or status = 'confirmed'") %>
           <div style="width:100%;margin-top:10px;margin-bottom: 10px;">
             <b>Confirmed Members</b>
             <% unless approved.blank? %>
