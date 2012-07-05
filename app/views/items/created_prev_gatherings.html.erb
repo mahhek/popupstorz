@@ -97,8 +97,8 @@
                 <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
                 <% if request.status == "confirmed" && current_user.id == offer.user_id %>
                   <% if joined.size <  offer.persons_in_gathering.to_i %>
-                    <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
-                    <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
+                    <%#= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
+                    <%#= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
                     <br /><br />
                   <% end %>
                 <% end %>
@@ -140,8 +140,8 @@
                   <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
                   <% if request.status == "confirmed" && current_user.id == offer.user_id %>
                     <% if joined.size <  offer.persons_in_gathering.to_i %>
-                      <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
-                      <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
+                      <%#= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
+                      <%#= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
                       <br /><br />
                     <% end %>
                   <% end %>
