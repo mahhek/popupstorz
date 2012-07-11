@@ -28,7 +28,7 @@ class MessagesController < ApplicationController
 
   def contact_me
     user = User.find_by_id(params[:user_id])
-    current_user.send_message(user, :topic => params[:topic], :body => params[:body])
+    current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
     respond_to do |format|
       format.js do
         render :js => "alert('You message sent successfully, we will let owner know, thanks.');$('#contact_me_div').toggle('slow');$('#body').val('');"
@@ -40,7 +40,7 @@ class MessagesController < ApplicationController
   
   def gathering_message    
     user = User.find_by_id(params[:user_id])
-    current_user.send_message(user, :topic => params[:topic], :body => params[:body])
+    current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
     respond_to do |format|
       format.js do
         render :js => "alert('You message sent successfully, we will let owner know, thanks.');$('#contact_me_div').toggle('slow');$('#body').val('');"
@@ -116,7 +116,7 @@ class MessagesController < ApplicationController
     users = User.all :conditions => ["email in(?)", recipients]
     unless users.blank?
       users.each do |user|
-        current_user.send_message(user, :topic => params[:topic], :body => params[:body])
+        current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
       end
       flash[:notice] = "Your Message sent Successfully!"
       redirect_to inbox_messages_path

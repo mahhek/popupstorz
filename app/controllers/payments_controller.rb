@@ -68,7 +68,7 @@ class PaymentsController < ApplicationController
       
 #      if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
         user = User.find(@offer.owner_id)
-        current_user.send_message(user, :topic => "Booking Request", :body => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>booking</a> is created by #{current_user.first_name}".html_safe)
+        current_user.send_message(user, :topic => "Booking Request", :body => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a> is being created by #{current_user.first_name}".html_safe)
         @notification = Notification.new(:user_id => @offer.owner_id, :notification_type =>"booking_request", :description => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>booking request</a> is created by #{current_user.first_name}".html_safe)
         @notification.save
 #      end

@@ -286,12 +286,16 @@ class OffersController < ApplicationController
         payment.capture_gathering_commission(offer)
         
         reqs = GatheringMember.find(:all, :conditions => ["status = 'Approved' and offer_id = #{offer.id}"])
+        user = User.find(gathering_member.user_id)
+        owner = User.find(gathering_member.owner_id)
+        
         if reqs.size == offer.persons_in_gathering.to_i
           #          offer.update_attribute("status","joinings approved")
           offer.update_attribute("status","all joinings approved")
+          current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} requires your approval.".html_safe)
         end
-        user =User.find(gathering_member.user_id)
         current_user.send_message(user, :topic => "Joining Approved", :body => "Your joining request for <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> gathering</a> is approved.".html_safe)
+        current_user.send_message(owner, :topic => "User Joining Approved", :body => "#{current_user.popup_storz_display_name} joined the gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name}.".html_safe)
         @notification = Notification.new(:user_id => gathering_member.user_id, :notification_type =>"joining_approved", :description => "Your joining request for <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> gathering</a> is approved.".html_safe)
         @notification.save
         
