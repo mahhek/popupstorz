@@ -39,7 +39,7 @@ class SearchesController < ApplicationController
     @gatherings = []
     @items.each do|item|
       #      offers = item.offers.where("status = 'Applied' and persons_in_gathering > 0 and is_gathering = true and parent_id is NULL and rental_start_date <= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and rental_end_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'")      
-      offers = item.offers.where("status = 'Applied' and persons_in_gathering > 0 and is_gathering = true and parent_id is NULL and rental_end_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'")
+      offers = item.offers.where("(status NOT LIKE '%Confirmed%' and status != 'Cancelled') and persons_in_gathering > 0 and is_gathering = true and parent_id is NULL and rental_end_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'")
       offers.each do|offer|
         if !offer.members.include?(current_user) and offer.user_id != current_user.id
           @gatherings  << offer

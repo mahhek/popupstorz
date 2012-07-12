@@ -173,7 +173,7 @@ class ItemsController < ApplicationController
         
     @comment = Comment.new
    
-    @curr_offers = @item.offers.where("(status NOT LIKE '%Confirmed%') and parent_id is NULL")
+    @curr_offers = @item.offers.where("(status NOT LIKE '%Confirmed%' and status != 'Cancelled') and parent_id is NULL")
     
     @user = @item.user
     @map = GMap.new("map")

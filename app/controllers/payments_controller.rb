@@ -57,7 +57,7 @@ class PaymentsController < ApplicationController
         
         reqs = GatheringMember.find(:all, :conditions => ["status = 'Approved' and offer_id = #{@offer.id}"])
         if reqs.size == @offer.persons_in_gathering.to_i and @offer.persons_in_gathering == 1
-#          offer.update_attribute("status","joinings approved")
+          #          offer.update_attribute("status","joinings approved")
           @offer.update_attribute("status","joinings approved")
         end
         
@@ -66,12 +66,16 @@ class PaymentsController < ApplicationController
         @offer.update_attribute("status","confirmed")
       end
       
-#      if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
-        user = User.find(@offer.owner_id)
-        current_user.send_message(user, :topic => "Booking Request", :body => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a> is being created by #{current_user.first_name}".html_safe)
+      #      if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
+      owner = User.find(@offer.owner_id)
+      user = User.find(@offer.user_id)
+      if gathering_member.offer.user_id == current_user.id
+        current_user.send_message(owner, :topic => "Booking Request", :body => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a> is being created by #{current_user.first_name}".html_safe)
         @notification = Notification.new(:user_id => @offer.owner_id, :notification_type =>"booking_request", :description => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>booking request</a> is created by #{current_user.first_name}".html_safe)
         @notification.save
-#      end
+#      else
+#        current_user.send_message(user, :topic => "Booking Request", :body => "A new #{current_user.first_name} have applied to join your <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a>".html_safe)
+      end
       
       flash[:notice] = "Offer sent successfully!"
       redirect_to "/items/#{@item.id}"

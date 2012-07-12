@@ -259,10 +259,11 @@ class OffersController < ApplicationController
     gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",@offer.id,current_user.id])
     gathering_member.update_attributes({"user_message" => message, "status" => "Applied"})
     
-    current_user.send_message(@offer.user, :topic => "Applied for Gathering", :body => "A new User #{current_user.popup_storz_display_name} have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
-    @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"gathering_joined", :description => "A new User #{current_user.popup_storz_display_name} have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
-    @notification.save
-    
+    unless current_user == @offer.user
+      current_user.send_message(@offer.user, :topic => "Applied for Gathering", :body => "A new User #{current_user.popup_storz_display_name} have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
+      @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"gathering_joined", :description => "A new User #{current_user.popup_storz_display_name} have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
+      @notification.save
+    end
     flash[:notice] = "Successfully applied for the gathering."
     redirect_to  new_item_offer_payment_path(@item,@offer)
     #    redirect_to "/items/show/#{offer.item_id}"
@@ -287,12 +288,12 @@ class OffersController < ApplicationController
         
         reqs = GatheringMember.find(:all, :conditions => ["status = 'Approved' and offer_id = #{offer.id}"])
         user = User.find(gathering_member.user_id)
-        owner = User.find(gathering_member.owner_id)
+        owner = User.find(gathering_member.offer.owner_id)
         
         if reqs.size == offer.persons_in_gathering.to_i
           #          offer.update_attribute("status","joinings approved")
           offer.update_attribute("status","all joinings approved")
-          current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} requires your approval.".html_safe)
+          #          current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} requires your approval.".html_safe)
         end
         current_user.send_message(user, :topic => "Joining Approved", :body => "Your joining request for <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> gathering</a> is approved.".html_safe)
         current_user.send_message(owner, :topic => "User Joining Approved", :body => "#{current_user.popup_storz_display_name} joined the gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name}.".html_safe)
@@ -344,14 +345,26 @@ class OffersController < ApplicationController
     offer = Offer.find(params[:offer][:id])
     params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time
     offer.update_attributes({"cancellation_date" => params[:offer][:cancellation_date], "status" => "joinings approved"})
+    owner = User.find(offer.owner_id)
+    current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} requires your approval.".html_safe)
     flash[:notice] = "Response date updated successfully"
     redirect_to "/items/created_coming_gatherings"
   end
   
-  def cancel_booking
+  def cancel_booking    
     offer = Offer.find(params[:id])
     unless offer.blank?
       if offer.update_attribute("status","Cancelled")
+        owner = User.find(offer.owner_id)
+        user = User.find(offer.user_id)
+        appliers = offer.members.where("status = 'Approved'")
+        appliers.each do |u|
+          unless u == user
+            current_user.send_message(u, :topic => "Gathering Cancelled", :body => "Gathering <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} for which you have applied, is cancelled by creator.".html_safe)
+          end
+        end
+        current_user.send_message(owner, :topic => "Gathering Cancelled", :body => "Gathering at your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} is cancelled by user.".html_safe)
+        current_user.send_message(user, :topic => "Gathering Cancelled", :body => "Your created gathering at <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> is cancelled by successfully.".html_safe)
         flash[:notice] = "Booking cancelled successfully"
       else
         flash[:notice] = "Booking can't be cancelled at this time please try again or later!"
