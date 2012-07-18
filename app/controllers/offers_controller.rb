@@ -289,16 +289,19 @@ class OffersController < ApplicationController
         user = User.find(gathering_member.user_id)
         owner = User.find(gathering_member.offer.owner_id)
         
-        if reqs.size == offer.persons_in_gathering.to_i
-          #          offer.update_attribute("status","joinings approved")
-          offer.update_attribute("status","all joinings approved")
-          #          current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} requires your approval.".html_safe)
-        end
+        
         current_user.send_message(user, :topic => "Joining Approved", :body => "Your joining request for <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> gathering</a> is approved.".html_safe)
         current_user.send_message(owner, :topic => "User Joining Approved", :body => "#{user.popup_storz_display_name} joined the gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{current_user.popup_storz_display_name}.".html_safe)
         @notification = Notification.new(:user_id => gathering_member.user_id, :notification_type =>"joining_approved", :description => "Your joining request for <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> gathering</a> is approved.".html_safe)
         @notification.save
-        
+        if reqs.size == offer.persons_in_gathering.to_i
+          #          offer.update_attribute("status","joinings approved")
+          offer.update_attribute("status","all joinings approved")
+          current_user.send_message(current_user, :topic => "Send Offer to Owner", :body => "Gathering created at <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} is now full, please go to My bookings, sub-menu Upcoming to send offer to owner.".html_safe)
+#          flash[:notice] = "Gathering is full now you has to send the offer to owner"
+          #          current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} requires your approval.".html_safe)
+          
+        end
         flash[:notice] = "Offer accepted successfully!"
       else
         flash[:notice] = "Offer can't be accepted right now.Please try again or later."
