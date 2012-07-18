@@ -28,7 +28,7 @@
         Rental Price per person: <%= @gathering.gathering_rental_price %><br />
 
         Gathering Deadline: <%= @gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
-        
+
       </div>
     </div>
 
@@ -36,6 +36,16 @@
       <div id="response_date">
         <%= form_for @gathering, :url => "/update_gathering_deadline", :html => {:onsubmit => "return check_request_form();"} do|f|  %>
           <%= f.hidden_field "id", :value => @gathering.id %>  
+          <label style="line-height:18px; ">
+            Send <strong> <%= @gathering.user.popup_storz_display_name %></strong> message:
+            <small>maybe tell him/her why you need the space</small></label><br/><br/>
+          <%= f.fields_for :offer_messages do |offer_message| %>    
+            <%= offer_message.text_area :message %>
+            <%= offer_message.hidden_field :user_id, :value => current_user.id %>
+            <%= offer_message.hidden_field :offer_id, :value => @gathering.id %>
+            <%= offer_message.hidden_field :msg_posted_as, :value => @gathering.user == current_user ? "Owner" : "Renter"%>    
+          <% end %>
+          <br/>
           <%= f.text_field :cancellation_date, :class => "offer_cancellation_date", :value => "mm/dd/yy" %>
           <%= hidden_field_tag "deadline", @gathering.gathering_deadline.strftime("%m/%d/%Y") %>
           <%= f.submit "Send Request"%>

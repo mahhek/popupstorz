@@ -226,7 +226,7 @@ class OffersController < ApplicationController
       @item = @offer.item
       members = GatheringMember.find(:all, :conditions => "offer_id = #{@offer.id} and status = 'Approved'")
       members.each do|m|
-        current_user.send_message(m.user, :topic => "Offer Accepted", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been accepted by the owner.".html_safe)
+        current_user.send_message(m.user, :topic => "Offer Declined", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been Declined by the owner.".html_safe)
       end      
       @offer.update_attribute("status", "Declined")
       redirect_to "/items/gatherings_at_my_place"
@@ -263,8 +263,7 @@ class OffersController < ApplicationController
       current_user.send_message(@offer.user, :topic => "Applied for Gathering", :body => "A new User #{current_user.popup_storz_display_name} have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
       @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"gathering_joined", :description => "A new User #{current_user.popup_storz_display_name} have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
       @notification.save
-    end
-    flash[:notice] = "Successfully applied for the gathering."
+    end    
     redirect_to  new_item_offer_payment_path(@item,@offer)
     #    redirect_to "/items/show/#{offer.item_id}"
   end
@@ -339,14 +338,20 @@ class OffersController < ApplicationController
   
   def send_gathering_deadline
     @gathering = Offer.find(params[:id])
+    @gathering.offer_messages.build
   end
   
-  def update_gathering_deadline
+  def update_gathering_deadline    
     offer = Offer.find(params[:offer][:id])
     params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time
     offer.update_attributes({"cancellation_date" => params[:offer][:cancellation_date], "status" => "joinings approved"})
     owner = User.find(offer.owner_id)
-    current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} requires your approval.".html_safe)
+    unless params[:offer][:offer_messages_attributes].blank?
+      params[:offer][:offer_messages_attributes].each do|k,v|
+        OfferMessage.create(v)
+      end
+    end    
+    current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{offer.user.popup_storz_display_name} requires your approval.".html_safe)
     flash[:notice] = "Response date updated successfully"
     redirect_to "/items/created_coming_gatherings"
   end

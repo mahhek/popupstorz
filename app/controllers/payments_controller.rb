@@ -17,7 +17,7 @@ class PaymentsController < ApplicationController
       current_user.send_message(@offer.user != current_user ? @offer.user : @item.user, :topic => "Offer Updated", :body => "The <a href='http://#{request.host_with_port}/items/#{@item.id}/offers/#{@offer.id}/edit'>offer</a> you made on #{@item.title} has been modified by #{@offer.user != current_user ? "Owner": "Renter"}. Please review to accept or decline.".html_safe)
       @notification = Notification.new(:user_id => @offer.user != current_user ? @offer.user.id : @item.user.id, :notification_type =>"offer_updated", :description => "The <a href='http://#{request.host_with_port}/items/#{@item.id}/offers/#{@offer.id}/edit'>offer</a> you made on #{@item.title} has been modified by #{@offer.user != current_user ? "Owner": "Renter"}. Please review to accept or decline.".html_safe)
       @notification.save
-      flash[:notice] = "Your suggestion has been sent to owner, thanks."
+      flash[:notice] = "You have successfully created a gathering, now waiting for others to join."
       redirect_to "/"
     end
 
@@ -70,14 +70,16 @@ class PaymentsController < ApplicationController
       owner = User.find(@offer.owner_id)
       user = User.find(@offer.user_id)
       if gathering_member.offer.user_id == current_user.id
-        current_user.send_message(owner, :topic => "Booking Request", :body => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a> is being created by #{current_user.first_name}".html_safe)
+        current_user.send_message(owner, :topic => "Gathering", :body => "#{current_user.first_name} has created a gathering for #{@offer.persons_in_gathering} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} and is now waiting for others to join before sending you an offer.".html_safe)
         @notification = Notification.new(:user_id => @offer.owner_id, :notification_type =>"booking_request", :description => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>booking request</a> is created by #{current_user.first_name}".html_safe)
         @notification.save
-#      else
-#        current_user.send_message(user, :topic => "Booking Request", :body => "A new #{current_user.first_name} have applied to join your <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a>".html_safe)
+        flash[:notice] = "You have successfully created a gathering, now waiting for others to join."
+      else
+        flash[:notice] = "Successfully applied for the gathering."
+        #        current_user.send_message(user, :topic => "Booking Request", :body => "A new #{current_user.first_name} have applied to join your <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a>".html_safe)
       end
       
-      flash[:notice] = "Offer sent successfully!"
+      
       redirect_to "/items/#{@item.id}"
     else
       puts pay_response.errors.first['message']
