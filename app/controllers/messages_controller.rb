@@ -110,8 +110,7 @@ class MessagesController < ApplicationController
   def compose    
   end
 
-  def send_message
-    
+  def send_message    
     recipients = params[:to].split(/;|,/)
     users = User.all :conditions => ["email in(?)", recipients]
     unless users.blank?

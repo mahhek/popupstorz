@@ -465,7 +465,7 @@
         number_of_days = 1;
       }
       
-      $('#total_days').text(number_of_days+ " days");
+      $('#total_days').text( Math.round(number_of_days)+ " days");
       calculated_price = calculate_price(number_of_days);
 
       jQuery.ajax({

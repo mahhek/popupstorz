@@ -68,7 +68,7 @@ class PaymentsController < ApplicationController
         user = User.find(@offer.user_id)
         if gathering_member.offer.user_id == current_user.id
           current_user.send_message(owner, :topic => "Gathering", :body => "#{current_user.first_name} has created a gathering for #{@offer.persons_in_gathering} people from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} at your <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> and is now waiting for others to join before sending you an offer. You can check status of the gathering under 'My listings' sub-menu 'Gatherings at my place'".html_safe)
-          @notification = Notification.new(:user_id => @offer.owner_id, :notification_type =>"booking_request", :description => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>booking request</a> is created by #{current_user.first_name}".html_safe)
+          @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering", :description => "#{current_user.first_name} has created a gathering for #{@offer.persons_in_gathering} people from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} at your <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> and is now waiting for others to join before sending you an offer. You can check status of the gathering under 'My listings' sub-menu 'Gatherings at my place'".html_safe)
           @notification.save
           flash[:notice] = "You have successfully created a gathering, now waiting for others to join."
         else
@@ -100,7 +100,9 @@ class PaymentsController < ApplicationController
       users = User.all :conditions => ["email in(?)", recipients]
       unless users.blank?
         users.each do |user|
-          current_user.send_message(user, :topic => "Gathering Confirmation Request", :body => "Please confirm the gathering as the required members have joined.")
+          current_user.send_message(user, :topic => "Gathering Confirmation Request", :body => "Please confirm the gathering as the required members have joined.".html_safe)
+          @notification = Notification.new(:user_id => user.id, :notification_type =>"Gathering Confirmation Request", :description => "Please confirm the gathering as the required members have joined.".html_safe)
+          @notification.save
         end
       end    
     end
@@ -131,29 +133,16 @@ class PaymentsController < ApplicationController
         "ipnNotificationUrl"=>"http://localhost:3000/products/ipn_notification"
       }
     end
-              
-    #    pay_response = pay_request.pay(data)
-    ##    p "aaaaaaaaaaaaaaaaa",pay_response.inspect
-    ##    f
-    #    if pay_response.success?
-    #      redirect_to pay_response.approve_paypal_payment_url
-    #    end
+
   end
   
   def capture_gathering_commission_and_payment(offer)
     commission = ((offer.total_amount.to_f*10)/100).to_s
     transfer_amount = offer.total_amount.to_f - commission.to_f
-    #    p "aaaaaaaaaaaaaaaaaaa",commission
-    #    p "bbbbbbbbbbbbbbbbbbb",transfer_amount
-    #    g
-    
-    #    ff
   end
   
   def capture_offer_commission_and_payment(offer)
-    #    a
     offer.update_attribute(:status, "Paid but waiting for FeedBack")
-    #    ff
   end
   
   

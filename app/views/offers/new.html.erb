@@ -451,7 +451,7 @@
       if(number_of_days == 0){
         number_of_days = 1;
       }
-      
+      number_of_days = Math.round(number_of_days)
       $('#duration').text(number_of_days+ " days");
       calculated_price = calculate_price(number_of_days);
       

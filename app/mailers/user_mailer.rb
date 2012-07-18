@@ -4,8 +4,9 @@ class UserMailer < ActionMailer::Base
 
   def send_notification(notification)
     @user = notification.user
+    @subject = notification.notification_type
     @notification = notification
-    mail(:to => @user.email, :subject => "You have a new notification")
+    mail(:to => @user.email, :subject => @subject)
   end
 
   def send_invitation_email(invitation)
