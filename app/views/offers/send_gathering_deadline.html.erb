@@ -37,7 +37,7 @@
         <%= form_for @gathering, :url => "/update_gathering_deadline", :html => {:onsubmit => "return check_request_form();"} do|f|  %>
           <%= f.hidden_field "id", :value => @gathering.id %>  
           <label style="line-height:18px; ">
-            Send <strong> <%= @gathering.user.popup_storz_display_name %></strong> message:
+            Send <strong> <%= @gathering.item.user.popup_storz_display_name %></strong> message:
             <small>maybe tell him/her why you need the space</small></label><br/><br/>
           <%= f.fields_for :offer_messages do |offer_message| %>    
             <%= offer_message.text_area :message %>

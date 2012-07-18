@@ -260,7 +260,7 @@ class OffersController < ApplicationController
     gathering_member.update_attributes({"user_message" => message, "status" => "Applied"})
     
     unless current_user == @offer.user
-      current_user.send_message(@offer.user, :topic => "Gathering Application", :body => "#{current_user.popup_storz_display_name} has applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a> at #{@item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
+      current_user.send_message(@offer.user, :topic => "Gathering Application", :body => "#{current_user.popup_storz_display_name} has applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a> at #{@item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}. Please go to My bookings, sub-menu Upcoming, and accept or decline the applicant".html_safe)
       @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"gathering_joined", :description => "A new User #{current_user.popup_storz_display_name} have applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a>".html_safe)
       @notification.save
     end    
@@ -352,7 +352,7 @@ class OffersController < ApplicationController
       end
     end    
     current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{offer.user.popup_storz_display_name} requires your approval.".html_safe)
-    flash[:notice] = "Response date updated successfully"
+    flash[:notice] = "Offer sent successfully"
     redirect_to "/items/created_coming_gatherings"
   end
   
