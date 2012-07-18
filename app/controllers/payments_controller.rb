@@ -67,7 +67,7 @@ class PaymentsController < ApplicationController
         owner = User.find(@offer.owner_id)
         user = User.find(@offer.user_id)
         if gathering_member.offer.user_id == current_user.id
-          current_user.send_message(owner, :topic => "Gathering", :body => "#{current_user.first_name} has created a gathering for #{@offer.persons_in_gathering} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} at your space and is now waiting for others to join before sending you an offer. You can check status of the gathering under 'My listings' sub-menu 'Gatherings at my place'".html_safe)
+          current_user.send_message(owner, :topic => "Gathering", :body => "#{current_user.first_name} has created a gathering for #{@offer.persons_in_gathering} people from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} at your space and is now waiting for others to join before sending you an offer. You can check status of the gathering under 'My listings' sub-menu 'Gatherings at my place'".html_safe)
           @notification = Notification.new(:user_id => @offer.owner_id, :notification_type =>"booking_request", :description => "A new <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>booking request</a> is created by #{current_user.first_name}".html_safe)
           @notification.save
           flash[:notice] = "You have successfully created a gathering, now waiting for others to join."
