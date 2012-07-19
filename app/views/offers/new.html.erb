@@ -82,12 +82,14 @@
       // jsFiddle
       $("#offer_rental_start_date").datepicker({
         minDate: new Date(),
+        maxDate: '<%= @item.availability_to.strftime("%m/%d/%Y") %>',
         dateFormat: 'mm/dd/yy',
         beforeShowDay: disableRangeOfDays
       });
 
       $("#offer_rental_end_date").datepicker({
         minDate: new Date(),
+        maxDate: '<%= @item.availability_to.strftime("%m/%d/%Y") %>',
         dateFormat: 'mm/dd/yy',
         beforeShowDay: disableRangeOfDays
       });
@@ -428,7 +430,7 @@
   }
   
   
-  function calculateTotalAmount(){  
+  function calculateTotalAmount(){
     $("#offer_rental_end_date").datepicker('option', 'minDate', new Date($("#offer_rental_start_date").val()));
 
     if($("#offer_rental_start_date").val()=="mm/dd/yy"){

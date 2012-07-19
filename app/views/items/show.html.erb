@@ -69,6 +69,7 @@
       if('<%= session[:start_date] %>' == ""){
         $("#txtFromDate").datepicker({
           minDate: new Date(),
+          maxDate: '<%= @item.availability_to.strftime("%m/%d/%Y") %>',
           dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays,
         });
@@ -76,6 +77,7 @@
         $("#txtFromDate").val('<%= session[:start_date] %>');
         $("#txtFromDate").datepicker({
           minDate: new Date(),
+          maxDate: '<%= @item.availability_to.strftime("%m/%d/%Y") %>',
           dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays
 
@@ -84,6 +86,7 @@
       if('<%= session[:start_date] %>' == ""){
         $("#txtToDate").datepicker({
           minDate: new Date(),
+          maxDate: '<%= @item.availability_to.strftime("%m/%d/%Y") %>',
           dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays
         });
@@ -91,6 +94,7 @@
         $("#txtToDate").val('<%= session[:end_date] %>');
         $("#txtToDate").datepicker({
           minDate: new Date(),
+          maxDate: '<%= @item.availability_to.strftime("%m/%d/%Y") %>',
           dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays
         });
@@ -203,7 +207,7 @@
           Total required Persons: <%= gathering.persons_in_gathering %><br />
           Joined Persons: <%= gathering.members.size %><br/>
           Rental Price per person: <%= gathering.gathering_rental_price %><br />
-         
+
           Gathering Deadline: <%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
           <% unless current_user.blank? %>
             <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
@@ -223,43 +227,43 @@
     <div class="line"></div>
     <div id="comments" style="height: 200px;display: none;">
 
-    <%= form_for @comment, :url => "/items/add_comment" do |f| %>
-      <% if @comment.errors.any? %>
-        <div id="errorExplanation" class="erro_messages">
-          <h2>Oops! Looks like you need to include the following:</h2>
-          <ul>
-            <li style="list-style: square;float: left;">
-              <%= @comment.errors.full_messages.to_sentence  %>
-            </li>
-          </ul>
+      <%= form_for @comment, :url => "/items/add_comment" do |f| %>
+        <% if @comment.errors.any? %>
+          <div id="errorExplanation" class="erro_messages">
+            <h2>Oops! Looks like you need to include the following:</h2>
+            <ul>
+              <li style="list-style: square;float: left;">
+                <%= @comment.errors.full_messages.to_sentence  %>
+              </li>
+            </ul>
+          </div>
+        <% end %>
+
+        <%= hidden_field_tag "id",@item.id %>
+        <div class="field">
+          <%= f.label :title %><br/>
+          <%= f.text_field "title" %>
+        </div>
+        <div class="field">
+          <%= f.label :comment %><br />
+          <%= f.text_area "comment", :rows => 5 %><br />
+          <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
         </div>
       <% end %>
-
-      <%= hidden_field_tag "id",@item.id %>
-      <div class="field">
-        <%= f.label :title %><br/>
-        <%= f.text_field "title" %>
-      </div>
-      <div class="field">
-        <%= f.label :comment %><br />
-        <%= f.text_area "comment", :rows => 5 %><br />
-        <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
-      </div>
-    <% end %>
     </div>
     <br/><br/>
 <%#if current_user%>
     <div id="show_comments" style="display: none;" >
       <b>Previous Comments:</b><br/>
-    <%unless @item.comments.blank? %>
-      <%@item.comments.each do|f|%>
-        <b><%=f.title  %></b><br/>
-        <%= f.comment %><br/>
-        <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
-        <br/>
-        <br/>
+      <%unless @item.comments.blank? %>
+        <%@item.comments.each do|f|%>
+          <b><%=f.title  %></b><br/>
+          <%= f.comment %><br/>
+          <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+          <br/>
+          <br/>
+        <%end%>
       <%end%>
-    <%end%>
     </div>
 <%#*<div id="rating_of_item_<%= @item.id %>
 <%#= render :partial => "/ratings/rating", :locals => { :asset => @item, :only_view => false } 
@@ -273,11 +277,11 @@
 <div class="fltR">
   <div class="shadowCont w212">
     <div class="fltL">
-    <% if @item.user.avatars.size > 0 %>
-      <%= link_to image_tag(@item.user.avatars.first.photo.url(:thumb), :height => "56", :alt => "Seller-Image" ), profile_path(@item.user) %>
-    <% else %>
-      <%= link_to image_tag("User.png", :height => "56"), profile_path(@item.user) %>
-    <% end %>
+      <% if @item.user.avatars.size > 0 %>
+        <%= link_to image_tag(@item.user.avatars.first.photo.url(:thumb), :height => "56", :alt => "Seller-Image" ), profile_path(@item.user) %>
+      <% else %>
+        <%= link_to image_tag("User.png", :height => "56"), profile_path(@item.user) %>
+      <% end %>
     </div>
     <div class="fltR w107">
 
@@ -285,23 +289,23 @@
 
       <h1 class="name"><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %></h1>
       <p class="name_text"><%= @item.user.country %></p>
-    <% if current_user != @item.user %>
-      <div id="store-btn">
-        <%= link_to_function "Contact Me", "$('#contact_me_div').toggle('slow');", :class => "send"  %>
-      </div>
-    <% end %>
-
-      <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
-      <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
-        <%= hidden_field_tag :topic, "Inquiry" %>
-        <%= hidden_field_tag :user_id, @item.user.id %>
-        <span style="width: auto;float: left;">
-          <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
-        </span>
-        <div style="float: left;margin-top: 5px;">
-          <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
+      <% if current_user != @item.user %>
+        <div id="store-btn">
+          <%= link_to_function "Contact Me", "$('#contact_me_div').toggle('slow');", :class => "send"  %>
         </div>
       <% end %>
+
+      <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
+        <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
+          <%= hidden_field_tag :topic, "Inquiry" %>
+          <%= hidden_field_tag :user_id, @item.user.id %>
+          <span style="width: auto;float: left;">
+            <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
+          </span>
+          <div style="float: left;margin-top: 5px;">
+            <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
+          </div>
+        <% end %>
       </div>
     </div>
     <div class="clear"></div>
@@ -310,76 +314,76 @@
   <div class="shadowCont w212 mt30">
     <h1 class="available">Availabilities</h1>
     <div id="box-bookit">
-    <%= form_tag new_item_offer_path(@item.id), :method => :get  , :id => "book_it_form", :onsubmit => "return check_dates();" do  %>
-      <div id="pricing" style="margin-top: 10px;">
-        <div class="price_to_book" >
-          <span id="price"  style="float: left;width: 110px;">
-            <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-          </span>
-          <span style="float: left;">
-            <select name="price_per_span" onchange="change_price_to_book($(this));">
-              <option value="<%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>">Per day</option>
-              <option value="<%= number_to_currency(exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>">Per week</option>
-              <option value="<%= number_to_currency(exchange_currency(@item.price_per_month.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>">Per month</option>
-            </select>
-            <%= hidden_field_tag :per_day_price, @item.price %>
-            <%= hidden_field_tag :per_week_price, @item.price_per_week %>
-            <%= hidden_field_tag :per_month_price, @item.price_per_month %>
-          </span>
+      <%= form_tag new_item_offer_path(@item.id), :method => :get  , :id => "book_it_form", :onsubmit => "return check_dates();" do  %>
+        <div id="pricing" style="margin-top: 10px;">
+          <div class="price_to_book" >
+            <span id="price"  style="float: left;width: 110px;">
+              <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            </span>
+            <span style="float: left;">
+              <select name="price_per_span" onchange="change_price_to_book($(this));">
+                <option value="<%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>">Per day</option>
+                <option value="<%= number_to_currency(exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>">Per week</option>
+                <option value="<%= number_to_currency(exchange_currency(@item.price_per_month.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>">Per month</option>
+              </select>
+              <%= hidden_field_tag :per_day_price, @item.price %>
+              <%= hidden_field_tag :per_week_price, @item.price_per_week %>
+              <%= hidden_field_tag :per_month_price, @item.price_per_month %>
+            </span>
+          </div>
+
+  <%#*<div class="clear"></div>%>
+        </div>
+        <div id="r-date">
+          <div id="pickup" style="margin-top: 10px;float: left;">
+            <span style="float: left;width: 60px;">
+              <label>Pick up</label>
+            </span>
+            <span style="float: left;width: 140px;">
+              <input type="text" value="mm/dd/yy" name="pick_up" id="txtFromDate" onchange ="calculateTotalAmount();" size="15" />
+            </span>
+          </div>
+          <div id="return"  style="margin-top: 10px;float: left;">
+            <span style="float: left;width: 60px;">
+              <label>Return</label>
+            </span>
+            <span style="float: left;width: 140px;">
+              <input type="text" value="mm/dd/yy"  name="return" id="txtToDate" onchange ="calculateTotalAmount();" size="15" />
+            </span>
+          </div>
+          <div class="clear"></div>
         </div>
 
-<%#*<div class="clear"></div>%>
-      </div>
-      <div id="r-date">
-        <div id="pickup" style="margin-top: 10px;float: left;">
-          <span style="float: left;width: 60px;">
-            <label>Pick up</label>
-          </span>
-          <span style="float: left;width: 140px;">
-            <input type="text" value="mm/dd/yy" name="pick_up" id="txtFromDate" onchange ="calculateTotalAmount();" size="15" />
-          </span>
+        <div id="r-date">
+          <div id="pickup" style="margin-top: 10px;float: left;">
+            <span style="float: left;width: 100px;">
+              <label>Total Days</label>
+            </span>
+            <span style="float: left;width: 100px;">
+              <div id="total_days" class="price_to_book" style="margin-left: 10px;font-size: 14px;">0 &nbsp;days</div>
+            </span>
+          </div>
+          <div id="return"  style="margin-top: 10px;float: left;">
+            <span style="float: left;width: 100px;">
+              <label>Total Price</label>
+            </span>
+            <span style="float: left;width: 100px;">
+              <div id="total_price" class="price_to_book" style="margin-left: 10px;font-size: 14px;">0</div>
+            </span>
+          </div>
+          <div class="clear"></div>
         </div>
-        <div id="return"  style="margin-top: 10px;float: left;">
-          <span style="float: left;width: 60px;">
-            <label>Return</label>
-          </span>
-          <span style="float: left;width: 140px;">
-            <input type="text" value="mm/dd/yy"  name="return" id="txtToDate" onchange ="calculateTotalAmount();" size="15" />
-          </span>
+
+        <div id="submit-book">
+
+          <% unless (@item.user == current_user) %>
+            <a href="#" onclick="$('#book_it_form').submit();" class="search ml70"> Book it </a>
+          <% else %>
+            <a href="#" onclick="alert('You are owner, You can not book it, Thanks.');return false;" class="search ml70">Book it</a>
+          <% end %>
+
         </div>
-        <div class="clear"></div>
-      </div>
-
-      <div id="r-date">
-        <div id="pickup" style="margin-top: 10px;float: left;">
-          <span style="float: left;width: 100px;">
-            <label>Total Days</label>
-          </span>
-          <span style="float: left;width: 100px;">
-            <div id="total_days" class="price_to_book" style="margin-left: 10px;font-size: 14px;">0 &nbsp;days</div>
-          </span>
-        </div>
-        <div id="return"  style="margin-top: 10px;float: left;">
-          <span style="float: left;width: 100px;">
-            <label>Total Price</label>
-          </span>
-          <span style="float: left;width: 100px;">
-            <div id="total_price" class="price_to_book" style="margin-left: 10px;font-size: 14px;">0</div>
-          </span>
-        </div>
-        <div class="clear"></div>
-      </div>
-
-      <div id="submit-book">
-
-        <% unless (@item.user == current_user) %>
-          <a href="#" onclick="$('#book_it_form').submit();" class="search ml70"> Book it </a>
-        <% else %>
-          <a href="#" onclick="alert('You are owner, You can not book it, Thanks.');return false;" class="search ml70">Book it</a>
-        <% end %>
-
-      </div>
-    <% end %>
+      <% end %>
     </div>
 
 

@@ -366,34 +366,34 @@ class ItemsController < ApplicationController
   end
 
   def overview
-    @offers = Offer.find(:all, :conditions => ["owner_id = ? and status='joinings approved'",current_user.id])
+    @offers = Offer.find(:all, :conditions => ["owner_id = ? and (status = 'joinings approved' or status = 'Confirmed')",current_user.id], :order => "rental_start_date ASC")
   end
       
   def created_prev_gatherings
     #    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])     
-    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'",current_user.id,current_user.id])
+    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'",current_user.id,current_user.id], :order => "rental_start_date ASC")
     gathers = @gatherings.group_by(&:item_id)
     gathers.each do|k,v|
       @gatherings = v
     end
-    @gatherings = @gatherings + current_user.gatherings.where("persons_in_gathering is not NULL and parent_id is NULL and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'")
+    @gatherings = @gatherings + current_user.gatherings.where("persons_in_gathering is not NULL and parent_id is NULL and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'", :order => "rental_start_date ASC")
     @gatherings = @gatherings.uniq
-    @offers = Offer.find(:all, :conditions => ["(user_id = ? or owner_id = ?) and persons_in_gathering is NULL and is_gathering = false and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])
+    @offers = Offer.find(:all, :conditions => ["(user_id = ? or owner_id = ?) and persons_in_gathering is NULL and is_gathering = false and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id], :order => "rental_start_date ASC")
   end
   
   def created_coming_gatherings
     #    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])
-    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status !='joinings approved'",current_user.id,current_user.id])
+    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status !='joinings approved'",current_user.id,current_user.id], :order => "rental_start_date ASC")
     gathers = @gatherings.group_by(&:item_id)
     gathers.each do|k,v|
       @gatherings = v
     end
-    @gatherings = @gatherings + current_user.gatherings.where("persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'")
+    @gatherings = @gatherings + current_user.gatherings.where("persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'", :order => "rental_start_date ASC")
     @gatherings = @gatherings.uniq
     
 #    Gatherings which current user have joined and requests are accepted by creator
     gathering = []
-    joined = Offer.find(:all, :conditions => ["parent_id is NOT NULL and status = 'Approved'"])
+    joined = Offer.find(:all, :conditions => ["parent_id is NOT NULL and status = 'Approved'"], :order => "rental_start_date ASC")
     joined.each do |of|      
       gathering << Offer.find(of.parent_id)
     end
@@ -401,7 +401,7 @@ class ItemsController < ApplicationController
     @gatherings = @gatherings + gathering    
     @gatherings = @gatherings.uniq
     
-    @offers = Offer.find(:all, :conditions => ["(user_id = ? or owner_id = ?) and persons_in_gathering is NULL and is_gathering = false and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])
+    @offers = Offer.find(:all, :conditions => ["(user_id = ? or owner_id = ?) and persons_in_gathering is NULL and is_gathering = false and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id], :order => "rental_start_date ASC")
     @gatherings = @gatherings + @offers
     
     @gatherings = @gatherings.uniq
@@ -409,13 +409,13 @@ class ItemsController < ApplicationController
   
     
   def pending_gathering_acceptance
-    @gatherings = current_user.gatherings.where("offers.user_id != #{current_user.id}  and gathering_members.status = 'confirmed' and (offers.status = 'Applied' or offers.status = 'all joinings approved' or offers.status ='joinings approved')")
+    @gatherings = current_user.gatherings.where("offers.user_id != #{current_user.id}  and gathering_members.status = 'confirmed' and (offers.status = 'Applied' or offers.status = 'all joinings approved' or offers.status ='joinings approved')", :order => "rental_start_date ASC")
     @gatherings = @gatherings.uniq
   end
   
   def gatherings_at_my_place
     #    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
-    @offers = Offer.find(:all, :conditions => ["(owner_id = ? and user_id != ?) and persons_in_gathering is not NULL and parent_id is NULL and status != 'joinings approved'",current_user.id,current_user.id])
+    @offers = Offer.find(:all, :conditions => ["(owner_id = ? and user_id != ?) and persons_in_gathering is not NULL and parent_id is NULL and (status != 'joinings approved' and status != 'Confirmed')",current_user.id,current_user.id], :order => "rental_start_date ASC")
   end
 
   def payment_charge

@@ -265,6 +265,10 @@ class OffersController < ApplicationController
       current_user.send_message(@offer.user, :topic => "Gathering Application", :body => "#{current_user.popup_storz_display_name} has applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a> at #{@item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}. Please go to My bookings, sub-menu Upcoming, and accept or decline the applicant".html_safe)
       @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"Gathering Application", :description => "#{current_user.popup_storz_display_name} has applied for your <a href='http://#{request.host_with_port}/items/#{@item.id}'> gathering</a> at #{@item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}. Please go to My bookings, sub-menu Upcoming, and accept or decline the applicant".html_safe)
       @notification.save
+      
+      current_user.send_message(@offer.user, :topic => "User Gathering Message", :body => "#{params[:user_message]}".html_safe)
+      @notification = Notification.new(:user_id => @offer.user_id, :notification_type =>"User Gathering Message", :description => "#{params[:user_message]}".html_safe)
+      @notification.save
     end    
     redirect_to  new_item_offer_payment_path(@item,@offer)
     #    redirect_to "/items/show/#{offer.item_id}"

@@ -147,8 +147,8 @@
                 <span style="float: left;">
                   <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" or (params[:controller] == "email_settings") %>
                     <%= link_to 'Messages', inbox_messages_path %>
-                    <%= link_to 'My Listings', listings_home_items_path %>
-                    <%= link_to 'My Bookings', "/items/created_prev_gatherings"%>
+                    <%= link_to 'My Listings', overview_items_path %>
+                    <%= link_to 'My Bookings', "/items/created_coming_gatherings"%>
       <%#= link_to 'My Gatherings', "/items/gatherings"%>
                     <%= link_to 'My Favorites', favorites_items_path %>
                     <%= link_to('My Profile', profile_path(current_user.id)) %>                    
