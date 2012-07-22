@@ -82,6 +82,7 @@
             End Date: <%= @offer.rental_end_date.strftime("%m-%d-%Y") %><br />
             Total required Persons: <%= @offer.persons_in_gathering %><br />
             Joined Persons: <%= @offer.members.size %><br/>
+            Description: <%= @offer.gathering_description %><br/>
             Rental Price per person: <%= @offer.gathering_rental_price %>
             <br />
             Gathering Deadline: <%= @offer.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
