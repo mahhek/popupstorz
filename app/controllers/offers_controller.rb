@@ -44,6 +44,7 @@ class OffersController < ApplicationController
   end
 
   def create
+    
     @offer = Offer.find_by_item_id_and_user_id_and_status(params[:item_id],current_user.id,"Pending")
     @item = Item.find params[:item_id]
     
@@ -78,7 +79,14 @@ class OffersController < ApplicationController
         session[:pick_up] = nil
         
         @offer.update_attribute(:status, "Applied")
-
+        if !params[:offer].blank? && !params[:offer][:offer_messages_attributes].blank?
+    params[:offer][:offer_messages_attributes].each do|k,v|     
+      current_user.send_message(@item.user, :topic => "Booking Message", :body => "#{v[:message]}".html_safe)
+      @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"Booking Message", :description => "#{v[:message]}".html_safe)
+        @notification.save
+    end
+    end
+        
         #        @offer.update_attributes(:cancellation_date => (@offer.updated_at + 24.hours))
         redirect_to  new_item_offer_payment_path(@item,@offer)
       else
@@ -380,16 +388,16 @@ class OffersController < ApplicationController
         appliers = offer.members.where("status = 'Approved'")
         appliers.each do |u|
           unless u == user
-            current_user.send_message(u, :topic => "Gathering Cancelled", :body => "Gathering <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} for which you have applied, is cancelled by creator.".html_safe)
-            @notification = Notification.new(:user_id => u.id, :notification_type =>"Gathering Cancelled", :description => "Gathering <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} for which you have applied, is cancelled by creator.".html_safe)
+            current_user.send_message(u, :topic => "Gathering Cancelled", :body => "Gathering <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} for which you have applied, is cancelled by creator.").html_safe
+            @notification = Notification.new(:user_id => u.id, :notification_type =>"Gathering Cancelled", :description => "Gathering <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} for which you have applied, is cancelled by creator.").html_safe
             @notification.save
           end
         end
-        current_user.send_message(owner, :topic => "Gathering Cancelled", :body => "Gathering at your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} is cancelled by user.".html_safe)
-        @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering Cancelled", :description => "Gathering at your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} is cancelled by user.".html_safe)
+        current_user.send_message(owner, :topic => "Gathering Cancelled", :body => "Gathering at your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} is cancelled by user.").html_safe
+        @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering Cancelled", :description => "Gathering at your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} is cancelled by user.").html_safe
         @notification.save
         current_user.send_message(user, :topic => "Gathering Cancelled", :body => "Your created gathering at <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> is cancelled by successfully.".html_safe)
-        @notification = Notification.new(:user_id => user.id, :notification_type =>"Gathering Cancelled", :description => "Your created gathering at <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> is cancelled by successfully.".html_safe)
+        @notification = Notification.new(:user_id => user.id, :notification_type =>"Gathering Cancelled", :description => "Your created gathering at <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> is cancelled by successfully.").html_safe
         @notification.save
         flash[:notice] = "Booking cancelled successfully"
       else
