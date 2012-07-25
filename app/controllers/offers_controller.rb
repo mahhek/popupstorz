@@ -80,12 +80,12 @@ class OffersController < ApplicationController
         
         @offer.update_attribute(:status, "Applied")
         if !params[:offer].blank? && !params[:offer][:offer_messages_attributes].blank?
-    params[:offer][:offer_messages_attributes].each do|k,v|     
-      current_user.send_message(@item.user, :topic => "Booking Message", :body => "#{v[:message]}".html_safe)
-      @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"Booking Message", :description => "#{v[:message]}".html_safe)
-        @notification.save
-    end
-    end
+          params[:offer][:offer_messages_attributes].each do|k,v|     
+            current_user.send_message(@item.user, :topic => "Booking Message", :body => "#{v[:message]}".html_safe)
+            @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"Booking Message", :description => "#{v[:message]}".html_safe)
+            @notification.save
+          end
+        end
         
         #        @offer.update_attributes(:cancellation_date => (@offer.updated_at + 24.hours))
         redirect_to  new_item_offer_payment_path(@item,@offer)
@@ -359,23 +359,32 @@ class OffersController < ApplicationController
   
   def send_gathering_deadline
     @gathering = Offer.find(params[:id])
-#    @gathering.offer_messages.build
+    if @gathering.status != "all joinings approved"
+      flash[:notice] = "Request sent already"
+      redirect_to "/items/created_coming_gatherings"
+    end
+    #    @gathering.offer_messages.build
   end
   
   def update_gathering_deadline    
     offer = Offer.find(params[:offer][:id])
-    params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time
-    offer.update_attributes({"cancellation_date" => params[:offer][:cancellation_date], "status" => "joinings approved"})
-    owner = User.find(offer.owner_id)
-    unless params[:offer][:offer_messages_attributes].blank?
-      params[:offer][:offer_messages_attributes].each do|k,v|
-        OfferMessage.create(v)
+    if offer.status == "all joinings approved"
+      params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time
+      offer.update_attributes({"cancellation_date" => params[:offer][:cancellation_date], "status" => "joinings approved"})
+      owner = User.find(offer.owner_id)
+      unless params[:offer][:offer_messages_attributes].blank?
+        params[:offer][:offer_messages_attributes].each do|k,v|
+          current_user.send_message(owner, :topic => "Gathering Approval Request Message", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{offer.user.popup_storz_display_name} requires your approval and request message is #{v[:message]}.".html_safe)
+          OfferMessage.create(v)
+        end
       end
-    end    
-    current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{offer.user.popup_storz_display_name} requires your approval.".html_safe)
-    @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering Approval Required", :description => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{offer.user.popup_storz_display_name} requires your approval.".html_safe)
-    @notification.save
-    flash[:notice] = "Offer sent successfully"
+      current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{offer.user.popup_storz_display_name} requires your approval.".html_safe)
+      @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering Approval Required", :description => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{offer.user.popup_storz_display_name} requires your approval.".html_safe)
+      @notification.save
+      flash[:notice] = "Offer sent successfully"
+    else
+      flash[:notice] = "Offer already sent"
+    end
     redirect_to "/items/created_coming_gatherings"
   end
   
