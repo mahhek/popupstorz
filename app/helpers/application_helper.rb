@@ -5,4 +5,8 @@ module ApplicationHelper
     Money.new(amount * 100, currency).exchange_to(session[:curr])
   end
   
+  def nl2br(s)
+    s.gsub(/\n/, '<br>')
+  end
+  
 end

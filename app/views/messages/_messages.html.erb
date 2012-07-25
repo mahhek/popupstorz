@@ -61,7 +61,7 @@
               <%=  message.topic %>
             </span>
             <span style="width:320px;float:left;padding-top:2px;">
-              <%=  raw message.body.html_safe %>
+              <%=  raw nl2br(message.body) %>
             </span>
             <span style="width:70px;float:left;padding-top:2px;">
               <%=  message.created_at.strftime("%d %b %y") %>

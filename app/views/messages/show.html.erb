@@ -7,10 +7,10 @@
   From: <%= @message.from.popup_storz_display_name %>
   <br/>
   <br/>
-  Topic: <%=  @message.topic %>
+  Topic: <%= @message.topic %>
   <br/>
   <br/>
-  Body: <%=  raw(@message.body.html_safe) %>
+  Body: <%=  raw nl2br(@message.body) %>
   <br/>
   <br/>
   Date: <%=  @message.created_at.strftime("%d %b %y") %>
