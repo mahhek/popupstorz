@@ -400,11 +400,10 @@ class ItemsController < ApplicationController
         gathering << Offer.find(of.parent_id)
       end
     end
-    
     @gatherings = @gatherings + gathering    
     @gatherings = @gatherings.uniq
     
-    @offers = Offer.find(:all, :conditions => ["(user_id = ?) and persons_in_gathering is NULL and is_gathering = false and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id], :order => "rental_start_date ASC")
+    @offers = Offer.find(:all, :conditions => ["(user_id = ?) and persons_in_gathering is NULL and is_gathering = false and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id], :order => "rental_start_date ASC")
     @gatherings = @gatherings + @offers
     
     @gatherings = @gatherings.uniq
