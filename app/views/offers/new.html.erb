@@ -286,14 +286,17 @@
           <div id="response_div">
             <label style="line-height:18px;">I need a response from the Owner  by:</label>
             <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%>             <label style="line-height:18px; "><strong><br/>Send <%= @item.user.popup_storz_display_name%>  </strong> message:
-  <small>maybe tell him/her why you need the space</small></label><br/><br/>
-  <%= f.fields_for :offer_messages do |offer_message| %>
-  <% if offer_message.object.new_record? %>
-  <%= offer_message.text_area :message %>
-  <%= offer_message.hidden_field :user_id, :value => current_user.id %>
-  <%= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
-  <%end%>
-  <%end%><br/>
+              <small>maybe tell him/her why you need the space</small></label><br/><br/>
+            <%= f.fields_for :offer_messages do |offer_message| %>
+              <% if offer_message.object.new_record? %>
+                <%= offer_message.text_area :message %>
+                <%= offer_message.hidden_field :user_id, :value => current_user.id %>
+                <%= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
+              <%end%>
+              <%end%><br/><br/><br/>
+              <div style="padding-left:200px;">
+              <button class="large-max button orange"> Confirm Booking </button>
+            </div>
           </div>
           <br/><br/>
 
@@ -301,7 +304,7 @@
 
   <%#*<label style="line-height:18px; ">%>
   <%#*<strong>Send <%= @item.user.popup_storz_display_name%> 
-        <%#*</strong> message:%>
+  <%#*</strong> message:%>
   <%#*<small>maybe tell him/her why you need the space</small></label><br/><br/>%>
   <%#= f.fields_for :offer_messages do |offer_message| %>
   <%# if offer_message.object.new_record? %>
@@ -326,10 +329,11 @@
             <label style="line-height:18px;">Joining Deadline:</label>
             <%= f.text_field :gathering_deadline, :class => "datex", :value => "mm/dd/yy"%>
 
-          </div>
 
-          <div style="padding-left:200px;">
-            <button class="large-max button orange"> Create Gathering </button>
+            <br/><br/>
+            <div style="padding-left:200px;">
+              <button class="large-max button orange"> Create Gathering </button>
+            </div>
           </div>
         </div>
       </div>
