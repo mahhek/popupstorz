@@ -1,4 +1,4 @@
-<%= render :partial => "gatherings_header" %>
+<%= render :partial => "items_header" %>
 <div class="clear"></div>
 <br/>
 
@@ -155,15 +155,15 @@
           <% end %>
 
 
-          <% if offer.status == "all joinings approved" %>     
-            <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{offer.id}" %> 
-          <% end %>
+          <%# if offer.status == "all joinings approved" %>     
+            <%#= link_to "Send Offer to Owner", "/send_gathering_deadline/#{offer.id}" %> 
+          <%# end %>
         <% end %>
       </div>
 
     <%end%>
   <%else%>
-    You don't currently have any offers listed with PopupStorz.
+    You don't currently have any past offers listed with PopupStorz.
   <%end%>
 </div>
 
