@@ -43,7 +43,7 @@ class PaymentsController < ApplicationController
               
     pay_response = pay_request.preapproval(data)
     if pay_response.success?
-      if @offer.is_gathering
+      if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
         gathering_member = GatheringMember.find(:first,:conditions => ["offer_id = ? and user_id = ?",@offer.id,current_user.id])
         if gathering_member.blank?
           @offer.members << current_user
