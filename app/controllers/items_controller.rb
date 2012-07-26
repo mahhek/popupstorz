@@ -390,8 +390,8 @@ class ItemsController < ApplicationController
   end
   
   def created_coming_gatherings
-    #    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])
-    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status !='joinings approved'",current_user.id,current_user.id], :order => "rental_start_date ASC")
+    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])
+#    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status !='joinings approved'",current_user.id,current_user.id], :order => "rental_start_date ASC")
     gathers = @gatherings.group_by(&:item_id)
     gathers.each do|k,v|
       @gatherings = v
@@ -415,6 +415,7 @@ class ItemsController < ApplicationController
     @gatherings = @gatherings + @offers
     
     @gatherings = @gatherings.uniq
+    
   end
   
     
