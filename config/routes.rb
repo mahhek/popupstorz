@@ -156,6 +156,7 @@ PopupStorz::Application.routes.draw do
       get "pending_gathering_acceptance"
       get "gatherings_at_my_place"
       get "listings_home"
+      get "past_transactions"
     end
     resources :avatars
     collection do

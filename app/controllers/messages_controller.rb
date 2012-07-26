@@ -3,6 +3,7 @@ class MessagesController < ApplicationController
 
   def inbox
     @messages = current_user.received_messages
+    
   end
 
   def empty_trash
@@ -16,6 +17,7 @@ class MessagesController < ApplicationController
   def show
     @message = ActsAsMessageable::Message.find_by_id(params[:id])
     @message.mark_as_read
+    @message.from.popup_storz_display_name
   end
 
   def download_attachment
@@ -31,7 +33,7 @@ class MessagesController < ApplicationController
     current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
     respond_to do |format|
       format.js do
-        render :js => "alert('You message sent successfully, we will let owner know, thanks.');$('#contact_me_div').toggle('slow');$('#body').val('');"
+        render :js => "alert('You message sent successfully');$('#contact_me_div').toggle('slow');$('#body').val('');"
       end
     end
     
@@ -56,6 +58,7 @@ class MessagesController < ApplicationController
 
   def reply
     @message = ActsAsMessageable::Message.find_by_id(params[:id])
+    
   end
 
   def do_reply
@@ -76,7 +79,7 @@ class MessagesController < ApplicationController
       @messages.each do |message|
         message.mark_as_read
       end
-      flash[:notice] = "Message(s) has been mared as read successfully."
+      flash[:notice] = "Message(s) has been marked as read successfully."
       redirect_to :action => "inbox"
 
     when "mark_as_unread"

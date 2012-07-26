@@ -368,6 +368,14 @@ class ItemsController < ApplicationController
   def overview
     @offers = Offer.find(:all, :conditions => ["owner_id = ? and (status = 'joinings approved' or status = 'Confirmed')",current_user.id], :order => "rental_start_date ASC")
   end
+  
+  def  past_transactions 
+    @gatherings = Offer.find(:all, :conditions => ["(owner_id = ? and user_id != ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'",current_user.id,current_user.id], :order => "rental_start_date ASC")
+    gathers = @gatherings.group_by(&:item_id)
+    gathers.each do|k,v|
+      @gatherings = v
+  end
+  end
       
   def created_prev_gatherings
     #    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])     
@@ -444,6 +452,4 @@ class ItemsController < ApplicationController
       redirect_to "/"
     end
   end
-
-  
 end

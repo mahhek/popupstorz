@@ -55,7 +55,7 @@
             </form>
           <%end%>
         </div>
-        <br/>
+        Gathering Description: </b><%= offer.gathering_description %><br/>
         <b>Time:</b> <%= offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= offer.rental_end_date.strftime("%m-%d-%Y") %>
         <br /><br />
         <% unless offer.status == "Approved" or offer.status == "Accepted" or offer.status == "Confirmed" %>
