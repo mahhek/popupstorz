@@ -64,10 +64,12 @@ class PaymentsController < ApplicationController
         
         check_gathering_state(@offer)
         
+        
+        
         user = User.find(@offer.user_id)
         if gathering_member.offer.user_id == current_user.id
-          current_user.send_message(owner, :topic => "Gathering Message", :body => "#{current_user.first_name} is organizing a gathering, and would like to rent your space <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} and needs a response before #{@offer.gathering_deadline.strftime("%m-%d-%Y")}. You need to go to 'My Listings', 'Manage Bookings' and Accept or Decline the offer. #{current_user.first_name} says: #{@offer.gathering_description}.".html_safe)
-          @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering", :description => "#{current_user.first_name} is organizing a gathering, and would like to rent your space <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} and needs a response before #{@offer.gathering_deadline.strftime("%m-%d-%Y")}. You need to go to 'My Listings', 'Manage Bookings' and Accept or Decline the offer. #{current_user.first_name} says: #{@offer.gathering_description}.".html_safe)
+          current_user.send_message(owner, :topic => "Gathering", :body => "#{current_user.first_name} has created a gathering for #{@offer.persons_in_gathering} people from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} at your <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> and is now waiting for others to join before sending you an offer. You can check status of the gathering under 'My listings' sub-menu 'Gatherings at my place'".html_safe)
+          @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering", :description => "#{current_user.first_name} has created a gathering for #{@offer.persons_in_gathering} people from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} at your <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> and is now waiting for others to join before sending you an offer. You can check status of the gathering under 'My listings' sub-menu 'Gatherings at my place'".html_safe)
           @notification.save
           flash[:notice] = "You have successfully created a gathering, now waiting for others to join."
         else
@@ -76,11 +78,11 @@ class PaymentsController < ApplicationController
         end
         
       else
-        current_user.send_message(owner, :topic => "Booking Message", :body => "#{current_user.first_name} would like to rent your space <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} and needs a response before #{@offer.cancellation_date.strftime("%m-%d-%Y")}. You need to go to 'My Listings', 'Manage Bookings' and Accept or Decline the offer. #{current_user.first_name} says: #{@offer.offer_messages.first.message}.".html_safe)
-        @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering", :description => "#{current_user.first_name} would like to rent your space <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} and needs a response before #{@offer.cancellation_date.strftime("%m-%d-%Y")}. You need to go to 'My Listings', 'Manage Bookings' and Accept or Decline the offer. #{current_user.first_name} says: #{@offer.offer_messages.first.message}.".html_safe)
+        current_user.send_message(owner, :topic => "Booking Approval Required", :body => "#{current_user.first_name} would like to rent your space <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} and needs a response before #{@offer.cancellation_date.strftime("%m-%d-%Y")}. You need to go to 'My Listings', 'Manage Bookings' and Accept or Decline the offer. #{current_user.first_name} says: #{@offer.offer_messages.last.message}.".html_safe)
+        @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering", :description => "#{current_user.first_name} would like to rent your space <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} and needs a response before #{@offer.cancellation_date.strftime("%m-%d-%Y")}. You need to go to 'My Listings', 'Manage Bookings' and Accept or Decline the offer. #{current_user.first_name} says: #{@offer.offer_messages.last.message}.".html_safe)
         @notification.save
         flash[:notice] = "You have successfully applied."
-        @offer.update_attribute("status","joinings approved")
+        @offer.update_attribute("status","confirmed")
       end
       
       #      if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
