@@ -169,7 +169,7 @@ class OffersController < ApplicationController
     end
   end
 
-  def accept    
+  def accept
     unless params[:item_id].blank?
       @item = Item.find params[:item_id]
     end
@@ -178,7 +178,7 @@ class OffersController < ApplicationController
     #    if payment.purchase("charge").status == 3
     #    payment.save!
     if !@offer.is_gathering or @offer.persons_in_gathering.to_i == 0
-      unless @item.blank?
+      unless @item.blank?        
         if current_user.id == @offer.user_id
           @item.update_attribute("item_status","Reserved")
           flash[:notice] = "Offer accepted"
@@ -194,9 +194,13 @@ class OffersController < ApplicationController
           flash[:flash] = "Offer accepted."
           redirect_to "/"
         end
+      else
+        current_user.send_message(@offer.user, :topic => "Offer Accepted", :body => "#{@offer.item.user.first_name} accepted your offer on #{@offer.item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
+        @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"Offer Accepted", :description => "#{@offer.item.user.first_name} accepted your offer on #{@offer.item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
+        @notification.save
       end
       @offer.update_attribute("status", "Confirmed")
-    else
+    else      
       @item = @offer.item
       members = GatheringMember.find(:all, :conditions => "offer_id = #{@offer.id} and status = 'Approved'")
       members.each do|m|
@@ -293,7 +297,7 @@ class OffersController < ApplicationController
   
   def approve_gathering_request
     offer = Offer.find(params[:id])
-    if offer.is_gathering
+    if offer.is_gathering or offer.persons_in_gathering.to_i > 0
       
       gathering_member = GatheringMember.find(:first, :conditions => ["offer_id = ? and user_id = ?",params[:id],params[:mem]])
       gathering_member.update_attribute("status", "Approved")

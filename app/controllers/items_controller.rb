@@ -408,7 +408,11 @@ class ItemsController < ApplicationController
         gathering << Offer.find(of.parent_id)
       end
     end
-    @gatherings = @gatherings + gathering    
+    @gatherings = @gatherings + gathering
+    @gatherings = @gatherings.uniq
+    
+    gathers = current_user.gatherings.where("offers.user_id != #{current_user.id}  and gathering_members.status = 'Approved' and (offers.status = 'Applied' or offers.status = 'all joinings approved' or offers.status ='joinings approved')", :order => "rental_start_date ASC")
+    @gatherings = @gatherings + gathers
     @gatherings = @gatherings.uniq
     
     @offers = Offer.find(:all, :conditions => ["(user_id = ?) and persons_in_gathering is NULL and is_gathering = false and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id], :order => "rental_start_date ASC")
