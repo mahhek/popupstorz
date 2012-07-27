@@ -366,7 +366,7 @@ class ItemsController < ApplicationController
   end
 
   def overview
-    @offers = Offer.find(:all, :conditions => ["owner_id = ? and (status = 'joinings approved' or status = 'confirmed')",current_user.id], :order => "rental_start_date ASC")
+    @offers = Offer.find(:all, :conditions => ["owner_id = ? and (status = 'joinings approved' or status = 'confirmed' or status = 'Declined')",current_user.id], :order => "rental_start_date ASC")
   end
   
   def  past_transactions 
