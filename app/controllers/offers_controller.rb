@@ -204,9 +204,13 @@ class OffersController < ApplicationController
         @notification.save
       end
       @offer.update_attribute("status", "Confirmed")
+      
+    end
+    if @offer.item.user == current_user
+      redirect_to "/items/overview"
+    else
       redirect_to "/items/gatherings_at_my_place"
     end
-    
     #    else
     #      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
     #      redirect_to "/"
