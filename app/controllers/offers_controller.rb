@@ -71,6 +71,8 @@ class OffersController < ApplicationController
       if params[:offer][:gathering_deadline] != "mm/dd/yy" and !params[:offer][:gathering_deadline].blank?
         params[:offer][:gathering_deadline] = DateTime.strptime(params[:offer][:gathering_deadline], "%m/%d/%Y").to_time
       end
+      
+      params[:offer][:additional_message] = params[:offer][:offer_messages_attributes]
             
       @offer = Offer.new(params[:offer].merge(:item_id => params[:item_id]).merge(:user_id => current_user.id).merge(:status => "pending"))
 
@@ -79,14 +81,13 @@ class OffersController < ApplicationController
         session[:pick_up] = nil
         
         @offer.update_attribute(:status, "Applied")
-        if !params[:offer].blank? && !params[:offer][:offer_messages_attributes].blank?
-          params[:offer][:offer_messages_attributes].each do|k,v|     
-            current_user.send_message(@item.user, :topic => "Booking Message", :body => "#{v[:message]}".html_safe)
-            @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"Booking Message", :description => "#{v[:message]}".html_safe)
-            @notification.save
-          end
-        end
-        
+#        if !params[:offer].blank? && !params[:offer][:offer_messages_attributes].blank?
+#          params[:offer][:offer_messages_attributes].each do|k,v|     
+#            current_user.send_message(@item.user, :topic => "Booking Message", :body => "#{v[:message]}".html_safe)
+#            @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"Booking Message", :description => "#{v[:message]}".html_safe)
+#            @notification.save
+#          end
+#        end
         #        @offer.update_attributes(:cancellation_date => (@offer.updated_at + 24.hours))
         redirect_to  new_item_offer_payment_path(@item,@offer)
       else

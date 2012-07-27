@@ -294,7 +294,7 @@
                 <%= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
               <%end%>
               <%end%><br/><br/><br/>
-              <div style="padding-left:200px;">
+            <div style="padding-left:200px;">
               <button class="large-max button orange"> Confirm Booking </button>
             </div>
           </div>
@@ -375,7 +375,6 @@
         alert('Please enter some preferred location first!.');
         return false;
       }else{
-        
         if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {          
           if($("#gathering_fields").is(":hidden") == false){
             return true;
@@ -410,7 +409,13 @@
     }else{    
       if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {        
         if($("#gathering_fields").is(":hidden") == true){
-          return true;
+          if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy" ){
+            alert('Please enter response deadline date.');
+            return false;
+          }
+          else{
+            return true;
+          }          
         }
         else{
           alert('Please enter gathering joining deadline date.');
