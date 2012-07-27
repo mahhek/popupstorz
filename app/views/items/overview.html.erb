@@ -57,12 +57,12 @@
         </div>
         Gathering Description: </b><%= offer.gathering_description %><br/>
         <b>Time:</b> <%= offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= offer.rental_end_date.strftime("%m-%d-%Y") %>
-        <br /><br />
+        <br/> <b> Response required before</b>
+        <% if offer.is_gathering or offer.persons_in_gathering.to_i > 0 %> <%= offer.gathering_deadline.strftime("%m-%d-%Y") %> <% else %> <%= offer.cancellation_date.strftime("%m-%d-%Y") %> <% end %><br /><br />
         <% unless offer.status == "Approved" or offer.status == "Accepted" or offer.status == "Confirmed" or offer.status == "Declined" %>
           <%= link_to "Approve", "/accept_gathering/#{offer.id}?mem=#{offer.user.id}" %> | 
           <%= link_to "Decline", "/reject_gathering/#{offer.id}?mem=#{offer.user.id}&item_id=#{offer.item.id}" %>
-        <% end %> 
-          
+        <% end %><br/>
         <% if (offer.status == "Confirmed") && current_user.id == offer.owner_id && offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>     
           <%= link_to "Cancel Booking", "/cancel_booking/#{offer.id}" %>
         <% end %>  
