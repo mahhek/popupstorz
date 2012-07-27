@@ -235,7 +235,7 @@ class OffersController < ApplicationController
         @notification.save
         
       end
-      redirect_to "/"
+#      redirect_to "/"
     else      
       @item = @offer.item
       members = GatheringMember.find(:all, :conditions => "offer_id = #{@offer.id} and status = 'Approved'")
@@ -243,9 +243,13 @@ class OffersController < ApplicationController
         current_user.send_message(m.user, :topic => "Offer Declined", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been Declined by the owner.".html_safe)
       end      
       @offer.update_attribute("status", "Declined")
+#      redirect_to "/items/gatherings_at_my_place"
+    end
+    if @offer.item.user == current_user
+      redirect_to "/items/overview"
+    else
       redirect_to "/items/gatherings_at_my_place"
     end
-    
   end
 
   #  def payment_charge
