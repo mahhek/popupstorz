@@ -177,7 +177,7 @@ class OffersController < ApplicationController
     payment = @offer.payment
     #    if payment.purchase("charge").status == 3
     #    payment.save!
-    unless @offer.is_gathering
+    unless @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
       unless @item.blank?
         if current_user.id == @offer.user_id
           @item.update_attribute("item_status","Reserved")
@@ -221,7 +221,7 @@ class OffersController < ApplicationController
   def decline
     @item = Item.find params[:item_id]
     @offer = Offer.find params[:id]
-    unless @offer.is_gathering
+    unless @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
       if current_user.id == @offer.user_id
         @offer.update_attribute("status", "Declined")
         flash[:notice] = "Offer declined"
