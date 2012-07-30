@@ -10,7 +10,7 @@
   Topic: <%= @message.topic %>
   <br/>
   <br/>
-  Body: <%=  raw nl2br(@message.body) %>
+  Body: <%=  raw (nl2br(@message.body).html_safe) %>
   <br/>
   <br/>
   Date: <%=  @message.created_at.strftime("%d %b %y") %>
