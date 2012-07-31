@@ -1,5 +1,14 @@
 # -*- encoding : utf-8 -*-
 class OffersController < ApplicationController
+  
+  def show
+    @offer = Offer.find(params[:id])
+    if @offer.blank?
+      flash[:notice] = "No Gathering found, Please try again or later. "
+      redirect_to "/"
+    end    
+  end
+  
   def new
     if !user_signed_in?
       session[:item] = params[:item_id]

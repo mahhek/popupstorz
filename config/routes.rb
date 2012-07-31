@@ -147,7 +147,7 @@ PopupStorz::Application.routes.draw do
       post "rate"
     end
   end
-
+  resources :offers
   resources :items do
     collection do
       get "overview"

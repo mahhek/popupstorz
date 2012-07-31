@@ -33,6 +33,7 @@ class SearchesController < ApplicationController
     unless params[:max_size].blank?
       conds += " AND (price <= '#{params[:max_size]}')"
     end    
+
     #    conds += " and is_gathering = true and status != 'Applied'"
     @items = Item.find(:all,:conditions => [conds])
         
@@ -41,13 +42,25 @@ class SearchesController < ApplicationController
       #      offers = item.offers.where("status = 'Applied' and persons_in_gathering > 0 and is_gathering = true and parent_id is NULL and rental_start_date <= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and rental_end_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'")      
       offers = item.offers.where("(status NOT LIKE '%Confirmed%' and status != 'Cancelled') and persons_in_gathering > 0 and is_gathering = true and parent_id is NULL and rental_end_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'")
       offers.each do|offer|
-        if !offer.members.include?(current_user) and offer.user_id != current_user.id
-          @gatherings  << offer
-        end
+        #        if !offer.members.include?(current_user) and offer.user_id != current_user.id
+        #        if !offer.members.include?(current_user)
+        @gatherings  << offer
+        #        end
       end
     end
     unless @gatherings.blank?
       @gatherings = @gatherings.uniq
+    end    
+    @items = @items.sort_by{|e| e[:price]}
+    @min_price = @items.blank? ? 0 : @items.first.price
+    @max_price = @items.blank? ? 0 : @items.last.price
+    @max_price = @max_price.to_f > 10000 ? @max_price : 10000
+    respond_to do |format|
+      format.html
+      format.js do
+        foo = render_to_string(:partial => 'gatherings', :locals => { :gatherings => @gatherings }).to_json
+        render :js => "$('#searched-gatherings-div').html(#{foo});$.setAjaxPagination();"
+      end
     end
     #    @members = User.find(:all, :conditions => [conds])
     #    @members = User.paginate(:page => params[:page], :per_page => 4, :conditions => [conds])

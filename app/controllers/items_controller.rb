@@ -318,7 +318,7 @@ class ItemsController < ApplicationController
         foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
         render :js => "$('#searched-items-div').html(#{foo});$.setAjaxPagination();"
       end
-    end  
+    end
   end
 
   def search_via_price_range

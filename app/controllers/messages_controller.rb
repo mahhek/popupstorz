@@ -28,12 +28,17 @@ class MessagesController < ApplicationController
   end
 
 
-  def contact_me
+  def contact_me    
     user = User.find_by_id(params[:user_id])
     current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
     respond_to do |format|
       format.js do
-        render :js => "alert('You message sent successfully');$('#contact_me_div').toggle('slow');$('#body').val('');"
+        unless params[:div_id].blank?
+          render :js => "alert('You message sent successfully');$('#contact_me_div_#{params[:div_id]}').toggle('slow');$('#body').val('');"
+        else
+          render :js => "alert('You message sent successfully');$('#contact_me_div').toggle('slow');$('#body').val('');"
+        end
+        
       end
     end
     
