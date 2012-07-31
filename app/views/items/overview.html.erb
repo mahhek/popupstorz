@@ -64,7 +64,7 @@
           <%= offer.gathering_deadline.strftime("%m-%d-%Y") %>
         <% else %> 
           <%= offer.cancellation_date.strftime("%m-%d-%Y") %>
-        <% end %><br /><br />
+        <% end %><br /><br /><%= link_to "Details", "/offers/#{offer.id}" %><br/>
         
         <% unless offer.status == "Approved" or offer.status == "Accepted" or offer.status == "Confirmed" or offer.status == "Declined" %>
           <%= link_to "Approve", "/accept_gathering/#{offer.id}?mem=#{offer.user.id}" %> | 
