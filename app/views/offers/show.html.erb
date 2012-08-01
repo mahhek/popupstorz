@@ -25,7 +25,7 @@
       <% if @offer.members.size.to_i < @offer.persons_in_gathering.to_i && @offer.user_id != current_user.id && @offer.owner_id != current_user.id %>
         <% if !@offer.members.include?(current_user) && @offer.rental_start_date >= Date.today %>
           <div style="float:left;margin: 5px;clear:both;width: 100%;">
-            <%= link_to "Join", "/join_gathering/#{@offer.id}", :style => "float:right;margin-right:20px;" %>
+            <%= link_to "Join", "/join_gathering/#{@offer.id}",:class => "search ml70", :style => "float:right;margin-right:20px;" %>
           </div>
         <% end %>
       <% end %>
@@ -143,11 +143,53 @@
     </div>
 
   </div>
-  
-  
+
+
   <div style="float:left;width:65%;margin-left: 20px;">    
     <h1> Wall </h1>
-    
+    <div id="comments" style="height: 200px;display: block;">
+
+      <%= form_for @comment, :url => "/offers/add_comment" do |f| %>
+        <% if @comment.errors.any? %>
+          <div id="errorExplanation" class="erro_messages">
+            <h2>Oops! Looks like you need to include the following:</h2>
+            <ul>
+              <li style="list-style: square;float: left;">
+                <%= @comment.errors.full_messages.to_sentence  %>
+              </li>
+            </ul>
+          </div>
+        <% end %>
+
+        <%= hidden_field_tag "id",@offer.id %>
+        <div class="field">
+          <%= f.label :title %><br/>
+          <%= f.text_field "title" %>
+        </div>
+        <div class="field">
+          <%= f.label :comment %><br />
+          <%= f.text_area "comment", :rows => 5 %><br />
+          <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
+        </div>
+      <% end %>
+    </div>
+
+    <div id="show_comments" style="display: block;" >
+      <b>Previous Comments:</b><br/>
+      <% unless @offer.comments.blank? %>
+        <% @offer.comments.each do|f| %>
+          <b><%= f.title  %></b><br/>
+          <%= f.comment %><br/>
+          <i>
+            <%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %>
+          </i>
+          <br/>
+          <br/>
+        <%end%>
+          <% else %>
+          <i>No Comments added yet!</i>
+      <%end%>
+    </div>
   </div>
 
 

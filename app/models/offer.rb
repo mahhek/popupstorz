@@ -1,8 +1,10 @@
 # -*- encoding : utf-8 -*-
 class Offer < ActiveRecord::Base
+  acts_as_commentable
+  
   validate :rental_start_date, :presence => true
   validate :rental_end_date, :presence => true
-
+  
   belongs_to :item
   belongs_to :user
   has_one :payment

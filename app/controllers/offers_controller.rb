@@ -2,6 +2,7 @@
 class OffersController < ApplicationController
   
   def show
+    @comment = Comment.new
     @offer = Offer.find(params[:id])
     if @offer.blank?
       flash[:notice] = "No Gathering found, Please try again or later. "
@@ -402,7 +403,7 @@ class OffersController < ApplicationController
         end
       end
       if offer.offer_messages.last.message.blank?
-      current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "#{current_user.first_name} would like to rent your space <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title} </a> from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} and needs a response before #{offer.gathering_deadline.strftime("%m-%d-%Y")}. You need to go to 'My Listings', 'Manage Bookings' and Accept or Decline the offer.".html_safe)
+        current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "#{current_user.first_name} would like to rent your space <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title} </a> from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} and needs a response before #{offer.gathering_deadline.strftime("%m-%d-%Y")}. You need to go to 'My Listings', 'Manage Bookings' and Accept or Decline the offer.".html_safe)
       else
         current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "#{current_user.first_name} would like to rent your space <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title} </a> from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} and needs a response before #{offer.gathering_deadline.strftime("%m-%d-%Y")}. You need to go to 'My Listings', 'Manage Bookings' and Accept or Decline the offer. #{current_user.first_name} says: #{offer.offer_messages.last.message}.".html_safe)
       end
@@ -442,6 +443,19 @@ class OffersController < ApplicationController
       end
     end
     redirect_to "/items/created_coming_gatherings"
+  end
+  
+  def add_comment
+    @comment = Comment.new(params[:comment])
+    @comment.user=current_user
+    @offer = Offer.find(params[:id])
+    if @offer.comments << @comment
+      flash[:notice] = "Comment Added"
+      redirect_to "/offers/#{@offer.id}"
+    else
+      flash[:error] = "Not saved"
+      render :show
+    end   
   end
   
   protected
