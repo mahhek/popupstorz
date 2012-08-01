@@ -55,8 +55,8 @@
             <form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>">
               <input TYPE="submit" VALUE="check in">
             </form>
-          <%end%><br/><br/>
-<%= link_to "Details", "/offers/#{offer.id}" %>
+          <%end%><br/><br/><%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
+<%= link_to "Details", "/offers/#{offer.id}" %> <%end%>
         </div>
         
         <% if offer.owner_id == current_user.id && offer.status == "joinings approved" %>

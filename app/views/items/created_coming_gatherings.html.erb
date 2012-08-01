@@ -153,8 +153,8 @@
                 No pending applications
               <% end %>
             </div>
-          <% end %>
-<%= link_to "Details", "/offers/#{offer.id}" %>
+          <% end %><br/><br/> <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
+<%= link_to "Details", "/offers/#{offer.id}" %><%end%><br/><br/>
 
           <% if offer.status == "all joinings approved" && current_user.id == offer.user_id %>     
             <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{offer.id}" %> 
