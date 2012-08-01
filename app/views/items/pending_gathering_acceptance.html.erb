@@ -145,8 +145,8 @@
                       <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
                       <br /><br />
                     <% end %>
-                  <% end %>
-
+                  <% end %><br/>
+<%= link_to "Details", "/offers/#{item.id}" %>
                 <% end %>
               <% else %>
                 No pending applications
