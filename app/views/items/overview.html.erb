@@ -54,8 +54,8 @@
               <input TYPE="submit" VALUE="check in">
             </form>
           <%end%>
-        </div>
-        Gathering Description: </b><%= offer.gathering_description %><br/>
+        </div> <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
+        Gathering Description: </b><%= offer.gathering_description %> <%end%> <br/>
         <b>Time:</b> <%= offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= offer.rental_end_date.strftime("%m-%d-%Y") %>
         <br/>
         
@@ -64,7 +64,7 @@
           <%= offer.gathering_deadline.strftime("%m-%d-%Y") %>
         <% else %> 
           <%= offer.cancellation_date.strftime("%m-%d-%Y") %>
-        <% end %><br /><br /><%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%><%= link_to "Details", "/offers/#{offer.id}" %><%end%> <br/>
+        <% end %><br /><br /><%= link_to "Details", "/offers/#{offer.id}" %><br/>
         
         <% unless offer.status == "Approved" or offer.status == "Accepted" or offer.status == "Confirmed" or offer.status == "Declined" %>
           <%= link_to "Approve", "/accept_gathering/#{offer.id}?mem=#{offer.user.id}" %> | 
