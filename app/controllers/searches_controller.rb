@@ -22,26 +22,45 @@ class SearchesController < ApplicationController
 
   def search_gatherings
     conds = "1=1 "
-    
+    cities = []
+    items = ""
     if params[:search][:location] && !params[:search][:location].blank?
-      conds += "and (LOWER(city) LIKE " + "'%%" + params[:search][:location].strip.downcase.to_s+ "%%'" +")"
+      city_conds = "(LOWER(city) LIKE " + "'%%" + params[:search][:location].strip.downcase.to_s+ "%%'" +")"
+      sel_items = Item.find(:all, :conditions => [ city_conds ])      
+      count = 1
+      sel_items.each do|item|
+        if count != 1
+          items = items +","+ "#{item.id.to_s}"
+        else
+          items += item.id.to_s
+        end
+        count += 1
+      end
+#      conds += "and (LOWER(city) LIKE " + "'%%" + params[:search][:location].strip.downcase.to_s+ "%%'" +")"
     end
-       
+  
     unless params[:min_size].blank?
       conds += " AND (gathering_rental_price >= '#{params[:min_size]}')"
     end
     
     unless params[:max_size].blank?
       conds += " AND (gathering_rental_price <= '#{params[:max_size]}')"
-    end    
+    end
+    
+    unless sel_items.blank?
+      conds += " AND item_id in(#{items})"
+    end
+    
+    
     conds += "AND (status NOT LIKE '%%Confirmed%%' and status != 'Cancelled') and persons_in_gathering > 0 and is_gathering = true and parent_id is NULL and rental_end_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'"
+    
     
     @offers = Offer.find(:all,:conditions => [conds])
 
     unless @offers.blank?
       @offers = @offers.uniq
     end
-
+    
     @offers = @offers.sort_by{|e| e[:gathering_rental_price]}
     @min_price = @offers.blank? ? 0 : @offers.first.gathering_rental_price
     @max_price = @offers.blank? ? 0 : @offers.last.gathering_rental_price
