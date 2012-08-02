@@ -4,11 +4,12 @@ class SearchesController < ApplicationController
   end
 
   def gatherings
-    #    @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
-    @sizes = Item.select("distinct(price)").where("price is not NULL").order("price ASC")
+    #    #    @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
+    #    @sizes = Item.select("distinct(price)").where("price is not NULL").order("price ASC")
+    @sizes = Offer.select("distinct(gathering_rental_price)").where("gathering_rental_price is not NULL").order("gathering_rental_price ASC")
     @start_size = @sizes.first
     @last_size = @sizes.last
-    @last_price = @last_size.price.to_f > 10000 ? @last_size.price : 10000
+    @last_price = @last_size.gathering_rental_price.to_f > 10000 ? @last_size.gathering_rental_price : 10000
     
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     #    @users_with_uniq_cities = User.select("distinct(city)")
@@ -27,43 +28,31 @@ class SearchesController < ApplicationController
     end
        
     unless params[:min_size].blank?
-      conds += " AND (price >= '#{params[:min_size]}')"
+      conds += " AND (gathering_rental_price >= '#{params[:min_size]}')"
     end
     
     unless params[:max_size].blank?
-      conds += " AND (price <= '#{params[:max_size]}')"
+      conds += " AND (gathering_rental_price <= '#{params[:max_size]}')"
     end    
+    conds += "AND (status NOT LIKE '%%Confirmed%%' and status != 'Cancelled') and persons_in_gathering > 0 and is_gathering = true and parent_id is NULL and rental_end_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'"
+    
+    @offers = Offer.find(:all,:conditions => [conds])
 
-    #    conds += " and is_gathering = true and status != 'Applied'"
-    @items = Item.find(:all,:conditions => [conds])
-        
-    @gatherings = []
-    @items.each do|item|
-      #      offers = item.offers.where("status = 'Applied' and persons_in_gathering > 0 and is_gathering = true and parent_id is NULL and rental_start_date <= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and rental_end_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'")      
-      offers = item.offers.where("(status NOT LIKE '%Confirmed%' and status != 'Cancelled') and persons_in_gathering > 0 and is_gathering = true and parent_id is NULL and rental_end_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'")
-      offers.each do|offer|
-        #        if !offer.members.include?(current_user) and offer.user_id != current_user.id
-        #        if !offer.members.include?(current_user)
-        @gatherings  << offer
-        #        end
-      end
+    unless @offers.blank?
+      @offers = @offers.uniq
     end
-    unless @gatherings.blank?
-      @gatherings = @gatherings.uniq
-    end    
-    @items = @items.sort_by{|e| e[:price]}
-    @min_price = @items.blank? ? 0 : @items.first.price
-    @max_price = @items.blank? ? 0 : @items.last.price
+
+    @offers = @offers.sort_by{|e| e[:gathering_rental_price]}
+    @min_price = @offers.blank? ? 0 : @offers.first.gathering_rental_price
+    @max_price = @offers.blank? ? 0 : @offers.last.gathering_rental_price
     @max_price = @max_price.to_f > 10000 ? @max_price : 10000
-    respond_to do |format|
+    respond_to do |format| 
       format.html
       format.js do
-        foo = render_to_string(:partial => 'gatherings', :locals => { :gatherings => @gatherings }).to_json
+        foo = render_to_string(:partial => 'gatherings', :locals => { :gatherings => @offers }).to_json
         render :js => "$('#searched-gatherings-div').html(#{foo});$.setAjaxPagination();"
       end
     end
-    #    @members = User.find(:all, :conditions => [conds])
-    #    @members = User.paginate(:page => params[:page], :per_page => 4, :conditions => [conds])
   end
 
   def search_members
@@ -95,3 +84,5 @@ class SearchesController < ApplicationController
     #    @members = User.paginate(:page => params[:page], :per_page => 4, :conditions => [conds])
   end
 end
+
+

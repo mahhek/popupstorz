@@ -4,9 +4,9 @@
   $(function() {
     $( "#sizes-slider-range" ).slider({
       range: true,
-      min: <%= @start_size.price %>,
+      min: <%= @start_size.gathering_rental_price %>,
       max: <%= @last_price %>,
-      values: [ <%= @sizes.first.price %>, <%= @last_price %> ],
+      values: [ <%= @start_size.gathering_rental_price %>, <%= @last_price %> ],
       slide: function( event, ui ) {
         $( "#size" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
       },
