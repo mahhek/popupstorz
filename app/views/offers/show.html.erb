@@ -7,7 +7,9 @@
   <% if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
     <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}" %>
   <% end %>
-<% end %>
+<% end %><br/><% if @offer.status == "all joinings approved" && current_user.id == @offer.user_id %>     
+            <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{@offer.id}" %> 
+          <% end %>
 
 <% @item = @offer.item %>
 <% applied = @offer.members.where("status != 'Approved'").size %>
@@ -147,20 +149,20 @@
               </div>
             <% end %>
           </div>
-
-          <% request = GatheringMember.where("user_id = #{req.id} and offer_id = #{@offer.id}").first %>
+<br/>
+          <% request = GatheringMember.where("user_id = #{req.id} and offer_id = #{@offer.id}").first %><% if offer.status == "Approved" or offer.status == "Accepted" or offer.status == "Confirmed" or offer.status == "Declined" and (status = 'joinings approved') %>
           <% if request.status == "confirmed" && current_user.id == @offer.user_id %>
             <% if approved_requests.size <  @offer.persons_in_gathering.to_i %>
               <%= link_to "Approve", "/approve_gathering_request/#{@offer.id}?mem=#{req.id}" %> | 
-              <%= link_to "Decline", "/decline_gathering_request/#{@offer.id}?mem=#{req.id}" %>
+              <%= link_to "Decline", "/decline_gathering_request/#{@offer.id}?mem=#{req.id}" %> 
               <br /><br />
             <% end %>
-          <% end %>
+          <% end %><%end%>
         </div>
-      <% end %>
+      <% end %><br/><br/>
     </div>
 
-  </div>
+  </div> 
 
 
   <div style="float:left;width:65%;margin-left: 20px;">    
