@@ -1,7 +1,7 @@
 <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
   <h2>Gathering</h2>
 <% else %>
-  <h2>Booking</h2>
+  <h2>Standard Booking</h2>
 <% end %>
 
 <% if current_user.id == @offer.owner_id %>
@@ -40,8 +40,9 @@
     <h3>Application Deadline</h3>
     <b><%= @offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= @offer.rental_end_date.strftime("%m-%d-%Y") %></b><br />
     <b>Application Deadline:</b><%= @offer.gathering_deadline.blank? ? '' : @offer.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
-
-    <h3>Guests</h3>
+   <b>Security deposit:<b/><%=@item.deposit%><br/> <b>Cleaning Fee:<b/><%=@offer.item.cleaning_fee%><br/> <b>Price Per Day:<b/><%=@offer.item.price%><br/><b> Total days:<b/><%= @offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= @offer.rental_end_date.strftime("%m-%d-%Y") %><br/>         
+          <br/>
+    <br/><h3>Guests</h3>
     <b><%= @offer.persons_in_gathering %> persons needed</b><br />
     <%= applied %> applied<br />
     <%= approved %> confirmed<br />
