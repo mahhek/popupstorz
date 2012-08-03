@@ -34,7 +34,7 @@
         <div>
           <b>Your Offer: </b><%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
           <br/><%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
-          <b>Gathering Description: </b><%= offer.gathering_description %><%end%>
+            <b>Gathering Description: </b><%= offer.gathering_description %><%end%>
           <br/>
           <b>Status:</b>          
           <% if offer.status == "Accepted - Payment pending" or offer.status == "all joinings approved" or offer.status == "Accepted - Confirmation pending" or offer.status == "joinings approved" or offer.status == "Applied" or offer.status == "confirmed" %>
@@ -66,7 +66,7 @@
           </div>
         <%end%>
 
-        <% if offer.is_gathering %>
+        <% if offer.is_gathering or offer.persons_in_gathering.to_i > 0 %>
           <% approved = offer.members.where("status = 'Approved'") %>
           <% applied = offer.members.where("status = 'Applied' or status = 'confirmed'") %>
           <div style="width:100%;margin-top:10px;margin-bottom: 10px;">
@@ -153,14 +153,18 @@
                 No pending applications
               <% end %>
             </div>
-          <% end %><br/><br/><%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
-<%= link_to "Details", "/offers/#{offer.id}" %><%end%><br/><br/>
+          <% end %>
+          <br/><br/>
+
+          <br/><br/>
 
           <% if offer.status == "all joinings approved" && current_user.id == offer.user_id %>     
             <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{offer.id}" %> 
           <% end %>
         <% end %>
-        
+
+        <br /><br />
+        <%= link_to "Details", "/offers/#{offer.id}" %>
         <br /><br />
         <% if (offer.status != "all joinings approved" and offer.status != "Cancelled" and offer.status != "Applied" and offer.status != "Declined") && current_user.id == offer.user_id && offer.rental_start_date >= Date.parse("#{Date.today}","%Y-%d-%m") %>
           <%= link_to "Cancel Booking", "/cancel_booking/#{offer.id}" %>
