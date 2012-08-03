@@ -1,4 +1,9 @@
-<h2>Gathering</h2>
+<% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
+  <h2>Gathering</h2>
+<% else %>
+  <h2>Booking</h2>
+<% end %>
+
 <% if current_user.id == @offer.owner_id %>
   <% if @offer.status == "joinings approved" %>
     <%= link_to "Approve", "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}" %> | 
@@ -189,10 +194,10 @@
         <% end %>
 
         <%= hidden_field_tag "id",@offer.id %>
-        <div class="field">
-          <%= f.label :title %><br/>
-          <%= f.text_field "title" %>
-        </div>
+  <%#*<div class="field">%>
+  <%#= f.label :title %><br/>
+  <%#= f.text_field "title" %>
+  <%#*</div>%>
         <div class="field">
           <%= f.label :comment %><br />
           <%= f.text_area "comment", :rows => 5 %><br />
@@ -204,8 +209,7 @@
     <div id="show_comments" style="display: block;" >
       <b>Previous Comments:</b><br/>
       <% unless @offer.comments.blank? %>
-        <% @offer.comments.each do|f| %>
-          <b><%= f.title  %></b><br/>
+        <% @offer.comments.each do|f| %>          
           <%= f.comment %><br/>
           <i>
             <%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %>
