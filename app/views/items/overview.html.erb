@@ -32,7 +32,7 @@
 
         <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
         <div class="name-list" style="margin-bottom: 5px;"><b>Location: </b><%= item.address %></div>
-
+        <% joined = GatheringMember.where("status = 'Approved' and offer_id = #{offer.id}") %>
 
         <div class="name-list" style="margin-bottom: 5px;">
           <b>Price: </b>
@@ -44,8 +44,12 @@
           Your Offer: <%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
           <br/>
           Status:
-          <% if  offer.status == 'joinings approved'  %>
-            <%= "Applied" %>
+          <% if offer.status == "Accepted - Payment pending" or offer.status == "all joinings approved" or offer.status == "Accepted - Confirmation pending" or offer.status == "joinings approved" or offer.status == "Applied" or offer.status == "confirmed" %>
+            <% if joined.size.to_i < offer.persons_in_gathering.to_i or offer.cancellation_date.blank? %>
+              <%= "Creating" %>
+            <% else %>
+              <%= "Applied" %>
+            <% end %>
           <% else %>
             <%= offer.status %>
           <% end %>
