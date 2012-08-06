@@ -9,6 +9,11 @@
     <%= link_to "Approve", "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}" %> | 
     <%= link_to "Decline", "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}" %>
   <% end %>
+    
+  <% if @offer.status == "confirmed" && @offer.persons_in_gathering.blank? %>
+    <%= link_to "Approve", "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}" %> | 
+    <%= link_to "Decline", "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}" %>
+  <% end %>  
   <br />
   <% if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
     <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}" %>
@@ -58,8 +63,8 @@
         <%= number_to_currency(exchange_currency(@offer.item.price.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
         <br/>
           
-        <b> Total days:<b/>
-        <%= (@offer.rental_end_date.strftime("%m-%d-%Y").to_date - @offer.rental_start_date.strftime("%m-%d-%Y").to_date).to_i + 1 %>
+        <b> Total days:<b/>          
+        <%= (DateTime.strptime(@offer.rental_end_date.strftime("%m/%d/%Y"), "%m/%d/%Y") - DateTime.strptime(@offer.rental_start_date.strftime("%m/%d/%Y"), "%m/%d/%Y")).to_i + 1%>
         <br/><br/>
         
         <h3>Guests</h3>
