@@ -251,11 +251,11 @@ class ItemsController < ApplicationController
     end
         
     unless params[:min_size].blank?
-      item_conds += " AND (size >= #{params[:min_size].to_i})"
+      item_conds += " AND (size >= '#{params[:min_size].to_i}')"
     end
     
     unless params[:max_size].blank?
-      item_conds += " AND (size <= #{params[:max_size].to_i})"
+      item_conds += " AND (size <= '#{params[:max_size].to_i}')"
     end
     
     unless params[:types].blank?
