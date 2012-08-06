@@ -251,11 +251,11 @@ class ItemsController < ApplicationController
     end
         
     unless params[:min_size].blank?
-      item_conds += " AND (size >= '#{params[:min_size]}')"
+      item_conds += " AND (size >= #{params[:min_size].to_i})"
     end
     
     unless params[:max_size].blank?
-      item_conds += " AND (size <= '#{params[:max_size]}')"
+      item_conds += " AND (size <= #{params[:max_size].to_i})"
     end
     
     unless params[:types].blank?
@@ -265,12 +265,14 @@ class ItemsController < ApplicationController
     unless params[:shareable].blank?
       item_conds += " AND (is_shareable = true)"
     end
+    
     items = Item.find(:all,:conditions => [ item_conds ])
 
     @items = items - booked_items
     @items = @items.sort_by{|e| e[:price]}
     @min_price = @items.blank? ? 0 : @items.first.price
     @max_price = @items.blank? ? 0 : @items.last.price
+    @max_price = @max_price.to_f > 10000 ? @max_price : 10000
     
     @items = @items.sort_by{|e| e[:size]}
     

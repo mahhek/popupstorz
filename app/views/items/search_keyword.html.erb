@@ -9,9 +9,6 @@
   #demo-frame > div.demo { padding: 10px !important; };
 </style>
 
-
-
-
 <script type="text/javascript">
   
   $(function() {
@@ -48,8 +45,8 @@
   $(function() {
     $( "#sizes-slider-range" ).slider({
       range: true,
-      min: <%= @items.blank? ? 0 : @items.first.size %>,
-      max: <%= @items.blank? ? 0 : @items.last.size %>,
+      min: <%= @sizes.blank? ? 0 : @sizes.first.size %>,
+      max: <%= @sizes.blank? ? 0 : @sizes.last.size %>,
       values: [ <%= @sizes.first.size %>, <%= @sizes.last.size %> ],
       slide: function( event, ui ) {
         $( "#size" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
