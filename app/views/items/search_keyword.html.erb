@@ -131,7 +131,7 @@
     </div>
 
     <div class="sortby">
-      <%= select_tag "sort_option", options_for_select([["Recommended" , "1"],["High to Low" ,"2"],["Low to High", "3"],["Newest","4"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#search_form').submit();" %>
+      <%= select_tag "sort_option", options_for_select([["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#search_form').submit();" %>
       <span>sort by</span>
     </div>
 

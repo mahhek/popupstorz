@@ -265,21 +265,6 @@ class ItemsController < ApplicationController
     unless params[:shareable].blank?
       item_conds += " AND (is_shareable = true)"
     end
-    
-    items = Item.find(:all,:conditions => [ item_conds ])
-
-    @items = items - booked_items
-    @items = @items.sort_by{|e| e[:price]}
-    @min_price = @items.blank? ? 0 : @items.first.price
-    @max_price = @items.blank? ? 0 : @items.last.price
-    @max_price = @max_price.to_f > 10000 ? @max_price : 10000
-    
-    @items = @items.sort_by{|e| e[:size]}
-    
-    session[:start_date] = params[:search_from]
-    session[:end_date] = params[:search_to]
-    
-    #    @items = Item.paginate(:page => params[:page], :per_page => 4, :order => "price")
     case params[:sort_option]
     when "1"
       order_by = "is_recommended, price DESC"
@@ -292,8 +277,25 @@ class ItemsController < ApplicationController
     else
       order_by = "price ASC"
     end
-
-    @items = @items.paginate(:page => params[:page], :per_page => 4, :order => order_by )
+    
+    items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)
+    
+    @items = items - booked_items
+    if params[:sort_option].blank?
+      @items = @items.sort_by{|e| e[:price]}
+    end
+    @min_price = @items.blank? ? 0 : @items.first.price
+    @max_price = @items.blank? ? 0 : @items.last.price
+    @max_price = @max_price.to_f > 10000 ? @max_price : 10000
+    if params[:sort_option].blank?
+      @items = @items.sort_by{|e| e[:size]}
+    end
+    session[:start_date] = params[:search_from]
+    session[:end_date] = params[:search_to]
+    
+    #    @items = Item.paginate(:page => params[:page], :per_page => 4, :order => "price")
+    
+    @items = @items.paginate(:page => params[:page], :per_page => 4 )
     
     @map = GMap.new("map")
     @map.control_init(:map_type => true, :small_zoom => true)
@@ -395,12 +397,12 @@ class ItemsController < ApplicationController
     @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])
     #    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status !='joinings approved'",current_user.id,current_user.id], :order => "rental_start_date ASC")
     
-#    gathers = @gatherings.group_by(&:item_id)
-#    gathers.each do|k,v|
-#      @gatherings = v
-#    end
-#    p "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",@gatherings.inspect
-#    ddd
+    #    gathers = @gatherings.group_by(&:item_id)
+    #    gathers.each do|k,v|
+    #      @gatherings = v
+    #    end
+    #    p "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",@gatherings.inspect
+    #    ddd
     
     
     @gatherings = @gatherings + current_user.gatherings.where("owner_id != #{current_user.id} and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'", :order => "rental_start_date ASC")
