@@ -109,7 +109,11 @@
         <img class="closepannel" src="../assets/-.png" />
         <div class="heading_right">Types</div>
         <div class="twocol">
-          <%= select_tag( "types", options_from_collection_for_select( @types, :id, :name, params[:types]? params[:types] : ''), :prompt => "Select Types", :onchange => "this.form.submit()") %>
+          <% @types.each do |type| %>            
+            <%= check_box_tag 'types[]', type.id, params["types"].blank? ? false : params["types"].include?(type.id.to_s), :onclick => "this.form.submit()" %>
+            <b><%= type.name.capitalize %></b><br />
+          <% end %>
+  <%#= select_tag( "types", options_from_collection_for_select( @types, :id, :name, params[:types]? params[:types] : ''), :prompt => "Select Types", :onchange => "this.form.submit()") %>
         </div>
       </div>
 

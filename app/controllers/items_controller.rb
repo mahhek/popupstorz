@@ -195,7 +195,6 @@ class ItemsController < ApplicationController
     session[:start_date] = nil
     session[:end_date] = nil
   
-     
     conds = "1=1 "
     
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
@@ -258,10 +257,19 @@ class ItemsController < ApplicationController
       item_conds += " AND (size <= '#{params[:max_size].to_i}')"
     end
     
-    unless params[:types].blank?
-      item_conds += " AND (listing_type_id = '#{params[:types]}')"
+    unless params["types"].blank?
+      count = 0
+      type_arr = ""
+      params["types"].each do|type|        
+        if count == 0
+          type_arr += " listing_type_id = '#{type}'"
+        else
+          type_arr += " OR listing_type_id = '#{type}'"
+        end
+        count += 1
+      end
+      item_conds += " AND (#{type_arr})"
     end
-    
     unless params[:shareable].blank?
       item_conds += " AND (is_shareable = true)"
     end
