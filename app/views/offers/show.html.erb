@@ -65,259 +65,264 @@
       <%= @offer.status %>
     <% end %>
     <br /><br />
+    <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
+      <b>Gathering Description:</b>
+      <%= raw nl2br(@offer.gathering_description) %>
+    <% end %>
+    <br /><br />
     <b>Security deposit:<b/>
       <%= number_to_currency(exchange_currency(@item.deposit.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
       <br/> 
-    <b>Cleaning Fee:<b/>
-    <%= number_to_currency(exchange_currency(@offer.item.cleaning_fee.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-    <br/> 
-    <b>Price Per Day:<b/>
-      <%= number_to_currency(exchange_currency(@offer.item.price.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-    <br/>
+      <b>Cleaning Fee:<b/>
+        <%= number_to_currency(exchange_currency(@offer.item.cleaning_fee.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+        <br/> 
+        <b>Price Per Day:<b/>
+          <%= number_to_currency(exchange_currency(@offer.item.price.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+          <br/>
 
-    <b> Total days:<b/>          
-      <%= (DateTime.strptime(@offer.rental_end_date.strftime("%m/%d/%Y"), "%m/%d/%Y") - DateTime.strptime(@offer.rental_start_date.strftime("%m/%d/%Y"), "%m/%d/%Y")).to_i + 1%>
-    <br/><br/>
-    <b>Available During:</b><br />
-    <% @offer.item.availability_options.each do|opt| %>
-      <%= opt.name %><br />
-    <% end %><br /><br />
-    <b>Created By:</b><br />
-      <%= @offer.user.popup_storz_display_name %>  <br />
-      <% if current_user != @offer.user %>
-        <div id="store-btn">
-          <%= link_to_function "Send Message", "$('#contact_me_div_#{@offer.user.id}').toggle('slow');", :class => "send"  %>
-        </div>
-      <% end %>
-    <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= @offer.user.id %>">
-      <%= form_tag contact_me_messages_path(:div_id => @offer.user.id) , :html => {:id => "contact_me_form"}, :remote  => true do %>
-      <%= hidden_field_tag :topic, "Inquiry" %>
-      <%= hidden_field_tag :user_id, @offer.user.id %>
-    <span style="width: auto;float: left;">
-      <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
-        </span>
-        <div style="float: left;margin-top: 5px;">
-          <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{@offer.user.id}').toggle('slow');"  %>
-        </div>
-      <% end %>
-    </div>
-    <br /><br />
-
-    <h3>Guests</h3>
-    <% if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0 %>
-      <b><%= @offer.persons_in_gathering %> persons needed</b><br />
-      <%= applied %> applied<br />
-      <%= approved %> confirmed<br />
-      <% unless current_user.blank? %>
-        <% if @offer.members.size.to_i < @offer.persons_in_gathering.to_i && @offer.user_id != current_user.id && @offer.owner_id != current_user.id %>
-          <% if !@offer.members.include?(current_user) && @offer.rental_start_date >= Date.today %>
-            <div style="float:left;margin: 5px;clear:both;width: 100%;">
-              <%= link_to "Join", "/join_gathering/#{@offer.id}",:class => "search ml70", :style => "float:right;margin-right:20px;" %>
-            </div>
-          <% end %>
-        <% end %>
-      <% end %>
-    <% else %>
-      <b>1 person needed</b><br />
-      0 applied<br />
-      1 confirmed<br />
-    <% end %>
-
-  </div>
-
-  <div style="float:left;width:65%;">
-
-  <% unless @item.avatars.size > 0 %>
-  <img src="../assets/gallery.png"alt="" class="gallery" />
-  <% else %>
-  <div id="rg-gallery" class="rg-gallery" style="margin-top:-50px;">
-    <div class="rg-thumbs">
-      <!-- Elastislide Carousel Thumbnail Viewer -->
-      <div class="es-carousel-wrapper">
-        <div class="es-nav">
-          <span class="es-nav-prev">Previous</span>
-          <span class="es-nav-next">Next</span>
-        </div>
-        <div class="es-carousel">
-          <ul>
-            <% @item.avatars.each do |avatar| %>
-              <li>
-                <a href="#">
-                  <img src="<%= avatar.photo.url(:thumb) %>"
-                       data-large="<%= avatar.photo.url(:original) %>"
-                       alt="image01"
-                       data-description="<%= @item.title %>" />
-                </a>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-      <!-- End Elastislide Carousel Thumbnail Viewer -->
-    </div><!-- rg-thumbs -->
-  </div><!-- rg-gallery -->
-  <% end %>
-
-  </div>
-
-  <div style="float:left;width: 30%;margin: 10px;">
-  <div style="width: 100%;float: left;clear: both;margin: 10px;border-bottom: 1px solid;">
-  <h2>Members</h2>
-  <% if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0 %>
-    <b>Confirmed(<%= approved %>)</b>
-    <% approved_requests = @offer.members.where("status ='Approved'") %>
-    <% approved_requests.each do|req| %>
-      <div style="margin:5px;float: left;width:100%;">
-        <div style="float: left;width: 50%;">
-          <img src="<%= req.avatars.blank? ? "../assets/User-icon.png" : req.avatars.first.photo.url(:thumb) %>" alt="image01" style="width: 50px;height: 50px;" />
-        </div>
-        <div style="float: left;width: 50%;">
-          <%= req.first_name + ' ' + req.last_name %><br />
-          <%= req.activity  %><br />
-          <%= req.city %>
-          <%= req.country? ? ', '+req.country : '' %>
-        </div>
-      </div>
-      <% if current_user != req %>
-        <div id="store-btn">
-          <%= link_to_function "Send Message", "$('#contact_me_div_#{req.id}').toggle('slow');", :class => "send"  %>
-        </div>
-      <% end %>
-      <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= req.id %>">
-        <%= form_tag contact_me_messages_path(:div_id => req.id) , :html => {:id => "contact_me_form"}, :remote  => true do %>
-          <%= hidden_field_tag :topic, "Inquiry" %>
-          <%= hidden_field_tag :user_id, req.id %>
-          <span style="width: auto;float: left;">
-            <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
-          </span>
-          <div style="float: left;margin-top: 5px;">
-            <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{req.id}').toggle('slow');"  %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  <% else %>
-    <b>Confirmed( 1 )</b>
-    <% req = @offer.user  %>
-    <div style="margin:5px;float: left;width:100%;">
-      <div style="float: left;width: 50%;">
-        <img src="<%= req.avatars.blank? ? "../assets/User-icon.png" : req.avatars.first.photo.url(:thumb) %>" alt="image01" style="width: 50px;height: 50px;" />
-      </div>
-      <div style="float: left;width: 50%;">
-        <%= req.first_name + ' ' + req.last_name %><br />
-        <%= req.activity  %><br />
-        <%= req.city %>
-        <%= req.country? ? ', '+req.country : '' %>
-      </div>
-    </div>
-    <% if current_user != req %>
-      <div id="store-btn">
-        <%= link_to_function "Send Message", "$('#contact_me_div_#{req.id}').toggle('slow');", :class => "send"  %>
-      </div>
-    <% end %>
-    <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= req.id %>">
-      <%= form_tag contact_me_messages_path(:div_id => req.id) , :html => {:id => "contact_me_form"}, :remote  => true do %>
-        <%= hidden_field_tag :topic, "Inquiry" %>
-        <%= hidden_field_tag :user_id, req.id %>
-        <span style="width: auto;float: left;">
-          <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
-        </span>
-        <div style="float: left;margin-top: 5px;">
-          <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{req.id}').toggle('slow');"  %>
-        </div>
-      <% end %>
-    </div>
-
-
-  <% end %>
-    </div>
-
-    <div style="width: 100%;float: left;clear: both;margin: 10px;">      
-      <b>Applied(<%= applied %>)</b>
-      <% applied_requests = @offer.members.where("status !='Approved'") %>
-      <% applied_requests.each do|req| %>
-        <div style="margin:5px;float: left;width:100%;">
-          <div style="float: left;width: 50%;">
-            <img src="<%= req.avatars.blank? ? "../assets/User-icon.png" : req.avatars.first.photo.url(:thumb) %>" alt="image01" style="width: 50px;height: 50px;" />
-          </div>
-          <div style="float: left;width: 50%;">
-            <%= req.first_name + ' ' + req.last_name %><br />
-            <%= req.activity  %><br />
-            <%= req.city %>
-            <%= req.country? ? ', '+req.country : '' %>
-          </div>
-          <% if current_user != req %>
-            <div id="store-btn">
-              <%= link_to_function "Send Message", "$('#contact_me_div_#{req.id}').toggle('slow');", :class => "send"  %>
-            </div>
-          <% end %>
-          <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= req.id %>">
-            <%= form_tag contact_me_messages_path(:div_id => req.id) , :html => {:id => "contact_me_form"}, :remote  => true do %>
-              <%= hidden_field_tag :topic, "Inquiry" %>
-              <%= hidden_field_tag :user_id, req.id %>
-              <span style="width: auto;float: left;">
-                <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
-              </span>
-              <div style="float: left;margin-top: 5px;">
-                <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{req.id}').toggle('slow');"  %>
+          <b> Total days:<b/>          
+            <%= (DateTime.strptime(@offer.rental_end_date.strftime("%m/%d/%Y"), "%m/%d/%Y") - DateTime.strptime(@offer.rental_start_date.strftime("%m/%d/%Y"), "%m/%d/%Y")).to_i + 1%>
+            <br/><br/>
+            <b>Available During:</b><br />
+            <% @offer.item.availability_options.each do|opt| %>
+              <%= opt.name %><br />
+            <% end %><br /><br />
+            <b>Created By:</b><br />
+            <%= @offer.user.popup_storz_display_name %>  <br />
+            <% if current_user != @offer.user %>
+              <div id="store-btn">
+                <%= link_to_function "Send Message", "$('#contact_me_div_#{@offer.user.id}').toggle('slow');", :class => "send"  %>
               </div>
             <% end %>
-          </div>
-          <br/>
-          <% request = GatheringMember.where("user_id = #{req.id} and offer_id = #{@offer.id}").first %>          
-          <% if request.status == "confirmed" && current_user.id == @offer.user_id %>
-            <% if approved_requests.size <  @offer.persons_in_gathering.to_i %>
-              <%= link_to "Approve", "/approve_gathering_request/#{@offer.id}?mem=#{req.id}" %> | 
-              <%= link_to "Decline", "/decline_gathering_request/#{@offer.id}?mem=#{req.id}" %> 
-              <br /><br />
-            <% end %>
-          <% end %>
-        </div>
-      <% end %><br/><br/>
-    </div>
-
-  </div> 
-
-
-    <div style="float:left;width:65%;margin-left: 20px;">    
-      <h1> Wall </h1>
-      <div id="comments" style="height: 200px;display: block;">
-
-        <%= form_for @comment, :url => "/offers/add_comment" do |f| %>
-          <% if @comment.errors.any? %>
-            <div id="errorExplanation" class="erro_messages">
-              <h2>Oops! Looks like you need to include the following:</h2>
-              <ul>
-                <li style="list-style: square;float: left;">
-                  <%= @comment.errors.full_messages.to_sentence  %>
-                </li>
-              </ul>
+            <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= @offer.user.id %>">
+              <%= form_tag contact_me_messages_path(:div_id => @offer.user.id) , :html => {:id => "contact_me_form"}, :remote  => true do %>
+                <%= hidden_field_tag :topic, "Inquiry" %>
+                <%= hidden_field_tag :user_id, @offer.user.id %>
+                <span style="width: auto;float: left;">
+                  <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
+                </span>
+                <div style="float: left;margin-top: 5px;">
+                  <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{@offer.user.id}').toggle('slow');"  %>
+                </div>
+              <% end %>
             </div>
-          <% end %>
+            <br /><br />
 
-          <%= hidden_field_tag "id",@offer.id %>
-          <div class="field">
-            <%= f.label :comment %><br />
-            <%= f.text_area "comment", :rows => 5 %><br />
-            <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
-          </div>
-        <% end %>
-      </div>
+            <h3>Guests</h3>
+            <% if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0 %>
+              <b><%= @offer.persons_in_gathering %> persons needed</b><br />
+              <%= applied %> applied<br />
+              <%= approved %> confirmed<br />
+              <% unless current_user.blank? %>
+                <% if @offer.members.size.to_i < @offer.persons_in_gathering.to_i && @offer.user_id != current_user.id && @offer.owner_id != current_user.id %>
+                  <% if !@offer.members.include?(current_user) && @offer.rental_start_date >= Date.today %>
+                    <div style="float:left;margin: 5px;clear:both;width: 100%;">
+                      <%= link_to "Join", "/join_gathering/#{@offer.id}",:class => "search ml70", :style => "float:right;margin-right:20px;" %>
+                    </div>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% else %>
+              <b>1 person needed</b><br />
+              0 applied<br />
+              1 confirmed<br />
+            <% end %>
 
-      <div id="show_comments" style="display: block;" >
-        <b>Previous Comments:</b><br/>
-        <% unless @offer.comments.blank? %>
-          <% @offer.comments.each do|f| %>          
-            <%= f.comment %><br/>
-            <i>
-              <%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %>
-            </i>
-            <br/>
-            <br/>
-          <%end%>
-        <% else %>
-          <i>No Comments added yet!</i>
-        <%end%>
-      </div>
-    </div>
-</div>
+            </div>
+
+            <div style="float:left;width:65%;">
+
+              <% unless @item.avatars.size > 0 %>
+                <img src="../assets/gallery.png"alt="" class="gallery" />
+              <% else %>
+                <div id="rg-gallery" class="rg-gallery" style="margin-top:-50px;">
+                  <div class="rg-thumbs">
+                    <!-- Elastislide Carousel Thumbnail Viewer -->
+                    <div class="es-carousel-wrapper">
+                      <div class="es-nav">
+                        <span class="es-nav-prev">Previous</span>
+                        <span class="es-nav-next">Next</span>
+                      </div>
+                      <div class="es-carousel">
+                        <ul>
+                          <% @item.avatars.each do |avatar| %>
+                            <li>
+                              <a href="#">
+                                <img src="<%= avatar.photo.url(:thumb) %>"
+                                     data-large="<%= avatar.photo.url(:original) %>"
+                                     alt="image01"
+                                     data-description="<%= @item.title %>" />
+                              </a>
+                            </li>
+                          <% end %>
+                        </ul>
+                      </div>
+                    </div>
+                    <!-- End Elastislide Carousel Thumbnail Viewer -->
+                  </div><!-- rg-thumbs -->
+                </div><!-- rg-gallery -->
+              <% end %>
+
+            </div>
+
+            <div style="float:left;width: 30%;margin: 10px;">
+              <div style="width: 100%;float: left;clear: both;margin: 10px;border-bottom: 1px solid;">
+                <h2>Members</h2>
+                <% if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0 %>
+                  <b>Confirmed(<%= approved %>)</b>
+                  <% approved_requests = @offer.members.where("status ='Approved'") %>
+                  <% approved_requests.each do|req| %>
+                    <div style="margin:5px;float: left;width:100%;">
+                      <div style="float: left;width: 50%;">
+                        <img src="<%= req.avatars.blank? ? "../assets/User-icon.png" : req.avatars.first.photo.url(:thumb) %>" alt="image01" style="width: 50px;height: 50px;" />
+                      </div>
+                      <div style="float: left;width: 50%;">
+                        <%= req.first_name + ' ' + req.last_name %><br />
+                        <%= req.activity  %><br />
+                        <%= req.city %>
+                        <%= req.country? ? ', '+req.country : '' %>
+                      </div>
+                    </div>
+                    <% if current_user != req %>
+                      <div id="store-btn">
+                        <%= link_to_function "Send Message", "$('#contact_me_div_#{req.id}').toggle('slow');", :class => "send"  %>
+                      </div>
+                    <% end %>
+                    <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= req.id %>">
+                      <%= form_tag contact_me_messages_path(:div_id => req.id) , :html => {:id => "contact_me_form"}, :remote  => true do %>
+                        <%= hidden_field_tag :topic, "Inquiry" %>
+                        <%= hidden_field_tag :user_id, req.id %>
+                        <span style="width: auto;float: left;">
+                          <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
+                        </span>
+                        <div style="float: left;margin-top: 5px;">
+                          <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{req.id}').toggle('slow');"  %>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                <% else %>
+                  <b>Confirmed( 1 )</b>
+                  <% req = @offer.user  %>
+                  <div style="margin:5px;float: left;width:100%;">
+                    <div style="float: left;width: 50%;">
+                      <img src="<%= req.avatars.blank? ? "../assets/User-icon.png" : req.avatars.first.photo.url(:thumb) %>" alt="image01" style="width: 50px;height: 50px;" />
+                    </div>
+                    <div style="float: left;width: 50%;">
+                      <%= req.first_name + ' ' + req.last_name %><br />
+                      <%= req.activity  %><br />
+                      <%= req.city %>
+                      <%= req.country? ? ', '+req.country : '' %>
+                    </div>
+                  </div>
+                  <% if current_user != req %>
+                    <div id="store-btn">
+                      <%= link_to_function "Send Message", "$('#contact_me_div_#{req.id}').toggle('slow');", :class => "send"  %>
+                    </div>
+                  <% end %>
+                  <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= req.id %>">
+                    <%= form_tag contact_me_messages_path(:div_id => req.id) , :html => {:id => "contact_me_form"}, :remote  => true do %>
+                      <%= hidden_field_tag :topic, "Inquiry" %>
+                      <%= hidden_field_tag :user_id, req.id %>
+                      <span style="width: auto;float: left;">
+                        <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
+                      </span>
+                      <div style="float: left;margin-top: 5px;">
+                        <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{req.id}').toggle('slow');"  %>
+                      </div>
+                    <% end %>
+                  </div>
+
+
+                <% end %>
+              </div>
+
+              <div style="width: 100%;float: left;clear: both;margin: 10px;">      
+                <b>Applied(<%= applied %>)</b>
+                <% applied_requests = @offer.members.where("status !='Approved'") %>
+                <% applied_requests.each do|req| %>
+                  <div style="margin:5px;float: left;width:100%;">
+                    <div style="float: left;width: 50%;">
+                      <img src="<%= req.avatars.blank? ? "../assets/User-icon.png" : req.avatars.first.photo.url(:thumb) %>" alt="image01" style="width: 50px;height: 50px;" />
+                    </div>
+                    <div style="float: left;width: 50%;">
+                      <%= req.first_name + ' ' + req.last_name %><br />
+                      <%= req.activity  %><br />
+                      <%= req.city %>
+                      <%= req.country? ? ', '+req.country : '' %>
+                    </div>
+                    <% if current_user != req %>
+                      <div id="store-btn">
+                        <%= link_to_function "Send Message", "$('#contact_me_div_#{req.id}').toggle('slow');", :class => "send"  %>
+                      </div>
+                    <% end %>
+                    <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= req.id %>">
+                      <%= form_tag contact_me_messages_path(:div_id => req.id) , :html => {:id => "contact_me_form"}, :remote  => true do %>
+                        <%= hidden_field_tag :topic, "Inquiry" %>
+                        <%= hidden_field_tag :user_id, req.id %>
+                        <span style="width: auto;float: left;">
+                          <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
+                        </span>
+                        <div style="float: left;margin-top: 5px;">
+                          <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{req.id}').toggle('slow');"  %>
+                        </div>
+                      <% end %>
+                    </div>
+                    <br/>
+                    <% request = GatheringMember.where("user_id = #{req.id} and offer_id = #{@offer.id}").first %>          
+                    <% if request.status == "confirmed" && current_user.id == @offer.user_id %>
+                      <% if approved_requests.size <  @offer.persons_in_gathering.to_i %>
+                        <%= link_to "Approve", "/approve_gathering_request/#{@offer.id}?mem=#{req.id}" %> | 
+                        <%= link_to "Decline", "/decline_gathering_request/#{@offer.id}?mem=#{req.id}" %> 
+                        <br /><br />
+                      <% end %>
+                    <% end %>
+                  </div>
+                <% end %><br/><br/>
+              </div>
+
+            </div> 
+
+
+            <div style="float:left;width:65%;margin-left: 20px;">    
+              <h1> Wall </h1>
+              <div id="comments" style="height: 200px;display: block;">
+
+                <%= form_for @comment, :url => "/offers/add_comment" do |f| %>
+                  <% if @comment.errors.any? %>
+                    <div id="errorExplanation" class="erro_messages">
+                      <h2>Oops! Looks like you need to include the following:</h2>
+                      <ul>
+                        <li style="list-style: square;float: left;">
+                          <%= @comment.errors.full_messages.to_sentence  %>
+                        </li>
+                      </ul>
+                    </div>
+                  <% end %>
+
+                  <%= hidden_field_tag "id",@offer.id %>
+                  <div class="field">
+                    <%= f.label :comment %><br />
+                    <%= f.text_area "comment", :rows => 5 %><br />
+                    <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
+                  </div>
+                <% end %>
+              </div>
+
+              <div id="show_comments" style="display: block;" >
+                <b>Previous Comments:</b><br/>
+                <% unless @offer.comments.blank? %>
+                  <% @offer.comments.each do|f| %>          
+                    <%= f.comment %><br/>
+                    <i>
+                      <%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %>
+                    </i>
+                    <br/>
+                    <br/>
+                  <%end%>
+                <% else %>
+                  <i>No Comments added yet!</i>
+                <%end%>
+              </div>
+            </div>
+            </div>
