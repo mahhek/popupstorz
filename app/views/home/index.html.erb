@@ -22,8 +22,8 @@
               <%= image_tag("PUS_Logo.jpg", :border => "0", :alt => "image", :class => "item_image" )  %>
             <%end%>
           </div>
-          <h1><%=item.city%>, <%=item.country_code%></h1>
-          <p><%=item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.strftime("%m/%y")%></p>
+          <h1><%=item.city%>, <%=item.country_code%></h1> 
+          <p><%= item.availability_from.blank? ? "" : item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.blank? ? "" :item.availability_to.strftime("%m/%y")%></p>
 
           <h5>2/3</h5>
           <h6><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h6>

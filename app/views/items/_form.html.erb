@@ -60,7 +60,6 @@
 <div class="xfields">Neighbourhood:
   <%= f.text_field :neighbourhood, :style => "width:315px;" %><br/>
 </div>
-
 <br/>
 <div style="width: 40%;">
   <% if @map %>
@@ -69,7 +68,7 @@
 </div>
 <br/>
 
-<div class="xfields" style="width: 100%;">Size of Space:
+<div class="xfields" style="width: 100%;">Size:
   <%= f.text_field :size, :style => "width:80px;", :onchange => "update_units()" %>
   <%= select_tag "item[size_unit]", options_for_select([["SQMT","SQMT"],["SQFT","SQFT"]], @item.size_unit),:onchange => "update_units()" , :style => "width:100px;"%>
   <div id="other_unit">
@@ -79,32 +78,34 @@
 
 
 <br/>
-<div class="xfields">Type of Space:
+<div class="xfields">Type:
   <%= select_tag( "item[listing_type_id]", options_from_collection_for_select(@listing_types,:id, :name, @item.listing_type_id)) %><br />
 </div>
 <br/>
 
-<div class="xfields">Description:<br/>
+<div class="xfields">Detailed Description:<br/>
   <%= f.text_area :description, :size => "50x7" %>
 </div>
-
-<br/>
-<div class="xfields">
+<br/><div class="xfields">Availabilities:<br/><br/> <%=f.check_box :availablities_daytime%>Daytime&nbsp;&nbsp;<%=f.check_box :availablities_evenings%>Evenings<br/><br/><%=f.check_box :availablities_monday%>Mondays&nbsp;&nbsp;<%=f.check_box :availablities_tuesday%>Tuesdays&nbsp;&nbsp;<%=f.check_box :availablities_wednesday%>Wednesdays&nbsp;&nbsp;<%=f.check_box :availablities_thursday%>Thursdays&nbsp;&nbsp;<%=f.check_box :availablities_friday%>Fridays&nbsp;&nbsp;<%=f.check_box :availablities_saturday%>Saturdays&nbsp;&nbsp;<%=f.check_box :availablities_sunday%>Sundays&nbsp;&nbsp;<div/>
+<br/><br/><div style="float:left;width:100%;">
+  <div style="float:left;width:15%;">
+    Shareability: &nbsp;&nbsp;
+    <%= select_tag "item[is_shareable]", options_for_select([["Yes",true],["No",false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)" %>&nbsp;&nbsp;
+  </div>
+  <div id="person_count" style="float:left;width:50%;">
+    Up to: &nbsp;&nbsp;&nbsp;
+    <%= f.text_field :maximum_members, :size => "5" %> persons
+  </div>
+</div><br/>
+<div class="xfields">Pricing:<br/><br/>
   <span>
-    Price Unit:
+    Currency:
   </span>
   <span>
     <%= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EUR","EUR"]], @item.price_unit), :onchange => "$('.unit').html($(this).val() == 'USD' ? '$' : '€');", :style => "width:100px;" %>
-  </span>
-</div>
-<br/>
-<br/>
-
-<div class="xfields">
-  <span>
-    Price:
-  </span>
-  <span>
+  </span><br/><br/><span>
+    Rental Price:<br/><br/>
+  </span><span>
     <%= f.text_field :price,  :class => "price", :size =>""%> <span class="unit">$</span> per day
     <%= f.text_field :price_per_week,  :class => "price",:size =>""  %> <span class="unit">$</span> per week
     <%= f.text_field :price_per_month,  :class => "price",:size =>"" %> <span class="unit">$</span> per month
@@ -112,6 +113,18 @@
 </div>
 <br/>
 <br/>
+
+<%#*<div class="xfields">%>
+  <%#*<span>%>
+    <%#*Rental Price:<br/><br/>%>
+  <%#*</span>%>
+  <%#*<span>%>
+    <%#= f.text_field :price,  :class => "price", :size =>""%> 
+    <%#= f.text_field :price_per_week,  :class => "price",:size =>""  %> 
+    <%#= f.text_field :price_per_month,  :class => "price",:size =>"" %> 
+  <%#*</span>%>
+<%#*</div>%>
+
 
 
 
@@ -136,27 +149,13 @@
    <!-- <%= select_tag "item[deposit]", options_for_select([["$","$"],["€","€"]], @item.deposit) %>&nbsp;&nbsp; -->
   </span>
 </div>
-<br/>
-<br/>
 
-<div style="float:left;width:100%;">
-  <div style="float:left;width:15%;">
-    Gathering: &nbsp;&nbsp;&nbsp;
-    <%= select_tag "item[is_shareable]", options_for_select([["Yes",true],["No",false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)" %>&nbsp;&nbsp;
-  </div>
-  <div id="person_count" style="float:left;width:50%;">
-    Up to: &nbsp;&nbsp;&nbsp;
-    <%= f.text_field :maximum_members, :size => "5" %> persons
-  </div>
-</div>
-
-<br/>
 <br/>
 
 
 <div class="xfields">  
   Availability From:<br/><br/>
-  <%= f.datetime_select :availability_from, :order => [:year, :month, :day]   %> &nbsp;&nbsp;-&nbsp;&nbsp;
+  <%= f.datetime_select :availability_from, :order => [:year, :month, :day]   %> &nbsp;&nbsp;&nbsp;&nbsp;
   <br/><br/>
   Availability To:
   <br/><br/>
@@ -167,10 +166,26 @@
     <%= availability_option.name %>
   <% end %>
 
-</div>
+</div><br/><div class="xfields">Cancellation Policies:<br/><br/> <%=f.radio_button :cancellation_policy_flexible, 'flexible', :in => [true, false] %>Flexible<br/>If renter cancels more than 7 days before booking start date: full refund<br/>
+If renter cancels less than 7 days before booking start date: no refund<br/><br/>
+
+Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the Thursday of the prior week at 23:59 (local time of the booked space).<br/><br/>
+
+Please be informed that the 10% Pop Up Storz service fee is not refundable.<br/><br/>
+Exemple
+If renter has done a booking for an amount of 110 € and cancels more than 7 days before booking start date, the amount of the refund will be 100 €.<br/><br/><%=f.radio_button :cancellation_policy_semi_flexible,'semiflexible', :in => [true, false] %>SemiFlexible<br/>If renter cancels more than 3 days before booking start date: partial refund (50%)<br/>
+If renter cancels less than 3 days before booking start date: no refund<br/><br/>
+
+Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the prior Monday at 23:59 (local time of the booked space).<br/><br/>
+
+Please be informed that the 10% Pop Up Storz service fee is not refundable. <br/><br/>
+Exemple
+If renter has done a booking for an amount of 110 € and cancels more than 3 days before booking start date, the amount of the refund will be 50 €.<div/>
 
 <br/>
-<br/>
+<br/><div class="xfields">Owner Rules:<br/>
+  <%= f.text_area :owner_rules, :style => "width:315px;" %><br/>
+</div>
 
 <div id="iteme-type" style="width: 100%;float: left;">
   <div id="left-tellus">
