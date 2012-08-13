@@ -166,7 +166,7 @@
     <%#= availability_option.name %>
   <%# end %>
 
-</div><br/><div class="xfields">Cancellation Policies:<br/><br/> <%=f.radio_button :cancellation_policy_flexible, 'flexible', :in => [true, false] %>Flexible<br/>If renter cancels more than 7 days before booking start date: full refund<br/>
+</div><br/><div class="xfields">Cancellation Policies:<br/><br/>We offer two cancellation policies:<br/><br/> <%=f.radio_button :cancellation_policy_flexible, 'flexible', :in => [true, false] %>Flexible<br/>If renter cancels more than 7 days before booking start date: full refund<br/>
 If renter cancels less than 7 days before booking start date: no refund<br/><br/>
 
 Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the Thursday of the prior week at 23:59 (local time of the booked space).<br/><br/>

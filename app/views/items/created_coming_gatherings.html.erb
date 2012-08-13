@@ -161,8 +161,9 @@
           <% if offer.status == "all joinings approved" && current_user.id == offer.user_id %>     
             <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{offer.id}" %> 
           <% end %>
-        <% end %>
+        <% end %><%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%><b>cancellation Policies:<b/><%if item.cancellation_policy_flexible=='flexible' or item.cancellation_policy_semi_flexible=='semiflexible'%><%=felxible%> else <%=semifelxible%><%end%><br/> Owner Rules:<%=item.owner_rules%> <%else%>
 
+<b>cancellation Policies:<b/><%if item.cancellation_policy_flexible=='flexible' or item.cancellation_policy_semi_flexible=='semiflexible'%><%=felxible%> else <%=semifelxible%><%end%><br/> Owner Rules:<%=item.owner_rules%> <%end%>
         <br /><br />
         <%= link_to "Details", "/offers/#{offer.id}" %>
         <br /><br />

@@ -86,7 +86,7 @@
             <b>Available During:</b><br />
             <% @offer.item.availability_options.each do|opt| %>
               <%= opt.name %><br />
-            <% end %><br /><br />
+            <% end %><br /><br /><b>cancellation Policies:<b/><%if @item.cancellation_policy_flexible=='flexible' or @item.cancellation_policy_semi_flexible=='semiflexible'%><%=felxible%> else <%=semifelxible%><%end%><br/> Owner Rules:<%=@item.owner_rules%><br/><br/>
             <b>Created By:</b><br />
             <%= @offer.user.popup_storz_display_name %>  <br />
             <% if current_user != @offer.user %>

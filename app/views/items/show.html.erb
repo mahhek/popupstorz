@@ -215,7 +215,7 @@
               <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
                 <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
               <% end %>
-            <% end %>
+            <% end %><br/>cancellation Policies:<%if @item.cancellation_policy_flexible=='flexible' or @item.cancellation_policy_semi_flexible=='semiflexible'%><%=felxible%> else <%=semifelxible%><%end%><br/> Owner Rules:<%=@item.owner_rules%><br/><br/>
             <%= link_to "Details", "/offers/#{gathering.id}" %>
           <% end %>
         </div>
