@@ -89,7 +89,7 @@
 <br/><div class="xfields">Availabilities:<br/><br/> <%=f.check_box :availablities_daytime%>Daytime&nbsp;&nbsp;<%=f.check_box :availablities_evenings%>Evenings<br/><br/><%=f.check_box :availablities_monday%>Mondays&nbsp;&nbsp;<%=f.check_box :availablities_tuesday%>Tuesdays&nbsp;&nbsp;<%=f.check_box :availablities_wednesday%>Wednesdays&nbsp;&nbsp;<%=f.check_box :availablities_thursday%>Thursdays&nbsp;&nbsp;<%=f.check_box :availablities_friday%>Fridays&nbsp;&nbsp;<%=f.check_box :availablities_saturday%>Saturdays&nbsp;&nbsp;<%=f.check_box :availablities_sunday%>Sundays&nbsp;&nbsp;<div/>
 <br/><br/><div style="float:left;width:100%;">
   <div style="float:left;width:15%;">
-    Shareability: &nbsp;&nbsp;
+    Shareability: &nbsp;
     <%= select_tag "item[is_shareable]", options_for_select([["Yes",true],["No",false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)" %>&nbsp;&nbsp;
   </div>
   <div id="person_count" style="float:left;width:50%;">
@@ -153,18 +153,18 @@
 <br/>
 
 
-<div class="xfields">  
-  Availability From:<br/><br/>
-  <%= f.datetime_select :availability_from, :order => [:year, :month, :day]   %> &nbsp;&nbsp;&nbsp;&nbsp;
-  <br/><br/>
-  Availability To:
-  <br/><br/>
-  <%= f.datetime_select :availability_to, :order => [:year, :month, :day]   %><br/><br/>
+<%#*<div class="xfields">%>  
+  <%#*Availability From:<br/><br/>%>
+  <%#= f.datetime_select :availability_from, :order => [:year, :month, :day]   %> &nbsp;&nbsp;&nbsp;&nbsp;
+  <%#*<br/><br/>%>
+  <%#*Availability To:%>
+  <%#*<br/><br/>%>
+  <%#= f.datetime_select :availability_to, :order => [:year, :month, :day]   %><br/><br/>
 
-  <% @availability_options.each do |availability_option| %>
-    <%= check_box_tag("availability_options[]", availability_option.id, @item.availability_options.include?(availability_option)) %>
-    <%= availability_option.name %>
-  <% end %>
+  <%# @availability_options.each do |availability_option| %>
+    <%#= check_box_tag("availability_options[]", availability_option.id, @item.availability_options.include?(availability_option)) %>
+    <%#= availability_option.name %>
+  <%# end %>
 
 </div><br/><div class="xfields">Cancellation Policies:<br/><br/> <%=f.radio_button :cancellation_policy_flexible, 'flexible', :in => [true, false] %>Flexible<br/>If renter cancels more than 7 days before booking start date: full refund<br/>
 If renter cancels less than 7 days before booking start date: no refund<br/><br/>
