@@ -75,16 +75,16 @@
       if('<%= session[:start_date] %>' == ""){
         $("#txtFromDate").datepicker({
           minDate: new Date(),
-          maxDate: '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%>',
+          maxDate: '<%= @item.availability_to.strftime("%m/%d/%y") %>',
           dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays,
           beforeShowDay:  disableDays
         });
       }else{
-        $("#txtFromDate").val('<%= session[:start_date] %>');
+        $("#txtFromDate").val('<%= session[:start_date] %>');        
         $("#txtFromDate").datepicker({
           minDate: new Date(),
-          maxDate: '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%>',
+          maxDate: '<%= @item.availability_to.strftime("%m/%d/%y") %>',
           dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays,
           beforeShowDay:  disableDays
@@ -94,7 +94,7 @@
       if('<%= session[:start_date] %>' == ""){
         $("#txtToDate").datepicker({
           minDate: new Date(),
-          maxDate: '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%>',
+          maxDate: '<%= @item.availability_to.strftime("%m/%d/%y") %>',
           dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays,
           beforeShowDay:  disableDays
@@ -103,7 +103,7 @@
         $("#txtToDate").val('<%= session[:end_date] %>');
         $("#txtToDate").datepicker({
           minDate: new Date(),
-          maxDate: '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%>',
+          maxDate: '<%= @item.availability_to.strftime("%m/%d/%y") %>',
           dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays,
           beforeShowDay:  disableDays
