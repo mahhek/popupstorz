@@ -19,7 +19,13 @@
 
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
-    $(document).ready(function(){      
+    $(document).ready(function(){
+      
+      var days_arr = <%= @available_days %>;
+      function disableDays(date){
+        return [$.inArray(date.getDay(), days_arr) > -1,""]
+      }
+      
       var disabledDaysRange = new Array;
       disabledDaysRange = <%= raw @manage_dates_array %>;
       function disableRangeOfDays(d) {
@@ -72,6 +78,7 @@
           maxDate: '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%>',
           dateFormat: 'mm/dd/yy',
           beforeShowDay: disableRangeOfDays,
+          beforeShowDay:  disableDays
         });
       }else{
         $("#txtFromDate").val('<%= session[:start_date] %>');
@@ -79,7 +86,8 @@
           minDate: new Date(),
           maxDate: '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%>',
           dateFormat: 'mm/dd/yy',
-          beforeShowDay: disableRangeOfDays
+          beforeShowDay: disableRangeOfDays,
+          beforeShowDay:  disableDays
 
         });
       }
@@ -88,7 +96,8 @@
           minDate: new Date(),
           maxDate: '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%>',
           dateFormat: 'mm/dd/yy',
-          beforeShowDay: disableRangeOfDays
+          beforeShowDay: disableRangeOfDays,
+          beforeShowDay:  disableDays
         });
       }else{
         $("#txtToDate").val('<%= session[:end_date] %>');
@@ -96,7 +105,8 @@
           minDate: new Date(),
           maxDate: '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%>',
           dateFormat: 'mm/dd/yy',
-          beforeShowDay: disableRangeOfDays
+          beforeShowDay: disableRangeOfDays,
+          beforeShowDay:  disableDays
         });
       }
       if('<%= session[:start_date] %>' != "" && '<%= session[:end_date] %>' != ""){

@@ -164,6 +164,36 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
     @booked_dates = []
     @manage_dates_array = []
+    @available_days = []
+    
+    if @item.availablities_sunday == true
+      @available_days << 0
+    end
+    
+    if @item.availablities_monday == true
+      @available_days << 1
+    end
+    
+    if @item.availablities_tuesday == true
+      @available_days << 2
+    end
+    
+    if @item.availablities_wednesday == true
+      @available_days << 3
+    end
+    
+    if @item.availablities_thursday == true
+      @available_days << 4
+    end
+    
+    if @item.availablities_friday == true
+      @available_days << 5
+    end
+    
+    if @item.availablities_saturday == true
+      @available_days << 6
+    end
+            
     @offers = @item.offers.where("(status LIKE '%Confirmed%') and parent_id is NULL")
     
     @offers.each do|offer|
