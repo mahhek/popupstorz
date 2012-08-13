@@ -43,7 +43,36 @@ class OffersController < ApplicationController
     @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.popup_storz_display_name, :info_window => "#{@item.title}"))
 
     #    @offer = Offer.find_by_item_id_and_user_id_and_status(@item.id ,current_user.id,"Pending")
-
+    @available_days = []
+    
+    if @item.availablities_sunday == true
+      @available_days << 0
+    end
+    
+    if @item.availablities_monday == true
+      @available_days << 1
+    end
+    
+    if @item.availablities_tuesday == true
+      @available_days << 2
+    end
+    
+    if @item.availablities_wednesday == true
+      @available_days << 3
+    end
+    
+    if @item.availablities_thursday == true
+      @available_days << 4
+    end
+    
+    if @item.availablities_friday == true
+      @available_days << 5
+    end
+    
+    if @item.availablities_saturday == true
+      @available_days << 6
+    end
+    
     if @offer.blank?
       @offer = @item.offers.build
       @offer.offer_messages.build
@@ -66,6 +95,36 @@ class OffersController < ApplicationController
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
     @manage_dates_array << @booked_dates
+    
+    @available_days = []
+    
+    if @item.availablities_sunday == true
+      @available_days << 0
+    end
+    
+    if @item.availablities_monday == true
+      @available_days << 1
+    end
+    
+    if @item.availablities_tuesday == true
+      @available_days << 2
+    end
+    
+    if @item.availablities_wednesday == true
+      @available_days << 3
+    end
+    
+    if @item.availablities_thursday == true
+      @available_days << 4
+    end
+    
+    if @item.availablities_friday == true
+      @available_days << 5
+    end
+    
+    if @item.availablities_saturday == true
+      @available_days << 6
+    end
     
     unless @offer.blank?
       params[:offer][:rental_start_date] = DateTime.strptime(params[:offer][:rental_start_date], "%m/%d/%Y").to_time
