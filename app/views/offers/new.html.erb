@@ -87,7 +87,7 @@
       // jsFiddle
       $("#offer_rental_start_date").datepicker({
         minDate: new Date(),
-        maxDate: '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%>',
+        maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
         dateFormat: 'mm/dd/yy',
         beforeShowDay: disableRangeOfDays,
           beforeShowDay:  disableDays
@@ -95,7 +95,7 @@
 
       $("#offer_rental_end_date").datepicker({
         minDate: new Date(),
-        maxDate: '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%>',
+        maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
         dateFormat: 'mm/dd/yy',
         beforeShowDay: disableRangeOfDays,
           beforeShowDay:  disableDays
