@@ -476,7 +476,19 @@
       end = $('#txtToDate').val();
       end_date = new Date(end);
       
-      number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;
+      startTime = start_date.getTime();
+      endTime = end_date.getTime();
+      var new_days= 0;
+      var days_arr = <%= @available_days %>;
+      
+      for (loopTime = startTime; loopTime <= endTime; loopTime += 86400000) {
+        if($.inArray(new Date(loopTime).getDay(), days_arr) > -1){
+          new_days += 1;
+        }        
+      }
+      
+      <%#*number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;%>
+      number_of_days = new_days;
       if(number_of_days == 0){
         number_of_days = 1;
       }
