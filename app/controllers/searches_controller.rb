@@ -9,7 +9,12 @@ class SearchesController < ApplicationController
     @sizes = Offer.select("distinct(gathering_rental_price)").where("gathering_rental_price is not NULL").order("gathering_rental_price ASC")
     @start_size = @sizes.first
     @last_size = @sizes.last
-    @last_price = @last_size.gathering_rental_price.to_f > 10000 ? @last_size.gathering_rental_price : 10000
+    
+    unless @last_size.blank?
+      @last_price = @last_size.gathering_rental_price.to_f > 10000 ? @last_size.gathering_rental_price : 10000
+    else
+      @last_price = 10000
+    end    
     
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     #    @users_with_uniq_cities = User.select("distinct(city)")

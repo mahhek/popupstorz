@@ -191,6 +191,7 @@
               <%= hidden_field_tag :per_month_price, exchange_currency(@item.price_per_month, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
               <%= f.hidden_field :total_amount, :value => exchange_currency(@calculated_price.to_i, @item.price_unit) %>
               <%= hidden_field_tag "offer[is_gathering]", false %>
+              <%= hidden_field_tag "offer[total_days]", 0 %>
 
               <div style="float: left;width: 100px;" id="daily_price">
   <%#*€<%= @item.price %>
@@ -492,6 +493,8 @@
         number_of_days = 1;
       }
       number_of_days = Math.round(number_of_days)
+      $("#offer_total_days").val(number_of_days);
+      
       $('#duration').text(number_of_days+ " days");
       calculated_price = calculate_price(number_of_days);
       
