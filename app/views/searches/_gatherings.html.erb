@@ -34,7 +34,7 @@
         Joined Persons: <%= gathering.members.size %><br/>
         Rental Price per person: <%= gathering.gathering_rental_price %><br />
         Gathering Description: </b><%= gathering.gathering_description %><br/>
-        Gathering Deadline: <%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br/><br/><b>cancellation Policies:<b/><%if item.cancellation_policy_flexible=='flexible' or item.cancellation_policy_semi_flexible=='semiflexible'%><%=felxible%> else <%=semifelxible%><%end%><br/> Owner Rules:<%=item.owner_rules%><br /><br /><%= link_to "Details", "/offers/#{gathering.id}" %><br/><br/>
+        Gathering Deadline: <%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br/><br/><b>cancellation Policies:<b/><%if item.cancellation_policy_flexible%>flexible<% else%>semifelxible<%end%><br/> Owner Rules:<%=item.owner_rules%><br /><br /><%= link_to "Details", "/offers/#{gathering.id}" %><br/><br/>
         <% unless current_user.blank? %>
           <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>
             <% if !gathering.members.include?(current_user) %>

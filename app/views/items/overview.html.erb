@@ -68,7 +68,7 @@
           <%= offer.gathering_deadline.strftime("%m-%d-%Y") %>
         <% else %> 
           <%= offer.cancellation_date.strftime("%m-%d-%Y") %>
-        <% end %><br/><b>cancellation Policies:<b/><%if item.cancellation_policy_flexible=='flexible' or item.cancellation_policy_semi_flexible=='semiflexible'%><%=felxible%> else <%=semifelxible%><%end%><br/> Owner Rules:<%=item.owner_rules%><br /><br /><%= link_to "Details", "/offers/#{offer.id}" %><br/>
+        <% end %><br/><b>cancellation Policies:<b/><%if item.cancellation_policy_flexible%>flexible<% else%>semifelxible<%end%><br/> Owner Rules:<%=item.owner_rules%><br /><br /><%= link_to "Details", "/offers/#{offer.id}" %><br/>
         
         <% unless offer.status == "Approved" or offer.status == "Accepted" or offer.status == "confirmed" or offer.status == "Confirmed" or offer.status == "Declined" or offer.status == "Cancelled" %>
           <%= link_to "Approve", "/accept_gathering/#{offer.id}?mem=#{offer.user.id}" %> | 

@@ -145,7 +145,7 @@
                       <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
                       <br /><br />
                     <% end %>
-                  <% end %><br/><br/><b>cancellation Policies:<b/><%if item.cancellation_policy_flexible=='flexible' or item.cancellation_policy_semi_flexible=='semiflexible'%><%=felxible%> else <%=semifelxible%><%end%><br/> Owner Rules:<%=item.owner_rules%>
+                  <% end %><br/><br/><b>cancellation Policies:<b/><%if item.cancellation_policy_flexible%>flexible<% else%>semifelxible<%end%><br/> Owner Rules:<%=item.owner_rules%>
 <br/><br/><%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
 <%= link_to "Details", "/offers/#{offer.id}" %><%end%>
                 <% end %>

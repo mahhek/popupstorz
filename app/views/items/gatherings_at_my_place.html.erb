@@ -55,7 +55,7 @@
             <form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>">
               <input TYPE="submit" VALUE="check in">
             </form>
-          <%end%><br/><b>cancellation Policies:<b/><%if item.cancellation_policy_flexible=='flexible' or item.cancellation_policy_semi_flexible=='semiflexible'%><%=felxible%> else <%=semifelxible%><%end%><br/> Owner Rules:<%=item.owner_rules%><br/><br/><%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
+          <%end%><br/><b>cancellation Policies:<b/><%if item.cancellation_policy_flexible%>flexible<% else%>semifelxible<%end%><br/> Owner Rules:<%=item.owner_rules%><br/><br/><%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
 <%= link_to "Details", "/offers/#{offer.id}" %> <%end%>
         </div>
         

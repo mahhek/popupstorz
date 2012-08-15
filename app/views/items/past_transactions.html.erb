@@ -152,7 +152,7 @@
                 No pending applications
               <% end %>
             </div>
-          <% end %><br/><b>cancellation Policies:<b/><%if item.cancellation_policy_flexible=='flexible' or item.cancellation_policy_semi_flexible=='semiflexible'%><%=felxible%> else <%=semifelxible%><%end%><br/> Owner Rules:<%=item.owner_rules%> <br/><%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
+          <% end %><br/><b>cancellation Policies:<b/><%if item.cancellation_policy_flexible%>flexible<% else%>semifelxible<%end%><br/> Owner Rules:<%=item.owner_rules%><br/><%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
 <%= link_to "Details", "/offers/#{offer.id}" %><%end%>
 
           <%# if offer.status == "all joinings approved" %>     
