@@ -83,14 +83,14 @@
                 <%= password_field_tag 'user[password]' %>
                 <input type="submit" value="Login" />
                 <%= link_to "Forgot your password?", new_password_path(User) %><br />
-                
+
               <% end %>
             <% else %>
               <%= link_to "Hi #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
-                <% messages_size = current_user.messages.are_to(current_user).unread.size %>
-                <% if messages_size > 0 %>
-                  <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
-                <% end %>
+              <% messages_size = current_user.messages.are_to(current_user).unread.size %>
+              <% if messages_size > 0 %>
+                <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
+              <% end %>
               <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
             <% end %>
           </div>
@@ -134,7 +134,19 @@
                 <% if messages_size > 0 %>
                   <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
                 <% end %>
-                <%= link_to 'Search', search_home_searches_path, :class => ((params[:controller] == "searches") ? "m_act" : "") %>
+
+                <div class="searchDropdown searchMenu">
+                  <span class="searchMenu" onclick = "search_menu()">
+                    <%= 'Search' %> 
+                    <ul id="search_options" class="searchMenu">
+                      <li class="searchMenu"><%= link_to "Spaces", "/searches/spaces" %></li>
+                      <li class="searchMenu"><%= link_to "Gatherings",  "/searches/gatherings" %></li>
+                      <li class="searchMenu"><%= link_to "Members",  "/searches/members" %></li>
+                    </ul>
+                  </span>
+                </div>
+
+  <%#= link_to 'Search', search_home_searches_path, :class => ((params[:controller] == "searches") ? "m_act" : "") %>
               </span>
               <div class="clear"></div>
               <span style="float: left;margin-left: 100px;">
@@ -192,7 +204,7 @@
   </body>
 </html>
 
-<script>
+<script type="text/javascript">
 
   function addParamToUrl(param, value)
   {
@@ -229,5 +241,21 @@
     //return the finished url
     window.location = url;
   }
+  
+  function search_menu(){
+    $('#search_options').toggle();
+  }
+  
+  $(document).click(function(event) {
+    if($(event.target).hasClass("searchMenu") == true){      
+      $('#search_options').show();
+    }
+    else{
+      if($('#search_options').is(":hidden") == false){
+        $('#search_options').hide();
+      }
+    }
+  });
+
 
 </script>

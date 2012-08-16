@@ -2,60 +2,82 @@
 
 <script type="text/javascript">
   $(function() {
-    $( "#sizes-slider-range" ).slider({
+    
+    $('#search_from1').datepicker(
+    {
+      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
+      onSelect: function() {        
+        $('#search_to2').datepicker('option', {minDate: $(this).datepicker('getDate')});
+      }});
+    $('#search_to2').datepicker({
+      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
+      onSelect: function() {
+        $('#search_from1').datepicker('option', {maxDate: $(this).datepicker('getDate')});
+      }});
+    
+   $( "#amount-slider-range" ).slider({
       range: true,
-      min: <%= @start_size.blank? ? 0 : @start_size.gathering_rental_price %>,
+      min: <%= @start_price %>,
       max: <%= @last_price %>,
-      values: [ <%= @start_size.blank? ? 0 : @start_size.gathering_rental_price %>, <%= @last_price %> ],
+      values: [ <%= @start_price %>, <%= @last_price %> ],
       slide: function( event, ui ) {
-        $( "#size" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
       },
-      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
-        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));}
+      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
+        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
+        $('#price_range_form').submit();}
     });
-    $( "#size" ).val( "$" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
-      " - $" + $( "#sizes-slider-range" ).slider( "values", 1 ) );
+    $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
   });
   
 </script>
 <div class="clear"></div>
 <br/>
 
-<%= form_for :search, :url => "/search_gatherings" do|f|%>
-  <div style="width:50%;float: left; border: 1px solid;padding: 10px;">
-    <b>Gathering Search</b>
-    <div style="width:90%;float:left;clear:both;margin:10px;">
-      <div style="width:20%;float:left;margin-right: 10px;font-weight: bold;">Where:</div>
-      <div style="width:70%;float:left;">
-        <%= select_tag( "search[location]", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
+<%= form_for :search, :url => "/search_gatherings", :remote => true do|f| %>
+  <div style="width:99%;float: left; border: 1px solid;padding: 10px;">
+    <div class="refinesearchresults">
+      <div style="width:55%;float:left;">
+        <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
       </div>
-      <%= hidden_field_tag "min_size", "" %>
-      <%= hidden_field_tag "max_size", "" %>
-      <br /><br />
-      <label for="size"><b>Price:</b></label>
-        <input type="text" id="size" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
-        <div class="twocol">
-          <div id="sizes-slider-range" style="width: 90%;margin-left: 8px;"></div>
-        </div>
+      <span>from</span>
+      <%= text_field_tag :search_from, params[:search_from], :id => "search_from1" %>
+      <span>to</span>
+      <%= text_field_tag :search_to, params[:search_to], :id => "search_to2" %>
+      <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
     </div>
-
-  <%#*<div style="width:90%;float:left;clear:both;margin:10px;">%>
-  <%#*<div style="float:left;margin-right: 10px;font-weight: bold;">Name or Email:</div>%>
-  <%#*<div style="width:65%;float:right;">%>
-  <%#= f.text_field "user" %>
-  <%#*</div>%>
-  <%#*</div>%>
-
-  <%#*<div style="width:90%;float:left;clear:both;margin:10px;">%>
-  <%#*<div style="width:20%;float:left;margin-right: 10px;font-weight: bold;">Type:</div>%>
-  <%#*<div style="width:70%;float:left;">%>
-  <%#= select_tag "search[type]", options_for_select([['All',''], ['Fashion Designer','Fashion Designer'], ['Painter','Painter'], ['Jeweler','Jeweler'], ['Photographer','Photographer']]) %>
-  <%#*</div>%>
-  <%#*</div>%>
-
-    <div style="width:85%;float:left;clear:both;margin:10px;text-align:right;">
-      <%= f.submit "Search!" %>
-    </div>
-
   </div>
-<% end %>
+<%end%>
+
+<div class="rightcontent">
+
+  <h2>Refine your search</h2>
+
+  <div class="pannelright">
+    <p>
+      <label for="amount">Price range:</label>
+      <input type="text" id="amount" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
+    <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
+    <%= form_tag "/search_gatherings", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
+      <%= hidden_field_tag "min_price", "" %>
+      <%= hidden_field_tag "max_price", "" %>
+      <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '' %>
+      <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '' %>
+      <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '' %>      
+    <% end %>
+    </p>
+  </div>
+</div>
+
+<div class="leftcontent">
+  <div class="resultsholderlist">
+    <div id="searched-gatherings">
+      <% unless @gatherings.blank? %>
+        <%= render :partial => "gatherings", :locals => {:gatherings => @gatherings} %>
+      <% else %>
+        Please try some other search criteria.
+      <% end %>
+    </div>
+  </div>
+</div>

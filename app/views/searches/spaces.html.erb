@@ -1,0 +1,127 @@
+<%= render :partial => "search_header" %>
+<script type="text/javascript">
+  $(function() {
+    $('#search_from').datepicker(   
+    {      
+      onSelect: function() {        
+        $('#search_to').datepicker('option', {minDate: $(this).datepicker('getDate')});
+      }});
+    $('#search_to').datepicker({     
+      onSelect: function() {
+        $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
+      }});
+    
+    $( "#amount-slider-range" ).slider({
+      range: true,
+      min: <%= @start_price %>,
+      max: <%= @last_price %>,
+      values: [ <%= @start_price %>, <%= @last_price %> ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      },
+      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
+        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
+        $('#price_range_form').submit();}
+    });
+    $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
+     
+    $( "#sizes-slider-range" ).slider({
+      range: true,
+      min: <%= @start_size %>,
+      max: <%= @last_size %>,
+      values: [ <%= @start_size %>, <%= @last_size %> ],
+      slide: function( event, ui ) {
+        $( "#size" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      },
+      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
+        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));
+        $('#price_range_form').submit();
+      }
+    });
+    $( "#size" ).val( "$" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#sizes-slider-range" ).slider( "values", 1 ) );
+  });  
+</script>
+<div class="clear"></div>
+<br/>
+
+<%= form_for :search, :url => "/search_spaces", :remote => true do|f| %>
+  <div style="width:99%;float: left; border: 1px solid;padding: 10px;">
+    <div class="refinesearchresults">
+      <div style="width:55%;float:left;">
+        <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
+      </div>
+      <span>from</span>
+      <%= text_field_tag :search_from, params[:search_from], :id => "search_from" %>
+      <span>to</span>
+      <%= text_field_tag :search_to, params[:search_to], :id => "search_to" %>
+      <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
+    </div>
+  </div>
+<%end%>
+
+<div class="rightcontent">
+
+  <h2>Refine your search</h2>
+
+  <div class="pannelright">
+    <p>
+      <label for="amount">Price range:</label>
+      <input type="text" id="amount" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
+    <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
+    <%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
+      <%= hidden_field_tag "min_price", "" %>
+      <%= hidden_field_tag "max_price", "" %>
+      <%= hidden_field_tag "min_size", "" %>
+      <%= hidden_field_tag "max_size", "" %>
+      <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '' %>
+      <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '' %>
+      <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '' %>
+      <%= hidden_field_tag "sizes", !params[:sizes].blank? ? params[:sizes] : '' %>
+      <div class="pannelright">
+        <img class="closepannel" src="../assets/-.png" />
+        <div class="heading_right">Is Shareable</div>      
+        <div class="twocol">
+          <%= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
+        </div>
+      </div>
+
+      <div class="pannelright">
+        <img class="closepannel" src="../assets/-.png" />
+
+        <label for="size">Sizes<small>(SQMT)</small>:</label>        
+        <input type="text" id="size" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
+        <div class="twocol">
+          <div id="sizes-slider-range" style="width: 90%;margin-left: 8px;"></div>
+        </div>
+      </div>
+
+      <div class="pannelright">
+        <img class="closepannel" src="../assets/-.png" />
+        <div class="heading_right">Types</div>
+        <div class="twocol">
+          <% @types.each do |type| %>            
+            <%= check_box_tag 'types[]', type.id, params["types"].blank? ? false : params["types"].include?(type.id.to_s), :onclick => "$(this.form).trigger('submit.rails')" %>
+            <b><%= type.name.capitalize %></b><br />
+          <% end %>
+        </div>
+      </div>
+
+    <% end %>
+    </p>
+  </div>
+</div>
+
+
+<div class="leftcontent">
+  <div class="resultsholderlist">
+    <div id="searched-items">
+      <% unless @items.blank? %>
+        <%= render :partial => "items", :locals => {:items => @items} %>
+      <% else %>
+        Please try some other search criteria.
+      <% end %>
+    </div>
+  </div>
+</div>

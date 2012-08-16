@@ -1,0 +1,48 @@
+<script type="text/javascript">
+  $(function() {
+    
+    $('#search_from1').datepicker(   
+    {
+      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
+      onSelect: function() {        
+        $('#search_to2').datepicker('option', {minDate: $(this).datepicker('getDate')});
+      }});
+    $('#search_to2').datepicker({
+      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
+      onSelect: function() {
+        $('#search_from1').datepicker('option', {maxDate: $(this).datepicker('getDate')});
+      }});
+    
+    $( "#sizes-slider-range" ).slider({
+      range: true,
+      min: <%= @start_size.blank? ? 0 : @start_size.gathering_rental_price %>,
+      max: <%= @last_price %>,
+      values: [ <%= @start_size.blank? ? 0 : @start_size.gathering_rental_price %>, <%= @last_price %> ],
+      slide: function( event, ui ) {
+        $( "#size" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      },
+      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
+        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));}
+    });
+    $( "#size" ).val( "$" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#sizes-slider-range" ).slider( "values", 1 ) );
+  });
+  
+</script>
+<div class="clear"></div>
+<br/>
+
+<%= form_for :search, :url => "/search_gatherings" do|f| %>
+  <div style="width:99%;float: left; border: 1px solid;padding: 10px;">
+    <div class="refinesearchresults">
+      <div style="width:55%;float:left;">
+        <%= select_tag( "search[location]", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
+      </div>
+      <span>from</span>
+      <%= text_field_tag :search_from, params[:search_from], :id => "search_from1" %>
+      <span>to</span>
+      <%= text_field_tag :search_to, params[:search_to], :id => "search_to2" %>
+      <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
+    </div>
+  </div>
+<%end%>

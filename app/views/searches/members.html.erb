@@ -2,33 +2,52 @@
 <div class="clear"></div>
 <br/>
 
-<%= form_for :search, :url => search_members_searches_path do|f|%>
-  <div style="width:50%;float: left; border: 1px solid;padding: 10px;">
-    <b>Member Search</b>
-    <div style="width:90%;float:left;clear:both;margin:10px;">
-      <div style="width:20%;float:left;margin-right: 10px;font-weight: bold;">Where:</div>
-      <div style="width:70%;float:left;">
+<%= form_for :search, :url => search_members_searches_path, :remote => true do|f|%>
+  <b>Member Search</b>
+  <div style="width:99%;float: left; border: 1px solid;padding: 10px;">
+    <div class="refinesearchresults">
+      <div style="width:35%;float:left;">
+        <%= f.text_field "user", :style=>["width:320px"] %>
+      </div>
+      <div style="width:55%;float:left;">
         <%= select_tag( "search[location]", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
       </div>
+      <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
     </div>
-
-    <div style="width:90%;float:left;clear:both;margin:10px;">
-      <div style="float:left;margin-right: 10px;font-weight: bold;">Name or Email:</div>
-      <div style="width:65%;float:right;">
-        <%= f.text_field "user" %>
-      </div>
-    </div>
-
-    <div style="width:90%;float:left;clear:both;margin:10px;">
-      <div style="width:20%;float:left;margin-right: 10px;font-weight: bold;">Type:</div>
-      <div style="width:70%;float:left;">
-        <%= select_tag "search[type]", options_from_collection_for_select( @users_with_uniq_activites, :activity, :activity), :prompt => "Select Type" %>
-      </div>
-    </div>
-
-    <div style="width:85%;float:left;clear:both;margin:10px;text-align:right;">
-      <%= f.submit "Search!" %>
-    </div>
-
   </div>
 <% end %>
+
+<div class="rightcontent">
+
+  <h2>Refine your search</h2>
+  <div class="pannelright">
+    <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
+    <%= form_tag "/searches/search_members", {:remote => true, :id => "price_range_form", :pars => params } do %>
+      <div class="pannelright">
+        <img class="closepannel" src="../assets/-.png" />
+        <div class="heading_right">Activities</div>
+        <div class="twocol">
+          <% @users_with_uniq_activites.each do |type| %>            
+            <%= check_box_tag 'types[]', type.activity, params["types"].blank? ? false : params["types"].include?(type.activity.to_s), :onclick => "$(this.form).trigger('submit.rails')" %>
+            <b><%= type.activity.capitalize %></b><br />
+          <% end %>
+        </div>
+      </div>
+
+    <% end %>
+    </p>
+  </div>
+</div>
+
+
+<div class="leftcontent">
+  <div class="resultsholderlist">
+    <div id="searched-members">
+      <% unless @members.blank? %>
+        <%= render :partial => "members", :locals => {:mebers => @members} %>
+      <% else %>
+        Please try some other search criteria.
+      <% end %>
+    </div>
+  </div>
+</div> 

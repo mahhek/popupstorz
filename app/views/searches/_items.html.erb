@@ -1,0 +1,29 @@
+<% items.each do | item | %>
+  <div class="resultsholder">
+    <div class="price">
+      <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %> <br />
+      <span class="perweek">
+        <%= item.time_for_unit_price %>
+      </span>
+    </div>
+    <% if item.avatars.size > 0 %>
+      <% avatar = item.avatars.first %>
+      <%= link_to(image_tag(avatar.photo.url(:thumb)), item_path(item), :class => "item_image" ) %>
+    <% else %>
+      <%= image_tag("PUS_Logo.jpg", :border => "0", :alt => "image", :class => "item_image" )  %>
+    <%end%>
+    <span class="heading"><%= link_to item.title, item_path(item) %>!</span>
+    <br />
+    <br />
+    <span class="subheading"><%= item.address %></span><br /><br />
+    <span class="details">
+      <%= item.description %></span>
+    <div id="favorite_div_<%= item.id %>" style="margin-left: 172px"> <br/>
+      <%= render :partial => "favorite", :locals => {:item => item} %>
+    </div>
+  </div>
+<%end%>
+
+<div class="resultsholder">
+  <%= will_paginate(items, :renderer => PaginationListLinkRenderer) %>
+</div>
