@@ -52,6 +52,15 @@ class SearchesController < ApplicationController
     
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
+    @items = Item.paginate(:page => params[:page], :per_page => 3 )
+    
+    respond_to do |format|
+      format.html
+      format.js do
+       foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
+        render :js => "$('#searched-items').html(#{foo});$.setAjaxPagination();"
+      end
+    end
   end
 
   def search_gatherings
@@ -83,19 +92,42 @@ class SearchesController < ApplicationController
     unless sel_items.blank?
       conds += " AND item_id in(#{items})"
     end
+  case params[:sort_option]
+    when "1"
+      order_by = "is_recommended, gathering_rental_price DESC"
+    when "2"
+      order_by = "gathering_rental_price DESC"
+    when "3"
+      order_by = "gathering_rental_price ASC"
+    when "4"
+      order_by = "created_at DESC"
+#    when "5"
+#      order_by =
+    else
+      order_by = "gathering_rental_price ASC"
+    end
     
-    conds += "AND (status NOT LIKE '%%Confirmed%%' and status != 'Cancelled') and persons_in_gathering > 0 and is_gathering = true and parent_id is NULL and rental_end_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'"
-    
-    @offers = Offer.find(:all,:conditions => [conds])
-    
+
+    @offers = Offer.find(:all,:conditions => [conds], :order=> order_by)
+   
     unless @offers.blank?
       @offers = @offers.uniq
     end
-    
+    if params[:sort_option].blank?
+      @offers = @offers.sort_by{|e| e[:created_at]}
+    end
+#   @rental_start_date = @offers.blank? ? 0 : @offers.rental_start_date
+#   @rental_end_date = @offers.blank? ? 0 : @offers.rental_end_date
+    if params[:sort_option].blank?
+      @offers = @offers.sort_by{|e| e[:size]}
+    end
+if params[:sort_option].blank?
     @offers = @offers.sort_by{|e| e[:gathering_rental_price]}
+end
     @min_price = @offers.blank? ? 0 : @offers.first.gathering_rental_price
     @max_price = @offers.blank? ? 0 : @offers.last.gathering_rental_price
     @max_price = @max_price.to_f > 10000 ? @max_price : 10000
+
     respond_to do |format| 
       format.html
       format.js do
