@@ -65,9 +65,9 @@
     <%= form_tag "/search_gatherings", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
       <%= hidden_field_tag "min_price", "" %>
       <%= hidden_field_tag "max_price", "" %>
-      <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '' %>
-      <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '' %>
-      <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '' %>      
+      <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '', :id => "gathering_searched_location" %>
+      <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '', :id => "gathering_searched_from" %>
+      <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '', :id => "gathering_searched_to" %>
     <% end %>
     </p>
   </div>
@@ -84,3 +84,13 @@
     </div>
   </div>
 </div>
+
+
+<script type="text/javascript">
+  function update_gathering_values(params){
+    var str = $.parseJSON(params);
+    $("#gathering_searched_location").attr("value",str.location.toString());
+    $("#gathering_searched_from").attr("value",str.search_from.toString());
+    $("#gathering_searched_to").attr("value",str.search_to.toString());
+  }
+</script>

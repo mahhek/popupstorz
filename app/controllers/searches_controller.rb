@@ -22,7 +22,8 @@ class SearchesController < ApplicationController
   end
 
   def members
-    @users_with_uniq_cities = User.select("distinct(city)")
+    @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
+#    @users_with_uniq_cities = User.select("distinct(city)")
     @users_with_uniq_activites = User.select("distinct(activity)").where("activity is not NULL and activity != ''")
   end
   
@@ -57,7 +58,7 @@ class SearchesController < ApplicationController
     respond_to do |format|
       format.html
       format.js do
-       foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
+       foo = render_to_string(:partial => 'items', :locals => { :items => @items, :params => params }).to_json
         render :js => "$('#searched-items').html(#{foo});$.setAjaxPagination();"
       end
     end
@@ -132,7 +133,7 @@ end
       format.html
       format.js do
         foo = render_to_string(:partial => 'gatherings', :locals => { :offers => @offers }).to_json
-        render :js => "$('#searched-gatherings').html(#{foo});$.setAjaxPagination();"
+        render :js => "update_gathering_values('#{params.to_json}');$('#searched-gatherings').html(#{foo});$.setAjaxPagination();"
       end
     end
   end
@@ -254,46 +255,48 @@ end
     respond_to do |format|
       format.html
       format.js do
-        foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
-        render :js => "$('#searched-items').html(#{foo});$.setAjaxPagination();"
+        foo = render_to_string(:partial => 'items', :locals => { :items => @items, :params => params }).to_json
+        render :js => "update_form_values('#{params.to_json}');$('#searched-items').html(#{foo});$.setAjaxPagination();"
       end
     end
     
   end
 
-  def search_members
+  def search_members    
     conds = "1=1 "
-    unless params[:search][:location].blank?
-      conds += " AND (LOWER(city) LIKE " + "'%%" + params[:search][:location].strip.downcase.to_s+ "%%'" + "or LOWER(country) LIKE " + "'%%" +params[:search][:location].strip.downcase.to_s + "%%'" +")"
+    unless params[:location].blank?
+      conds += " AND (LOWER(city) LIKE " + "'%%" + params[:location].strip.downcase.to_s+ "%%'" + "or LOWER(country) LIKE " + "'%%" +params[:location].strip.downcase.to_s + "%%'" +")"
     end
     unless params["types"].blank?
       count = 0
       type_arr = ""
       params["types"].each do|type|
         if count == 0
-          type_arr += " LOWER(activity) LIKE "+ "'%%" + type.downcase.to_s + "%%'"
+          type_arr += " LOWER(activity) = '#{type.downcase.to_s}'"
+#          type_arr += " LOWER(activity) LIKE "+ "'%%" + type.downcase.to_s + "%%'"
         else
-          type_arr += " OR LOWER(activity) LIKE "+ "'%%" + type.downcase.to_s + "%%'"
+          type_arr += " OR LOWER(activity) = '#{type.downcase.to_s}'"
+#          type_arr += " OR LOWER(activity) LIKE "+ "'%%" + type.downcase.to_s + "%%'"
         end
         count += 1
       end
       conds += " AND (#{type_arr})"
     end
     
-    unless params[:search][:user].blank?
-      user = params[:search][:user].split(" ")
+    unless params[:user].blank?
+      user = params[:user].split(" ")
       if user[1].blank?
-        conds += " AND (LOWER(first_name) LIKE "+ "'%%"+ user[0].strip.downcase.to_s + "%%'" + " or LOWER(last_name) LIKE "  + "'%%" + params[:search][:user].strip.downcase.to_s + "%%'"+ " or LOWER(email) LIKE "  + "'%%" + user[0].strip.downcase.to_s + "%%'" +")"
+        conds += " AND (LOWER(first_name) LIKE "+ "'%%"+ user[0].strip.downcase.to_s + "%%'" + " or LOWER(last_name) LIKE "  + "'%%" + params[:user].strip.downcase.to_s + "%%'"+ " or LOWER(email) LIKE "  + "'%%" + user[0].strip.downcase.to_s + "%%'" +")"
       else
-        conds += " AND ((LOWER(first_name) LIKE "+ "'%%"+ user[0].strip.downcase.to_s + "%%'" + " and LOWER(last_name) LIKE "  + "'%%" + user[1].strip.downcase.to_s + "%%'"+ ") or LOWER(email) LIKE "  + "'%%" +  params[:search][:user].strip.downcase.to_s + "%%'" +")"
+        conds += " AND ((LOWER(first_name) LIKE "+ "'%%"+ user[0].strip.downcase.to_s + "%%'" + " and LOWER(last_name) LIKE "  + "'%%" + user[1].strip.downcase.to_s + "%%'"+ ") or LOWER(email) LIKE "  + "'%%" +  params[:user].strip.downcase.to_s + "%%'" +")"
       end
     end
-    @members = User.find(:all, :conditions => [conds])
+    @members = User.find(:all, :conditions => [ conds ])
     respond_to do |format|
       format.html
       format.js do
         foo = render_to_string(:partial => 'members', :locals => { :members => @members }).to_json
-        render :js => "$('#searched-members').html(#{foo});$.setAjaxPagination();"
+        render :js => "update_member_values('#{params.to_json}');$('#searched-members').html(#{foo});$.setAjaxPagination();"
       end
     end
     #    @members = User.paginate(:page => params[:page], :per_page => 4, :conditions => [conds])
