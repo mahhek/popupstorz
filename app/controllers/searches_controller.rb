@@ -23,7 +23,7 @@ class SearchesController < ApplicationController
 
   def members
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
-#    @users_with_uniq_cities = User.select("distinct(city)")
+    #    @users_with_uniq_cities = User.select("distinct(city)")
     @users_with_uniq_activites = User.select("distinct(activity)").where("activity is not NULL and activity != ''")
   end
   
@@ -58,7 +58,7 @@ class SearchesController < ApplicationController
     respond_to do |format|
       format.html
       format.js do
-       foo = render_to_string(:partial => 'items', :locals => { :items => @items, :params => params }).to_json
+        foo = render_to_string(:partial => 'items', :locals => { :items => @items, :params => params }).to_json
         render :js => "$('#searched-items').html(#{foo});$.setAjaxPagination();"
       end
     end
@@ -93,7 +93,7 @@ class SearchesController < ApplicationController
     unless sel_items.blank?
       conds += " AND item_id in(#{items})"
     end
-  case params[:sort_option]
+    case params[:sort_option]
     when "1"
       order_by = "is_recommended, gathering_rental_price DESC"
     when "2"
@@ -102,29 +102,30 @@ class SearchesController < ApplicationController
       order_by = "gathering_rental_price ASC"
     when "4"
       order_by = "created_at DESC"
-#    when "5"
-#      order_by =
+      #    when "5"
+      #      order_by =
     else
       order_by = "gathering_rental_price ASC"
     end
     
-
-    @offers = Offer.find(:all,:conditions => [conds], :order=> order_by)
+    @offers = Offer.find(:all,:conditions => [ conds ], :order=> order_by)
    
     unless @offers.blank?
       @offers = @offers.uniq
     end
-    if params[:sort_option].blank?
-      @offers = @offers.sort_by{|e| e[:created_at]}
-    end
-#   @rental_start_date = @offers.blank? ? 0 : @offers.rental_start_date
-#   @rental_end_date = @offers.blank? ? 0 : @offers.rental_end_date
-    if params[:sort_option].blank?
-      @offers = @offers.sort_by{|e| e[:size]}
-    end
-if params[:sort_option].blank?
-    @offers = @offers.sort_by{|e| e[:gathering_rental_price]}
-end
+    
+#    if params[:sort_option].blank?
+#      @offers = @offers.sort_by{|e| e[:created_at]}
+#    end
+#    #   @rental_start_date = @offers.blank? ? 0 : @offers.rental_start_date
+#    #   @rental_end_date = @offers.blank? ? 0 : @offers.rental_end_date
+#    if params[:sort_option].blank?
+#      @offers = @offers.sort_by{|e| e[:size]}
+#    end
+#    if params[:sort_option].blank?
+#      @offers = @offers.sort_by{|e| e[:gathering_rental_price]}
+#    end
+    
     @min_price = @offers.blank? ? 0 : @offers.first.gathering_rental_price
     @max_price = @offers.blank? ? 0 : @offers.last.gathering_rental_price
     @max_price = @max_price.to_f > 10000 ? @max_price : 10000
@@ -273,10 +274,10 @@ end
       params["types"].each do|type|
         if count == 0
           type_arr += " LOWER(activity) = '#{type.downcase.to_s}'"
-#          type_arr += " LOWER(activity) LIKE "+ "'%%" + type.downcase.to_s + "%%'"
+          #          type_arr += " LOWER(activity) LIKE "+ "'%%" + type.downcase.to_s + "%%'"
         else
           type_arr += " OR LOWER(activity) = '#{type.downcase.to_s}'"
-#          type_arr += " OR LOWER(activity) LIKE "+ "'%%" + type.downcase.to_s + "%%'"
+          #          type_arr += " OR LOWER(activity) LIKE "+ "'%%" + type.downcase.to_s + "%%'"
         end
         count += 1
       end
