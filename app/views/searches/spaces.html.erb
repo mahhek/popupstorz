@@ -1,4 +1,10 @@
+<%= javascript_include_tag "items.js" %>
 <%= render :partial => "search_header" %>
+<%#*<script>%>
+  <%#*$(document).ready(function() {%>
+    <%#*$('.pagination a').attr('data-remote', 'true');%>
+  <%#*});%>
+<%#*</script>%>
 <script type="text/javascript">
   $(function() {
     $('#search_from').datepicker(
@@ -128,10 +134,5 @@
 </div>
 
 <script type="text/javascript">
-  function update_form_values(params){
-    var str = $.parseJSON(params);
-    $("#searched_location").attr("value",str.location.toString());
-    $("#searched_from").attr("value",str.search_from.toString());
-    $("#searched_to").attr("value",str.search_to.toString());
-  }
+    
 </script>

@@ -53,7 +53,7 @@ class SearchesController < ApplicationController
     
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
-    @items = Item.paginate(:page => params[:page], :per_page => 3 )
+    @items = Item.paginate(:page => params[:page], :per_page => 6 )
     
     respond_to do |format|
       format.html
@@ -109,7 +109,8 @@ class SearchesController < ApplicationController
     end
     
     @offers = Offer.find(:all,:conditions => [ conds ], :order=> order_by)
-   
+    @offers = @offers.paginate(:page => params[:page], :per_page => 6 )
+    
     unless @offers.blank?
       @offers = @offers.uniq
     end
@@ -235,7 +236,7 @@ class SearchesController < ApplicationController
     else
       order_by = "price ASC"
     end
-    
+ 
     items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)
     
     @items = items - booked_items
@@ -250,14 +251,15 @@ class SearchesController < ApplicationController
     end
     session[:start_date] = params[:search_from]
     session[:end_date] = params[:search_to]
-    
-    @items = @items.paginate(:page => params[:page], :per_page => 4 )
-    
+    @vals = params
+    @items = @items.paginate(:page => params[:page], :per_page => 6 )
+
     respond_to do |format|
       format.html
+#      format.js
       format.js do
-        foo = render_to_string(:partial => 'items', :locals => { :items => @items, :params => params }).to_json
-        render :js => "update_form_values('#{params.to_json}');$('#searched-items').html(#{foo});$.setAjaxPagination();"
+        foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
+        render :js => "$('#searched-items').html(#{foo});$.setAjaxPagination();update_form_values('#{params.to_json}');"
       end
     end
     
@@ -293,6 +295,7 @@ class SearchesController < ApplicationController
       end
     end
     @members = User.find(:all, :conditions => [ conds ])
+    @members = @members.paginate(:page => params[:page], :per_page => 6 )
     respond_to do |format|
       format.html
       format.js do

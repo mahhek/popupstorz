@@ -1,5 +1,5 @@
+<%= javascript_include_tag "gatherings.js" %>
 <%= render :partial => "search_header" %>
-
 <script type="text/javascript">
   $(function() {
     
@@ -15,7 +15,7 @@
         $('#search_from1').datepicker('option', {maxDate: $(this).datepicker('getDate')});
       }});
     
-   $( "#amount-slider-range" ).slider({
+    $( "#amount-slider-range" ).slider({
       range: true,
       min: <%= @start_price %>,
       max: <%= @last_price %>,
@@ -48,9 +48,9 @@
       <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
     </div>
   </div><div class="sortby">
-      <%= select_tag "sort_option", options_for_select([["High to Low" ,"2"],["Low to High", "3"],["By Date","4"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
-      <span>sort by</span>
-    </div>
+    <%= select_tag "sort_option", options_for_select([["High to Low" ,"2"],["Low to High", "3"],["By Date","4"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
+    <span>sort by</span>
+  </div>
 <%end%>
 
 <div class="rightcontent">
