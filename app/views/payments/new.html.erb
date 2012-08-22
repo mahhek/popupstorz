@@ -89,112 +89,117 @@
           <div class="clear">&nbsp;</div>
         </div>
 
-        <h1 class="size">Owner Rules:</h1>
-        <p class="size_text">
-          <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
-        </p>
-        <div class="clear"></div>
+        <div style="float:left;width:100%;">
+          <h1 class="size">Owner Rules:</h1><br />
+          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div').toggle()">Show Details</div><br />
+          <p class="size_text" id="rules_div" style="display:none;">
+            <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
+          </p>
+          <div class="clear"></div>
 
-        <h1 class="size">Cancellation Policy:</h1>
-        <p class="size_text">
-          <% unless @item.cancellation_policy_flexible.blank? %>
-            Flexible<br/>
-            If renter cancels more than 7 days before booking start date: full refund<br/>
-            If renter cancels less than 7 days before booking start date: no refund<br/><br/>
+          <h1 class="size">Cancellation Policy:</h1><br />
+          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div').toggle()">Show Details</div><br />
+          <p class="size_text" id="policy_div" style="display:none;">
+            <% unless @item.cancellation_policy_flexible.blank? %>
+              Flexible<br/>
+              If renter cancels more than 7 days before booking start date: full refund<br/>
+              If renter cancels less than 7 days before booking start date: no refund<br/><br/>
 
-            Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the Thursday of the prior week at 23:59 (local time of the booked space).<br/><br/>
+              Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the Thursday of the prior week at 23:59 (local time of the booked space).<br/><br/>
 
-            Please be informed that the 10% Pop Up Storz service fee is not refundable.<br/><br/>
-            Exemple
-            If renter has done a booking for an amount of 110 € and cancels more than 7 days before booking start date, the amount of the refund will be 100 €.<br/><br/>
-          <% else %>
-            SemiFlexible<br/>If renter cancels more than 3 days before booking start date: partial refund (50%)<br/>
-            If renter cancels less than 3 days before booking start date: no refund<br/><br/>
+              Please be informed that the 10% Pop Up Storz service fee is not refundable.<br/><br/>
+              Exemple
+              If renter has done a booking for an amount of 110 € and cancels more than 7 days before booking start date, the amount of the refund will be 100 €.<br/><br/>
+            <% else %>
+              SemiFlexible<br/>If renter cancels more than 3 days before booking start date: partial refund (50%)<br/>
+              If renter cancels less than 3 days before booking start date: no refund<br/><br/>
 
-            Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the prior Monday at 23:59 (local time of the booked space).<br/><br/>
+              Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the prior Monday at 23:59 (local time of the booked space).<br/><br/>
 
-            Please be informed that the 10% Pop Up Storz service fee is not refundable. <br/><br/>
-            Exemple
-            If renter has done a booking for an amount of 110 € and cancels more than 3 days before booking start date, the amount of the refund will be 50 €.<div/>
-        <% end %>
-        </p>
-        <div class="clear"></div>
-        <br />
-
-        <h3>Confirm your booking and contact <%= link_to "Owner", profile_path(@item.user) %></h3> <br/>
-
-        <div id="booking-form">
-
-
-          <div id="stripe_error" style="padding: 5px;width :100%;float:left;font-style: italic;color: red;">
-            <noscript>
-            JavaScript is not enabled and is required for this form. First enable it in your web browser settings.
-            </noscript>
-          </div>
-
-          <% if @offer.is_gathering %>  
-            <% rentareto_fee = @offer.gathering_rental_price.blank? ? 0 : (( @offer.gathering_rental_price * 10 ) / 100 ) %>    
-            <% owner_amount = @offer.gathering_rental_price %>
-            <% total_amount = rentareto_fee + owner_amount %>
-            <%= f.hidden_field :rentareto_fee, :value => rentareto_fee %>
-            <%= f.hidden_field :seller_amount, :value => owner_amount %>
-            <br/>
-            Reservation Fee ( <b><%= rentareto_fee %></b>   )<br/>
-            Remaining balance to be paid to owner: ( <b><%= owner_amount %></b> )<br/>
-            Total ( <b><%= total_amount %></b> )<br/>
-
-          <%else%>
-            <% rentareto_fee = @offer.total_amount.blank? ? 0 : (( @offer.total_amount * 10 ) / 100 ) %>    
-            <% owner_amount = @offer.total_amount %>    
-            <% total_amount = rentareto_fee + owner_amount %>
-            <%= f.hidden_field :rentareto_fee, :value => rentareto_fee %>
-            <%= f.hidden_field :seller_amount, :value => owner_amount %>
-            <br/>
-            Reservation Fee ( <b><%= rentareto_fee %></b>   )<br/>
-            Remaining balance to be paid to owner: ( <b><%= owner_amount %></b> )<br/>
-            Total ( <b><%= total_amount %></b> )<br/>
-
+              Please be informed that the 10% Pop Up Storz service fee is not refundable. <br/><br/>
+              Exemple
+              If renter has done a booking for an amount of 110 € and cancels more than 3 days before booking start date, the amount of the refund will be 50 €.<div/>
           <% end %>
+          </p>
+          <div class="clear"></div>
+          <br />
+        </div>
+      </div>
 
-          <%= f.hidden_field :seller_id, :value => @item.user_id %>
-          <%= f.hidden_field :renter_id, :value => current_user.id  %>
-          <%= f.hidden_field :offer_id, :value => @offer.id  %>
+      <h3>Confirm your booking and contact <%= link_to "Owner", profile_path(@item.user) %></h3> <br/>
 
+      <div id="booking-form">
+
+
+        <div id="stripe_error" style="padding: 5px;width :100%;float:left;font-style: italic;color: red;">
+          <noscript>
+          JavaScript is not enabled and is required for this form. First enable it in your web browser settings.
+          </noscript>
+        </div>
+
+        <% if @offer.is_gathering %>  
+          <% rentareto_fee = @offer.gathering_rental_price.blank? ? 0 : (( @offer.gathering_rental_price * 10 ) / 100 ) %>    
+          <% owner_amount = @offer.gathering_rental_price %>
+          <% total_amount = rentareto_fee + owner_amount %>
+          <%= f.hidden_field :rentareto_fee, :value => rentareto_fee %>
+          <%= f.hidden_field :seller_amount, :value => owner_amount %>
           <br/>
-          <div class="field">
-            <%= f.label :amount, "Amount to Pay" %>
-            <%= f.text_field :amount, :value => total_amount, :readonly => true %>
-          </div>
-          <h3>Enter Credit Card</h3>
-          <%=label_tag :card_number, "Credit Card Number"%>
-          <%= text_field_tag :card_number, "4242424242424242", name: nil %>
-          <br/><br/>
-          <%= label_tag :card_code, "Security Code (CVV)"%>
-          <%= text_field_tag :card_code, "123", name: nil%>
-          <br/><br/>
-          <%= label_tag :card_month, "Expiry Date"%>
-          <%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month"} %>
-          <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"} %>
+          Reservation Fee ( <b><%= rentareto_fee %></b>   )<br/>
+          Remaining balance to be paid to owner: ( <b><%= owner_amount %></b> )<br/>
+          Total ( <b><%= total_amount %></b> )<br/>
+
+        <%else%>
+          <% rentareto_fee = @offer.total_amount.blank? ? 0 : (( @offer.total_amount * 10 ) / 100 ) %>    
+          <% owner_amount = @offer.total_amount %>    
+          <% total_amount = rentareto_fee + owner_amount %>
+          <%= f.hidden_field :rentareto_fee, :value => rentareto_fee %>
+          <%= f.hidden_field :seller_amount, :value => owner_amount %>
           <br/>
-          <br/>
-          <% terms_of_use = "THis is terms of use, you have to agree this to proceed.
+          Reservation Fee ( <b><%= rentareto_fee %></b>   )<br/>
+          Remaining balance to be paid to owner: ( <b><%= owner_amount %></b> )<br/>
+          Total ( <b><%= total_amount %></b> )<br/>
+
+        <% end %>
+
+        <%= f.hidden_field :seller_id, :value => @item.user_id %>
+        <%= f.hidden_field :renter_id, :value => current_user.id  %>
+        <%= f.hidden_field :offer_id, :value => @offer.id  %>
+
+        <br/>
+        <div class="field">
+          <%= f.label :amount, "Amount to Pay" %>
+          <%= f.text_field :amount, :value => total_amount, :readonly => true %>
+        </div>
+        <h3>Enter Credit Card</h3>
+        <%=label_tag :card_number, "Credit Card Number"%>
+        <%= text_field_tag :card_number, "4242424242424242", name: nil %>
+        <br/><br/>
+        <%= label_tag :card_code, "Security Code (CVV)"%>
+        <%= text_field_tag :card_code, "123", name: nil%>
+        <br/><br/>
+        <%= label_tag :card_month, "Expiry Date"%>
+        <%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month"} %>
+        <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"} %>
+        <br/>
+        <br/>
+        <% terms_of_use = "THis is terms of use, you have to agree this to proceed.
   THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
   THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
   THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
   THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
   THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
   THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed." %>
-          <%= text_area_tag :terms_of_user, terms_of_use, :size => "50x4" %><br/><br/>
-          <%= check_box_tag "is_confirm_terms" %>By Confirming I Accept Terms of Use<br/><br/>
-          <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
-            <%= f.submit "Confirm Application", :class=> "submit_button" %>
-          <% else %>
-            <%= f.submit "Send offer", :class=> "submit_button" %>
-          <% end %>
-        <%end%>
-      </div>
+        <%= text_area_tag :terms_of_user, terms_of_use, :size => "50x4" %><br/><br/>
+        <%= check_box_tag "is_confirm_terms" %>By Confirming I Accept Terms of Use<br/><br/>
+        <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
+          <%= f.submit "Confirm Application", :class=> "submit_button" %>
+        <% else %>
+          <%= f.submit "Send offer", :class=> "submit_button" %>
+        <% end %>
+      <%end%>
     </div>
   </div>
+</div>
 </div>
 
 <script type="text/javascript">

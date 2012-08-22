@@ -19,12 +19,16 @@ class SearchesController < ApplicationController
     
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     #    @users_with_uniq_cities = User.select("distinct(city)")
+    @gatherings = Offer.find(:all,:conditions => [ "status != 'Cancelled' and parent_id is NULL" ], :order=> "rental_start_date ASC")
+    @gatherings = @gatherings.paginate(:page => params[:page], :per_page => 6 )
   end
 
   def members
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     #    @users_with_uniq_cities = User.select("distinct(city)")
     @users_with_uniq_activites = User.select("distinct(activity)").where("activity is not NULL and activity != ''")
+    @members = User.find(:all)
+    @members = @members.paginate(:page => params[:page], :per_page => 6 )
   end
   
   def spaces
@@ -53,7 +57,7 @@ class SearchesController < ApplicationController
     
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
-    @items = Item.paginate(:page => params[:page], :per_page => 6 )
+    @items = Item.paginate(:page => params[:page], :per_page => 6, :order => "created_at DESC" )
     
     respond_to do |format|
       format.html

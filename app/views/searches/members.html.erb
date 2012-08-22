@@ -45,7 +45,7 @@
   <div class="resultsholderlist">
     <div id="searched-members">
       <% unless @members.blank? %>
-        <%= render :partial => "members", :locals => {:mebers => @members} %>
+        <%= render :partial => "members", :locals => {:members => @members} %>
       <% else %>
         Please try some other search criteria.
       <% end %>

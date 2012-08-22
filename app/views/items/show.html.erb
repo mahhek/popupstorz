@@ -189,14 +189,30 @@
       <p class="size_text"><%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%></p>
       <div class="clear"></div>
 
-      <h1 class="size">Owner Rules:</h1>
+
+      <h1 class="size">Gathering Available:</h1>
       <p class="size_text">
+        <% if (@item.is_shareable == true) then %>Upto
+          <%= @item.maximum_members %> persons
+        <%else%>
+          NO
+        <%end%>  </p>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div><br/>
+
+
+    <div style="float:left;width:100%;">
+      <h1 class="size">Owner Rules:</h1><br />
+      <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div').toggle()">Show Details</div><br />
+      <p class="size_text" id="rules_div" style="display:none;">
         <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
       </p>
       <div class="clear"></div>
 
-      <h1 class="size">Cancellation Policy:</h1>
-      <p class="size_text">
+      <h1 class="size">Cancellation Policy:</h1><br />
+      <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div').toggle()">Show Details</div><br />
+      <p class="size_text" id="policy_div" style="display:none;">
         <% unless @item.cancellation_policy_flexible.blank? %>
           Flexible<br/>
           If renter cancels more than 7 days before booking start date: full refund<br/>
@@ -220,102 +236,93 @@
       </p>
       <div class="clear"></div>
       <br />
-
-      <h1 class="size">Gathering Available:</h1>
-      <p class="size_text">
-        <% if (@item.is_shareable == true) then %>Upto
-          <%= @item.maximum_members %> persons
-        <%else%>
-          NO
-        <%end%>  </p>
-      <div class="clear"></div>
     </div>
-    <div class="clear"></div><br/>
+  </div>
 
-    <div id="favorite_div_<%= @item.id %>">
-      <%= render :partial => "favorite", :locals => {:item => @item} %>
-    </div>
+  <div id="favorite_div_<%= @item.id %>">
+    <%= render :partial => "favorite", :locals => {:item => @item} %>
+  </div>
 
-    <p class="charming_text mt30"><%= @item.description %></p>
+  <p class="charming_text mt30"><%= @item.description %></p>
 
-    <div class="line"></div>
-    <h1 class="charming">Gatherings</h1>
-    <p class="charming_text">
-      <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
-    <div style="width: 100%;clear: both;">
-      <% gatherings.each do|gathering| %>
-        <div style="border-bottom: 1px solid;">
-          Start Date: <%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
-          End Date: <%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
-          Total required Persons: <%= gathering.persons_in_gathering %><br />
-          Joined Persons: <%= gathering.members.size %><br/>
-          Gathering Description: <%= gathering.gathering_description %><br/>
-          Rental Price per person: <%= gathering.gathering_rental_price %><br />
+  <div class="line"></div>
+  <h1 class="charming">Gatherings</h1>
+  <p class="charming_text">
+    <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
+  <div style="width: 100%;clear: both;">
+    <% gatherings.each do|gathering| %>
+      <div style="border-bottom: 1px solid;">
+        Start Date: <%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
+        End Date: <%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
+        Total required Persons: <%= gathering.persons_in_gathering %><br />
+        Joined Persons: <%= gathering.members.size %><br/>
+        Gathering Description: <%= gathering.gathering_description %><br/>
+        Rental Price per person: <%= gathering.gathering_rental_price %><br />
 
-          Gathering Deadline: <%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
-          <% unless current_user.blank? %>
-            <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
-              <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
-                <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
-              <% end %>
-            <% end %><br/><b>cancellation Policies:<b/><%if @item.cancellation_policy_flexible%>flexible<% else%>semifelxible<%end%><br/> Owner Rules:<%=@item.owner_rules%><br/><br/>
-              <%= link_to "Details", "/offers/#{gathering.id}" %>
+        Gathering Deadline: <%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
+        <% unless current_user.blank? %>
+          <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
+            <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
+              <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
             <% end %>
-        </div>
-      <% end %>
+          <% end %><br/><b>cancellation Policies:<b/><%if @item.cancellation_policy_flexible%>flexible<% else%>semifelxible<%end%><br/> Owner Rules:<%=@item.owner_rules%><br/><br/>
+            <%= link_to "Details", "/offers/#{gathering.id}" %>
+          <% end %>
+      </div>
+    <% end %>
+  </div>
+</p>
+
+<div class="line"></div>
+<h1 class="charming">what other people think</h1>
+<p class="charming_text">what other people think what other people thinkwhat other people thinkwhat other people think</p>
+<div class="line"></div>
+<div id="comments" style="height: 200px;display: none;">
+
+  <%= form_for @comment, :url => "/items/add_comment" do |f| %>
+    <% if @comment.errors.any? %>
+      <div id="errorExplanation" class="erro_messages">
+        <h2>Oops! Looks like you need to include the following:</h2>
+        <ul>
+          <li style="list-style: square;float: left;">
+            <%= @comment.errors.full_messages.to_sentence  %>
+          </li>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= hidden_field_tag "id",@item.id %>
+    <div class="field">
+      <%= f.label :title %><br/>
+      <%= f.text_field "title" %>
     </div>
-    </p>
-
-    <div class="line"></div>
-    <h1 class="charming">what other people think</h1>
-    <p class="charming_text">what other people think what other people thinkwhat other people thinkwhat other people think</p>
-    <div class="line"></div>
-    <div id="comments" style="height: 200px;display: none;">
-
-      <%= form_for @comment, :url => "/items/add_comment" do |f| %>
-        <% if @comment.errors.any? %>
-          <div id="errorExplanation" class="erro_messages">
-            <h2>Oops! Looks like you need to include the following:</h2>
-            <ul>
-              <li style="list-style: square;float: left;">
-                <%= @comment.errors.full_messages.to_sentence  %>
-              </li>
-            </ul>
-          </div>
-        <% end %>
-
-        <%= hidden_field_tag "id",@item.id %>
-        <div class="field">
-          <%= f.label :title %><br/>
-          <%= f.text_field "title" %>
-        </div>
-        <div class="field">
-          <%= f.label :comment %><br />
-          <%= f.text_area "comment", :rows => 5 %><br />
-          <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
-        </div>
-      <% end %>
+    <div class="field">
+      <%= f.label :comment %><br />
+      <%= f.text_area "comment", :rows => 5 %><br />
+      <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
     </div>
-    <br/><br/>
+  <% end %>
+</div>
+<br/><br/>
 <%#if current_user%>
-    <div id="show_comments" style="display: none;" >
-      <b>Previous Comments:</b><br/>
-      <%unless @item.comments.blank? %>
-        <%@item.comments.each do|f|%>
-          <b><%=f.title  %></b><br/>
-          <%= f.comment %><br/>
-          <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
-          <br/>
-          <br/>
-        <%end%>
-      <%end%>
-    </div>
+<div id="show_comments" style="display: none;" >
+  <b>Previous Comments:</b><br/>
+  <%unless @item.comments.blank? %>
+    <%@item.comments.each do|f|%>
+      <b><%=f.title  %></b><br/>
+      <%= f.comment %><br/>
+      <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+      <br/>
+      <br/>
+    <%end%>
+  <%end%>
+</div>
 <%#*<div id="rating_of_item_<%= @item.id %>
 <%#= render :partial => "/ratings/rating", :locals => { :asset => @item, :only_view => false } 
 <%#*</div>%>
 
 <%#end%>
-  </div>
+</div>
 </div>
 
 
