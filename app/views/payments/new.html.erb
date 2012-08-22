@@ -90,21 +90,21 @@
         </div>
         
         <h1 class="size">Owner Rules:</h1>
-        <p class="size_text">
-          <%= @item.owner_rules.blank? ? "" : raw(@item.owner_rules).html_safe %>
-        </p>
-        <div class="clear"></div>
+      <p class="size_text">
+        <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
+      </p>
+      <div class="clear"></div>
 
-        <h1 class="size">Cancellation Policy:</h1>
-        <p class="size_text">
-          <% unless @item.cancellation_policy_flexible.blank? %>
-            <%= raw nl2br(@item.cancellation_policy_flexible) %>
-          <% else %>
-            <%= @item.cancellation_policy_semi_flexible.blank? ? "" : nl2br(@item.cancellation_policy_semi_flexible).html_safe %>
-          <% end %>
-        </p>
-        <div class="clear"></div>
-        <br />
+      <h1 class="size">Cancellation Policy:</h1>
+      <p class="size_text">
+        <% unless @item.cancellation_policy_flexible.blank? %>
+          <%= @item.cancellation_policy_flexible.blank? ? "" : nl2br(@item.cancellation_policy_flexible).html_safe %>
+        <% else %>
+          <%= @item.cancellation_policy_semi_flexible.blank? ? "" : nl2br(@item.cancellation_policy_semi_flexible).html_dafe %>
+        <% end %>
+      </p>
+      <div class="clear"></div>
+      <br />
         
         <h3>Confirm your booking and contact <%= link_to "Owner", profile_path(@item.user) %></h3> <br/>
 
