@@ -88,24 +88,39 @@
           <%= raw @item.description %>
           <div class="clear">&nbsp;</div>
         </div>
-        
-        <h1 class="size">Owner Rules:</h1>
-      <p class="size_text">
-        <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
-      </p>
-      <div class="clear"></div>
 
-      <h1 class="size">Cancellation Policy:</h1>
-      <p class="size_text">
-        <% unless @item.cancellation_policy_flexible.blank? %>
-          <%= @item.cancellation_policy_flexible.blank? ? "" : nl2br(@item.cancellation_policy_flexible).html_safe %>
-        <% else %>
-          <%= @item.cancellation_policy_semi_flexible.blank? ? "" : nl2br(@item.cancellation_policy_semi_flexible).html_dafe %>
+        <h1 class="size">Owner Rules:</h1>
+        <p class="size_text">
+          <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
+        </p>
+        <div class="clear"></div>
+
+        <h1 class="size">Cancellation Policy:</h1>
+        <p class="size_text">
+          <% unless @item.cancellation_policy_flexible.blank? %>
+            Flexible<br/>
+            If renter cancels more than 7 days before booking start date: full refund<br/>
+            If renter cancels less than 7 days before booking start date: no refund<br/><br/>
+
+            Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the Thursday of the prior week at 23:59 (local time of the booked space).<br/><br/>
+
+            Please be informed that the 10% Pop Up Storz service fee is not refundable.<br/><br/>
+            Exemple
+            If renter has done a booking for an amount of 110 € and cancels more than 7 days before booking start date, the amount of the refund will be 100 €.<br/><br/>
+          <% else %>
+            SemiFlexible<br/>If renter cancels more than 3 days before booking start date: partial refund (50%)<br/>
+            If renter cancels less than 3 days before booking start date: no refund<br/><br/>
+
+            Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the prior Monday at 23:59 (local time of the booked space).<br/><br/>
+
+            Please be informed that the 10% Pop Up Storz service fee is not refundable. <br/><br/>
+            Exemple
+            If renter has done a booking for an amount of 110 € and cancels more than 3 days before booking start date, the amount of the refund will be 50 €.<div/>
         <% end %>
-      </p>
-      <div class="clear"></div>
-      <br />
-        
+        </p>
+        <div class="clear"></div>
+        <br />
+
         <h3>Confirm your booking and contact <%= link_to "Owner", profile_path(@item.user) %></h3> <br/>
 
         <div id="booking-form">
@@ -163,12 +178,12 @@
           <br/>
           <br/>
           <% terms_of_use = "THis is terms of use, you have to agree this to proceed.
-          THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
-          THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
-          THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
-          THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
-          THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
-          THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed." %>
+  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
+  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
+  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
+  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
+  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
+  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed." %>
           <%= text_area_tag :terms_of_user, terms_of_use, :size => "50x4" %><br/><br/>
           <%= check_box_tag "is_confirm_terms" %>By Confirming I Accept Terms of Use<br/><br/>
           <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>

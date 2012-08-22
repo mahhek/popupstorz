@@ -166,14 +166,21 @@
     <%#= availability_option.name %>
   <%# end %>
 
-</div><br/><div class="xfields">Cancellation Policies:<br/><br/>We offer two cancellation policies:<br/><br/> <%=f.radio_button :cancellation_policy_flexible,true%>Flexible<br/>If renter cancels more than 7 days before booking start date: full refund<br/>
+</div><br/><div class="xfields">Cancellation Policies:<br/><br/>
+We offer two cancellation policies:<br/><br/> 
+<%=f.radio_button :cancellation_policy_flexible,true%>
+Flexible<br/>
+If renter cancels more than 7 days before booking start date: full refund<br/>
 If renter cancels less than 7 days before booking start date: no refund<br/><br/>
 
 Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the Thursday of the prior week at 23:59 (local time of the booked space).<br/><br/>
 
 Please be informed that the 10% Pop Up Storz service fee is not refundable.<br/><br/>
 Exemple
-If renter has done a booking for an amount of 110 € and cancels more than 7 days before booking start date, the amount of the refund will be 100 €.<br/><br/><%=f.radio_button :cancellation_policy_flexible,false%> SemiFlexible<br/>If renter cancels more than 3 days before booking start date: partial refund (50%)<br/>
+If renter has done a booking for an amount of 110 € and cancels more than 7 days before booking start date, the amount of the refund will be 100 €.<br/><br/>
+
+<%=f.radio_button :cancellation_policy_flexible,false%> 
+SemiFlexible<br/>If renter cancels more than 3 days before booking start date: partial refund (50%)<br/>
 If renter cancels less than 3 days before booking start date: no refund<br/><br/>
 
 Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the prior Monday at 23:59 (local time of the booked space).<br/><br/>
