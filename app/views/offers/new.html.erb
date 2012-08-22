@@ -90,7 +90,7 @@
         maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
         dateFormat: 'mm/dd/yy',
         beforeShowDay: disableRangeOfDays,
-          beforeShowDay:  disableDays
+        beforeShowDay:  disableDays
       });
 
       $("#offer_rental_end_date").datepicker({
@@ -98,7 +98,7 @@
         maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
         dateFormat: 'mm/dd/yy',
         beforeShowDay: disableRangeOfDays,
-          beforeShowDay:  disableDays
+        beforeShowDay:  disableDays
       });
       // end jsFiddle
       $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
@@ -163,6 +163,23 @@
           <%= raw @item.description %>
           <div class="clear">&nbsp;</div>
         </div>
+
+        <h1 class="size">Owner Rules:</h1>
+        <p class="size_text">
+          <%= @item.owner_rules.blank? ? "" : raw(@item.owner_rules).html_safe %>
+        </p>
+        <div class="clear"></div>
+
+        <h1 class="size">Cancellation Policy:</h1>
+        <p class="size_text">
+          <% unless @item.cancellation_policy_flexible.blank? %>
+            <%= raw nl2br(@item.cancellation_policy_flexible) %>
+          <% else %>
+            <%= @item.cancellation_policy_semi_flexible.blank? ? "" : nl2br(@item.cancellation_policy_semi_flexible).html_safe %>
+          <% end %>
+        </p>
+        <div class="clear"></div>
+        <br />
 
         <% if @item.is_shareable %>
           <div style="width:100%; margin: 10px;">
@@ -485,8 +502,8 @@
           new_days += 1;
         }        
       }
-      
-      <%#*number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;%>
+
+<%#*number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;%>
       number_of_days = new_days;
       
       if(number_of_days == 0){

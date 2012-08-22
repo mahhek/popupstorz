@@ -188,6 +188,24 @@
       <h1 class="size">Available to:</h1>
       <p class="size_text"><%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%></p>
       <div class="clear"></div>
+
+      <h1 class="size">Owner Rules:</h1>
+      <p class="size_text">
+        <%= @item.owner_rules.blank? ? "" : raw(@item.owner_rules).html_safe %>
+      </p>
+      <div class="clear"></div>
+
+      <h1 class="size">Cancellation Policy:</h1>
+      <p class="size_text">
+        <% unless @item.cancellation_policy_flexible.blank? %>
+          <%= raw nl2br(@item.cancellation_policy_flexible) %>
+        <% else %>
+          <%= raw nl2br(@item.cancellation_policy_semi_flexible) %>
+        <% end %>
+      </p>
+      <div class="clear"></div>
+      <br />
+      
       <h1 class="size">Gathering Available:</h1>
       <p class="size_text">
         <% if (@item.is_shareable == true) then %>Upto
@@ -226,8 +244,8 @@
                 <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
               <% end %>
             <% end %><br/><b>cancellation Policies:<b/><%if @item.cancellation_policy_flexible%>flexible<% else%>semifelxible<%end%><br/> Owner Rules:<%=@item.owner_rules%><br/><br/>
-            <%= link_to "Details", "/offers/#{gathering.id}" %>
-          <% end %>
+              <%= link_to "Details", "/offers/#{gathering.id}" %>
+            <% end %>
         </div>
       <% end %>
     </div>
@@ -486,8 +504,8 @@
           new_days += 1;
         }        
       }
-      
-      <%#*number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;%>
+
+<%#*number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;%>
       number_of_days = new_days;
       if(number_of_days == 0){
         number_of_days = 1;
