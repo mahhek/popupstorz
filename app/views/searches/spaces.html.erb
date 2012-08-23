@@ -65,7 +65,7 @@
       <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
     </div>
   </div><div class="sortby">
-      <%= select_tag "sort_option", options_for_select([["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
+      <%= select_tag "sort_option", options_for_select([["Newest" ,"1"],["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
       <span>sort by</span>
     </div>
 <% end %>

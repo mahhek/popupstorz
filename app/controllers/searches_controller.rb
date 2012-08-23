@@ -230,7 +230,8 @@ class SearchesController < ApplicationController
     
     case params[:sort_option]
     when "1"
-      order_by = "is_recommended, price DESC"
+      order_by = "created_at DESC"
+#      order_by = "is_recommended, price DESC"
     when "2"
       order_by = "price DESC"
     when "3"
