@@ -125,7 +125,7 @@
                 <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
 
                 <%=
-                link_to "Dashboard", inbox_messages_path, :class => ((params[:controller] == "accounts" ) ? "m_act" : "")
+                link_to "Dashboard", inbox_messages_path, :class => ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings" ) ? "m_act" : "")
               %>
   <%#=
   link_to "Dashboard", dashboard_path(current_user.id), :class => ((params[:controller] == "accounts" or params[:controller] == "items" ) ? "m_act" : "")
