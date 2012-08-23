@@ -1,19 +1,19 @@
 <div style="float: left;width: 100%;border: 1px solid black;padding: 5px;">
-  <h2>
-    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'gatherings') ? 'silver' : '' %>">
-      <%= link_to 'Past', created_prev_gatherings_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "gatherings" )) ? "m_act" : "") %>
+  <h2> 
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'created_prev_gatherings' or params[:action] == 'created_prev_gatherings') ? 'silver' : '' %>">
+      <%= link_to 'Past', created_prev_gatherings_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "created_prev_gatherings" )) ? "m_act" : "") %>
     </span>
     <span style="float: left;padding: 5px">
       &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
     </span>
-    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'gatherings') ? 'silver' : '' %>">
-      <%= link_to 'Upcoming', created_coming_gatherings_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "gatherings" )) ? "m_act" : "") %>
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'created_coming_gatherings') ? 'silver' : '' %>">
+      <%= link_to 'Upcoming', created_coming_gatherings_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "created_coming_gatherings" )) ? "m_act" : "") %>
     </span>
     <span style="float: left;padding: 5px">
       &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
     </span>
-    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'gatherings') ? 'silver' : '' %>">
-      <%= link_to 'Pending Gathering Acceptance', pending_gathering_acceptance_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "gatherings" )) ? "m_act" : "") %>
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'pending_gathering_acceptance') ? 'silver' : '' %>">
+      <%= link_to 'Pending Gathering Acceptance', pending_gathering_acceptance_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "pending_gathering_acceptance" )) ? "m_act" : "") %>
     </span>
   </h2>
 </div>
