@@ -76,7 +76,7 @@
     Title:  <%= link_to item.title, item_path(item) %><br />
     Description:  <%= item.description %><br />
     Price:  <%= item.price.to_s+" "+item.price_unit.to_s %><br />    
-    Availability: <%=item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.strftime("%m/%y")%>
+    Availability: <%= item.availability_from.blank? ? "" : item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.blank? ? "" :item.availability_to.strftime("%m/%y")%>
     <div style="width:200px;border-bottom: 1px solid black;height:0px;"></div>
 
     <div style="width:100%;float:left;clear:both;margin-bottom: 10px;">
