@@ -135,17 +135,18 @@
                   <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
                 <% end %>
 
-                <div class="searchDropdown searchMenu">
-                  <span class="searchMenu" onclick = "search_menu()">
-                      <%= link_to 'Search', "#" , :class => (((params[:controller] == "items" and params[:action] == "search_keyword") ) ? "m_act" : "") %> 
-                    <ul id="search_options" class="searchMenu">
-                      <li class="searchMenu"><%= link_to "Spaces", "/searches/spaces" %></li>
-                      <li class="searchMenu"><%= link_to "Gatherings",  "/searches/gatherings" %></li>
-                      <li class="searchMenu"><%= link_to "Members",  "/searches/members" %></li>
-                    </ul>
-                  </span>
+                <div style="float:left;" class='<%= (((params[:controller] == "items" and params[:action] == "search_keyword")  or params[:controller] == "searches" ) ? "m_act" : "") %>'>
+                  <div class="searchDropdown searchMenu" onclick="search_menu()">
+                    <span class="searchMenu" >
+                      <%= 'Search' %> 
+                      <ul id="search_options" class="searchMenu">
+                        <li class="searchMenu"><%= link_to "Spaces", "/searches/spaces" %></li>
+                        <li class="searchMenu"><%= link_to "Gatherings",  "/searches/gatherings" %></li>
+                        <li class="searchMenu"><%= link_to "Members",  "/searches/members" %></li>
+                      </ul>
+                    </span>
+                  </div>
                 </div>
-
   <%#= link_to 'Search', search_home_searches_path, :class => ((params[:controller] == "searches") ? "m_act" : "") %>
               </span>
               <div class="clear"></div>
