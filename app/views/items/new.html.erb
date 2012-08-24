@@ -1,3 +1,4 @@
+<%= render :partial => "items_header" %>
 <%= form_for @item, :html => {:name => "item_form", :multipart => true} do|f| %>
   <%= render :partial => "form", :locals => {:f => f} %>
 <% end %>
