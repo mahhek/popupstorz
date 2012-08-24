@@ -125,11 +125,9 @@
                 <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
 
                 <%=
-                link_to "Dashboard", inbox_messages_path, :class => ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show") ) ? "m_act" : "")
-              %>
-  <%#=
-  link_to "Dashboard", dashboard_path(current_user.id), :class => ((params[:controller] == "accounts" or params[:controller] == "items" ) ? "m_act" : "")
-  %>
+                link_to "Dashboard", inbox_messages_path, :class => ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : "")%>
+
+  <%#=link_to "Dashboard", dashboard_path(current_user.id), :class => ((params[:controller] == "accounts" or params[:controller] == "items" ) ? "m_act" : "")%>
                 <% messages_size = current_user.messages.are_to(current_user).unread.size %>
                 <% if messages_size > 0 %>
                   <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
@@ -209,53 +207,53 @@
 
   function addParamToUrl(param, value)
   {
-    //check if param exists
-    var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
-    result = result && result[1] || "";
+  //check if param exists
+  var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
+  result = result && result[1] || "";
 
-    //added seperately to append ? before params
-    var loc = window.location;
-    var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
+  //added seperately to append ? before params
+  var loc = window.location;
+  var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
 
-    //param doesn't exist in url, add it
-    if (result == '')
-    {
-      //doesn't have any params
-      if (loc.search == '')
-      {
-        url += "?" + param + '=' + value;
-      }
-      else
-      {
-        url += "&" + param + '=' + value;
-      }
-    }
-    else
-    {
-
-      value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
-      value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
-      url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
-
-    }
-
-    //return the finished url
-    window.location = url;
+  //param doesn't exist in url, add it
+  if (result == '')
+  {
+  //doesn't have any params
+  if (loc.search == '')
+  {
+  url += "?" + param + '=' + value;
   }
-  
+  else
+  {
+  url += "&" + param + '=' + value;
+  }
+  }
+  else
+  {
+
+  value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
+  value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
+  url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
+
+  }
+
+  //return the finished url
+  window.location = url;
+  }
+
   function search_menu(){
-    $('#search_options').toggle();
+  $('#search_options').toggle();
   }
-  
+
   $(document).click(function(event) {
-    if($(event.target).hasClass("searchMenu") == true){      
-      $('#search_options').show();
-    }
-    else{
-      if($('#search_options').is(":hidden") == false){
-        $('#search_options').hide();
-      }
-    }
+  if($(event.target).hasClass("searchMenu") == true){      
+  $('#search_options').show();
+  }
+  else{
+  if($('#search_options').is(":hidden") == false){
+  $('#search_options').hide();
+  }
+  }
   });
 
 
