@@ -98,8 +98,8 @@
                 <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
                 <% if request.status == "confirmed" && current_user.id == offer.user_id %>
                   <% if joined.size <  offer.persons_in_gathering.to_i %>
-                    <%#= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> 
-                    <%#= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
+              <%#= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> 
+              <%#= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
                     <br /><br />
                   <% end %>
                 <% end %>
@@ -141,8 +141,8 @@
                   <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
                   <% if request.status == "confirmed" && current_user.id == offer.user_id %>
                     <% if joined.size <  offer.persons_in_gathering.to_i %>
-                      <%#= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %>
-                      <%#= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
+                <%#= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %>
+                <%#= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
                       <br /><br />
                     <% end %>
                   <% end %>
@@ -152,19 +152,60 @@
                 No pending applications
               <% end %>
             </div> 
-          <% end %> <b>cancellation Policies:<b/><%if item.cancellation_policy_flexible%>flexible<% else%>semifelxible<%end%><br/> Owner Rules:<%=item.owner_rules%><br/> <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
-<%= link_to "Details", "/offers/#{offer.id}" %> <%end%>
+          <% end %> 
+          <div style="float:left;width:100%;">
+            <h1 class="size">Owner Rules:</h1><br />
+            <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div_<%= offer.id %>').toggle()">Show Details</div><br />
+            <p class="size_text" id="rules_div_<%= offer.id %>" style="display:none;">
+              <%= item.owner_rules.blank? ? "" : nl2br(item.owner_rules).html_safe %>
+            </p>
+            <div class="clear"></div>
 
-          <% if offer.status == "all joinings approved" %>     
-            <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{offer.id}" %> 
-          <% end %>
+            <h1 class="size">Cancellation Policy:</h1><br />
+            <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div_<%= offer.id %>').toggle()">Show Details</div><br />
+            <p class="size_text" id="policy_div_<%= offer.id %>" style="display:none;">
+              <% unless item.cancellation_policy_flexible.blank? %>
+                Flexible<br/>
+                If renter cancels more than 7 days before booking start date: full refund<br/>
+                If renter cancels less than 7 days before booking start date: no refund<br/><br/>
+
+                Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the Thursday of the prior week at 23:59 (local time of the booked space).<br/><br/>
+
+                Please be informed that the 10% Pop Up Storz service fee is not refundable.<br/><br/>
+                Exemple
+                If renter has done a booking for an amount of 110 € and cancels more than 7 days before booking start date, the amount of the refund will be 100 €.<br/><br/>
+              <% else %>
+                SemiFlexible<br/>
+                If renter cancels more than 3 days before booking start date: partial refund (50%)<br/>
+                If renter cancels less than 3 days before booking start date: no refund<br/><br/>
+
+                Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the prior Monday at 23:59 (local time of the booked space).<br/><br/>
+
+                Please be informed that the 10% Pop Up Storz service fee is not refundable. <br/><br/>
+                Exemple
+                If renter has done a booking for an amount of 110 € and cancels more than 3 days before booking start date, the amount of the refund will be 50 €.<div/>
+            <% end %>
+            </p>
+            <div class="clear"></div>
+            <br />
+          </div>
+        </div>
+
+
+        <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>        
+          <%= link_to "Details", "/offers/#{offer.id}" %>
+        <%end%>
+
+        <% if offer.status == "all joinings approved" %>     
+          <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{offer.id}" %> 
         <% end %>
-      </div>
+      <% end %>
+    </div>
 
-    <%end%>
-  <%else%>
-    You don't currently have any offers listed with PopupStorz.
   <%end%>
+<%else%>
+  You don't currently have any offers listed with PopupStorz.
+<%end%>
 </div>
 
 

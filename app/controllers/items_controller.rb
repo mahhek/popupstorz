@@ -478,7 +478,7 @@ class ItemsController < ApplicationController
     #    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
     @offers = Offer.find(:all, :conditions => ["(owner_id = ? and user_id != ?) and persons_in_gathering is not NULL and parent_id is NULL and (status != 'joinings approved' and status != 'Confirmed')",current_user.id,current_user.id], :order => "rental_start_date ASC")
   end
-
+  
   def payment_charge
     @offer = Offer.find(params[:id])
     @item = @offer.item    

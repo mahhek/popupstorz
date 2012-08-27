@@ -116,7 +116,7 @@
               </div>
 
 
-              <%#= link_to(image_tag("listaspace.png"), new_item_path ) %>
+              <%= link_to(image_tag("listaspace.png"), new_item_path ) %>
 <%#*<img class="listaspace" src="../assets/" />%>
             </div>
 
@@ -154,7 +154,11 @@
     <%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
                 <% end %>
               </span>
+
               <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || (params[:action] == "listings_home" && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" )||(params[:controller] == "accounts") %>
+
+              <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || ((params[:action] == "listings_home" or params[:action] == "new") && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" ) %>
+
                 <span style="float: left;">
                   <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" or (params[:controller] == "email_settings") %>
                     <%= link_to 'Messages', inbox_messages_path %>
@@ -166,7 +170,7 @@
                     <%#= link_to "Send Invitations","/invitation" %>
                     <%#= link_to "Email Settings","/email_settings/index" %>
                     <%#= link_to "Delete My Account","/users/delete_account", :confirm => "Are you sure you want to delete your account permanently?" %>
-                  <% end %>
+                  <% end %><%end%>
                 </span>
               <% end %>
 
