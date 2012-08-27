@@ -1,4 +1,22 @@
-<h1>Create Email Settings:</h1>
+<div style="float: left;width: 100%;border: 1px solid black;padding: 5px;">
+  <h2> 
+     <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'send_invitation' or params[:action] == 'invitations') ? 'silver' : '' %>">
+      <%= link_to 'Send Inivtations', invitation_path, :class => ((params[:controller] == "users" and ( params[:action] == "send_invitations" or params[:action] == "invitations" )) ? "m_act" : "") %>
+    </span>
+    <span style="float: left;padding: 5px">
+      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    </span>
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'index' or params[:action] == 'new') ? 'silver' : '' %>">
+      <%= link_to 'Email Settings', email_settings_path, :class => ((params[:controller] == "email_settings" and ( params[:action] == "index" or params[:action] == "new" )) ? "m_act" : "") %>
+    </span>
+    <span style="float: left;padding: 5px">
+      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    </span>
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'pending_gathering_acceptance') ? 'silver' : '' %>">
+      <%= link_to "Delete My Account","/users/delete_account", :confirm => "Are you sure you want to delete your account permanently?" %>
+    </span>
+  </h2>
+</div><br/><h1>Create Email Settings:</h1>
 <%= form_for @email_setting,:url => "/email_settings/create" do|f| %>
   <br /><br />
   <%= f.check_box :receive_person_message %>

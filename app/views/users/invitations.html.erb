@@ -7,7 +7,26 @@
     }
     return regex.test(email);
   }
-</script>
+</script><br/><div style="float: left;width: 100%;border: 1px solid black;padding: 5px;">
+  <h2>
+     <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'send_invitation' or params[:action] == 'invitations') ? 'silver' : '' %>">
+      <%= link_to 'Send Inivtations', invitation_path, :class => ((params[:controller] == "users" and ( params[:action] == "send_invitations" or params[:action] == "invitations" )) ? "m_act" : "") %>
+    </span>
+    <span style="float: left;padding: 5px">
+      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    </span>
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'index' or params[:action] == 'new') ? 'silver' : '' %>">
+      <%= link_to 'Email Settings', email_settings_path, :class => ((params[:controller] == "email_settings" and ( params[:action] == "index" or params[:action] == "new" )) ? "m_act" : "") %>
+    </span>
+    <span style="float: left;padding: 5px">
+      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    </span>
+    <span style="float: left;padding: 5px">
+      <%= link_to "Delete My Account","/users/delete_account", :confirm => "Are you sure you want to delete your account permanently?" %>
+    </span>
+  </h2>
+</div>
+
 
 <div style="float: left;width: 100%;margin-top: 10px;" id="invitation_div">
   <%= form_tag "send_invitation", :url => "/send_invitation" , :onsubmit => "return check_email();" do %>
