@@ -9,7 +9,7 @@
 </script>
 
 <div class="cont_heading">Spaces to rent</div>
-<div class="gellaryHold">
+<div class="gellaryHold" style="margin-left: 200px;">
   <ul id="mycarousel" class="jcarousel-skin-tango">
     <% @items.each do |item| %>
       <li>
@@ -22,7 +22,7 @@
               <%= image_tag("PUS_Logo.jpg", :border => "0", :alt => "image", :class => "item_image" )  %>
             <%end%>
           </div>
-          <h1><%=item.city%>, <%=item.country_code%></h1> 
+          <h1><%=item.city%>, <%=item.country_code%></h1>
           <p><%= item.availability_from.blank? ? "" : item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.blank? ? "" :item.availability_to.strftime("%m/%y")%></p>
 
           <h5>2/3</h5>

@@ -7,7 +7,8 @@
 }
 
 .jcarousel-skin-tango .jcarousel-container-horizontal {
-    width: 830px;
+/*    width: 830px;*/
+    width: 600px;
     padding: 20px 40px;
 }
 
