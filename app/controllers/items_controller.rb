@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 class ItemsController < ApplicationController
   include ActionView::Helpers::NumberHelper
 
