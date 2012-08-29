@@ -202,7 +202,40 @@
     <div class="clear"></div><br/>
 
 
-    <div style="float:left;width:100%;">
+    <div style="float:left;width:100%;margin-bottom: 10px;">
+      <h1 class="size">Availabilities:</h1><br />
+      <div style="width:100%;float:left;margin-bottom: 10px;">
+        <% if !@item.availablities_daytime.blank? and @item.availablities_daytime == true %>
+          Daytime
+        <% end %>
+        <% if !@item.availablities_evenings.blank? and @item.availablities_evenings == true %>
+          Evenings
+        <% end %>
+        <br />
+        <% if !@item.availablities_monday.blank? and @item.availablities_monday == true %>
+          Monday
+        <% end %>
+        <% if !@item.availablities_tuesday.blank? and @item.availablities_tuesday == true %>
+          Tuesday
+        <% end %>
+        <% if !@item.availablities_wednesday.blank? and @item.availablities_wednesday == true %>
+          Wednesday
+        <% end %>
+        <% if !@item.availablities_thursday.blank? and @item.availablities_thursday == true %>
+          Thursday
+        <% end %>
+        <% if !@item.availablities_friday.blank? || @item.availablities_friday == true %>
+          Friday
+        <% end %>
+        <% if !@item.availablities_saturday.blank? || @item.availablities_saturday == true %>
+          Saturday
+        <% end %>
+        <% if !@item.availablities_sunday.blank? || @item.availablities_sunday == true %>
+          Sunday
+        <% end %>
+
+      </div>
+
       <h1 class="size">Owner Rules:</h1><br />
       <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div').toggle()">Show Details</div><br />
       <p class="size_text" id="rules_div" style="display:none;">
@@ -486,6 +519,7 @@
   function check_dates(){
     if($('#txtFromDate').val() == "" || $('#txtFromDate').val() == "mm/dd/yy" || $('#txtToDate').val() == "" || $('#txtToDate').val() == "mm/dd/yy" ){
       alert('Please select right date');
+      $('#txtFromDate').focus();
       return false;
     }else{
       return true;

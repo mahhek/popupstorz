@@ -111,7 +111,7 @@ PopupStorz::Application.routes.draw do
 
   match "account/:id/dashboard" => "accounts#dashboard",  :as  => :dashboard
   match "accept_invitation/:id" => "invitations#accept_invitation",  :as  => :accept_invitation
-
+  match '/sign_out' => 'devise/sessions#destroy'
 
   devise_for :users do
     get '/users/sign_out' => 'devise/sessions#destroy'

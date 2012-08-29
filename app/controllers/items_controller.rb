@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ItemsController < ApplicationController
   include ActionView::Helpers::NumberHelper
 
@@ -95,6 +96,13 @@ class ItemsController < ApplicationController
   
   def create
     @countries = Country.all
+    unless params[:item][:availability_from].blank?
+      params[:item][:availability_from] = DateTime.strptime(params[:item][:availability_from], "%m/%d/%Y").to_time
+    end
+    unless params[:item][:availability_to].blank?
+      params[:item][:availability_to] = DateTime.strptime(params[:item][:availability_to], "%m/%d/%Y").to_time
+    end
+    
     @item = Item.new(params[:item])
     @map = GMap.new("map")
     if params[:item][:latitude].blank?
@@ -147,6 +155,14 @@ class ItemsController < ApplicationController
   def update
     @countries = Country.all
     @item = Item.find(params[:id])
+    
+    unless params[:item][:availability_from].blank?
+      params[:item][:availability_from] = DateTime.strptime(params[:item][:availability_from], "%m/%d/%Y").to_time
+    end
+    unless params[:item][:availability_to].blank?
+      params[:item][:availability_to] = DateTime.strptime(params[:item][:availability_to], "%m/%d/%Y").to_time
+    end
+    
     @item.availability_option_ids = params[:availability_options]
     if @item.update_attributes(params[:item])
       flash[:notice] = "Thanks for updating your space."
@@ -432,16 +448,6 @@ class ItemsController < ApplicationController
   
   def created_coming_gatherings
     @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])
-    #    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status !='joinings approved'",current_user.id,current_user.id], :order => "rental_start_date ASC")
-    
-    #    gathers = @gatherings.group_by(&:item_id)
-    #    gathers.each do|k,v|
-    #      @gatherings = v
-    #    end
-    #    p "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",@gatherings.inspect
-    #    ddd
-    
-    
     @gatherings = @gatherings + current_user.gatherings.where("owner_id != #{current_user.id} and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'", :order => "rental_start_date ASC")
     @gatherings = @gatherings.uniq
     

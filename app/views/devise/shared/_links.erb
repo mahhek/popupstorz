@@ -5,14 +5,16 @@
 <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
   <%= link_to "Sign up", new_registration_path(resource_name) %><br />
 <% end -%>
-
-<div id="remote">
-  <div id="services" class="box">
-    <a href="/auth/facebook" class="services">
-      <%= image_tag "facebook_64.png", :size => "194x25", :alt => "Facebook" %>
-    </a>
+  
+<% unless params[:controller] == "devise/passwords" and params[:action] == "new" %>
+  <div id="remote">
+    <div id="services" class="box">
+      <a href="/auth/facebook" class="services">
+        <%= image_tag "facebook_64.png", :size => "194x25", :alt => "Facebook" %>
+      </a>
+    </div>
   </div>
-</div>
+<% end %>
 
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
   <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />

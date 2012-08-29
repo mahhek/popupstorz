@@ -87,9 +87,8 @@ class PaymentsController < ApplicationController
       
       #      if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
       
-      
-      
-      redirect_to "/items/#{@item.id}"
+#      redirect_to "/items/#{@item.id}"
+      redirect_to "/"
     else
       puts pay_response.errors.first['message']
       redirect_to failed_payment_url

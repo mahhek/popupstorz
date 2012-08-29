@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 class HomeController < ApplicationController
-  before_filter :authenticate_user!, :only => [:feedback]
+#  before_filter :authenticate_user!, :only => [:feedback]
   
   def index
     if current_user && current_user.admin?
