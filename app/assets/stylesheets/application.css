@@ -18,6 +18,10 @@ ul.hmenu li {
 }
 
 
+.err_div{
+    border: 1px solid red;
+}
+
 /*star rating goes from here*/
 
 
