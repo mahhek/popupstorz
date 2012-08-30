@@ -9,7 +9,7 @@ class Avatar < ActiveRecord::Base
     :s3_credentials => {:access_key_id => "AKIAIETPPQ55S3QZGFQA" ,:secret_access_key => "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"},
     :bucket => "rentareto",
     :path => "/system/ugc/:class/:id/:style/:basename.:extension",
-    :styles => {:thumb => "125x125>", :small => "150x150>", :medium => "275x275>", :large => "400x400>" },
+    :styles => {:thumb => "125x125>", :small => "96X72", :medium => "240x180>", :large => "480x360>" },
     :default_style => :original
 
 
