@@ -157,20 +157,20 @@
 
               <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || (params[:action] == "listings_home" && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" )||(params[:controller] == "accounts") %>
 
-              <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || ((params[:action] == "listings_home" or params[:action] == "new") && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" ) %>
+                <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || ((params[:action] == "listings_home" or params[:action] == "new") && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" ) %>
 
-                <span style="float: left;">
-                  <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" or (params[:controller] == "email_settings") %>
-                    <%= link_to 'Messages', inbox_messages_path %>
-                    <%= link_to 'My Listings', overview_items_path %>
-                    <%= link_to 'My Bookings', "/items/created_coming_gatherings"%>
-      <%#= link_to 'My Gatherings', "/items/gatherings"%>
-                    <%= link_to 'My Favorites', favorites_items_path %>
-                    <%= link_to('My Profile', profile_path(current_user.id)) %>  <%= link_to "Account","/invitation" %>                 
-                    <%#= link_to "Send Invitations","/invitation" %>
-                    <%#= link_to "Email Settings","/email_settings/index" %>
-                    <%#= link_to "Delete My Account","/users/delete_account", :confirm => "Are you sure you want to delete your account permanently?" %>
-                  <% end %><%end%>
+                  <span style="float: left;">
+                    <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" or (params[:controller] == "email_settings") %>
+                      <%= link_to 'Messages', inbox_messages_path %>
+                      <%= link_to 'My Listings', overview_items_path %>
+                      <%= link_to 'My Bookings', "/items/created_coming_gatherings"%>
+        <%#= link_to 'My Gatherings', "/items/gatherings"%>
+                      <%= link_to 'My Favorites', favorites_items_path %>
+                      <%= link_to('My Profile', profile_path(current_user.id)) %>  <%= link_to "Account","/invitation" %>                 
+        <%#= link_to "Send Invitations","/invitation" %>
+        <%#= link_to "Email Settings","/email_settings/index" %>
+        <%#= link_to "Delete My Account","/users/delete_account", :confirm => "Are you sure you want to delete your account permanently?" %>
+                    <% end %><%end%>
                 </span>
               <% end %>
 
@@ -195,6 +195,10 @@
         <% if alert %>
           <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= alert %></p>
         <% end %>
+        <% if flash[:error] %>
+          <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= flash[:error] %></p>
+        <% end %>          
+
         <%= yield %>
         <div class="clear"></div>
       </div>
@@ -211,53 +215,53 @@
 
   function addParamToUrl(param, value)
   {
-  //check if param exists
-  var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
-  result = result && result[1] || "";
+    //check if param exists
+    var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
+    result = result && result[1] || "";
 
-  //added seperately to append ? before params
-  var loc = window.location;
-  var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
+    //added seperately to append ? before params
+    var loc = window.location;
+    var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
 
-  //param doesn't exist in url, add it
-  if (result == '')
-  {
-  //doesn't have any params
-  if (loc.search == '')
-  {
-  url += "?" + param + '=' + value;
-  }
-  else
-  {
-  url += "&" + param + '=' + value;
-  }
-  }
-  else
-  {
+    //param doesn't exist in url, add it
+    if (result == '')
+    {
+      //doesn't have any params
+      if (loc.search == '')
+      {
+        url += "?" + param + '=' + value;
+      }
+      else
+      {
+        url += "&" + param + '=' + value;
+      }
+    }
+    else
+    {
 
-  value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
-  value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
-  url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
+      value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
+      value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
+      url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
 
-  }
+    }
 
-  //return the finished url
-  window.location = url;
+    //return the finished url
+    window.location = url;
   }
 
   function search_menu(){
-  $('#search_options').toggle();
+    $('#search_options').toggle();
   }
 
   $(document).click(function(event) {
-  if($(event.target).hasClass("searchMenu") == true){      
-  $('#search_options').show();
-  }
-  else{
-  if($('#search_options').is(":hidden") == false){
-  $('#search_options').hide();
-  }
-  }
+    if($(event.target).hasClass("searchMenu") == true){      
+      $('#search_options').show();
+    }
+    else{
+      if($('#search_options').is(":hidden") == false){
+        $('#search_options').hide();
+      }
+    }
   });
 
 

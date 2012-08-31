@@ -334,6 +334,16 @@ class ItemsController < ApplicationController
     items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)
     
     @items = items - booked_items
+    
+#    Items whose owners are active users
+    active_items = []  
+    @items.each do|item|
+      if item.user.is_active == true
+        active_items << item
+      end
+    end    
+    @items = active_items
+    
     if params[:sort_option].blank?
       @items = @items.sort_by{|e| e[:price]}
     end
