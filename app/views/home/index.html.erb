@@ -1,15 +1,25 @@
-<script type="text/javascript">
+<div class="home">
 
-  jQuery(document).ready(function() {
-    jQuery('#mycarousel').jcarousel({
-      wrap: 'circular'
-    });
-  });
+<div class="img-heading">
+  <img src="../assets/img-heading.png" alt="" />
+</div>
 
-</script>
+<h2 class="" style="color: #cc33cc; font-size: 21px; margin-bottom: 40px;">Find your next pop-up store and set it up on your own or with other people</h2>
 
-<div class="cont_heading">Spaces to rent</div>
-<div class="gellaryHold" style="margin-left: 200px;">
+<div class="paris_hold">
+    <%= form_tag "/items/search_keyword", :method => :get  do %>
+      <%= select_tag( "location", options_from_collection_for_select( @items_with_uniq_cities, :city, :city), :prompt => "Select City", :class => "paris") %>
+        <span style="margin-left: 15px;">From</span>
+        <%= text_field_tag :search_from, nil, "hint" => "mm/dd/yyyy" %>
+        <span style="margin-left: 15px;">To</span>
+        <%= text_field_tag :search_to, nil, "hint" => "mm/dd/yyyy" %>
+      <%= submit_tag "Search", :class => "search", :style => ""  %>
+  <% end %>
+</div>
+<div class="clear"></div>
+
+<!--div class="cont_heading">Spaces to rent</div-->
+<div class="gellaryHold" >
   <ul id="mycarousel" class="jcarousel-skin-tango">
     <% @items.each do |item| %>
       <li>
@@ -32,63 +42,47 @@
       </li>
     <%end%>
   </ul>
-
-
 </div>
+<!--div class="clear"></div-->
 
-<div class="clear"></div>
-<div class="img-heading">
-  <img src="../assets/img-heading.png" alt="" />
-</div>
-<div class="fltL mt30 w370" style="width: 410px;">
-  <div class="paris_hold ml40" style="margin-left: 65px; margin-right: 40px;">
-
-    <%= form_tag "/items/search_keyword", :method => :get  do %>
-      <%= select_tag( "location", options_from_collection_for_select( @items_with_uniq_cities, :city, :city), :prompt => "Select City", :class => "paris") %>
-      <div class="fltL start_time">
-        <p>From</p>
-        <%=  text_field_tag :search_from %>
-      </div>
-      <div class="fltR start_time">
-        <p>To</p>
-        <%=  text_field_tag :search_to %>
-      </div>
-      <div class="clear"></div>
-      <%= submit_tag "Search", :class => "search", :style => "margin-left: 60px;"  %>
-
-      <div class="clear"></div>
-    </div>
-  <% end %>
-
-  <script type="text/javascript">
-    $('#search_from').datepicker(   
-    {
-      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
-      onSelect: function() {        
-        $('#search_to').datepicker('option', {minDate: $(this).datepicker('getDate')});
-    }});
-    $('#search_to').datepicker({
-      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
-      onSelect: function() {
-        $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
-    }});
-  </script>
-
-  <div class="paris_hold mt30" style="padding: 20px; margin-left: 35px;">
+<!--div class="paris_hold mt30" style="padding: 20px; margin-left: 35px;">
     <h1 class="text_he">Ideas, suggestions? We would love your <samp><b>FEEDBACK!</b></samp></h1>
 
   </div>
-</div>
-<div class="fltR mt10 w390 mr100">
+</div-->
+
+<!--div class="fltR mt10 w390 mr100">
   <div class="play_hold">
     <h1>Look how designers, artists and <br />
       owners of free spaces connect:</h1>
     <img src="../assets/play.png" alt="" />
   </div>
 </div>
+<div class="clear"></div-->
 
-<div class="clear"></div>
-
+<script type="text/javascript">
+  $(document).ready(function() {
+  	 // Carousel
+    $('#mycarousel').jcarousel({
+      wrap: 'circular'
+    });
+    
+    // Choser
+    $('#location').chosen();
+    
+    // Date picker
+    $('#search_from').datepicker( {
+      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
+      onSelect: function() {        
+        $('#search_to').datepicker('option', {minDate: $(this).datepicker('getDate')});
+    }});
+    $('#search_to').datepicker( {
+      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
+      onSelect: function() {
+        $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
+    }});
+  });
+</script>
 
 <%#*<h2>%>
 <%#= number_to_currency(currency_conversion(1)) %>

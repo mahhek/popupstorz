@@ -14,6 +14,22 @@ a {
     text-decoration: none;
 }
 
+input[type="text"] {
+	background: none repeat scroll 0 0 #F8F8F8;
+    border: 1px solid #DDDDDD;
+    border-radius: 0.2em 0.2em 0.2em 0.2em;
+    box-shadow: 0 1px 1px #FFFFFF, 0 1px 0 #BBBBBB inset;
+    font-size: 0.8em;
+    margin: 0.3em;
+    outline: medium none;
+    padding: 0.4em 0.5em 0.2em;
+    width: 10em;
+}
+
+.ui-widget {
+	font-size: 0.7em !important;	
+}
+
 .dropdowns select {
     background: none repeat scroll 0pt 0pt transparent;
     border: 0pt none;
@@ -27,11 +43,42 @@ body {
     font-family: Arial,Helvetica,sans-serif;
 }
 
+.home {
+	text-align: center;
+}
+
+.home .paris_hold input[type="text"] {
+	font-size: 1em;
+}
+
+.home .chzn-container {
+	top: 10px;
+	font-size: 1em !important;
+}
+
+.home .chzn-container-single .chzn-single {
+	height: 31px !important;
+    line-height: 30px !important;
+}
+
+.home .chzn-container-single .chzn-single div {
+	top: 4px !important;	
+}
+
+.home .jcarousel-skin-tango .jcarousel-container-horizontal {
+	margin: 0 auto;	
+}
+
 .menubar a {
-    float: left;
+    /*float: left;*/
     font-weight: bold;
-    padding: 6px 24px;
+    padding: 0 24px;
     text-transform: uppercase;
+}
+
+.menubar-left {
+	float: left;
+	line-height: 37px;	
 }
 
 .maincontainer {
@@ -41,25 +88,32 @@ body {
 
 .logo {
     float: left;
-    margin-top: 15px;
 }
 
 .menubar {
     float: left;
     font-size: 12px;
-    margin-top: 7px;
-    padding-left: 20px;
-    width: 838px;
+    padding-left: 47px;
+    width: 810px;
 }
 
 .header {
-    background: url("../assets/BG.png") repeat-x scroll 0 0 #FFFFFF;
     float: left;
     left: 0;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 999;
+    background-color: white;
+}
+
+.header-background {
+	background: none repeat scroll 0 0 #00daff; /* cyan; */
+    height: 37px;
+    position: absolute;
+    width: 100%;
+    z-index: -10;
+    box-shadow: 0 -3px 7px #000000;
 }
 
 
@@ -109,6 +163,7 @@ body {
 .dropdowns {
     float: right;
     height: 26px;
+    line-height: 37px;
 }
 
 .listaspace {
@@ -117,7 +172,7 @@ body {
 
 .contentholder {
     float: left;
-    margin-top: 135px;
+    margin-top: 76px;
     padding-bottom: 20px;
     width: 100%;
     min-height: 425px;
@@ -326,7 +381,7 @@ h2 {
 .fltR{float:right;}
 .leftArrow, .rightArrow{background:url(../assets/left_arrow.png) no-repeat;float:left; width:19px;height:29px;margin:64px 30px 0 30px;}
 .rightArrow{background:url(../assets/right_arrow.png) no-repeat !important;margin:64px 0 0 10px;}
-.gellaryHold{float:left;width:830px; margin-left: 60px;}
+.gellaryHold{margin: 0 auto; width:830px; }
 .g_hold {
     background-color: #FFFFFF;
     box-shadow: 4px 5px 6px #333333;
@@ -349,19 +404,21 @@ h2 {
 .w390{width:390px;}
 .paris_hold {
     background-color: #FFFFFF;
-    border-radius: 5px 5px 5px 5px;
-    box-shadow: 4px 5px 6px;
-    -webkit-box-shadow: 4px 5px 6px  #888;
-    padding: 20px;
+    border-radius: 2px 2px 2px 2px;
+    box-shadow: 2px 3px 7px;
+    -webkit-box-shadow: 2px 3px 7px  #888;
+    height: 78px;
+    text-align: center;
+    width: 812px;
+    margin: 0 auto;
+    line-height: 78px;
 }
 
 .mt10{margin-top:10px;}
 .mt30{margin-top:30px !important;}
 .paris {
-    border: 1px solid #939393;
-    font-size: 25px;
+    font-size: 1em;
     padding: 5px 10px;
-    width: 100%;
 }
 .start_time{margin-top:10px;}
 .start_time p{font-size:15px;color:#010100;}
@@ -383,13 +440,11 @@ h2 {
 .searchDropdown {
     float: left;
     margin: 0 6px;
-    padding: 5px;
 }
 .searchDropdown ul {
     background-color: transparent;
     float: none;
     list-style: none outside none;
-    padding-top: 5px;
     display: none;
     position: absolute;
 }
@@ -397,6 +452,7 @@ h2 {
     background-color: #CC33CC;
     float: left;
     width: 100%;
+    line-height: 21px;
 }
 
 .searchDropdown span {
@@ -405,6 +461,9 @@ h2 {
 .searchDropdown ul li a {
     padding: 5px 9px;
     color: #fff;
+}
+.searchDropdown ul li:hover {
+	background-color: #000000;
 }
 .searchDropdown:target ul {
     display: block;
@@ -424,13 +483,11 @@ h2 {
 .dropdown {
     float: left;
     margin: 0 6px;
-    padding: 5px;
 }
 .dropdown ul {
     background-color: transparent;
     float: none;
     list-style: none outside none;
-    padding-top: 5px;
     display: none;
     position: absolute;
 }
@@ -438,6 +495,7 @@ h2 {
     background-color: #CC33CC;
     float: left;
     width: 100%;
+    line-height: 25px;
 }
 .dropdown ul li:hover {
     background-color: #000;
@@ -531,11 +589,13 @@ h2 {
     background: none repeat scroll 0 0 #CC33CC;
     border-radius: 5px 5px 5px 5px;
     color: #FFFFFF;
-    float: left;
+    /*float: left;
+	margin-left: 105px;
+    margin-top: 10px;    
+    */
     font-size: 20px;
     font-weight: bold;
-    margin-left: 105px;
-    margin-top: 10px;
+    
     padding: 5px 25px;}
 
 .pagination {
