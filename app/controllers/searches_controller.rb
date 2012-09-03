@@ -55,10 +55,18 @@ class SearchesController < ApplicationController
       @last_price = 10000
     end
     
+    
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @items = Item.paginate(:page => params[:page], :per_page => 6, :order => "created_at DESC" )
     
+    active_items = []  
+    @items.each do|item|
+      if item.user.is_active == true
+        active_items << item
+      end
+    end
+    @items = active_items
     respond_to do |format|
       format.html
       format.js do
@@ -118,18 +126,19 @@ class SearchesController < ApplicationController
     unless @offers.blank?
       @offers = @offers.uniq
     end
+   
     
-#    if params[:sort_option].blank?
-#      @offers = @offers.sort_by{|e| e[:created_at]}
-#    end
-#    #   @rental_start_date = @offers.blank? ? 0 : @offers.rental_start_date
-#    #   @rental_end_date = @offers.blank? ? 0 : @offers.rental_end_date
-#    if params[:sort_option].blank?
-#      @offers = @offers.sort_by{|e| e[:size]}
-#    end
-#    if params[:sort_option].blank?
-#      @offers = @offers.sort_by{|e| e[:gathering_rental_price]}
-#    end
+    #    if params[:sort_option].blank?
+    #      @offers = @offers.sort_by{|e| e[:created_at]}
+    #    end
+    #    #   @rental_start_date = @offers.blank? ? 0 : @offers.rental_start_date
+    #    #   @rental_end_date = @offers.blank? ? 0 : @offers.rental_end_date
+    #    if params[:sort_option].blank?
+    #      @offers = @offers.sort_by{|e| e[:size]}
+    #    end
+    #    if params[:sort_option].blank?
+    #      @offers = @offers.sort_by{|e| e[:gathering_rental_price]}
+    #    end
     
     @min_price = @offers.blank? ? 0 : @offers.first.gathering_rental_price
     @max_price = @offers.blank? ? 0 : @offers.last.gathering_rental_price
@@ -231,7 +240,7 @@ class SearchesController < ApplicationController
     case params[:sort_option]
     when "1"
       order_by = "created_at DESC"
-#      order_by = "is_recommended, price DESC"
+      #      order_by = "is_recommended, price DESC"
     when "2"
       order_by = "price DESC"
     when "3"
@@ -245,6 +254,9 @@ class SearchesController < ApplicationController
     items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)
     
     @items = items - booked_items
+    
+    @items = active_items
+    
     if params[:sort_option].blank?
       @items = @items.sort_by{|e| e[:price]}
     end
@@ -261,7 +273,7 @@ class SearchesController < ApplicationController
 
     respond_to do |format|
       format.html
-#      format.js
+      #      format.js
       format.js do
         foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
         render :js => "$('#searched-items').html(#{foo});$.setAjaxPagination();update_form_values('#{params.to_json}');"
