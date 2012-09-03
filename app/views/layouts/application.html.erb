@@ -215,10 +215,10 @@
 
       <div class="contentholder">        
         <% if notice %>
-          <p class="notice" style="padding: 5px;width :95%;background-color:lightgreen;"><%= notice %></p>
+          <div class="notice"><p style="background-color:lightgreen;"><%= notice %></p></div>
         <% end %>
         <% if alert %>
-          <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= alert %></p>
+          <div class="notice"><p style="background-color:red;"><%= alert %></p></div>
         <% end %>
         <%= yield %>
         <div class="clear"></div>
@@ -235,10 +235,18 @@
     <%= render :partial => "/layouts/social_medias" %>
     
     <script type="text/javascript">
-
-	$(document).ready(function() {
+    
+    $(document).ready(function() {
 		$("input[hint]").hint();
-	}));
+	});
+	
+	$(window).load(function() {
+		$('.notice').delay(3500).fadeTo("slow", 0.00, function(){
+			$(this).slideUp("slow", function() {
+				$(this).remove();
+			});
+		});
+	});
 
   function addParamToUrl(param, value)
   {
