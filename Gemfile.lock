@@ -4,6 +4,12 @@ GIT
   specs:
     gdata (1.1.1)
 
+GIT
+  remote: https://github.com/taf2/curb.git
+  revision: f89bb4baca3fb3482dfc26bde8f0ade9f1a4b2c2
+  specs:
+    curb (0.8.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -58,6 +64,7 @@ GEM
       ancestry (~> 1.2.4)
       railties (>= 3.0.0)
     acts_as_commentable (3.0.1)
+    acts_as_rateable (2.0.1)
     addressable (2.2.8)
     ancestry (1.2.5)
       activerecord (>= 2.2.2)
@@ -86,7 +93,6 @@ GEM
       gdata (= 1.1.1)
       json (>= 0.4.1)
     crack (0.3.1)
-    curb (0.7.18)
     devise (2.1.0)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.7)
@@ -104,7 +110,7 @@ GEM
     feedzirra (0.1.3)
       activesupport (~> 3.1.1)
       builder (>= 2.1.2)
-      curb (~> 0.7.15)
+      curb (>= 0.7.13)
       i18n (>= 0.5.0)
       loofah (~> 1.2.0)
       nokogiri (>= 1.4.4)
@@ -148,7 +154,7 @@ GEM
     multi_xml (0.5.1)
     multipart-post (1.1.5)
     mysql2 (0.3.11)
-    nokogiri (1.5.2)
+    nokogiri (1.5.5)
     oauth (0.4.6)
     oauth2 (0.6.1)
       faraday (~> 0.7)
@@ -251,6 +257,7 @@ DEPENDENCIES
   activemerchant (= 1.23.0)
   acts-as-messageable
   acts_as_commentable
+  acts_as_rateable (~> 2.0.1)
   aws-sdk
   bcrypt-ruby
   ckeditor
@@ -258,6 +265,7 @@ DEPENDENCIES
   coffee-rails (~> 3.1.1)
   contacts
   crack
+  curb (>= 0.8.0)!
   devise
   dm-aggregates
   dm-core

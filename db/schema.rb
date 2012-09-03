@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120513160712) do
+ActiveRecord::Schema.define(:version => 20120815084554) do
 
   create_table "accounts", :force => true do |t|
     t.datetime "created_at"
@@ -62,6 +62,35 @@ ActiveRecord::Schema.define(:version => 20120513160712) do
     t.integer "numcode"
   end
 
+  create_table "email_settings", :force => true do |t|
+    t.integer  "user_id"
+    t.boolean  "receive_person_message"
+    t.boolean  "booking_request_update"
+    t.boolean  "receive_booking_request"
+    t.boolean  "upcoming_booking"
+    t.boolean  "new_review"
+    t.boolean  "review_required"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "gathering_members", :force => true do |t|
+    t.integer  "offer_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status"
+    t.text     "user_message"
+  end
+
+  create_table "invitations", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "email"
+    t.string   "token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "items", :force => true do |t|
     t.string   "title"
     t.integer  "user_id"
@@ -77,7 +106,7 @@ ActiveRecord::Schema.define(:version => 20120513160712) do
     t.string   "size"
     t.string   "size_unit"
     t.string   "type"
-    t.boolean  "is_shareable",                                        :default => true
+    t.boolean  "is_shareable",                                                      :default => true
     t.integer  "maximum_members"
     t.boolean  "is_agree"
     t.string   "neighbourhood"
@@ -87,21 +116,34 @@ ActiveRecord::Schema.define(:version => 20120513160712) do
     t.string   "city"
     t.string   "zipcode"
     t.string   "street"
-    t.decimal  "latitude",            :precision => 15, :scale => 10
-    t.decimal  "longitude",           :precision => 15, :scale => 10
+    t.decimal  "latitude",                          :precision => 15, :scale => 10
+    t.decimal  "longitude",                         :precision => 15, :scale => 10
     t.string   "street_name"
     t.string   "street_number"
     t.integer  "locatable_id"
     t.string   "locatable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "show_on_home",                                        :default => false
+    t.boolean  "show_on_home",                                                      :default => false
     t.float    "cleaning_fee"
     t.float    "deposit"
-    t.boolean  "is_recommended",                                      :default => false
+    t.boolean  "is_recommended",                                                    :default => false
     t.float    "price_per_week"
     t.float    "price_per_month"
     t.string   "item_status"
+    t.string   "owner_rule"
+    t.boolean  "cancellation_policy_flexible"
+    t.boolean  "cancellation_policy_semi_flexible"
+    t.text     "owner_rules"
+    t.boolean  "availablities_daytime"
+    t.boolean  "availablities_evenings"
+    t.boolean  "availablities_monday"
+    t.boolean  "availablities_tuesday"
+    t.boolean  "availablities_wednesday"
+    t.boolean  "availablities_thursday"
+    t.boolean  "availablities_friday"
+    t.boolean  "availablities_saturday"
+    t.boolean  "availablities_sunday"
   end
 
   create_table "items_users", :id => false, :force => true do |t|
@@ -171,6 +213,14 @@ ActiveRecord::Schema.define(:version => 20120513160712) do
     t.datetime "cancellation_date"
     t.boolean  "want_to_bargain",                   :default => false
     t.integer  "owner_id"
+    t.integer  "persons_in_gathering"
+    t.float    "gathering_rental_price"
+    t.text     "gathering_description"
+    t.datetime "gathering_deadline"
+    t.integer  "parent_id"
+    t.boolean  "is_gathering"
+    t.boolean  "is_captured",                       :default => false
+    t.integer  "total_days"
   end
 
   create_table "payments", :force => true do |t|
@@ -251,6 +301,14 @@ ActiveRecord::Schema.define(:version => 20120513160712) do
     t.string   "country"
     t.text     "description"
     t.boolean  "admin",                                 :default => false
+    t.string   "school"
+    t.string   "works_at"
+    t.string   "studied_at"
+    t.string   "fb_pic_url"
+    t.string   "fb_interests"
+    t.integer  "fb_friends_count"
+    t.string   "fb_pages"
+    t.boolean  "show_fb_info"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

@@ -45,6 +45,7 @@ gem "will_paginate", "~> 3.0.pre2"
 gem 'i18n'
 gem 'contacts'
 gem 'gdata', :git => 'https://github.com/agentrock/gdata.git'
+gem 'curb', '>= 0.8.0', :git => 'https://github.com/taf2/curb.git'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -60,6 +61,9 @@ gem 'rails3-jquery-autocomplete'
 gem 'aws-sdk'
 gem 'acts-as-messageable'
 gem 'acts_as_commentable'
+gem "acts_as_rateable", "~> 2.0.1"
+#gem "ym4r_gm", :git => 'https://github.com/shaileshparamisoft/ym4r_gm.git'
+
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

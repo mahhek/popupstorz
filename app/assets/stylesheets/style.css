@@ -464,7 +464,7 @@ h2 {
 
 .searchDropdown {
     float: left;
-    margin: 0 6px;
+    margin: 0 6px 5px;
 }
 .searchDropdown ul {
     background-color: transparent;
