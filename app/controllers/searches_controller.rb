@@ -59,7 +59,7 @@ class SearchesController < ApplicationController
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @items = Item.all
     active_items = []
-    unless @item.blank?
+    unless @items.blank?
       @items.each do|item|
         if item.user.is_active == true
           active_items << item
@@ -67,7 +67,7 @@ class SearchesController < ApplicationController
       end
     end
     @items = active_items
-    @items = Item.paginate(:page => params[:page], :per_page => 6, :order => "created_at DESC" )
+    @items = @items.paginate(:page => params[:page], :per_page => 6, :order => "created_at DESC" )
     respond_to do |format|
       format.html
       format.js do
@@ -256,6 +256,13 @@ class SearchesController < ApplicationController
     
     @items = items - booked_items
     
+# Items whose owners are active users
+    active_items = []  
+    @items.each do|item|
+      if item.user.is_active == true
+        active_items << item
+      end
+    end    
     @items = active_items
     
     if params[:sort_option].blank?
