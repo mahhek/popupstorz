@@ -14,7 +14,7 @@ a {
     text-decoration: none;
 }
 
-input[type="text"] {
+input[type="text"], input[type="email"], input[type="password"], input[type="file"], input[type="tel"], textarea {
 	background: none repeat scroll 0 0 #F8F8F8;
     border: 1px solid #DDDDDD;
     border-radius: 0.2em 0.2em 0.2em 0.2em;
@@ -28,6 +28,20 @@ input[type="text"] {
 
 .ui-widget {
 	font-size: 0.7em !important;	
+}
+
+
+.chzn-container-single .chzn-single span {
+	margin-right: 15px;
+}
+
+
+.chzn-container-single .chzn-single {
+	padding: 0 0 0 4px;
+}
+
+.chzn-container .chzn-results li {
+	padding: 5px 2px;
 }
 
 .dropdowns select {
@@ -172,7 +186,7 @@ body {
 
 .contentholder {
     float: left;
-    margin-top: 76px;
+    margin-top: 86px;
     padding-bottom: 20px;
     width: 100%;
     min-height: 425px;
@@ -405,8 +419,8 @@ h2 {
 .paris_hold {
     background-color: #FFFFFF;
     border-radius: 2px 2px 2px 2px;
-    box-shadow: 2px 3px 7px;
-    -webkit-box-shadow: 2px 3px 7px  #888;
+    box-shadow: 2px 2px 6px;
+    -webkit-box-shadow: 2px 2px 6px  #888;
     height: 78px;
     text-align: center;
     width: 812px;
@@ -547,17 +561,18 @@ h2 {
 .m_act{background:#fff;}
 .shadowCont {
     background-color: #FFFFFF;
-    -webkit-box-shadow: 2px 2px 2px #333333;
-    box-shadow: 2px 2px 2px #333333;
+    -webkit-box-shadow: 2px 2px 6px #333333;
+    box-shadow: 2px 2px 6px #333333;
     padding: 20px;
 }
 
-.s_head{font-size:22px;color:#00ffff;font-weight:bold;}
-.reqInfo{color:#999999;margin-top:20px;margin-left:130px;}
-.sign_up_input{margin-top:5px;}
-.sign_up_input label{float:left;width:120px; margin-right:10px;text-align:right;font-size:12px;color:#000;font-weight:bold;line-height:20px;}
-.sign_up_input input{width:198px;float:left;border:1px solid #666666;padding:2px 3px;}
-.sign_up_input textarea{width:534px;float:left;border:1px solid #666666;padding:2px 3px;}
+.s_head{font-size:22px;font-weight:bold;}
+.reqInfo{color:#999999;margin:20px 0 5px 133px; font-weight: bold; font-size: 1.1em;}
+.info { font-size: 0.8em; color: grey; line-height: 29px;}
+.sign_up_input{}
+.sign_up_input label{float:left;width:120px; margin-right:10px;text-align:right;font-size:12px;color:#000;font-weight:bold;line-height:29px;}
+.sign_up_input input{width:192px;margin-left: 3px; /*border:1px solid #666666;*/}
+.sign_up_input textarea{width:534px;float:left; /*border:1px solid #666666;*/ padding:2px 3px;}
 .day, .month, .year{float:left;margin-right:5px;border:1px solid #666;padding:3px;width:60px;}
 .month{width:60px;}
 .year{width:87px;}
@@ -593,6 +608,7 @@ h2 {
 	margin-left: 105px;
     margin-top: 10px;    
     */
+    margin: 0 auto;
     font-size: 20px;
     font-weight: bold;
     

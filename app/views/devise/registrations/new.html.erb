@@ -1,22 +1,17 @@
-<div class="leftcontent">
-  <div class="shadowCont" style="float: left;">
+<div class="" style="text-align: center;">
+  <div class="shadowCont" style="margin: 0 auto; text-align: left; width: 713px;">
     <div class="s_head">Sign Up</div>
+    
+    <div style="width: 100%;text-align: center;">
+      <%= render :partial => "devise/shared/links" %>
+      <span style="display: block; font-weight: bold; margin: 25px 0;">or enter your Information below :</span>
+    </div>
+    <div class="clear"></div>
+    
     <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
       <%= devise_error_messages! %>
 
       <div class="reqInfo">Required information</div>
-      <div class="newPaperclipFiles" style="margin-left: 128px;">
-        Upload Profile Pictures:<br/>
-        <%(1 - resource.avatars.size).times { resource.avatars.build }%>
-
-        <%= f.fields_for :avatars do |avatar| %>
-          <% if avatar.object.new_record? %>
-            <%= avatar.file_field :photo %>
-          <% end %>
-
-        <% end %>
-      </div>
-
       <div class="sign_up_input">
         <label>First Name</label>
         <%= f.text_field :first_name, :autocomplete=> "off" %>
@@ -24,34 +19,33 @@
       </div>
       <div class="sign_up_input">
         <label>Last Name</label>
-        <%= f.text_field :last_name , :autocomplete=> "off"%>
+        <%= f.text_field :last_name , :autocomplete=> "off"%> <span class="info">Only the first letter of your last name will be displayed</span>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
-        <label>Date of Birth</label>
-        <%=  f.date_select :date_of_birth, :start_year => 1970 %>
+        <label style="margin-right: 13px;">Date of Birth</label>
+        <%=  f.date_select :date_of_birth, {:start_year => 1970}, {:style=>"margin: 3px 0;", :class=>"dateselect"} %> <span class="info" style="margin-left: 27px;">will not be shown</span>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
         <label>Gender</label>
-        <div class="fltL">
-          <div style="float: left;">
+        <div class="fltL" style="margin: 5px 0;">
+          <div style="float: left; width: 218px; line-height: 15px; font-size: 0.9em;">
             <span>
               <%= f.radio_button :gender,   true, :style => "margin-top: 2px;" %>
             </span>
-            <span style="margin-left: 5px;">Male</span>
-          </div>
-          <div style="float: left;margin-left: 10px;">
+            <span style="margin-left: 5px;">male</span>
+          </div> <span class="info" style="float: right;">will not be shown</span>
+          <div style="line-height: 15px; font-size: 0.9em;">
             <span>
               <%= f.radio_button :gender, false , :style => "margin-top: 2px;" %>
             </span>
-            <span style="margin-left: 5px;">Female</span>
+            <span style="margin-left: 5px;">female</span>
           </div>
         </div>
         <div class="clear"></div>
       </div>
-      <div class="clear"></div>
-      <div class="sign_up_input">
+      <div class="sign_up_input fltL">
         <label>Email</label>
         <%= f.email_field :email, :autocomplete=> "off" %>
   <%#*<div class="clear"></div>%>
@@ -63,19 +57,19 @@
       </div>
       <div class="clear"></div>
 
-      <div class="sign_up_input">
+      <div class="sign_up_input fltL">
         <label>Password</label>
         <%= f.password_field :password , :autocomplete=> "off"%>
   <%#*<div class="clear"></div>%>
       </div>
-      <div class="sign_up_input fltL">
-        <label>Confirm Password</label>
+      <div class="sign_up_input">
+        <label>Verify Password</label>
         <%= f.password_field :password_confirmation, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
 
-      <div class="sign_up_input">
+      <div class="sign_up_input fltL">
         <label>Security Question</label>
         <%= f.text_field :security_question, :autocomplete=> "off" %>
   <%#*<div class="clear"></div>%>
@@ -86,14 +80,15 @@
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
+      
       <div class="sign_up_input">
         <label>Mobile No</label>
-        <%= f.text_field :mobile_phone , :autocomplete=> "off"%><br />
-        <div style="float:left;clear:both;margin-left: 130px;margin-top: 10px;">Please use international format, i.e. +01234567890</div>
+        <%= f.telephone_field :mobile_phone , :autocomplete=> "off"%><br />
+        <div style="color: black; font-size: 0.7em; line-height: 12px; margin-left: 136px; width: 189px;">Please use international format, i.e. +01234567890</div>
         <div class="clear"></div>
       </div>
 
-      <div class="reqInfo">Optional information</div>
+      <div class="reqInfo" style="margin-top: 40px;">Optional information</div>
       <div class="sign_up_input">
         <label>Address 1</label>
         <%= f.text_field :address1, :autocomplete=> "off" %>
@@ -105,44 +100,50 @@
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
-        <label>City</label>
-        <%= f.text_field :city , :autocomplete=> "off"%>
-        <div class="clear"></div>
-      </div>
-      <div class="sign_up_input fltL">
-        <label>Country</label>
-        <%= f.select( :country, options_from_collection_for_select( Country.all, :printable_name, :printable_name), :prompt => "Select Country") %>
-        <div class="clear"></div>
-      </div>
-      <div class="sign_up_input fltL">
         <label>Zip code</label>
         <%= f.text_field :zip_code, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
-      <div class="sign_up_input fltL">
+      <div class="sign_up_input">
+        <label>City of residence</label>
+        <%= f.text_field :city , :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label style="margin-right: 13px;">Select Country</label>
+        <%= f.select :country, options_from_collection_for_select( Country.all, :printable_name, :printable_name), {:prompt => "Select Country"}, {:style => "width: 207px;"} %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
         <label>Activity</label>
         <%= f.text_field :activity , :autocomplete=> "off"%>
         <div class="clear"></div>
       </div>
-      <div class="clear"></div>
       <div class="sign_up_input">
         <label>Description</label>
         <%= f.text_area :description, :size => "40x4", :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
-
+		<div class="sign_up_input">
+        <label>Upload Photo</label>
+        <%(1 - resource.avatars.size).times { resource.avatars.build }%>
+        <%= f.fields_for :avatars do |avatar| %>
+          <% if avatar.object.new_record? %>
+            <%= avatar.file_field :photo %>
+          <% end %>
+        <% end %>
+      </div>
+      
+      <div style="text-align: center; margin-bottom: 30px; margin-top: 42px;">
       <%= f.submit "Sign up", :class => "search" %>
-
-    <% end %>
-    <br/>
-    <div style="float:left;width: 100%;margin-left: 100px;margin-top: 35px;">
-      <%= render :partial => "devise/shared/links" %>
-    </div>
+      </div>
+    <% end %>  
 
     <script type='text/javascript'>
-      
+      $("#user_country").chosen();
+      $(".dateselect").chosen({search_enabled: false, disable_search_threshold: 100});
       $("#user_date_of_birth").datepicker();
-      
+      //$('#user_avatars_attributes_0_photo').customFileInput();
     </script>
   </div>
 </div>
