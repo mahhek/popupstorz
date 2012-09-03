@@ -94,8 +94,14 @@ class ItemsController < ApplicationController
     @availability_options = AvailabilityOption.all    
   end
   
-  def create
+  def create    
     @countries = Country.all
+    
+    if params[:item][:available_forever] == "1"
+      params[:item][:availability_from] = ""
+      params[:item][:availability_to] = ""
+    end
+    
     unless params[:item][:availability_from].blank?
       params[:item][:availability_from] = DateTime.strptime(params[:item][:availability_from], "%m/%d/%Y").to_time
     end
@@ -155,6 +161,11 @@ class ItemsController < ApplicationController
   def update
     @countries = Country.all
     @item = Item.find(params[:id])
+    
+    if params[:item][:available_forever] == "1"
+      params[:item][:availability_from] = ""
+      params[:item][:availability_to] = ""
+    end
     
     unless params[:item][:availability_from].blank?
       params[:item][:availability_from] = DateTime.strptime(params[:item][:availability_from], "%m/%d/%Y").to_time

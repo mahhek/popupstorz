@@ -2,13 +2,7 @@
   $(window).load(function(){
     $(document).ready(function(){
       var min = new Date();
-      alert("<%= @item.availability_from %>");
-      if("<%= @item.availability_from.to_s %>" == ""){
-        alert("aa");
-      }
-      else{
-        min = '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%Y") %>';
-      }
+      min = '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%Y") %>';
       
       $("#item_availability_from").val('<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%Y") %>');
       $("#item_availability_from").datepicker({
@@ -114,22 +108,36 @@
 <br/>
 <div class="xfields">
   Availabilities:<br/><br/>
-  <div class="xfields">    
-  This place will be available&nbsp;&nbsp;  
- Permanently: <%=f.check_box :available_forever %>   &nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-     From:
-    <%= f.text_field :availability_from, :style => "width:130px;" %>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-     To:
-    <%= f.text_field :availability_to, :style => "width:130px;" %>
-    <br /><br />
+  <div class="xfields">
+    <div style="width:25%;float:left;">
+      This place will be available&nbsp;&nbsp;  
+      <% if @item.availability_from.blank? and @item.availability_to.blank? %>
+        <% ava = true %>
+        <% date_disp = false %>
+      <% else %>
+        <% ava = false %>
+        <% date_disp = true %>
+      <% end %>
 
+      Permanently: <%= f.check_box :available_forever,:checked =>   ava, :onclick => "update_date_view()" %>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+    </div>
+
+    <div id="date_range" style="display:<%= date_disp %>;width:100%;float:left;">
+      From:
+      <%= f.text_field :availability_from, :style => "width:130px;" %>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      To:
+      <%= f.text_field :availability_to, :style => "width:130px;" %>
+      <br /><br />
+    </div>
 <%# @availability_options.each do |availability_option| %>
 <%#= check_box_tag("availability_options[]", availability_option.id, @item.availability_options.include?(availability_option)) %>
 <%#= availability_option.name %>
 <%# end %>
   </div>
+  <br /><br />
   <%= f.check_box :availablities_daytime %>
   Daytime&nbsp;&nbsp;
   <%= f.check_box :availablities_evenings %>
@@ -409,6 +417,10 @@
         $("#person_count").show();
       }
     }
-
+    
+    
+    function update_date_view(){
+      $("#date_range").toggle();
+    }
 
   </script>
