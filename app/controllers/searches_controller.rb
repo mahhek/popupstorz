@@ -53,20 +53,21 @@ class SearchesController < ApplicationController
       @last_price = @last_price.price.to_f > 10000 ? @last_price.price : 10000
     else
       @last_price = 10000
-    end
-    
+    end    
     
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
-    @items = Item.paginate(:page => params[:page], :per_page => 6, :order => "created_at DESC" )
-    
-    active_items = []  
-    @items.each do|item|
-      if item.user.is_active == true
-        active_items << item
+    @items = Item.all
+    active_items = []
+    unless @item.blank?
+      @items.each do|item|
+        if item.user.is_active == true
+          active_items << item
+        end
       end
     end
     @items = active_items
+    @items = Item.paginate(:page => params[:page], :per_page => 6, :order => "created_at DESC" )
     respond_to do |format|
       format.html
       format.js do
