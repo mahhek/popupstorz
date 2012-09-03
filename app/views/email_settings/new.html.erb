@@ -16,7 +16,8 @@
       <%= link_to "Delete My Account","/users/delete_account", :confirm => "Are you sure you want to delete your account permanently?" %>
     </span>
   </h2>
-</div><br/><h1>Create Email Settings:</h1>
+</div>
+<br/><h1>Create Email Settings:</h1>
 <%= form_for @email_setting,:url => "/email_settings/create" do|f| %>
   <br /><br />
   <%= f.check_box :receive_person_message %>

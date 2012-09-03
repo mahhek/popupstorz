@@ -43,13 +43,17 @@ class UsersController < ApplicationController
     @gatherings = @gatherings.uniq
   end
   
-  def send_invitation
-    @invitation = Invitation.new
-    @invitation.user = current_user
-    @invitation.email = params[:email]
-    @invitation.token =  (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
-    @invitation.save
-    UserMailer.send_invitation_email(@invitation).deliver
+  def send_invitation    
+    (1..5).each do |i|
+      unless params["email"+"#{i}"].blank?
+        @invitation = Invitation.new
+        @invitation.user = current_user      
+        @invitation.email = params["email"+"#{i}"]
+        @invitation.token =  (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
+        @invitation.save
+        UserMailer.send_invitation_email(@invitation).deliver
+      end
+    end
     flash[:notice] = "Invitations have been sent successfully."
     redirect_to "/invitation"
   end
@@ -57,47 +61,47 @@ class UsersController < ApplicationController
   def delete_account
     user = current_user
     user.update_attribute("is_active",false)
-#    unless user.avatars.blank?
-#      user.avatars.destroy_all
-#    end
-#    
-#    unless user.notifications.blank?
-#      user.notifications.destroy_all
-#    end
-#    
-#    unless user.invitations.blank?
-#      user.invitations.destroy_all
-#    end
-#    
-#    unless user.services.blank?
-#      user.services.destroy_all
-#    end
-#    
-#    unless user.services.blank?
-#      user.services.destroy_all
-#    end
-#    
-#    unless user.items.blank?
-#      user.items.destroy_all
-#    end
-#    
-#    unless user.notifications.blank?
-#      user.notifications.destroy_all
-#    end
-#    
-#    unless user.offers.blank?
-#      user.offers.destroy_all
-#    end
-#    
-#    unless user.account.blank?
-#      user.account.destroy_all
-#    end
-#    
-#    unless user.email_setting.blank?
-#      user.email_setting.destroy_all
-#    end
-#    
-#    user.destroy
+    #    unless user.avatars.blank?
+    #      user.avatars.destroy_all
+    #    end
+    #    
+    #    unless user.notifications.blank?
+    #      user.notifications.destroy_all
+    #    end
+    #    
+    #    unless user.invitations.blank?
+    #      user.invitations.destroy_all
+    #    end
+    #    
+    #    unless user.services.blank?
+    #      user.services.destroy_all
+    #    end
+    #    
+    #    unless user.services.blank?
+    #      user.services.destroy_all
+    #    end
+    #    
+    #    unless user.items.blank?
+    #      user.items.destroy_all
+    #    end
+    #    
+    #    unless user.notifications.blank?
+    #      user.notifications.destroy_all
+    #    end
+    #    
+    #    unless user.offers.blank?
+    #      user.offers.destroy_all
+    #    end
+    #    
+    #    unless user.account.blank?
+    #      user.account.destroy_all
+    #    end
+    #    
+    #    unless user.email_setting.blank?
+    #      user.email_setting.destroy_all
+    #    end
+    #    
+    #    user.destroy
     flash[:notice] = "Account deleted successfully!"
     redirect_to "/users/sign_out"
   end

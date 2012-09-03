@@ -20,7 +20,7 @@
 
     <br/>
     <div style="margin: 5px;">
-      <% if  (@user.gender == true) then %>
+      <% if (@user.gender == true) then %>
         <b>Gender:</b> &nbsp;Male.
       <%else%>
         <b>Gender:</b> &nbsp;Female.
@@ -54,12 +54,11 @@
       <%= @user.fb_friends_count %>
     <% end %>
 
-
-    <%if @user==current_user%>
+    <% if @user == current_user%>
       <li>
         <%= link_to('Edit Profile', edit_user_registration_path) %>
       </li>
-    <%end%>
+    <% end %>
   </div>
 
   <div style="width:45%;margin-left: 10%;float:left;">
