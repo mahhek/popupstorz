@@ -1,5 +1,15 @@
 <script type="text/javascript">
-  jQuery(function() {
+  var lastjavascripthash='';  
+  $(document).ready(function(){
+    //if the current url has a hash on dom ready - than the user loads this url directly in browser
+    if (location.hash){
+      lastjavascripthash=location.hash='#loaded';
+      window.location.replace("<%= root_path %>");
+    }
+    lastjavascripthash=location.hash='#loaded';
+  });
+  
+  jQuery(function() {    
     var payment;
 
     jQuery(function() {
@@ -212,4 +222,9 @@
       return false;
     }    
   }
+
+<%#*function disableBackButton()%>
+<%#*{%>
+<%#*window.history.forward();%>
+<%#*}%> 
 </script>
