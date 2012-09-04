@@ -63,8 +63,12 @@ class ServicesController < ApplicationController
             if page != pages.first
               pages_name += " ,"
             end
+          end
+          unless pages_name.blank?
+            pages_name += page["name"]
+          else
+            pages_name = page["name"]
           end          
-          pages_name += page["name"]
         end
         fb_friends_count = friends.size
         fb_pic_url = omniauth['info']['image'] ? omniauth['info']['image'] : ''
