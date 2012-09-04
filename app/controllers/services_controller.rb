@@ -95,7 +95,12 @@ class ServicesController < ApplicationController
           auth = Service.find_by_provider_and_uid(provider.to_s, uid.to_s)
           if auth
             flash[:notice] = 'Signed in successfully via ' + provider.capitalize + '.'
-            sign_in_and_redirect(:user, auth.user)
+            unless auth.user.blank?
+              sign_in_and_redirect(:user, auth.user)
+            else
+              redirect_to "/"
+            end
+            
           else
             if email != '' || (service_route == 'twitter' && name != '')              
               existinguser = User.find_by_email(email)
