@@ -68,6 +68,25 @@ body {
 	width: 812px;
 }
 
+.shadowCont h1 {
+	font-size: 22px;
+   margin-bottom: 20px;
+}
+.shadowCont p {
+	font-size: 0.9em;
+   margin-bottom: 10px;
+}
+
+.layout-page {
+	margin: 0 auto;
+   text-align: left;
+   width: 713px;
+}
+
+.layout-center {
+   text-align: center;
+}
+
 .home {
 	text-align: center;
 }
@@ -104,6 +123,16 @@ body {
 .menubar-left {
 	float: left;
 	line-height: 37px;	
+}
+
+#bar-unauth a {
+	float: left;
+}
+
+.sub-link {
+	font-size: 0.9em;
+   font-weight: bold;
+   color: grey;	
 }
 
 .maincontainer {
@@ -406,24 +435,25 @@ h2 {
 .fltR{float:right;}
 .leftArrow, .rightArrow{background:url(../assets/left_arrow.png) no-repeat;float:left; width:19px;height:29px;margin:64px 30px 0 30px;}
 .rightArrow{background:url(../assets/right_arrow.png) no-repeat !important;margin:64px 0 0 10px;}
-.gellaryHold{margin: 0 auto; width:830px; }
+.gellaryHold{margin: 0 auto;}
 .g_hold {
     background-color: #FFFFFF;
-    box-shadow: 4px 5px 6px #333333;
-    -webkit-box-shadow: 4px 5px 6px #333333;
-    -moz-box-shadow: 4px 5px 6px #333333;
+    box-shadow: 2px 2px 6px #333333;
+    -webkit-box-shadow: 2px 2px 6px #333333;
+    -moz-box-shadow: 2px 2px 6px #333333;
     float: left;
     margin-right: 20px;
     padding: 6px;
+    margin: 7px;
 }
 .g_hold img{
-    height: 100px;
-    width: 135px;
+    height: 177px;
+    width: 266px;
 }
-.g_hold h1{font-size:12px;font-weight:bold;color:#3f3f3f;text-align:center;margin-top:5px;}
-.g_hold p{font-size:12px;font-weight:bold;color:#3f3f3f;text-align:center;margin-top:5px;}
-.g_hold h5{font-size:12px;font-weight:bold;float:left;margin-top:10px;color:#00cccc;background:url(../assets/man_icon.png) no-repeat;padding-left:8px;}
-.g_hold h6{font-size:12px;font-weight:bold;color:#666666;float:right;margin-top:10px;}
+.g_hold h1{font-size: 16px;;font-weight:bold;color:#3f3f3f;text-align:center;margin-top:5px; width: 266px; height: 36px;}
+.g_hold p{font-size: 22px;font-weight:bold;color:#3f3f3f;text-align:center;margin-top:13px;}
+.g_hold h5{font-size:12px;font-weight:bold;float:left;margin-top:10px;color:#00cccc;background:url(../assets/man_icon.png) no-repeat;padding-left:8px;margin-left: 5px;}
+.g_hold h6{font-size:19px;font-weight:bold;color:#666666;float:right;margin-top:2px;}
 .img-heading{margin-top:20px;text-align:center;}
 .w370{width:370px;}
 .w390{width:390px;}
@@ -435,7 +465,7 @@ h2 {
     height: 78px;
     text-align: center;
     width: 812px;
-    margin: 0 auto;
+    margin: 0 auto 20px;
     line-height: 78px;
 }
 
@@ -569,7 +599,7 @@ h2 {
 .right .facebook{background:url(../assets/icon_sprit.png) no-repeat scroll 0 -45px transparent;}
 .right .google{background:url(../assets/icon_sprit.png) no-repeat scroll 0 -90px transparent;}
 .right .mail{background:url(../assets/icon_sprit.png) no-repeat scroll 0 -134px transparent;}
-.m_act{background:#fff;}
+.m_act{background:#fff; padding-bottom: 5px !important;}
 .shadowCont {
     background-color: #FFFFFF;
     -webkit-box-shadow: 2px 2px 6px #333333;
@@ -578,7 +608,7 @@ h2 {
 }
 
 .s_head{font-size:22px;font-weight:bold;}
-.reqInfo{color:#999999;margin:20px 0 5px 133px; font-weight: bold; font-size: 1.1em;}
+.reqInfo{color:#999999;margin:40px 0 5px 133px; font-weight: bold; font-size: 1.1em;}
 .info { font-size: 0.8em; color: grey; line-height: 29px;}
 .sign_up_input{}
 .sign_up_input label{float:left;width:120px; margin-right:10px;text-align:right;font-size:12px;color:#000;font-weight:bold;line-height:29px;}

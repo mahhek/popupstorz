@@ -7,8 +7,7 @@
 }
 
 .jcarousel-skin-tango .jcarousel-container-horizontal {
-/*    width: 830px;*/
-    width: 600px;
+    width: 890px;
     padding: 20px 40px;
 }
 
@@ -24,7 +23,7 @@
 
 .jcarousel-skin-tango .jcarousel-clip-horizontal {
     width:  100%;
-    height: 200px;
+    /*height: 200px;*/
 }
 
 .jcarousel-skin-tango .jcarousel-clip-vertical {
@@ -33,13 +32,13 @@
 }
 
 .jcarousel-skin-tango .jcarousel-item {
-    width: 200px;
-    height: 190px;
+    /*width: 200px;
+    height: 190px;*/
 }
 
 .jcarousel-skin-tango .jcarousel-item-horizontal {
 	margin-left: 0;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .jcarousel-skin-tango .jcarousel-direction-rtl .jcarousel-item-horizontal {
@@ -62,7 +61,7 @@
  */
 .jcarousel-skin-tango .jcarousel-next-horizontal {
     position: absolute;
-    top: 43px;
+    top: 160px;
     right: 5px;
     width: 32px;
     height: 32px;
@@ -95,8 +94,8 @@
 
 .jcarousel-skin-tango .jcarousel-prev-horizontal {
     position: absolute;
-    top: 43px;
-    left: 5px;
+    top: 160px;
+    left: 13px;
     width: 32px;
     height: 32px;
     cursor: pointer;
