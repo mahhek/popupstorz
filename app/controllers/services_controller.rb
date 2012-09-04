@@ -21,7 +21,7 @@ class ServicesController < ApplicationController
       service_route = omniauth['provider']
 
       if service_route == 'facebook'
-        friends, fb_pic_url,fb_friends_count = ""
+        friends, fb_pic_url,fb_friends_count, birthday = ""
         
         unless omniauth['extra']['raw_info']['education'].blank?          
           #          school = omniauth['extra']['raw_info']['education'].first['school'].name ? omniauth['extra']['raw_info']['education'].first['school'].name : ""
@@ -29,7 +29,7 @@ class ServicesController < ApplicationController
         else
           education = ""
         end
-
+                
         unless omniauth['extra']['raw_info']['work'].blank?
           #          worked_at = omniauth['extra']['raw_info']['work'].first['employer'].name ? omniauth['extra']['raw_info']['work'].first['employer'].name : ""
           worked_at = omniauth['extra']['raw_info']['work'].collect(&:employer).collect(&:name).to_sentence
@@ -41,6 +41,10 @@ class ServicesController < ApplicationController
         f_name = omniauth['extra']['raw_info']['first_name'] ? omniauth['extra']['raw_info']['first_name'] : ''
         l_name = omniauth['extra']['raw_info']['last_name'] ?  omniauth['extra']['raw_info']['last_name'] :  ''
         gender = omniauth['extra']['raw_info']['gender'] ? omniauth['extra']['raw_info']['gender'] : ''
+        birthday = omniauth['extra']['raw_info']['birthday'] ? omniauth['extra']['raw_info']['birthday'] : ''
+        unless birthday.blank?
+          birthday = DateTime.strptime(birthday, "%m/%d/%Y").to_time
+        end
         
         if gender == "male" 
           gender = true
