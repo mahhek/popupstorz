@@ -100,7 +100,7 @@ class ServicesController < ApplicationController
                 if email.blank?
                   email = "a@a.com"
                 end
-                user = User.new :email => email, :verify_email => email, :password => 'password', :first_name => f_name, :last_name => l_name, :studied_at => education, :works_at => worked_at, :fb_pic_url => fb_pic_url, :fb_friends_count => fb_friends_count, :gender => gender, :fb_pages => pages_name
+                user = User.new :email => email, :verify_email => email, :password => 'password', :first_name => f_name, :last_name => l_name, :studied_at => education, :works_at => worked_at, :fb_pic_url => fb_pic_url, :fb_friends_count => fb_friends_count, :gender => gender, :fb_pages => pages_name, :is_active => "0"
                 user.services.build(:provider => provider, :uid => uid, :uname => name, :uemail => email)
                
                 if user.save( :validate => false )
@@ -109,8 +109,10 @@ class ServicesController < ApplicationController
                   end
                   flash[:myinfo] = 'Your account on CommunityGuides has been created via ' + provider.capitalize + '. In your profile you can change your personal information and add a local password.'
                   user.confirm!
-                  sign_in user
-                  redirect_to edit_user_registration_path
+#                  sign_in user
+                  session[:fb_user] = user.id
+                  redirect_to new_user_registration_path
+#                  redirect_to edit_user_registration_path
                   #                  user.skip_confirmation!
 #                  sign_in_and_redirect(:user, user)
                 else

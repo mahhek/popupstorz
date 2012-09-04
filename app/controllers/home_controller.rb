@@ -3,6 +3,7 @@ class HomeController < ApplicationController
   #  before_filter :authenticate_user!, :only => [:feedback]
   
   def index
+    session[:fb_user] = ""
     if current_user && current_user.admin?
       redirect_to admin_items_path
     else

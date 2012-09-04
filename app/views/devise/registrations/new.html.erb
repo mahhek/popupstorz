@@ -1,22 +1,8 @@
 <div class="leftcontent">
   <div class="shadowCont" style="float: left;">
     <div class="s_head">Sign Up</div>
+    <%= debug @pre_user %>
     <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-  <%#= devise_error_messages! %>
-  <%#= resource.errors.full_messages.to_sentence %>
-  <%# resource.errors.each do |name| %>
-  <%#= debug (@user.errors.messages[:email][0]) %>
-  <%# resource.errors.each do |name| %>
-  <%#= name %>    
-  <%# if msg.class == Array %>
-  <%# msg.each do |message| %>
-  <%#= content_tag :div, message, :id => "flash_#{name}" %>
-  <%# end %>
-  <%# else %>
-  <%#= content_tag :div, msg, :id => "flash_#{name}" %>
-  <%# end %>
-  <%# end %>
-
 
       <div class="reqInfo">Required information</div>
       <div class="newPaperclipFiles" style="margin-left: 128px;">
@@ -33,14 +19,13 @@
 
       <div class="sign_up_input">
         <label>First Name</label>
-        <%= f.text_field :first_name, :autocomplete=> "off", :id => "first_name_field", :onclick => "$(this).val('')" %>
-        <%#= @user.errors.messages[:first_name].blank? ? "" : " First Name "+@user.errors.messages[:first_name][0] %>
+        <%= f.text_field :first_name, :value => @pre_user.blank? ? "" : @pre_user.first_name, :autocomplete=> "off", :id => "first_name_field" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
         <label>Last Name</label>
-        <%= f.text_field :last_name , :autocomplete=> "off", :id => "last_name_field", :onclick => "$(this).val('')" %>
-        <%#= @user.errors.messages[:last_name].blank? ? "" : " Last Name "+@user.errors.messages[:last_name][0] %>
+  <%#= f.text_field :first_name, :value => @pre_user.blank? ? "" : @pre_user.first_name, :autocomplete=> "off", :id => "first_name_field" %>
+        <%= f.text_field :last_name ,:value => @pre_user.blank? ? "" : @pre_user.last_name, :autocomplete=> "off", :id => "lastww_name_field" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
@@ -52,14 +37,27 @@
         <label>Gender</label>
         <div class="fltL">
           <div style="float: left;">
+            <%
+            m_gender = true
+            f_gender = false
+            unless @pre_user.blank?
+              if @pre_user.gender == true
+                m_gender = true
+                f_gender = false
+              else
+                m_gender = false
+                f_gender = true
+              end
+            end
+          %>            
             <span>
-              <%= f.radio_button :gender,   true, :style => "margin-top: 2px;" %>
+              <%= f.radio_button :gender, true, :checked => m_gender, :style => "margin-top: 2px;" %>
             </span>
             <span style="margin-left: 5px;">Male</span>
           </div>
           <div style="float: left;margin-left: 10px;">
             <span>
-              <%= f.radio_button :gender, false , :style => "margin-top: 2px;" %>
+              <%= f.radio_button :gender, false, :checked => f_gender , :style => "margin-top: 2px;" %>
             </span>
             <span style="margin-left: 5px;">Female</span>
           </div>
@@ -69,14 +67,12 @@
       <div class="clear"></div>
       <div class="sign_up_input">
         <label>Email</label>
-        <%= f.email_field :email, :autocomplete=> "off", :id => "email_field", :onclick => "$(this).val('')" %>
-        <%#= @user.errors.messages[:email].blank? ? "" : " Email "+@user.errors.messages[:email][0] %>
-  <%#*<div class="clear"></div>%>
+        <%= f.email_field :email, :value => @pre_user.blank? ? "" : @pre_user.email,:autocomplete=> "off", :id => "email_field" %>  
       </div>
       <div class="sign_up_input">
         <label>Verify Email</label>
-        <%= f.email_field :verify_email, :autocomplete=> "off", :id => "verify_email_field", :onclick => "$(this).val('')" %>
-        <%#= @user.errors.messages[:verify_email].blank? ? "" : " Email Verification "+@user.errors.messages[:verify_email][0] %>
+        <%= f.email_field :verify_email, :value => @pre_user.blank? ? "" : @pre_user.verify_email, :autocomplete=> "off", :id => "verify_email_field" %>
+  <%#= @user.errors.messages[:verify_email].blank? ? "" : " Email Verification "+@user.errors.messages[:verify_email][0] %>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
@@ -84,7 +80,7 @@
       <div class="sign_up_input">
         <label>Password</label>
         <%= f.password_field :password , :autocomplete=> "off", :id => "password_field", :onclick => "$(this).val('')" %>
-        <%#= @user.errors.messages[:password].blank? ? "" : " Password "+@user.errors.messages[:password][0] %>
+  <%#= @user.errors.messages[:password].blank? ? "" : " Password "+@user.errors.messages[:password][0] %>
   <%#*<div class="clear"></div>%>
       </div>
       <div class="sign_up_input fltL">
@@ -97,38 +93,38 @@
       <div class="sign_up_input">
         <label>Security Question</label>
         <%= f.text_field :security_question, :autocomplete=> "off", :id => "security_question_field", :onclick => "$(this).val('')" %>
-        <%#= @user.errors.messages[:security_question].blank? ? "" : " Security Question "+@user.errors.messages[:security_question][0] %>
+  <%#= @user.errors.messages[:security_question].blank? ? "" : " Security Question "+@user.errors.messages[:security_question][0] %>
   <%#*<div class="clear"></div>%>
       </div>
       <div class="sign_up_input">
         <label>Security Answer</label>
         <%= f.text_field :security_answer, :autocomplete=> "off", :id => "security_answer_field", :onclick => "$(this).val('')" %>
-        <%#= @user.errors.messages[:security_answer].blank? ? "" : " Security Answer "+@user.errors.messages[:security_answer][0] %>
+  <%#= @user.errors.messages[:security_answer].blank? ? "" : " Security Answer "+@user.errors.messages[:security_answer][0] %>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
       <div class="sign_up_input">
         <label>Mobile No</label>
-        <%= f.text_field :mobile_phone , :autocomplete=> "off", :id => "mobile_phone_field", :onclick => "$(this).val('')"%><br />
+        <%= f.text_field :mobile_phone , :value => @pre_user.blank? ? "" : @pre_user.mobile_phone,:autocomplete=> "off", :id => "mobile_phone_field", :onclick => "$(this).val('')"%><br />
         <div style="float:left;clear:both;margin-left: 130px;margin-top: 10px;">Please use international format, i.e. +01234567890</div>
-        <%#= @user.errors.messages[:mobile_phone].blank? ? "" : " Mobile Phone "+@user.errors.messages[:mobile_phone][0] %>
+  <%#= @user.errors.messages[:mobile_phone].blank? ? "" : " Mobile Phone "+@user.errors.messages[:mobile_phone][0] %>
         <div class="clear"></div>
       </div>
 
       <div class="reqInfo">Optional information</div>
       <div class="sign_up_input">
         <label>Address 1</label>
-        <%= f.text_field :address1, :autocomplete=> "off" %>
+        <%= f.text_field :address1, :value => @pre_user.blank? ? "" : @pre_user.address1,:autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
         <label>Address 2</label>
-        <%= f.text_field :address1, :autocomplete=> "off" %>
+        <%= f.text_field :address1, :value => @pre_user.blank? ? "" : @pre_user.address2,:autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
         <label>City</label>
-        <%= f.text_field :city , :autocomplete=> "off"%>
+        <%= f.text_field :city , :value => @pre_user.blank? ? "" : @pre_user.city,:autocomplete=> "off"%>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input fltL">
@@ -172,7 +168,9 @@
         }
         else{
           $("#email_field").css('border', '1px solid black');
-          $("#email_field").val("");
+          if($("#email_field").val() == "Email is required."){
+            $("#email_field").val("");
+          }
         }
         
         if("<%= @user.errors.messages[:first_name][0] %>" != ""){
@@ -190,7 +188,9 @@
         }
         else{
           $("#last_name_field").css('border', '1px solid black');
-          $("#last_name_field").val("");
+          if($("#last_name_field").val() == "Last Name is required"){
+            $("#last_name_field").val("");
+          }          
         }
         
         if("<%= @user.errors.messages[:verify_email][0] %>" != ""){
@@ -198,8 +198,10 @@
           $("#verify_email_field").val("Email Verification is required.");
         }
         else{
-          $("#verify_email_field").css('border', '1px solid black');
-          $("#verify_email_field").val("");
+          $("#verify_email_field").css('border', '1px solid black');          
+          if($("#verify_email_field").val() == "Email Verification is required."){
+            $("#verify_email_field").val("");
+          }
         }
         
         if("<%= @user.errors.messages[:password][0] %>" != ""){

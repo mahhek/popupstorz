@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name,
     :verify_email, :mobile_phone, :gender, :date_of_birth, :activity, :security_question,
     :security_answer, :city_country, :description, :avatars_attributes, :address1, :address2,
-    :zip_code, :city, :country, :neighbourhood, :fb_pic_url, :fb_friends_count, :fb_pages, :works_at, :studied_at, :fb_interests, :show_fb_info
+    :zip_code, :city, :country, :neighbourhood, :fb_pic_url, :fb_friends_count, :fb_pages, :works_at, :studied_at, :fb_interests, :show_fb_info, :is_active
 #  , :receiver
   
   acts_as_messageable :table_name => "messages",
