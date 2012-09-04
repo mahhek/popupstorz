@@ -1,12 +1,14 @@
 <script type="text/javascript">
-  var lastjavascripthash='';  
+  var lastjavascripthash='';   
   $(document).ready(function(){
     //if the current url has a hash on dom ready - than the user loads this url directly in browser
-    if (location.hash){
-      lastjavascripthash=location.hash='#loaded';
+<%#*if (location.hash){%>
+<%#*lastjavascripthash=location.hash='#loaded';%>
+<%#*}%>
+<%#*lastjavascripthash=location.hash='#loaded';%>
+    if($("#is_confirm_terms").attr('checked') == "checked"){
       window.location.replace("<%= root_path %>");
-    }
-    lastjavascripthash=location.hash='#loaded';
+    }    
   });
   
   jQuery(function() {    

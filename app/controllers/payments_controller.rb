@@ -1,7 +1,8 @@
 # -*- encoding : utf-8 -*-
 class PaymentsController < ApplicationController
-
+  
   def new
+    session[:pay] = "new"
     @item = Item.find_by_id(params[:item_id])
     @offer = Offer.find_by_id(params[:offer_id])
     @payment = Payment.find_by_offer_id_and_renter_id(@offer.id,current_user.id)
@@ -23,7 +24,8 @@ class PaymentsController < ApplicationController
 
   end
 
-  def create    
+  def create
+    session[:pay] = ""
     renter = User.find(params[:payment][:renter_id])
     @item = Item.find_by_id(params[:item_id])
     @offer = Offer.find_by_id(params[:offer_id])
