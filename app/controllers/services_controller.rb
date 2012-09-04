@@ -65,9 +65,13 @@ class ServicesController < ApplicationController
             end
           end
           unless pages_name.blank?
-            pages_name += page["name"]
+            unless page["name"].blank?
+              pages_name += page["name"]
+            end
           else
-            pages_name = page["name"]
+            unless page["name"].blank?
+              pages_name = page["name"]
+            end
           end          
         end
         fb_friends_count = friends.size
@@ -113,12 +117,12 @@ class ServicesController < ApplicationController
                   end
                   flash[:myinfo] = 'Your account on CommunityGuides has been created via ' + provider.capitalize + '. In your profile you can change your personal information and add a local password.'
                   user.confirm!
-#                  sign_in user
+                  #                  sign_in user
                   session[:fb_user] = user.id
                   redirect_to new_user_registration_path
-#                  redirect_to edit_user_registration_path
+                  #                  redirect_to edit_user_registration_path
                   #                  user.skip_confirmation!
-#                  sign_in_and_redirect(:user, user)
+                  #                  sign_in_and_redirect(:user, user)
                 else
                   flash[:myinfo] = "Can't log in. Please try again or later."
                   redirect_to "/"
