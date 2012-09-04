@@ -19,9 +19,8 @@ class ServicesController < ApplicationController
     omniauth = request.env['omniauth.auth']
     if omniauth and omniauth['provider']
       service_route = omniauth['provider']
-
       if service_route == 'facebook'
-        friends, fb_pic_url,fb_friends_count, birthday = ""
+        friends, fb_pic_url,fb_friends_count, birthday, city, country = ""
         
         unless omniauth['extra']['raw_info']['education'].blank?          
           #          school = omniauth['extra']['raw_info']['education'].first['school'].name ? omniauth['extra']['raw_info']['education'].first['school'].name : ""
@@ -36,7 +35,15 @@ class ServicesController < ApplicationController
         else
           worked_at = ""
         end
-              
+        
+        unless omniauth['extra']['raw_info']['location'].blank?
+          city = omniauth['extra']['raw_info']['location']['name'].split(',')[0]
+          country = omniauth['extra']['raw_info']['location']['name'].split(',')[1]
+        else
+          city = ""
+          country = ""
+        end
+                
         email = omniauth['extra']['raw_info']['email'] ?  omniauth['extra']['raw_info']['email'] :  ''
         f_name = omniauth['extra']['raw_info']['first_name'] ? omniauth['extra']['raw_info']['first_name'] : ''
         l_name = omniauth['extra']['raw_info']['last_name'] ?  omniauth['extra']['raw_info']['last_name'] :  ''
@@ -117,7 +124,7 @@ class ServicesController < ApplicationController
                 if email.blank?
                   email = "a@a.com"
                 end
-                user = User.new :email => email, :verify_email => email, :password => 'password', :first_name => f_name, :last_name => l_name, :studied_at => education, :works_at => worked_at, :fb_pic_url => fb_pic_url, :fb_friends_count => fb_friends_count, :gender => gender, :fb_pages => pages_name, :is_active => "0"
+                user = User.new :email => email, :verify_email => email, :password => 'password', :first_name => f_name, :last_name => l_name, :studied_at => education, :works_at => worked_at, :fb_pic_url => fb_pic_url, :fb_friends_count => fb_friends_count, :gender => gender, :fb_pages => pages_name, :is_active => "0", :city => city, :country => country
                 user.services.build(:provider => provider, :uid => uid, :uname => name, :uemail => email)
                
                 if user.save( :validate => false )

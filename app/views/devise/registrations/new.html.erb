@@ -128,7 +128,7 @@
       </div>
       <div class="sign_up_input fltL">
         <label>Country</label>
-        <%= f.select( :country, options_from_collection_for_select( Country.all, :printable_name, :printable_name), :prompt => "Select Country") %>
+        <%= f.select( :country, options_from_collection_for_select( Country.all, :printable_name, :printable_name, @pre_user.blank? ? "" : @pre_user.country.to_s), :prompt => "Select Country") %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input fltL">
