@@ -17,13 +17,17 @@ class RegistrationsController < Devise::RegistrationsController
       fb_friends_count = @pre_user.fb_friends_count
       fb_pages = @pre_user.fb_pages
     end
-    @pre_user.destroy
-    service = Service.find(:first, :conditions => ["user_id = ? and provider = 'facebook'",@pre_user.id])
+    unless @pre_user.blank?
+      @pre_user.destroy    
+      service = Service.find(:first, :conditions => ["user_id = ? and provider = 'facebook'",@pre_user.id])
+    end
     super
     unless session[:fb_user].blank?
       @user.update_attributes({:studied_at => education, :works_at => works_at, :fb_pic_url => fb_pic_url, :fb_friends_count => fb_friends_count, :fb_pages => fb_pages} )
     end
-    service.update_attribute("user_id",@user.id)
+    unless @pre_user.blank?
+      service.update_attribute("user_id",@user.id)
+    end
     session[:fb_user] = ""
   end
   
