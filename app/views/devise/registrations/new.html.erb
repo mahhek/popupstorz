@@ -123,7 +123,6 @@
       </div>
       <div class="sign_up_input">
         <label>City</label>
-        <%= @pre_user.blank? ? "111" : @pre_user.city.to_s.gsub(/ /,'') %>
         <%= f.text_field :city , :value => @pre_user.blank? ? "" : @pre_user.city.to_s.gsub(/ /,''), :autocomplete=> "off"%>
         <div class="clear"></div>
       </div>
