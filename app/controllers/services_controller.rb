@@ -105,7 +105,7 @@ class ServicesController < ApplicationController
         if !user_signed_in?
           auth = Service.find_by_provider_and_uid(provider.to_s, uid.to_s)
           if auth
-            flash[:notice] = 'Signed in successfully via ' + provider.capitalize + '.'
+            flash[:notice] = t(:signed_in) + provider.capitalize + '.'
             unless auth.user.blank?
               sign_in_and_redirect(:user, auth.user)
             else
@@ -117,7 +117,7 @@ class ServicesController < ApplicationController
               existinguser = User.find_by_email(email)
               if existinguser
                 existinguser.services.create(:provider => provider, :uid => uid, :uname => name, :uemail => email)
-                flash[:notice] = 'Sign in via ' + provider.capitalize + ' has been added to your account ' + existinguser.email + '. Signed in successfully!'
+                flash[:notice] = t(:sign_in) + provider.capitalize + t(:added_to_account) + existinguser.email + t(:signin_success)
                 sign_in_and_redirect(:user, existinguser)
               else
                 #                name = name[0, 39] if name.length > 39 # otherwise our user validation will hit us
@@ -131,7 +131,7 @@ class ServicesController < ApplicationController
                   if service_route == 'twitter'
                     user.update_attribute("email",'')
                   end
-                  flash[:myinfo] = 'Your account on CommunityGuides has been created via ' + provider.capitalize + '. In your profile you can change your personal information and add a local password.'
+                  flash[:myinfo] = t(:account_communityguides) + provider.capitalize + t(:change_personal_info)
                   user.confirm!
                   #                  sign_in user
                   session[:fb_user] = user.id
@@ -140,12 +140,12 @@ class ServicesController < ApplicationController
                   #                  user.skip_confirmation!
                   #                  sign_in_and_redirect(:user, user)
                 else
-                  flash[:myinfo] = "Can't log in. Please try again or later."
+                  flash[:myinfo] = t(:cant_login)
                   redirect_to "/"
                 end
               end
             else
-              flash[:notice] = service_route.capitalize + ' can not be used to sign-up on CommunityGuides as no valid email address has been provided. Please use another authentication provider or use local sign-up. If you already have an account, please sign-in and add ' + service_route.capitalize + ' from your profile.'
+              flash[:notice] = service_route.capitalize + t(:invalid_email) + service_route.capitalize + t(:profile)
               redirect_to "/"
             end
           end
@@ -153,19 +153,19 @@ class ServicesController < ApplicationController
           auth = Service.find_by_provider_and_uid(provider, uid)
           if !auth
             current_user.services.create(:provider => provider, :uid => uid, :uname => name, :uemail => email)
-            flash[:notice] = 'Sign in via ' + provider.capitalize + ' has been added to your account.'
+            flash[:notice] = t(:signed_in) + provider.capitalize + t(:added_to_account)
             redirect_to services_path
           else
-            flash[:notice] = service_route.capitalize + ' is already linked to your account.'
+            flash[:notice] = service_route.capitalize + t(:already_linked)
             redirect_to services_path
           end
         end
       else
-        flash[:error] = service_route.capitalize + ' returned invalid data for the user id.'
+        flash[:error] = service_route.capitalize + t(:invalid_user_id)
         redirect_to new_user_session_path
       end
     else
-      flash[:error] = 'Error while authenticating via ' + service_route.capitalize + '.'
+      flash[:error] = t(:authentication_error) + service_route.capitalize + '.'
       redirect_to new_user_session_path
     end
   end

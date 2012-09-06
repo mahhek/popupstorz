@@ -5,7 +5,7 @@ class OffersController < ApplicationController
     @comment = Comment.new
     @offer = Offer.find(params[:id])
     if @offer.blank?
-      flash[:notice] = "No Gathering found, Please try again or later. "
+      flash[:notice] = t(:no_gathering_found)
       redirect_to "/"
     end    
   end
@@ -15,7 +15,7 @@ class OffersController < ApplicationController
       session[:item] = params[:item_id]
       session[:return] = params[:return]
       session[:pick_up] = params[:pick_up]
-      flash[:notice] = "Please login to continue."
+      flash[:notice] = t(:login)
       redirect_to new_user_session_path
     else
       session[:item] = nil
@@ -169,7 +169,7 @@ class OffersController < ApplicationController
     if !user_signed_in?
       session[:edit_item] = params[:item_id]
       session[:edit_offer] = params[:id]
-      flash[:notice] = "Please login to continue."
+      flash[:notice] = t(:login)
       redirect_to new_user_session_path
     else
       session[:edit_item] = nil
@@ -224,16 +224,16 @@ class OffersController < ApplicationController
         current_user.send_message(@offer.user != current_user ? @offer.user : @item.user, :topic => "Offer Updated", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been modified by #{@offer.user != current_user ? "Owner": "Renter"}. Please review to accept or decline.".html_safe)
         @notification = Notification.new(:user_id => @offer.user != current_user ? @offer.user.id : @item.user.id, :notification_type =>"Offer Updated", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been modified by #{@offer.user != current_user ? "Owner": "Renter"}. Please review to accept or decline.".html_safe)
         @notification.save
-        flash[:notice] = "Offer updated and notification sent"
+        flash[:notice] = t(:offer_updated)
         redirect_to "/"
       else
         load_map
-        flash[:notice] = "Offer was Not updated Successfully!"
+        flash[:notice] = t(:offer_not_updated)
         render :edit
       end
     else
       load_map
-      flash[:notice] = "Please change any term to send your suggestion, thanks."
+      flash[:notice] = t(:send_suggestion)
       render :edit
     end
   end
@@ -250,24 +250,24 @@ class OffersController < ApplicationController
       unless @item.blank?        
         if current_user.id == @offer.user_id
           @item.update_attribute("item_status","Reserved")
-          flash[:notice] = "Thank you for accepting the offer"
+          flash[:notice] = t(:accepting_offer)
           current_user.send_message(@offer.user, :topic => "Offer Accepted", :body => "#{@offer.item.user.first_name} accepted your offer on #{@offer.item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
           @notification = Notification.new(:user_id => m.user.id, :notification_type =>"Offer Accepted", :description => "#{@offer.item.user.first_name} accepted your offer on #{@offer.item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
           @notification.save
         else
           @item.update_attribute("item_status","Reserved")
-          flash[:notice] = "Thank you for accepting the offer"
+          flash[:notice] = t(:accepting_offer)
           current_user.send_message(@offer.user, :topic => "Offer Accepted", :body => "#{@offer.item.user.first_name} accepted your offer on #{@offer.item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
           @notification = Notification.new(:user_id => m.user.id, :notification_type =>"Offer Accepted", :description => "#{@offer.item.user.first_name} accepted your offer on #{@offer.item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
           @notification.save
-          flash[:notice] = "Thank you for accepting the offer"
+          flash[:notice] = t(:accepting_offer)
           redirect_to "/"
         end
       else
         current_user.send_message(@offer.user, :topic => "Offer Accepted", :body => "#{@offer.item.user.first_name} accepted your offer on #{@offer.item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
         @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"Offer Accepted", :description => "#{@offer.item.user.first_name} accepted your offer on #{@offer.item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
         @notification.save
-        flash[:notice] = "Thank you for accepting the offer"
+        flash[:notice] = t(:accepting_offer)
       end
       @offer.update_attribute("status", "Confirmed")
     else
@@ -279,7 +279,7 @@ class OffersController < ApplicationController
         @notification.save
       end
       @offer.update_attribute("status", "Confirmed")
-      flash[:notice] = "Thank you for accepting the offer"
+      flash[:notice] = t(:accepting_offer)
     end
     if @offer.item.user == current_user      
       redirect_to "/items/overview"
@@ -298,14 +298,14 @@ class OffersController < ApplicationController
     unless @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
       if current_user.id == @offer.user_id
         @offer.update_attribute("status", "Declined")
-        flash[:notice] = "Offer declined successfully."        
+        flash[:notice] = t(:offer_declined)
 #        current_user.send_message(@item.user, :topic => "Offer Declined", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} on #{@item.title} has been declined".html_safe)
         current_user.send_message(@item.user, :topic => "Offer Declined", :body => "The gathering you created at #{@item.title} From #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid. ".html_safe)
         @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"Offer Declined", :description => "The gathering you created at #{@item.title} From#{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid. ".html_safe)
         @notification.save
       else
         @offer.update_attribute("status", "Declined")
-        flash[:notice] = "Offer declined successfully."
+        flash[:notice] = t(:offer_declined)
 #        current_user.send_message(@offer.user, :topic => "Offer Declined", :body => "#{@offer.item.user.first_name} rejected your offer on #{@item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)        
         current_user.send_message(@offer.user, :topic => "Offer Declined", :body => "The gathering to which you have applied at #{@item.title} From #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid.".html_safe)
         @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"Offer Declined", :description => "The gathering to which you have applied at #{@item.title} From #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid.".html_safe)
@@ -320,7 +320,7 @@ class OffersController < ApplicationController
         current_user.send_message(m.user, :topic => "Offer Declined", :body => "#{@offer.item.user.first_name} rejected your offer on #{@item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
       end      
       @offer.update_attribute("status", "Declined")
-      flash[:notice] = "Offer Declined successfully."
+      flash[:notice] = t(:offer_declined)
       #      redirect_to "/items/gatherings_at_my_place"
     end
     if @offer.item.user == current_user
@@ -405,15 +405,15 @@ class OffersController < ApplicationController
           #          current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} requires your approval.".html_safe)
           
         end
-        flash[:notice] = "Offer accepted successfully!"
+        flash[:notice] = t(:offer_accepted)
       else
-        flash[:notice] = "Offer can't be accepted right now.Please try again or later."
+        flash[:notice] = t(:offer_cant_be_accepted)
       end
     else
       if offer.update_attribute("status", "Confirmed")
-        flash[:notice] = "Offer accepted successfully!"
+        flash[:notice] = t(:offer_accepted)
       else
-        flash[:notice] = "Offer can't be accepted right now.Please try again or later."
+        flash[:notice] = t(:offer_cant_be_accepted)
       end
     end
     redirect_to "/items/created_coming_gatherings"
@@ -424,19 +424,19 @@ class OffersController < ApplicationController
     if offer.is_gathering
       gathering_member = GatheringMember.find(:first, :conditions => ["offer_id = ? and user_id = ?",params[:id],params[:mem]])
       if gathering_member.destroy
-        flash[:notice] = "Request declined."
+        flash[:notice] = t(:request_declined)
         user = User.find(gathering_member.user_id)
         current_user.send_message(user, :topic => "Joining Declined", :body => "Your joining request for <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> gathering</a> is declined.".html_safe)
         @notification = Notification.new(:user_id => gathering_member.user_id, :notification_type =>"Joining Declined", :description => "Your joining request for <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> gathering</a> is declined.".html_safe)
         @notification.save
       else
-        flash[:notice] = "Request can't be declined now. Please try again or later."
+        flash[:notice] = t(:request_cant_declined)
       end      
     else
       if offer.update_attribute("status", "Rejected")
-        flash[:notice] = "Offer rejected successfully!"
+        flash[:notice] = t(:offer_rejected)
       else
-        flash[:notice] = "Offer can't be rejected right now.Please try again or later."
+        flash[:notice] = t(:offer_cant_be_rejected)
       end
     end
     redirect_to gatherings_items_path
@@ -471,9 +471,9 @@ class OffersController < ApplicationController
 
       @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering", :description => "#{current_user.first_name} would like to rent your space <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title} </a> from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} and needs a response before #{offer.gathering_deadline.strftime("%m-%d-%Y")}. You need to go to 'My Listings', 'Manage Bookings' and Accept or Decline the offer. #{current_user.first_name} says: #{offer.offer_messages.last.message}.".html_safe)
       @notification.save
-      flash[:notice] = "Offer sent successfully"
+      flash[:notice] = t(:offer_sent)
     else
-      flash[:notice] = "Offer already sent"
+      flash[:notice] = t(:offer_already_sent)
     end
     redirect_to "/items/created_coming_gatherings"
   end
@@ -513,9 +513,9 @@ class OffersController < ApplicationController
         @notification = Notification.new(:user_id => user.id, :notification_type =>"Gathering Cancelled", :description => "The gathering you created at #{offer.item.title} from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid.".html_safe)
         @notification.save
         
-        flash[:notice] = "Booking cancelled successfully"
+        flash[:notice] = t(:booking_cancelled)
       else
-        flash[:notice] = "Booking can't be cancelled at this time please try again or later!"
+        flash[:notice] = t(:booking_cant_be_cancelled)
       end
     end
     redirect_to "/items/created_coming_gatherings"
@@ -526,10 +526,10 @@ class OffersController < ApplicationController
     @comment.user=current_user
     @offer = Offer.find(params[:id])
     if @offer.comments << @comment
-      flash[:notice] = "Comment Added"
+      flash[:notice] = t(:comment_added)
       redirect_to "/offers/#{@offer.id}"
     else
-      flash[:error] = "Not saved"
+      flash[:error] = t(:not_saved)
       render :show
     end   
   end
@@ -550,7 +550,7 @@ class OffersController < ApplicationController
   def payment_charge
     if payment.purchase("charge").status == 3
     else
-      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
+      flash[:flash] = t(:problem_charging)
       redirect_to "/"
     end
   end

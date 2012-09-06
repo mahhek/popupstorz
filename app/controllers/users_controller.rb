@@ -6,11 +6,11 @@ class UsersController < ApplicationController
     @comment.user=current_user
     @user = User.find(params[:id])
     if @comment.save
-      flash[:notice] = "Comment Added"
+      flash[:notice] = t(:comment_added)
       @user.comments << @comment
       redirect_to profile_path(current_user)
     else
-      flash[:error] = "Not saved"
+      flash[:error] = t(:not_saved)
       render :show
     end
 
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
         UserMailer.send_invitation_email(@invitation).deliver
       end
     end
-    flash[:notice] = "Invitations have been sent successfully."
+    flash[:notice] = t(:invitation_sent)
     redirect_to "/invitation"
   end
   
@@ -102,7 +102,7 @@ class UsersController < ApplicationController
     #    end
     #    
     #    user.destroy
-    flash[:notice] = "Account deleted successfully!"
+    flash[:notice] = t(:account_deleted)
     redirect_to "/users/sign_out"
   end
   

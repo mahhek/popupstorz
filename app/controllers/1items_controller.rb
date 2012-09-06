@@ -110,26 +110,26 @@ class ItemsController < ApplicationController
     if @item.valid?
       if !user_signed_in?
         session[:items] = params[:item]
-        flash[:notice] = "Please login to continue."
+        flash[:notice] = t(:login)
         redirect_to new_user_session_path
       else
         @item.availability_option_ids = params[:availability_options]
         if @item.save
           @item.update_attribute("item_status","Available")
           session[:items] = nil
-          flash[:notice] = "Thanks for adding your space."
+          flash[:notice] = t(:adding_space)
           redirect_to new_item_avatar_path(@item)
         else
           @listing_types = ListingType.all :order =>"name asc"
           @availability_options = AvailabilityOption.all
-          flash[:notice] = "We couldn't add your space. Please check your listing for missing information."
+          flash[:notice] = t(:cant_add_space)
           render :action => "new"
         end
       end
     else
       @listing_types = ListingType.all :order =>"name asc"
       @availability_options = AvailabilityOption.all
-      flash[:notice] = "We couldn't add your space. Please check your listing for missing information."
+      flash[:notice] = t(:cant_add_space)
       render :action => "new"
     end
   end
@@ -152,12 +152,12 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
     @item.availability_option_ids = params[:availability_options]
     if @item.update_attributes(params[:item])
-      flash[:notice] = "Thanks for updating your space."
+      flash[:notice] = t(:updating_space)
       redirect_to edit_item_avatar_path(@item,@item.avatars.first)
     else
       @listing_types = ListingType.all :order =>"name asc"
       @availability_options = AvailabilityOption.all
-      flash[:notice] = "We couldn't update your space. Please check your listing for missing information."
+      flash[:notice] = t(:cant_update_space)
       render :action => "edit"
     end
   end
@@ -177,7 +177,7 @@ class ItemsController < ApplicationController
   def destroy
     @item = Item.find_by_id(params[:id])
     @item.destroy
-    flash[:notice] = "Item deleted Successfully!"
+    flash[:notice] = t(:deleted)
     redirect_to items_path
   end
 
@@ -266,10 +266,10 @@ class ItemsController < ApplicationController
     @comment.user=current_user
     @item =Item.find(params[:id])
     if @item.comments << @comment
-      flash[:notice] = "Comment Added"
+      flash[:notice] = t(:comment_added)
       redirect_to "/items/show/#{@item.id}"
     else
-      flash[:error] = "Not saved"
+      flash[:error] = t(:not_saved)
       render :show
     end
    
@@ -302,7 +302,7 @@ class ItemsController < ApplicationController
       p "aaaaaaaaaaaaaaaaaaaaaaaaaaa", @notification
       redirect_to "/"
     else
-      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
+      flash[:flash] = t(:problem_charging)
       redirect_to "/"
     end
   end

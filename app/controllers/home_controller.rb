@@ -38,7 +38,7 @@ class HomeController < ApplicationController
   
   def send_feedback
     UserMailer.send_feedback(params[:feedback]).deliver
-    flash[:notice] = "Feedback sent successfully!"
+    flash[:notice] = t(:feedback_sent)
     redirect_to "/"   
   end
 

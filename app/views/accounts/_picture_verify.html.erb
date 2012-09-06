@@ -1,16 +1,14 @@
 <h2>
-  Picture Verification
+  <%= t(:picture_verification) %>
 </h2>
 <div style="width: auto;height: auto;border: 1px solid silver;padding: 5px;">
-  You picture is a way for us to verify you exist  in planet earth and to send you
-  logistical information concerning your transactions. Also, it will be a way to contact the
-  other party, as an owner or renter, after the transaction has been confirmed.  
+  <%= t(:picture_to_verify_you_exist) %>
 </div>
 <% unless @account.is_picture_verified %>
-  <%= form_for @account, :html => {:multipart => true, :onsubmit => "if($('#photo').val() == ''){alert('Please choose some file first, Thanks');return false;}else{return true;}"} do |f| %>
+  <%= form_for @account, :html => {:multipart => true, :onsubmit => "if($('#photo').val() == ''){alert(#{t(:choose_file)});return false;}else{return true;}"} do |f| %>
     <br/>
     <%= hidden_field_tag "verification_type", params[:verification_type] %>
-    <b>Please upload photo</b><br/>
+    <b> <%= t(:upload_picture) %></b><br/>
     <div class="newPaperclipFiles">
       <%= file_field_tag :photo %>
     </div>

@@ -10,7 +10,7 @@ class MessagesController < ApplicationController
     current_user.deleted_messages.process do |message|
       message.delete
     end
-    flash[:notice] = "Trash Empty Successfully!"
+    flash[:notice] = t(:trash_empty)
     redirect_to trash_messages_path
   end
 
@@ -34,9 +34,9 @@ class MessagesController < ApplicationController
     respond_to do |format|
       format.js do
         unless params[:div_id].blank?
-          render :js => "alert('You message sent successfully');$('#contact_me_div_#{params[:div_id]}').toggle('slow');$('#body').val('');"
+          render :js => "alert(#{t(:message_sent)});$('#contact_me_div_#{params[:div_id]}').toggle('slow');$('#body').val('');"
         else
-          render :js => "alert('You message sent successfully');$('#contact_me_div').toggle('slow');$('#body').val('');"
+          render :js => "alert(#{t(:message_sent)});$('#contact_me_div').toggle('slow');$('#body').val('');"
         end
         
       end
@@ -50,7 +50,7 @@ class MessagesController < ApplicationController
     current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
     respond_to do |format|
       format.js do
-        render :js => "alert('You message sent successfully, we will let owner know, thanks.');$('#contact_me_div').toggle('slow');$('#body').val('');"
+        render :js => "alert(#{t(:message_sent_to_owner)});$('#contact_me_div').toggle('slow');$('#body').val('');"
       end
     end
     
@@ -69,7 +69,7 @@ class MessagesController < ApplicationController
   def do_reply
     @message = ActsAsMessageable::Message.find_by_id(params[:message_id])
     @message.reply(:topic => params[:topic], :body => params[:body])
-    flash[:notice] = "Your Message sent Successfully!"
+    flash[:notice] = t(:message_sent)
     redirect_to inbox_messages_path
   end
 
@@ -84,26 +84,26 @@ class MessagesController < ApplicationController
       @messages.each do |message|
         message.mark_as_read
       end
-      flash[:notice] = "Message(s) has been marked as read successfully."
+      flash[:notice] = t(:marked_read)
       redirect_to :action => "inbox"
 
     when "mark_as_unread"
       @messages.each do |message|
         message.mark_as_unread
       end
-      flash[:notice] = "Message(s) has been marked as unread successfully."
+      flash[:notice] = t(:marked_unread)
       redirect_to :action => "inbox"
     when "move_to_trash"
       @messages.each do |message|
         current_user.delete_message(message)
       end
-      flash[:notice] = "Message(s) has been moved successfully."
+      flash[:notice] = t(:message_moved)
       redirect_to inbox_messages_path
     when "move_to_inbox"
       @messages.each do |message|
         message.update_attributes(:sender_delete => false, :recipient_delete => false)
       end
-      flash[:notice] = "Message(s) has been moved successfully."
+      flash[:notice] = t(:message_moved)
       redirect_to :action => "inbox"
     end
   end
@@ -111,7 +111,7 @@ class MessagesController < ApplicationController
   def move_single_conversation_to_trash
     convo = Conversation.find params[:id]
     current_user.mailbox.move_to(:trash, :conversation => convo)
-    flash[:notice] = "Mail's has been moved to trash"
+    flash[:notice] = t(:moved_to_trash)
     redirect_to :action => "inbox"
   end
 
@@ -125,10 +125,10 @@ class MessagesController < ApplicationController
       users.each do |user|
         current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
       end
-      flash[:notice] = "Your Message sent Successfully!"
+      flash[:notice] = t(:message_sent)
       redirect_to inbox_messages_path
     else
-      flash[:notice] = "No Email address Found, in our System, please provide right email address, thanks."
+      flash[:notice] = t(:provide_correct_email)
       render :action => "compose"
     end    
   end
@@ -150,7 +150,7 @@ class MessagesController < ApplicationController
     subject = params[:message][:subject].nil? ? "" : params[:message][:subject]
     @mail = current_user.reply(Conversation.find(params[:id]), users , body, subject,@attachments)
     cleanup(@attachments)
-    flash[:notice] = "Reply has been sent"
+    flash[:notice] = t(:reply_sent)
     redirect_to :controller => "message_system", :action => "inbox"
   end
 
@@ -164,7 +164,7 @@ class MessagesController < ApplicationController
     subject = params[:message][:subject].nil? ? "" : params[:message][:subject]
     current_user.reply_to_all(mail, body, subject,@attachments)
     cleanup(@attachments)
-    flash[:notice] = "Reply has been sent to all recipients you mentioned"
+    flash[:notice] = t(:reply_sent_to_all)
     redirect_to :controller => "message_system", :action => "inbox"
   end
 

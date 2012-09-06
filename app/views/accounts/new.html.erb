@@ -1,5 +1,5 @@
 <div style="float: left;width: 250px;border: 1px solid silver;height: auto;padding: 5px;">
-  <h2>To get verified:</h2>
+  <h2><%= t(:get_verified)%></h2>
   <%= link_to "Verify your mobile phone number via SMS", verification_selection_accounts_path(:verification_type => "sms", :account_id => @account.id ), :remote => true %>&nbsp;<%= image_tag "#{@account.is_sms_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
   <%= link_to "Profile Picture", verification_selection_accounts_path(:verification_type => "picture", :account_id => @account.id ), :remote => true %>&nbsp;<%= image_tag "#{@account.is_picture_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
 <%#= link_to "Verify your Credit Card", verification_selection_accounts_path(:verification_type => "cc", :account_id => @account.id ), :remote => true %>

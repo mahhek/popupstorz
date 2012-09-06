@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     if resource.is_a?(User) && !resource.is_active?
       sign_out resource
       flash[:notice] = nil
-      flash[:error] = "This account is not active please contact ADMIN to activate the account"
+      flash[:error] =t(:not_active)
       root_path
     else
       super
@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate_admin
     if current_user.blank? || !current_user.admin?
-      flash[:error] = "you are not authorized."
+      flash[:error] = t(:authorized)
       redirect_to "/"
     end
   end

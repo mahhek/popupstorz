@@ -34,42 +34,42 @@ class AccountsController < ApplicationController
     case verification_type
     when "sms"
       if @account.is_sms_verified
-        foo = ("<h2>You are alreay verified via SMS, Thanks.</h2>").to_json
+        foo = ("<h2>#{t(:verified_sms)}</h2>").to_json
       else
         foo = render_to_string(:partial => '/accounts/sms_verify', :locals => { :account => @account }).to_json
       end
       render :js => "$('#verification_div').html(#{foo})"
     when "picture"
       if @account.is_picture_verified
-        foo = ("<h2>You are alreay verified via Picture, Thanks.</h2>").to_json
+        foo = ("<h2>#{t(:verified_picture)}</h2>").to_json
       else
         foo = render_to_string(:partial => '/accounts/picture_verify', :locals => { :account => @account }).to_json
       end
       render :js => "$('#verification_div').html(#{foo})"
     when "cc"
       if @account.is_cc_verified
-        foo = ("<h2>You are alreay verified via Credit Card, Thanks.</h2>").to_json
+        foo = ("<h2>#{t(:verified_card)}</h2>").to_json
       else
         foo = render_to_string(:partial => '/accounts/credit_card_verify', :locals => { :account => @account }).to_json
       end
       render :js => "$('#verification_div').html(#{foo})"
     when "facebook"
       if @account.is_facebook_verified
-        foo = ("<h2>You are alreay verified via Facebook, Thanks.</h2>").to_json
+        foo = ("<h2>#{t(:verified_facebook)}</h2>").to_json
       else
         foo = render_to_string(:partial => '/accounts/facebook_verify', :locals => { :account => @account }).to_json
       end
       render :js => "$('#verification_div').html(#{foo})"
     when "linkedin"
       if @account.is_linkedin_verified
-        foo = ("<h2>You are alreay verified via LinkedIn, Thanks.</h2>").to_json
+        foo = ("<h2>#{t(:verified_linkedin)}</h2>").to_json
       else
         foo = render_to_string(:partial => '/accounts/linkedin_verify', :locals => { :account => @account }).to_json
       end
       render :js => "$('#verification_div').html(#{foo})"
     when "twitter"
       if @account.is_twitter_verified
-        foo = ("<h2>You are alreay verified via Twitter, Thanks.</h2>").to_json
+        foo = ("<h2>#{t(:verified_twitter)}</h2>").to_json
       else
         foo = render_to_string(:partial => '/accounts/twitter_verify', :locals => { :account => @account }).to_json
       end
@@ -81,7 +81,7 @@ class AccountsController < ApplicationController
     unless params[:account][:stripe_card_token].blank?
       @account.update_attribute("stripe_card_token",params[:account][:stripe_card_token])
       @account.update_attribute("is_cc_verified",true)
-      flash[:notice] = "Your credit card is verified Successfully."
+      flash[:notice] = t(:card_verified)
     end
   end
 
@@ -91,16 +91,16 @@ class AccountsController < ApplicationController
       sms_code = generate_sms_code
       if sms.create(params[:mobile_number], sms_code)
         @account.update_attribute("sms_verification_code", sms_code)
-        flash[:notice] = "Message sent succesfully!, please submit code that you recieved."
+        flash[:notice] = t(:submit_code)
       else
         flash[:alert] = "Clickatell API error: #{Clickatell::API::Error.message}"
       end
     else
       if params[:sms_verification_code].strip == @account.sms_verification_code.strip
         @account.update_attribute("is_sms_verified", true)
-        flash[:notice] = "You are verified Successfully."
+        flash[:notice] = t(:verified)
       else
-        flash[:notice] = "Please check your verification code again and resubmit, Thanks."
+        flash[:notice] = t(:verification_recheck)
       end
     end
   end
