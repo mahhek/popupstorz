@@ -24,10 +24,10 @@
 <div style="padding-bottom: 20px;float: left;">
   <% if @item.errors.any? %>
     <div id="errorExplanation" class="erro_messages">
-      <h2>Oops! Looks like you need to include the following:</h2>
+      <h2><%= t(:oops) %></h2>
       <ul>
         <li style="list-style: square;float: left;">
-          Required fields(and the display names): <%= @item.errors.full_messages.to_sentence  %>
+          <%= t(:req_fields) %><%= @item.errors.full_messages.to_sentence  %>
         </li>
       </ul>
     </div>
@@ -35,7 +35,7 @@
 </div>
 
 <div style="float: left; width: 60%;margin-top: 20px;">
-  <div class="xfields">Title:
+  <div class="xfields"><%= t(:title) %>
     <%= f.text_field :title, :style => "width:315px;" %>
   </div>
 </div>
@@ -62,7 +62,7 @@
 <br/>
 <br/>
 <div id="where-iteme">
-  <div class="field-address">Location*:<br/>
+  <div class="field-address"><%= t(:location) %><br/>
     <%= f.text_field :address, :class => "field-l", :style => "width:700px;" %>
     <div id="item_advanced_container" style="display:none;">
       <div id="item_advanced" style="display:none;">
@@ -76,7 +76,7 @@
     </div>
   </div>
 </div>
-<div class="xfields">Neighbourhood:
+<div class="xfields"><%= t(:neighbourhood) %>
   <%= f.text_field :neighbourhood, :style => "width:315px;" %><br/>
 </div>
 <br/>
@@ -87,27 +87,27 @@
 </div>
 <br/>
 
-<div class="xfields" style="width: 100%;">Size:
+<div class="xfields" style="width: 100%;"><%= t(:size) %>
   <%= f.text_field :size, :style => "width:80px;", :onchange => "update_units()" %>
   <%= select_tag "item[size_unit]", options_for_select([["SQMT","SQMT"],["SQFT","SQFT"]], @item.size_unit),:onchange => "update_units()" , :style => "width:100px;"%>
   <div id="other_unit">
-    SQFT
+   <%= t(:sqft) %>
   </div>
 </div>
 
 
 <br/>
-<div class="xfields">Type:
+<div class="xfields"><%= t(:type) %>
   <%= select_tag( "item[listing_type_id]", options_from_collection_for_select(@listing_types,:id, :name, @item.listing_type_id)) %><br />
 </div>
 <br/>
 
-<div class="xfields">Detailed Description:<br/>
+<div class="xfields"><%= t(:detail_description) %><br/>
   <%= f.text_area :description, :size => "50x7" %>
 </div>
 <br/>
 <div class="xfields">
-  Availabilities:<br/><br/>
+  <%= t(:availabilities) %><br/><br/>
   <div class="xfields">
     <div style="width:25%;float:left;">
       This place will be available&nbsp;&nbsp;
@@ -118,16 +118,16 @@
         <% ava = false %>
         <% date_disp = "block" %>
       <% end %>
-      Permanently: <%= f.check_box :available_forever,:checked => ava, :onclick => "update_date_view()" %>
+      <%= t(:permanently) %><%= f.check_box :available_forever,:checked => ava, :onclick => "update_date_view()" %>
       &nbsp;&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
     </div>
 
     <div id="date_range" style="display:<%= date_disp %>;width:100%;float:left;">
-      From:
+     <%= t(:from) %>
       <%= f.text_field :availability_from, :style => "width:130px;" %>
       &nbsp;&nbsp;&nbsp;&nbsp;
-      To:
+      <%= t(:to) %>
       <%= f.text_field :availability_to, :style => "width:130px;" %>
       <br /><br />
     </div>
@@ -138,43 +138,43 @@
   </div>
   <br /><br />
   <%= f.check_box :availablities_daytime %>
-  Daytime&nbsp;&nbsp;
+  <%= t(:daytime) %>&nbsp;&nbsp;
   <%= f.check_box :availablities_evenings %>
-  Evenings<br/><br/>
+  <%= t(:evenings) %><br/><br/>
   <%= f.check_box :availablities_monday %>
-  Mondays&nbsp;&nbsp;
+  <%= t(:mondays) %>&nbsp;&nbsp;
   <%= f.check_box :availablities_tuesday %>
-  Tuesdays&nbsp;&nbsp;
+  <%= t(:tuesdays) %>&nbsp;&nbsp;
   <%= f.check_box :availablities_wednesday %>
-  Wednesdays&nbsp;&nbsp;
+  <%= t(:wednesdays) %>&nbsp;&nbsp;
   <%= f.check_box :availablities_thursday %>
-  Thursdays&nbsp;&nbsp;
+  <%= t(:thursdays) %>&nbsp;&nbsp;
   <%= f.check_box :availablities_friday %>
-  Fridays&nbsp;&nbsp;
+  <%= t(:fridays) %>&nbsp;&nbsp;
   <%= f.check_box :availablities_saturday %>
-  Saturdays&nbsp;&nbsp;
+  <%= t(:saturdays) %>&nbsp;&nbsp;
   <%= f.check_box :availablities_sunday %>
-  Sundays&nbsp;&nbsp;
+  <%= t(:sundays) %>&nbsp;&nbsp;
   <div/>
 
   <br/><br/><div style="float:left;width:100%;">
     <div style="float:left;width:15%;">
-      Shareability: &nbsp;
+      <%= t(:shareability) %>&nbsp;
       <%= select_tag "item[is_shareable]", options_for_select([["Yes",true],["No",false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)" %>&nbsp;&nbsp;
     </div>
     <div id="person_count" style="float:left;width:50%;">
-      Up to: &nbsp;&nbsp;&nbsp;
+     <%= t(:up_to) %> &nbsp;&nbsp;&nbsp;
       <%= f.text_field :maximum_members, :size => "5" %> persons
     </div>
   </div><br/>
-  <div class="xfields">Pricing:<br/><br/>
+  <div class="xfields"><%= t(:pricing) %><br/><br/>
     <span>
-      Currency:
+     <%= t(:currency) %>
     </span>
     <span>
       <%= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EUR","EUR"]], @item.price_unit), :onchange => "$('.unit').html($(this).val() == 'USD' ? '$' : '€');", :style => "width:100px;" %>
     </span><br/><br/><span>
-      Rental Price:<br/><br/>
+      <%= t(:rental_price) %><br/><br/>
     </span><span>
       <%= f.text_field :price,  :class => "price", :size =>""%> <span class="unit">$</span> per day
       <%= f.text_field :price_per_week,  :class => "price",:size =>""  %> <span class="unit">$</span> per week
@@ -200,7 +200,7 @@
 
   <div class="xfields">
     <span>
-      Cleaning Fee:
+   <%= t(:cleaning_fee) %>
     </span>
     <span>
       <%= f.text_field :cleaning_fee %> <span class="unit"> $</span> &nbsp;&nbsp;
@@ -212,7 +212,7 @@
 
   <div class="xfields">
     <span>
-      Deposit:
+      <%= t(:deposit) %>
     </span>
     <span>
       <%= f.text_field :deposit %><span class="unit"> $</span> &nbsp;&nbsp;
@@ -222,31 +222,30 @@
 
   <br/>
 
-</div><br/><div class="xfields">Cancellation Policies:<br/><br/>
-  We offer two cancellation policies:<br/><br/> 
+</div><br/><div class="xfields"><%= t(:cancellation_policies) %><br/><br/>
+  <%= t(:offering_policies) %><br/><br/>
   <%=f.radio_button :cancellation_policy_flexible,true%>
-  Flexible<br/>
-  If renter cancels more than 7 days before booking start date: full refund<br/>
-  If renter cancels less than 7 days before booking start date: no refund<br/><br/>
+  <%= t(:flexible) %><br/>
+  <%= t(:cancel_ln1) %><br/>
+  <%= t(:cancel_ln2) %><br/><br/>
 
-  Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the Thursday of the prior week at 23:59 (local time of the booked space).<br/><br/>
+  <%= t(:cancel_ln3) %><br/><br/>
 
-  Please be informed that the 10% Pop Up Storz service fee is not refundable.<br/><br/>
-  Exemple
-  If renter has done a booking for an amount of 110 € and cancels more than 7 days before booking start date, the amount of the refund will be 100 €.<br/><br/>
+  <%= t(:cancel_ln4)%><br/><br/>
+  <%= t(:cancel_ln5)%><br/><br/>
 
   <%=f.radio_button :cancellation_policy_flexible,false%> 
-  SemiFlexible<br/>If renter cancels more than 3 days before booking start date: partial refund (50%)<br/>
-  If renter cancels less than 3 days before booking start date: no refund<br/><br/>
+  <%= t(:semi_flexible) %><br/>
+  <%= t(:semi_cancel_ln1) %><br/>
+  <%= t(:semi_cancel_ln2) %><br/><br/>
 
-  Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the prior Monday at 23:59 (local time of the booked space).<br/><br/>
+  <%= t(:semi_cancel_ln3) %><br/><br/>
 
-  Please be informed that the 10% Pop Up Storz service fee is not refundable. <br/><br/>
-  Exemple
-  If renter has done a booking for an amount of 110 € and cancels more than 3 days before booking start date, the amount of the refund will be 50 €.<div/>
+  <%= t(:semi_cancel_ln4) %><br/><br/>
+  <%= t(:semi_cancel_ln5) %><div/>
 
   <br/>
-  <br/><div class="xfields">Owner Rules:<br/>
+  <br/><div class="xfields"><%= t(:owner_rules) %><br/>
     <%= f.text_area :owner_rules, :style => "width:315px;" %><br/>
   </div>
 

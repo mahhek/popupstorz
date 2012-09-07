@@ -1,10 +1,10 @@
-<h2>Edit Profile</h2>
+<h2><%= t(:edit_profile) %></h2>
 
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :multipart => true  }) do |f| %>
   <%= devise_error_messages! %>
 
   <div class="newPaperclipFiles">
-    <b>Upload Profile Pictures:</b><br/>
+    <b><%= t(:profile_pic_upload) %></b><br/>
     <%(3 - resource.avatars.size).times { resource.avatars.build }%>
 
     <%= f.fields_for :avatars do |avatar| %>
@@ -38,17 +38,17 @@
   </div>
 
   <div>
-    Gender:
-    <%= f.radio_button :gender, true %> Male
-    <%= f.radio_button :gender, false %> Female
+    <%= t(:gender) %>
+    <%= f.radio_button :gender, true %> <%= t(:male) %>
+    <%= f.radio_button :gender, false %> <%= t(:female) %>
 
   </div>
 
   <div><%= f.label :mobile_phone %><br />
-    <%= f.text_field :mobile_phone %>(required)</div><br/>
+    <%= f.text_field :mobile_phone %><%= t(:required) %></div><br/>
 
  <div><%= f.label :Address1 %><br />
-    <%= f.text_field :address1 %>(required)</div>
+    <%= f.text_field :address1 %><%= t(:required) %></div>
 
   <div><%= f.label :Address2 %> <br />
     <%= f.text_field :address2 %></div>
@@ -74,7 +74,7 @@
   </div>
 
   <div>
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.label :password %> <i><%= t(:leave_blank) %></i><br />
     <%= f.password_field :password %>
   </div>
 
@@ -94,8 +94,8 @@
 
 <% end %>
 
-<h3>Cancel my account</h3>
+<h3><%= t(:cancel_account) %></h3>
 
-<p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete %>.</p>
+<p><%= t(:unhappy) %> <%= link_to "Cancel my account", registration_path(resource_name), :confirm => =t(:sure_delete), :method => :delete %>.</p>
 
 <%= link_to "Back", :back %>

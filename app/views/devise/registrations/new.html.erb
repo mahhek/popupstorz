@@ -1,11 +1,11 @@
 <div class="leftcontent">
   <div class="shadowCont" style="float: left;">
-    <div class="s_head">Sign Up</div>
+    <div class="s_head"><%= t(:sign_up) %></div>
     <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
 
-      <div class="reqInfo">Required information</div>
+      <div class="reqInfo"><%= t(:required_info) %></div>
       <div class="newPaperclipFiles" style="margin-left: 128px;">
-        Upload Profile Pictures:<br/>
+        <%= t(:profile_pic_upload) %><br/>
         <%(1 - resource.avatars.size).times { resource.avatars.build }%>
 
         <%= f.fields_for :avatars do |avatar| %>
@@ -17,23 +17,23 @@
       </div>
 
       <div class="sign_up_input">
-        <label>First Name</label>
+        <label><%= t(:first_name) %></label>
         <%= f.text_field :first_name, :value => @pre_user.blank? ? "" : @pre_user.first_name, :autocomplete=> "off", :id => "first_name_field" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
-        <label>Last Name</label>
+        <label><%= t(:last_name) %></label>
   <%#= f.text_field :first_name, :value => @pre_user.blank? ? "" : @pre_user.first_name, :autocomplete=> "off", :id => "first_name_field" %>
         <%= f.text_field :last_name ,:value => @pre_user.blank? ? "" : @pre_user.last_name, :autocomplete=> "off", :id => "lastww_name_field" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
-        <label>Date of Birth</label>
+        <label><%= t(:d_o_b) %></label>
         <%=  f.date_select :date_of_birth, :start_year => 1970 %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
-        <label>Gender</label>
+        <label><%= t(:gender) %></label>
         <div class="fltL">
           <div style="float: left;">
             <%
@@ -52,24 +52,24 @@
             <span>
               <%= f.radio_button :gender, true, :checked => m_gender, :style => "margin-top: 2px;" %>
             </span>
-            <span style="margin-left: 5px;">Male</span>
+            <span style="margin-left: 5px;"><%= t(:male) %></span>
           </div>
           <div style="float: left;margin-left: 10px;">
             <span>
               <%= f.radio_button :gender, false, :checked => f_gender , :style => "margin-top: 2px;" %>
             </span>
-            <span style="margin-left: 5px;">Female</span>
+            <span style="margin-left: 5px;"><%= t(:female) %></span>
           </div>
         </div>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
       <div class="sign_up_input">
-        <label>Email</label>
+        <label><%= t(:email) %><%= t(:email) %></label>
         <%= f.email_field :email, :value => @pre_user.blank? ? "" : @pre_user.email,:autocomplete=> "off", :id => "email_field" %>  
       </div>
       <div class="sign_up_input">
-        <label>Verify Email</label>
+        <label><%= t(:verify_email) %></label>
         <%= f.email_field :verify_email, :value => @pre_user.blank? ? "" : @pre_user.verify_email, :autocomplete=> "off", :id => "verify_email_field" %>
   <%#= @user.errors.messages[:verify_email].blank? ? "" : " Email Verification "+@user.errors.messages[:verify_email][0] %>
         <div class="clear"></div>
@@ -77,73 +77,73 @@
       <div class="clear"></div>
 
       <div class="sign_up_input">
-        <label>Password</label>
+        <label><%= t(:password) %></label>
         <%= f.password_field :password , :autocomplete=> "off", :id => "password_field", :onclick => "$(this).val('')" %>
   <%#= @user.errors.messages[:password].blank? ? "" : " Password "+@user.errors.messages[:password][0] %>
   <%#*<div class="clear"></div>%>
       </div>
       <div class="sign_up_input fltL">
-        <label>Confirm Password</label>
+        <label><%= t(:confirm_password) %></label>
         <%= f.password_field :password_confirmation, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
 
       <div class="sign_up_input">
-        <label>Security Question</label>
+        <label><%= t(:security_question) %></label>
         <%= f.text_field :security_question, :autocomplete=> "off", :id => "security_question_field", :onclick => "$(this).val('')" %>
   <%#= @user.errors.messages[:security_question].blank? ? "" : " Security Question "+@user.errors.messages[:security_question][0] %>
   <%#*<div class="clear"></div>%>
       </div>
       <div class="sign_up_input">
-        <label>Security Answer</label>
+        <label><%= t(:security_answer) %></label>
         <%= f.text_field :security_answer, :autocomplete=> "off", :id => "security_answer_field", :onclick => "$(this).val('')" %>
   <%#= @user.errors.messages[:security_answer].blank? ? "" : " Security Answer "+@user.errors.messages[:security_answer][0] %>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
       <div class="sign_up_input">
-        <label>Mobile No</label>
+        <label><%= t(:mobile_num) %></label>
         <%= f.text_field :mobile_phone , :value => @pre_user.blank? ? "" : @pre_user.mobile_phone,:autocomplete=> "off", :id => "mobile_phone_field", :onclick => "$(this).val('')"%><br />
-        <div style="float:left;clear:both;margin-left: 130px;margin-top: 10px;">Please use international format, i.e. +01234567890</div>
+        <div style="float:left;clear:both;margin-left: 130px;margin-top: 10px;"><%= t(:ph_format) %></div>
   <%#= @user.errors.messages[:mobile_phone].blank? ? "" : " Mobile Phone "+@user.errors.messages[:mobile_phone][0] %>
         <div class="clear"></div>
       </div>
 
-      <div class="reqInfo">Optional information</div>
+      <div class="reqInfo"><%= t(:optional_info) %></div>
       <div class="sign_up_input">
-        <label>Address 1</label>
+        <label><%= t(:address_1) %></label>
         <%= f.text_field :address1, :value => @pre_user.blank? ? "" : @pre_user.address1,:autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
-        <label>Address 2</label>
+        <label><%= t(:address_2) %></label>
         <%= f.text_field :address1, :value => @pre_user.blank? ? "" : @pre_user.address2,:autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
-        <label>City</label>
+        <label><%= t(:city_add) %></label>
         <%= f.text_field :city , :value => @pre_user.blank? ? "" : @pre_user.city.to_s.gsub(/ /,''), :autocomplete=> "off"%>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input fltL">
-        <label>Country</label>
+        <label><%= t(:country_add) %></label>
         <%= f.select( :country, options_from_collection_for_select( Country.all, :printable_name, :printable_name, @pre_user.blank? ? "" : @pre_user.country.to_s.gsub(/ /,'').camelize), :prompt => "Select Country") %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input fltL">
-        <label>Zip code</label>
+        <label><%= t(:zip) %></label>
         <%= f.text_field :zip_code, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input fltL">
-        <label>Activity</label>
+        <label><%= t(:activity) %></label>
         <%= f.text_field :activity , :autocomplete=> "off"%>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
       <div class="sign_up_input">
-        <label>Description</label>
+        <label><%= t(:description) %></label>
         <%= f.text_area :description, :size => "40x4", :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>

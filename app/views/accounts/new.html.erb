@@ -1,34 +1,23 @@
 <div style="float: left;width: 250px;border: 1px solid silver;height: auto;padding: 5px;">
   <h2><%= t(:get_verified)%></h2>
-  <%= link_to "Verify your mobile phone number via SMS", verification_selection_accounts_path(:verification_type => "sms", :account_id => @account.id ), :remote => true %>&nbsp;<%= image_tag "#{@account.is_sms_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
-  <%= link_to "Profile Picture", verification_selection_accounts_path(:verification_type => "picture", :account_id => @account.id ), :remote => true %>&nbsp;<%= image_tag "#{@account.is_picture_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
+  <%= link_to t(:verify_phone), verification_selection_accounts_path(:verification_type => "sms", :account_id => @account.id ), :remote => true %>&nbsp;<%= image_tag "#{@account.is_sms_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
+  <%= link_to t(:verify_picture), verification_selection_accounts_path(:verification_type => "picture", :account_id => @account.id ), :remote => true %>&nbsp;<%= image_tag "#{@account.is_picture_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
 <%#= link_to "Verify your Credit Card", verification_selection_accounts_path(:verification_type => "cc", :account_id => @account.id ), :remote => true %>
 <%#= image_tag "#{@account.is_cc_verified ? 'true.gif' : 'false.gif'}" %>
-  <%= link_to "Facebook Verification", verification_selection_accounts_path(:verification_type => "facebook", :account_id => @account.id ), :remote => true %>&nbsp;<%= image_tag "#{@account.is_facebook_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
-  <%= link_to "Twitter Verification", verification_selection_accounts_path(:verification_type => "twitter", :account_id => @account.id ), :remote => true %>&nbsp;<%= image_tag "#{@account.is_twitter_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
+  <%= link_to t(:verify_facebook), verification_selection_accounts_path(:verification_type => "facebook", :account_id => @account.id ), :remote => true %>&nbsp;<%= image_tag "#{@account.is_facebook_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
+  <%= link_to t(:verify_twitter), verification_selection_accounts_path(:verification_type => "twitter", :account_id => @account.id ), :remote => true %>&nbsp;<%= image_tag "#{@account.is_twitter_verified ? 'true.gif' : 'false.gif'}" %><br/><br/>
 <%#= link_to "LinkedIn Verification", verification_selection_accounts_path(:verification_type => "linkedin", :account_id => @account.id ), :remote => true %>&nbsp;
 <%#= image_tag "#{@account.is_linkedin_verified ? 'true.gif' : 'false.gif'}" %>
 </div>
 <div id="verification_div" style="float: left;width: 500px;padding: 10px;">
-  Please select options to verify
+  <%= t(:options_verify)%>
 </div>
 <div style="float: left;width: 400px;border: 1px solid silver;height: auto;padding: 10px;">
   <p>
-    PopupStorz is a social  renting platform. Therefore, the social identity
-    of our members cannot be verified only with an email. Verification is easy
-    and provides information to owners to trust potentials renters. As an owner
-    you give an item to another person for some time and you expect to receive
-    your item in the same condition, Right? So, renters should have all the information
-    possible to make owners comfortable in giving out their items, make friends
-    and make also some extra cash! You need two verifications to get yourself verified
-    member. First, you need to verify your mobile phone number we send back a code
-    and you submit it into our system to check that it is you. So simple.
+    <%= t(:popupstorz_intro)%>
   </p>
   <p>
-    Extra verifications are also important. One type of extra  verification is uploading
-    a picture of you. It reaaaaally helps :). Think about renting and item but there are
-    two options: The one owner has uploaded a picture and the other has not. (assuming all
-    the rest verifications are the same as well as ratings), with whom are you more.
+    <%= t(:popupstorz_intro2)%>
   </p>
 </div>
 

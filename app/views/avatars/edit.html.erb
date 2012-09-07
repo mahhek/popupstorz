@@ -1,9 +1,9 @@
 <%= form_for([@item, @avatar], :html => { :multipart => true, :class => "new_avatar_form"}) do |f|%>
   <div id="thumnail-details">
-    <span class="familar-photo">Photos</span>
+    <span class="familar-photo"> <%= t(:photo) %> </span>
     <br/>
     <br/>
-    <span class="gray-14">gif / jpeg / png acceptable</span>
+    <span class="gray-14"><%= t(:type_acceptable) %></span>
     <br/>
     <br/>
     <%= file_field_tag :photo_1 if @item.avatars.size == 0 or @item.avatars.size < 16 %><br />
@@ -25,7 +25,7 @@
     <%= file_field_tag :photo_15 if @item.avatars.size == 0 or @item.avatars.size < 2  %><br />
     <%= f.hidden_field:photo %><br />
 
-    <center><button type="submit" class="large-max button orange"> Upload Picture</button></center>
+    <center><button type="submit" class="large-max button orange"> <%= t(:upload_pic) %></button></center>
 
   </div>
 <% end %>
@@ -33,13 +33,13 @@
 <div style="padding: 20px;">
   <div id="get-list-header">
     <div class="white-button" style="float: left;margin-right: 10px;">
-      <%= link_to "Details", edit_item_path(@item) %>
+      <%= link_to t(:details), edit_item_path(@item) %>
     </div>
     <div class="white-button" style="float: left;margin-right: 10px;">
-      <%= link_to "Photos", "#" %>
+      <%= link_to t(:photo), "#" %>
     </div>
     <div class="white-button" style="float: left;margin-right: 10px;">
-      <%= link_to "Preview", item_path(@item) %>
+      <%= link_to t(:preview), item_path(@item) %>
     </div>
   </div>
   <br/>
@@ -50,14 +50,14 @@
       <div id="thumbnail">
         <%= image_tag(@avatars.first.photo.url(:thumb) )%>
       </div>
-      <div id="thumbnail-txt">Your listing thumbnail</div>
+      <div id="thumbnail-txt"><%= t(:thumbnail) %></div>
     <%end%>
   </div>
   <div id="thumnail-details">
-    <span class="familar-photo">Photos</span>
+    <span class="familar-photo"><%= t(:photo) %></span>
     <br/>
     <br/>
-    <span class="gray-14">gif / jpeg / png acceptable</span>
+    <span class="gray-14"><%= t(:type_acceptable) %></span>
     <br/>
     <br/>
 
@@ -67,7 +67,7 @@
       <%= image_tag(avatar.photo.url(:large) )%>
       <br/>
       <br/>
-      <%= link_to "Delete photo", item_avatar_path(@item,avatar), :method => :delete, :confirm => "Are you sure?" %>
+      <%= link_to  t(:delete_photo) , item_avatar_path(@item,avatar), :method => :delete, :confirm => t(:sure_delete) %>
       <br/>
       <br/>
     <%end%>

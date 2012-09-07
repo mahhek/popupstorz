@@ -1,14 +1,14 @@
 
 <%= form_for :feedback, :url => "/home/send_feedback", :html => {:onsubmit => "return check_form()"} do|f| %>
-  <label>Your Feedback**</label>
+  <label><%= t(:your_feedback) %></label>
   <%= f.text_field "suggestion" %>
   <br /><br />
-  <label>Tell us about it *</label>
+  <label><%= t(:tell_us) %></label>
   <%= f.text_area "description" %>
   <br /><br />
   <div style="width: 100%;float: left;clear: both;">
     <div style="width:48%;float:left;">
-      <label>Name*</label>
+      <label><%= t(:name) %></label>
       <% if current_user.blank? %>
         <%= f.text_field "user_name" %>
       <% else %>
@@ -17,7 +17,7 @@
       <% end %>
     </div>
     <div style="width:48%;float:left;margin-left: 10px;">
-      <label>Your Email Address*</label>
+      <label><%= t(:your_email) %></label>
       <% if current_user.blank? %>
         <%= f.text_field "email" %>
       <% else %>

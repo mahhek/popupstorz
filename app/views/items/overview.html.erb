@@ -82,26 +82,25 @@
           <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div_<%= offer.id %>').toggle()">Show Details</div><br />
           <p class="size_text" id="policy_div_<%= offer.id %>" style="display:none;">
             <% unless item.cancellation_policy_flexible.blank? %>
-              Flexible<br/>
-              If renter cancels more than 7 days before booking start date: full refund<br/>
-              If renter cancels less than 7 days before booking start date: no refund<br/><br/>
+      <%= t(:flexible) %><br/>
+          <%= t(:cancel_ln1) %><br/>
+          <%= t(:cancel_ln2) %><br/><br/>
 
-              Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the Thursday of the prior week at 23:59 (local time of the booked space).<br/><br/>
+          <%= t(:cancel_ln3) %><br/><br/>
 
-              Please be informed that the 10% Pop Up Storz service fee is not refundable.<br/><br/>
-              Exemple
-              If renter has done a booking for an amount of 110 € and cancels more than 7 days before booking start date, the amount of the refund will be 100 €.<br/><br/>
-            <% else %>
-              SemiFlexible<br/>
-              If renter cancels more than 3 days before booking start date: partial refund (50%)<br/>
-              If renter cancels less than 3 days before booking start date: no refund<br/><br/>
+          <%= t(:cancel_ln4)%><br/><br/>
+          <%= t(:cancel_ln5)%><br/><br/>
+      <% else %>
+        <%= t(:semi_flexible) %><br/>
+        <%= t(:semi_cancel_ln1) %><br/>
+        <%= t(:semi_cancel_ln2) %><br/><br/>
 
-              Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the prior Monday at 23:59 (local time of the booked space).<br/><br/>
+        <%= t(:semi_cancel_ln3) %><br/><br/>
 
-              Please be informed that the 10% Pop Up Storz service fee is not refundable. <br/><br/>
-              Exemple
-              If renter has done a booking for an amount of 110 € and cancels more than 3 days before booking start date, the amount of the refund will be 50 €.<div/>
-          <% end %>
+        <%= t(:semi_cancel_ln4) %><br/><br/>
+        <%= t(:semi_cancel_ln5) %><div/>
+
+    <% end %>
           </p>
           <div class="clear"></div>
           <br />

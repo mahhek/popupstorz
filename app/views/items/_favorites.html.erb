@@ -7,21 +7,21 @@
           <% if item.avatars.size > 0 %>
             <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo")  %>
           <% else %>
-            NO IMAGE PROVIDED YET.
+           <%= t(:no_image_provided) %>
           <% end %>
         </div>
 
         <div class="name-list" style="margin-bottom: 5px;">
           <h4><%= link_to item.title, item_path(item) %></h4>
         </div>
-        <div class="name-list" style="margin-bottom: 5px;"><b>Location: </b><%= item.address %></div>
-        <div class="name-list" style="margin-bottom: 5px;"><b>Price: </b><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>&nbsp;&nbsp;<%=  item.time_for_unit_price %></div>
+        <div class="name-list" style="margin-bottom: 5px;"><b><%= t(:location_show) %> </b><%= item.address %></div>
+        <div class="name-list" style="margin-bottom: 5px;"><b><%= t(:space_price) %> </b><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>&nbsp;&nbsp;<%=  item.time_for_unit_price %></div>
 
-          <%= link_to "Remove from favorite", remove_from_favorite_on_item_path(item), :remote => true %>
+          <%= link_to (:remove_favorite), remove_from_favorite_on_item_path(item), :remote => true %>
 
       </div>
 
     <%end%>
   <%else%>
-    You don't currently have any favorite space listed with PopupStorz
+   <%= t(:dont_have_favorites) %>
   <%end%>

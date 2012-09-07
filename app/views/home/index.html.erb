@@ -24,7 +24,7 @@
           <h1><%=item.city%>, <%=item.country_code%></h1>
           <p><%= item.availability_from.blank? ? "" : item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.blank? ? "" :item.availability_to.strftime("%m/%y")%></p>
 
-          <h5>2/3</h5>
+          <h5><%= t(:symbol2) %></h5>
           <h6><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h6>
           <div class="clear"></div>
         </div>
@@ -45,11 +45,11 @@
     <%= form_tag "/items/search_keyword", :method => :get  do %>
       <%= select_tag( "location", options_from_collection_for_select( @items_with_uniq_cities, :city, :city), :prompt => "Select City", :class => "paris") %>
       <div class="fltL start_time">
-        <p>From</p>
+        <p><%= t(:from) %></p>
         <%=  text_field_tag :search_from %>
       </div>
       <div class="fltR start_time">
-        <p>To</p>
+        <p><%= t(:to) %></p>
         <%=  text_field_tag :search_to %>
       </div>
       <div class="clear"></div>
@@ -74,14 +74,13 @@
   </script>
 
   <div class="paris_hold mt30" style="padding: 20px; margin-left: 35px;">
-    <h1 class="text_he">Ideas, suggestions? We would love your <samp><b>FEEDBACK!</b></samp></h1>
+    <h1 class="text_he"><%= t(:ideas) %><samp><b><%= t(:feedback) %></b></samp></h1>
 
   </div>
 </div>
 <div class="fltR mt10 w390 mr100">
   <div class="play_hold">
-    <h1>Look how designers, artists and <br />
-      owners of free spaces connect:</h1>
+    <h1><%= t(:designers_connect) %></h1>
     <img src="../assets/play.png" alt="" />
   </div>
 </div>
