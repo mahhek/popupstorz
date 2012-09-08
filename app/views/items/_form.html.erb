@@ -110,7 +110,7 @@
   <%= t(:availabilities) %><br/><br/>
   <div class="xfields">
     <div style="width:25%;float:left;">
-      This place will be available&nbsp;&nbsp;
+        <%= t(:place_available) %><br/><br/>&nbsp;&nbsp;
       <% if @item.availability_from.blank? and @item.availability_to.blank? %>      
         <% ava = true %>
         <% date_disp = "none" %>

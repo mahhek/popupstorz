@@ -17,11 +17,11 @@
 
     <div style="float: left;margin-bottom:15px;margin-top:15px;">
       <% if  params[:action] == "trash" %>
-        <%= link_to "Move To Inbox/Sent",  "#",  :onclick => "checkListOfCheckBox('move_to_inbox');return false;" %>&nbsp;&nbsp;&nbsp;
-        <%= link_to "Empty Trash", empty_trash_messages_path , :confirm => "Are you sure you want to delete all messages?" %>
+        <%= link_to t(:move_to),  "#",  :onclick => "checkListOfCheckBox('move_to_inbox');return false;" %>&nbsp;&nbsp;&nbsp;
+        <%= link_to t(:empty), empty_trash_messages_path , :confirm => t(:delete_msg) %>
       <%else%>
         <% unless @messages.blank? %>
-          <%= link_to "Move to Trash",  "#",  :onclick => "checkListOfCheckBox('move_to_trash');return false;" %>&nbsp;
+          <%= link_to t(:move_trash),  "#",  :onclick => "checkListOfCheckBox('move_to_trash');return false;" %>&nbsp;
         <% end %>
       <%end%>
     </div>
@@ -32,16 +32,16 @@
         <%= check_box_tag "check_all" , false  , false %>
       </span>
       <span style="width:130px;float:left;margin-left:5px;padding-top:2px;font-weight: bold;">
-        From
+        <%= t(:mail_from) %>
       </span>
       <span style="width:150px;float:left;padding-top:2px;font-weight: bold;">
-        Subject
+        <%= t(:subject) %>
       </span>
       <span style="width:320px;float:left;padding-top:2px;font-weight: bold;">
-        Body
+        <%= t(:body) %>
       </span>
       <span style="width:70px;float:left;padding-top:2px;font-weight: bold;">
-        Date
+        <%= t(:date) %>
       </span>
     </div>
     <% @messages.each do |message| %>
@@ -74,7 +74,7 @@
     <%end%>
   <%end%>
 <%else%>
-  No Message Found.
+  <%= t(:no_msg) %>
 <%end%>
 
 

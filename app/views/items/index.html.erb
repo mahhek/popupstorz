@@ -3,7 +3,7 @@
 <br/>
 
 <div id="get-list-header">
-  <h2>Your Listings</h2>
+  <h2><%= t(:your_listings) %></h2>
 </div>
 
 <div class="listx-bg">
@@ -22,33 +22,33 @@
           <% if item.avatars.size > 0 %>
             <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo")  %>
           <% else %>
-            NO IMAGE PROVIDED YET.
+          <%= t(:no_image_provided) %>
           <% end %>
         </div>
 
         <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
-        <div class="name-list" style="margin-bottom: 5px;"><b>Location: </b><%= item.address %></div>
+        <div class="name-list" style="margin-bottom: 5px;"><b><%= t(:location_show)%> </b><%= item.address %></div>
 
 
         <div class="name-list" style="margin-bottom: 5px;">
-          <b>Price: </b>
-          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/day,
-          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/week,
-          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
+          <b><%= t(:space_price) %> </b>
+          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_day) %>
+          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_week) %>
+          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_month) %>
         </div>
 
         <div class="manage-bg" style="margin-bottom: 5px;margin-top: 5px;">
           <div class="btns">
-            <%= link_to "Edit Space" , edit_item_path(item)%>&nbsp;|&nbsp;
-            <%= link_to "Preview Space" , item_path(item)%>&nbsp;|&nbsp;
-            <%= link_to "Create New Space" , new_item_path %>&nbsp;|&nbsp;
-            <%= link_to "Delete this Item", item_path(item), :method => :delete, :confirm => "Are you sure?" %>
+            <%= link_to t(:edit_space) , edit_item_path(item)%>&nbsp;|&nbsp;
+            <%= link_to t(:preview_space) , item_path(item)%>&nbsp;|&nbsp;
+            <%= link_to t(:create_new_space) , new_item_path %>&nbsp;|&nbsp;
+            <%= link_to t(:delete_space), item_path(item), :method => :delete, :confirm => t(:sure_delete) %>
           </div>
         </div>
       </div>
     <%end%>
   <%else%>
-    You don't currently have any space listed with PopupStorz. Why not get started by <%= link_to "creating a space?", new_item_path %>
+    <%= t(:get_started) %> <%= link_to "creating a space?", new_item_path %>
   <%end%>
 </div>
 

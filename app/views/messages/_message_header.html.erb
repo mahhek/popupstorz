@@ -2,9 +2,9 @@
 
 
   <%#= link_to "Compose", compose_messages_path, :style => "font-weight: #{params[:action] == 'compose' ? 'bold' : 'normal'};text-decoration: #{params[:action] == 'compose' ? 'underline' : 'none'};"  %><br/><br/>
-  <%= link_to "Inbox", inbox_messages_path, :style => "font-weight: #{params[:action] == 'inbox' ? 'bold' : 'normal'};text-decoration: #{params[:action] == 'inbox' ? 'underline' : 'none'};"  %><br/><br/>
-  <%= link_to "Sent" , sent_items_messages_path, :style => "font-weight: #{params[:action] == 'sent_items' ? 'bold' : 'normal'};text-decoration: #{params[:action] == 'sent_items' ? 'underline' : 'none'};" %><br/><br/>
-  <%= link_to "Trash", trash_messages_path, :style => "font-weight: #{params[:action] == 'trash' ? 'bold' : 'normal'};text-decoration: #{params[:action] == 'trash' ? 'underline' : 'none'};" %><br/><br/>
+  <%= link_to t(:inbox), inbox_messages_path, :style => "font-weight: #{params[:action] == 'inbox' ? 'bold' : 'normal'};text-decoration: #{params[:action] == 'inbox' ? 'underline' : 'none'};"  %><br/><br/>
+  <%= link_to t(:sent) , sent_items_messages_path, :style => "font-weight: #{params[:action] == 'sent_items' ? 'bold' : 'normal'};text-decoration: #{params[:action] == 'sent_items' ? 'underline' : 'none'};" %><br/><br/>
+  <%= link_to t(:trash), trash_messages_path, :style => "font-weight: #{params[:action] == 'trash' ? 'bold' : 'normal'};text-decoration: #{params[:action] == 'trash' ? 'underline' : 'none'};" %><br/><br/>
 
 </div>
 

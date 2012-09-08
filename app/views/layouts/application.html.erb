@@ -3,7 +3,7 @@
       xmlns:fb="http://www.facebook.com/2008/fbml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>PopUpStorz</title>
+    <title><%=  t(:popup)%></title>
     <%= stylesheet_link_tag    "application" %>
 
     <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>
@@ -51,8 +51,8 @@
       <div class="rg-image-wrapper">
         {{if itemsCount > 1}}
         <div class="rg-image-nav">
-          <a href="#" class="rg-image-nav-prev">Previous Image</a>
-          <a href="#" class="rg-image-nav-next">Next Image</a>
+          <a href="#" class="rg-image-nav-prev"><%= t(:prev_image) %></a>
+          <a href="#" class="rg-image-nav-next"><%= t(:next_image) %></a>
         </div>
         {{/if}}
         <div class="rg-image"></div>
@@ -82,7 +82,7 @@
                 <%= text_field_tag 'user[email]' %>
                 <%= password_field_tag 'user[password]' %>
                 <input type="submit" value="Login" />
-                <%= link_to "Forgot your password?", new_password_path(User) %><br />
+                <%= link_to t(:forgot_password), new_password_path(User) %><br />
 
               <% end %>
             <% else %>
@@ -124,8 +124,7 @@
               <span style="float: left;">
                 <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
 
-                <%=
-                link_to "Dashboard", inbox_messages_path, :class => ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : "")%>
+                <%=  link_to t(:dashboard), inbox_messages_path, :class => ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : "")%>
 
   <%#=link_to "Dashboard", dashboard_path(current_user.id), :class => ((params[:controller] == "accounts" or params[:controller] == "items" ) ? "m_act" : "")%>
                 <% messages_size = current_user.messages.are_to(current_user).unread.size %>
@@ -138,8 +137,8 @@
                     <span class="searchMenu" >
                       <%= 'Search' %> 
                       <ul id="search_options" class="searchMenu">
-                        <li class="searchMenu"><%= link_to "Spaces", "/searches/spaces" %></li>
-                        <li class="searchMenu"><%= link_to "Gatherings",  "/searches/gatherings" %></li>
+                        <li class="searchMenu"><%= link_to t(:spaces3), "/searches/spaces" %></li>
+                        <li class="searchMenu"><%= link_to t(:gatherings2),  "/searches/gatherings" %></li>
                         <li class="searchMenu"><%= link_to "Members",  "/searches/members" %></li>
                       </ul>
                     </span>
@@ -204,7 +203,7 @@
       </div>
 
       <div class="fltR footer mt30 mr100">
-        <a href="/home/feedback">Pop Up Storz 2012</a>        <a href="/home/terms">Terms</a>        <a href="/home/contact">Contact</a>
+        <a href="/home/feedback"><%= t(:popup_12) %></a>        <a href="/home/terms"><%= t(:terms) %></a>        <a href="/home/contact"><%= t(:contact) %></a>
       </div>
 
     </div>

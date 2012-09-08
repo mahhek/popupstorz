@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PopUpStorz</title>
+    <title><%= t(:popup) %></title>
     <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>    <!-- jsFiddle -->
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->
@@ -31,31 +31,31 @@
      <div class='spread'>
       <div class='twshare left'> 
         <%= params[:controller] %>
-        <a href="http://twitter.com/share?text=aaaaaaaaaa" class="twitter-share-button" data-count="horizontal" data="qqqqqqqq">Tweet</a>
+        <a href="http://twitter.com/share?text=aaaaaaaaaa" class="twitter-share-button" data-count="horizontal" data="qqqqqqqq"><%= t(:tweet1) %></a>
         <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
       </div>
     </div>
     
     <div>
-      Admin Panel &nbsp;|&nbsp;
+      <%= t(:admin_panel) %> &nbsp;|&nbsp;
       <% if user_signed_in? %>
         <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>&nbsp;|&nbsp;
       <% end %>
       <br/>
       <br/>
-      <%= link_to "All Users", admin_users_path %>&nbsp;|&nbsp;
-      <%= link_to "All Listings", admin_items_path %>&nbsp;|&nbsp;
-      <%= link_to "Create Listing", '/items/new' %>&nbsp;|&nbsp;
-      <%= link_to "Manage Listing", admin_items_path %>&nbsp;|&nbsp;
-      <%= link_to "Create User", new_user_registration_path %>&nbsp;|&nbsp;
-      <%= link_to "Qwnership Transfer", admin_items_path %>&nbsp;|&nbsp;
-      <%= link_to "Commision Change To All ", admin_items_path %>&nbsp;|&nbsp;
-      <%= link_to "Commision Change To A Specified Listing", admin_items_path %>&nbsp;|&nbsp;
-      <%= link_to "Edit Listings", admin_items_path %>&nbsp;|&nbsp;
-      <%= link_to "Delete User", admin_users_path %>&nbsp;|&nbsp;
-      <%= link_to "Delete Booking of a Listing", admin_items_path %>&nbsp;|&nbsp;
-      <%= link_to "Delete Listing", "/delete_listings" %>&nbsp;|&nbsp;
-      <%= link_to "Validate Guest's space occupation", admin_items_path %>
+      <%= link_to t(:all_users), admin_users_path %>&nbsp;|&nbsp;
+      <%= link_to t(:all_listings), admin_items_path %>&nbsp;|&nbsp;
+      <%= link_to t(:create_listings), '/items/new' %>&nbsp;|&nbsp;
+      <%= link_to t(:manage_listings), admin_items_path %>&nbsp;|&nbsp;
+      <%= link_to t(:create_users), new_user_registration_path %>&nbsp;|&nbsp;
+      <%= link_to t(:ownership), admin_items_path %>&nbsp;|&nbsp;
+      <%= link_to t(:commision), admin_items_path %>&nbsp;|&nbsp;
+      <%= link_to t(:specific_listing), admin_items_path %>&nbsp;|&nbsp;
+      <%= link_to t(:edit_listing), admin_items_path %>&nbsp;|&nbsp;
+      <%= link_to t(:delete_users) , admin_users_path %>&nbsp;|&nbsp;
+      <%= link_to t(:delete_booking), admin_items_path %>&nbsp;|&nbsp;
+      <%= link_to t(:delete_listing), "/delete_listings" %>&nbsp;|&nbsp;
+      <%= link_to t(:validate_guest), admin_items_path %>
     </div>
 
 

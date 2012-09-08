@@ -1,7 +1,7 @@
 
 <%= render :partial => "gatherings_header" %>
 <div id="get-list-header">
-  <h2>Your Offers</h2>
+  <h2><%= t(:your_offer) %></h2>
 </div>
 
 <div class="listx-bg">
@@ -24,21 +24,21 @@
           <% if item.avatars.size > 0 %>
             <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo")  %>
           <% else %>
-            NO IMAGE PROVIDED YET.
+            <%= t(:no_image_provided) %>
           <% end %>
         </div>
 
         <div class="name-list" style="margin-bottom: 5px;">
           <h4><%= link_to item.title, item_path(item) %></h4>
         </div>
-        <div class="name-list" style="margin-bottom: 5px;"><b>Location: </b><%= item.address %></div>
+        <div class="name-list" style="margin-bottom: 5px;"><b><%= t(:location_show)%> </b><%= item.address %></div>
 
 
         <div class="name-list" style="margin-bottom: 5px;">
-          <b>Price: </b>
-          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/day,
-          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/week,
-          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
+          <b><%= t(:space_price) %> </b>
+          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_day) %>
+          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_week) %>
+          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_month) %>
         </div>
         <div>
     <%#*Your Offer: <%= number_to_currency(exchange_currency(offer.willingness_to_pay, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
@@ -47,9 +47,9 @@
           status: 
           <% if offer.status == "Accepted - Payment pending" or offer.status == "all joinings approved" or offer.status == "Accepted - Confirmation pending" or offer.status == "joinings approved" or offer.status == "Applied" %>
             <% if joined.size.to_i < offer.persons_in_gathering.to_i %>
-              <%= "Creating" %>
+            <%= t(:creating) %>
             <% else %>
-              <%= "Applied" %>
+            <%= t(:applied) %>
             <% end %>
           <% else %>
             <%= offer.status %>
@@ -70,6 +70,6 @@
       </div>
     <% end %>
   <% else %>
-    You don't currently have any offers listed with PopupStorz.
+    <%= t(:no_offer_listed) %>
   <% end %>
 </div>
