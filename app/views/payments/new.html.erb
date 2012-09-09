@@ -1,17 +1,11 @@
 <script type="text/javascript">
   var lastjavascripthash='';   
   $(document).ready(function(){
-    //if the current url has a hash on dom ready - than the user loads this url directly in browser
-<%#*if (location.hash){%>
-<%#*lastjavascripthash=location.hash='#loaded';%>
-<%#*}%>
-<%#*lastjavascripthash=location.hash='#loaded';%>
     if($("#is_confirm_terms").attr('checked') == "checked"){
       window.location.replace("<%= root_path %>");
     }    
-  });
-  
-  jQuery(function() {    
+  });  
+  jQuery(function() {
     var payment;
 
     jQuery(function() {
@@ -113,25 +107,25 @@
           <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div').toggle()">Show Details</div><br />
           <p class="size_text" id="policy_div" style="display:none;">
             <% unless @item.cancellation_policy_flexible.blank? %>
-    <%= t(:flexible) %><br/>
-          <%= t(:cancel_ln1) %><br/>
-          <%= t(:cancel_ln2) %><br/><br/>
+              <%= t(:flexible) %><br/>
+              <%= t(:cancel_ln1) %><br/>
+              <%= t(:cancel_ln2) %><br/><br/>
 
-          <%= t(:cancel_ln3) %><br/><br/>
+              <%= t(:cancel_ln3) %><br/><br/>
 
-          <%= t(:cancel_ln4)%><br/><br/>
-          <%= t(:cancel_ln5)%><br/><br/>
-      <% else %>
-        <%= t(:semi_flexible) %><br/>
-        <%= t(:semi_cancel_ln1) %><br/>
-        <%= t(:semi_cancel_ln2) %><br/><br/>
+              <%= t(:cancel_ln4)%><br/><br/>
+              <%= t(:cancel_ln5)%><br/><br/>
+            <% else %>
+              <%= t(:semi_flexible) %><br/>
+              <%= t(:semi_cancel_ln1) %><br/>
+              <%= t(:semi_cancel_ln2) %><br/><br/>
 
-        <%= t(:semi_cancel_ln3) %><br/><br/>
+              <%= t(:semi_cancel_ln3) %><br/><br/>
 
-        <%= t(:semi_cancel_ln4) %><br/><br/>
-        <%= t(:semi_cancel_ln5) %><div/>
+              <%= t(:semi_cancel_ln4) %><br/><br/>
+            <%= t(:semi_cancel_ln5) %><div/>
 
-    <% end %>
+          <% end %>
           </p>
           <div class="clear"></div>
           <br />
@@ -190,7 +184,12 @@
         <%= text_field_tag :card_code, "123", name: nil%>
         <br/><br/>
         <%= label_tag :card_month, "Expiry Date"%>
-        <%= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month"} %>
+  <%#= select_month nil, {add_month_numbers: true}, {name: nil, id: "card_month"} %>
+        <select name="date[month]">
+          <% for i in 1..12 %>
+            <option value="<%= i %>"><%= i %></option>
+          <% end %>          
+        </select>
         <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"} %>
         <br/>
         <br/>
@@ -224,9 +223,4 @@
       return false;
     }    
   }
-
-<%#*function disableBackButton()%>
-<%#*{%>
-<%#*window.history.forward();%>
-<%#*}%> 
 </script>

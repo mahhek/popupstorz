@@ -4,16 +4,23 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><%=  t(:popup)%></title>
-    <%= stylesheet_link_tag    "application" %>
+    <%= stylesheet_link_tag "application" %>
+    <%= stylesheet_link_tag "jquery-ui" %>
+    <%= stylesheet_link_tag "ui.theme" %>
+    
+    <%= javascript_include_tag "jquery-1.7.1" %>
+    <%= javascript_include_tag "jquery-ui" %>
+    <%#*<script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>%>
+    <%#*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>    <!-- jsFiddle -->%>
+    
+    <%#*<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->%>
+    <%#*<link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->%>    
+    
+    <%#*<script src="http://maps.google.com/maps?file=api&amp;&amp;v=2&amp;key=AIzaSyAPEeqlhndG4KU6-bRWegIBrs-v-kFcdgY" type="text/javascript"></script>%>
+    <%#*<script src="http://www.facebook.com/assets.php/en_US/all.js" type="text/javascript"></script>%>
 
-    <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>    <!-- jsFiddle -->
-    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->
-    <link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->    
-    <script src="http://maps.google.com/maps?file=api&amp;&amp;v=2&amp;key=AIzaSyAPEeqlhndG4KU6-bRWegIBrs-v-kFcdgY"
-    type="text/javascript"></script>
-    <script src="http://www.facebook.com/assets.php/en_US/all.js" type="text/javascript"></script>
-
+    <%= javascript_include_tag "maps" %>
+    <%= javascript_include_tag "all" %>
     <%= javascript_include_tag "application" %>
 
     <%= javascript_include_tag "geoRssOverlay" %>
@@ -26,8 +33,9 @@
     <%= javascript_include_tag "easing" %>
     <%= javascript_include_tag "elastislide" %>
     <%= javascript_include_tag "gallery" %>
+    <%= javascript_include_tag "jcarousel.min" %>
 
-    <script type="text/javascript" src="http://ww2.accudata.com/wp-content/themes/accudata/js/jquery.jcarousel.min.js"></script>
+    <%#*<script type="text/javascript" src="http://ww2.accudata.com/wp-content/themes/accudata/js/jquery.jcarousel.min.js"></script>%>
 
 
 
@@ -35,8 +43,8 @@
     <%= raw(@map.to_html) if @map %>
     <%= csrf_meta_tags %>
 <%#= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
-
-    <script type="text/javascript" src="https://www.paypalobjects.com/js/external/dg.js"></script>
+    <%= javascript_include_tag "dg" %>
+    <%#*<script type="text/javascript" src="https://www.paypalobjects.com/js/external/dg.js"></script>%>
 
     <%= yield(:head) %>
 

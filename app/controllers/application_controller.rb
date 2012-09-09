@@ -16,21 +16,12 @@ class ApplicationController < ActionController::Base
   helper_method :message_user
   helper_method :exchange_currency
   before_filter :currency_conversion
-
-#  def after_sign_in_path_for(resource_or_scope)
-#    if current_user.is_active == true
-#      root_path
-#    else
-#      flash[:notice] = "Your account is not activated! Please contact admin to activate."
-#      users_sign_out_path
-#    end
-#  end
     
   def after_sign_in_path_for(resource)
     if resource.is_a?(User) && !resource.is_active?
       sign_out resource
       flash[:notice] = nil
-      flash[:error] =t(:not_active)
+      flash[:error] = t(:not_active)
       root_path
     else
       super

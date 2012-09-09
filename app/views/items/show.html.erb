@@ -206,14 +206,14 @@
       <h1 class="size"> <%= t(:availabilities) %></h1><br />
       <div style="width:100%;float:left;margin-bottom: 10px;">
         <% if !@item.availablities_daytime.blank? and @item.availablities_daytime == true %>
-        <%= t(:daytime) %>
+          <%= t(:daytime) %>
         <% end %>
         <% if !@item.availablities_evenings.blank? and @item.availablities_evenings == true %>
-       <%= t(:evenings) %><br/><br/>
+          <%= t(:evenings) %><br/><br/>
         <% end %>
         <br />
         <% if !@item.availablities_monday.blank? and @item.availablities_monday == true %>
-        <%= t(:monday) %>
+          <%= t(:monday) %>
         <% end %>
         <% if !@item.availablities_tuesday.blank? and @item.availablities_tuesday == true %>
           <%= t(:tuesday) %>
@@ -222,7 +222,7 @@
           <%= t(:wednesday) %>
         <% end %>
         <% if !@item.availablities_thursday.blank? and @item.availablities_thursday == true %>
-         <%= t(:thursday) %>
+          <%= t(:thursday) %>
         <% end %>
         <% if !@item.availablities_friday.blank? || @item.availablities_friday == true %>
           <%= t(:friday) %>
@@ -231,23 +231,23 @@
           <%= t(:saturday) %>
         <% end %>
         <% if !@item.availablities_sunday.blank? || @item.availablities_sunday == true %>
-        <%= t(:sunday) %>
+          <%= t(:sunday) %>
         <% end %>
 
       </div>
 
       <h1 class="size"><%= t(:owner_rules) %></h1><br />
-      <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div_<%= offer.id %>').toggle()"><%= t(:show_details) %></div><br />
-      <p class="size_text" id="rules_div_<%= offer.id %>" style="display:none;">
-      <%= item.owner_rules.blank? ? "" : nl2br(item.owner_rules).html_safe %>
+      <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div_<%= @item.id %>').toggle()"><%= t(:show_details) %></div><br />
+      <p class="size_text" id="rules_div_<%= @item.id %>" style="display:none;">
+        <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
       </p>
       <div class="clear"></div>
 
       <h1 class="size"><%= t(:cancellation_policy) %></h1><br />
-      <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div_<%= offer.id %>').toggle()"><%= t(:show_details) %></div><br />
-      <p class="size_text" id="policy_div" style="display:none;">
+      <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div_<%= @item.id %>').toggle()"><%= t(:show_details) %></div><br />
+      <p class="size_text" id="policy_div_<%= @item.id %>" style="display:none;">
         <% unless @item.cancellation_policy_flexible.blank? %>
-      <%= t(:flexible) %><br/>
+          <%= t(:flexible) %><br/>
           <%= t(:cancel_ln1) %><br/>
           <%= t(:cancel_ln2) %><br/><br/>
 
@@ -255,17 +255,17 @@
 
           <%= t(:cancel_ln4)%><br/><br/>
           <%= t(:cancel_ln5)%><br/><br/>
-      <% else %>
-        <%= t(:semi_flexible) %><br/>
-        <%= t(:semi_cancel_ln1) %><br/>
-        <%= t(:semi_cancel_ln2) %><br/><br/>
+        <% else %>
+          <%= t(:semi_flexible) %><br/>
+          <%= t(:semi_cancel_ln1) %><br/>
+          <%= t(:semi_cancel_ln2) %><br/><br/>
 
-        <%= t(:semi_cancel_ln3) %><br/><br/>
+          <%= t(:semi_cancel_ln3) %><br/><br/>
 
-        <%= t(:semi_cancel_ln4) %><br/><br/>
+          <%= t(:semi_cancel_ln4) %><br/><br/>
         <%= t(:semi_cancel_ln5) %><div/>
 
-    <% end %>
+      <% end %>
       </p>
       <div class="clear"></div>
       <br />
@@ -299,7 +299,7 @@
               <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
             <% end %>
           <% end %><br/><b><%= t(:cancellation_policy) %><b/><%if @item.cancellation_policy_flexible%>flexible<% else%>semifelxible<%end%><br/> Owner Rules:<%=@item.owner_rules%><br/><br/>
-            <%= link_to t(:details), "/offers/#{offer.id}" %>
+            <%= link_to t(:details), "/offers/#{gathering.id}" %>
           <% end %>
       </div>
     <% end %>
@@ -407,17 +407,15 @@
             </span>
             <span style="float: left;">
               <select name="price_per_span" onchange="change_price_to_book($(this));">
-                <option value="<%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_day) %></option>
-                <option value="<%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_week) %></option>
-                <option value="<%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_month) %></option>
+                <option value="<%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>"><%= t(:per_day) %></option>
+                <option value="<%= number_to_currency(exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_week) %></option>
+                <option value="<%= number_to_currency(exchange_currency(@item.price_per_month.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_month) %></option>                
               </select>
               <%= hidden_field_tag :per_day_price, @item.price %>
               <%= hidden_field_tag :per_week_price, @item.price_per_week %>
               <%= hidden_field_tag :per_month_price, @item.price_per_month %>
             </span>
           </div>
-
-  <%#*<div class="clear"></div>%>
         </div>
         <div id="r-date">
           <div id="pickup" style="margin-top: 10px;float: left;">
