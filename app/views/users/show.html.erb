@@ -1,4 +1,4 @@
-<h1>Profile</h1>
+<h1><%= t(:pro2)%></h1>
 <div style="float:left;width:100%;">
 
   <div style="width:45%;float: left;">
@@ -11,46 +11,46 @@
     </div>
 
     <div style="margin: 5px;">
-      <b>First Name:</b>&nbsp;&nbsp;&nbsp;<%= @user.first_name %>
+      <b><%= t(:first_name) %></b>&nbsp;&nbsp;&nbsp;<%= @user.first_name %>
     </div>
 
     <div style="margin: 5px;">
-      <b>Last Name:</b>&nbsp;&nbsp;&nbsp;<%= @user.last_name %>
+      <b><%= t(:last_name) %></b>&nbsp;&nbsp;&nbsp;<%= @user.last_name %>
     </div>
 
     <br/>
     <div style="margin: 5px;">
       <% if (@user.gender == true) then %>
-        <b>Gender:</b> &nbsp;Male.
+        <b><%= t(:gender) %></b> &nbsp;<%= t(:male) %>
       <%else%>
-        <b>Gender:</b> &nbsp;Female.
+        <b><%= t(:gender) %></b> &nbsp;<%= t(:female) %>.
       <%end%>
     </div>
     <div style="margin: 5px;">
-      <b>Email:</b>&nbsp;&nbsp;&nbsp;<%= @user.email %>
+      <b><%= t(:email) %></b>&nbsp;&nbsp;&nbsp;<%= @user.email %>
     </div>
     <br/>
     <div style="margin: 5px;">
-      <b> City:</b>&nbsp;&nbsp;&nbsp<%= @user.city %>
+      <b> <%= t(:city2) %></b>&nbsp;&nbsp;&nbsp<%= @user.city %>
     </div>
     <div style="margin: 5px;">
-      <b> Country:</b>&nbsp;&nbsp;&nbsp<%= @user.country %>
+      <b> <%= t(:country2) %></b>&nbsp;&nbsp;&nbsp<%= @user.country %>
     </div>
     <div style="margin: 5px;">
-      <b> Activity:</b>&nbsp;&nbsp;&nbsp<%= @user.activity %>
+      <b> <%= t(:active2) %></b>&nbsp;&nbsp;&nbsp<%= @user.activity %>
     </div>
     <br/>
 
     <% if @user.show_fb_info %>
-      <b>Facebook Info:</b>  <br />
+      <b><%= t(:fb_info) %></b>  <br />
       <img src="<%= @user.fb_pic_url %>" /><br />
-      <b>Work Info:</b>
+      <b><%= t(:work_info) %></b>
       <%= @user.works_at %><br /><br />
-      <b>Educartion Info:</b>
+      <b><%= t(:edu_info) %></b>
       <%= @user.studied_at %><br /><br />
-      <b>Facebook Pages:</b>
+      <b><%= t(:fb_pages) %></b>
       <%= @user.fb_pages %><br /><br />
-      <b>Facebook Friends</b>
+      <b><%= t(:fb_friends) %></b>
       <%= @user.fb_friends_count %>
     <% end %>
 
@@ -62,29 +62,29 @@
   </div>
 
   <div style="width:45%;margin-left: 10%;float:left;">
-    <b>Items:</b>
+    <b><%= t(:item2) %></b>
     <% items = @user.items %>
     <% count = 0 %>
-    <% items.each do |item| %>  
+    <% items.each do |item| %>
       <div style="float:left;width: 100%;clear:both;margin-top: 10px;margin-bottom: 5px;">
         <div class="imgx">
           <% if item.avatars.size > 0 %>
             <%= link_to image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo"), item_path(item.id) %>
           <% else %>
-            NO IMAGE PROVIDED YET.
+            <%= t(:no_image_provided) %>
           <% end %>
         </div>
 
-        Title:  <%= link_to item.title, item_path(item) %><br />
-        Description:  <%= item.description %><br />
-        Price:  <%= item.price.to_s+" "+item.price_unit.to_s %><br />    
-        Availability: <%= item.availability_from.blank? ? "" : item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.blank? ? "" :item.availability_to.strftime("%m/%y")%>
+        <%= t(:tittel) %>  <%= link_to item.title, item_path(item) %><br />
+        <%= t(:space_description) %> <%= item.description %><br />
+        <%= t(:space_price) %> <%= item.price.to_s+" "+item.price_unit.to_s %><br />
+        <%= t(:avail3) %> <%= item.availability_from.blank? ? "" : item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.blank? ? "" :item.availability_to.strftime("%m/%y")%>
         <div style="width:200px;border-bottom: 1px solid black;height:0px;"></div>
 
         <div style="width:100%;float:left;clear:both;margin-bottom: 10px;">
           <h4><label onclick='$("#show_comments_<%= count.to_s %>").toggle();' style="cursor: pointer;">Show Comments</label></h4>
           <div id="show_comments_<%= count.to_s %>" style="display: none;border: 1px solid #606060">
-            <b>Comments:</b><br/>
+            <b><%= t(:comments2) %></b><br/>
             <%unless item.comments.blank? %>
               <%item.comments.each do|f|%>
                 <b><%=f.title  %></b><br/>
@@ -94,15 +94,15 @@
                 <br/>
               <%end%>
             <% else %>
-              No Comments yet!
+            <%= t(:no_comments) %>
             <%end%>
           </div>
         </div>
 
-        <div style="width:100%;float:left;clear:both;margin-bottom: 10px;">      
-          <h4><label onclick='$("#show_rating_<%= count.to_s %>").toggle();' style="cursor: pointer;">Show Rating</label></h4>
+        <div style="width:100%;float:left;clear:both;margin-bottom: 10px;">
+          <h4><label onclick='$("#show_rating_<%= count.to_s %>").toggle();' style="cursor: pointer;"><%= t(:show_rating) %></label></h4>
           <div id="show_rating_<%= count.to_s %>" style="display: none;border: 1px solid #606060;height:250px;padding-left: 10px;width:500px;">
-            <b>Ratings</b>
+            <b><%= t(:rate) %></b>
             <%= render :partial => "/ratings/rating", :locals => { :asset => item, :only_view => false } %>
           </div>
         </div>
@@ -134,7 +134,7 @@
 </div>
 
 <div id="get-list-header">
-  <h2>The Coming Bookings</h2>
+  <h2><%= t(:coming_booking) %></h2>
 </div>
 
 <div class="listx-bg">
@@ -148,40 +148,40 @@
           <% if item.avatars.size > 0 %>
             <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo")  %>
           <% else %>
-            NO IMAGE PROVIDED YET.
+            <%= t(:no_image_provided) %>
           <% end %>
         </div>
 
         <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
-        <div class="name-list" style="margin-bottom: 5px;"><b>Location: </b><%= item.address %></div>
+        <div class="name-list" style="margin-bottom: 5px;"><%= t(:location_show)%> </b><%= item.address %></div>
         <% joined = GatheringMember.where("status = 'Approved' and offer_id = #{offer.id}") %>
 
         <div class="name-list" style="margin-bottom: 5px;">
-          <b>Price: </b>
-          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/day,
-          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/week,
-          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
+           <b><%= t(:space_price) %> </b>
+          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_day) %>
+          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_week) %>
+          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_month) %>
         </div>
         <div>
-          <b>Your Offer: </b><%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
+          <b><b><%= t(:your_offer) %></b><%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
           <br/><%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
-            <b>Gathering Description: </b><%= offer.gathering_description %><%end%>
+            <b><%= t(:gathering_des) %></b><%= offer.gathering_description %><%end%>
           <br/>
-          <b>Status:</b>          
+          <b><%= t(:status) %></b>
           <% if offer.status == "Accepted - Payment pending" or offer.status == "all joinings approved" or offer.status == "Accepted - Confirmation pending" or offer.status == "joinings approved" or offer.status == "Applied" or offer.status == "confirmed" %>
             <% if joined.size.to_i < offer.persons_in_gathering.to_i or offer.cancellation_date.blank? %>
-              <%= "Creating" %>
+            <%= t(:creating) %>
             <% else %>
-              <%= "Applied" %>
+            <%= t(:applied) %>
             <% end %>
           <% else %>
             <%= offer.status %>
           <% end %>
           <br/>
-          <b>Time:</b> <%= offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= offer.rental_end_date.strftime("%m-%d-%Y") %>
+          <b><%= t(:time) %></b> <%= offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= offer.rental_end_date.strftime("%m-%d-%Y") %>
           <br/>
           <% if offer.is_gathering %>
-            <b>Users Joined:</b> <%= joined.size.to_s + "/ #{offer.persons_in_gathering}"%>
+            <b><%= t(:user_joined) %></b> <%= joined.size.to_s + "/ #{offer.persons_in_gathering}"%>
           <% end %>
     <%#if offer.status == "Accepted - Payment pending" && offer.item.user_id != current_user.id %>
     <%#*<form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>
@@ -201,7 +201,7 @@
           <% approved = offer.members.where("status = 'Approved'") %>
           <% applied = offer.members.where("status = 'Applied' or status = 'confirmed'") %>
           <div style="width:100%;margin-top:10px;margin-bottom: 10px;">
-            <b>Confirmed Members</b>
+            <b><%= t(:confirmed_members) %></b>
             <% unless approved.blank? %>
               <% count = 1 %>
               <% approved.each do|member| %>
@@ -230,21 +230,21 @@
                 <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
                 <% if request.status == "confirmed" && current_user.id == offer.user_id %>
                   <% if joined.size <  offer.persons_in_gathering.to_i %>
-                    <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
-                    <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
+                    <%= link_to t(:approve), "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> |
+                    <%= link_to t(:decline), "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
                     <br /><br />
                   <% end %>
                 <% end %>
 
               <% end %>
             <% else %>
-              No Member joined yet
+              <%= t(:no_member_yet) %>
             <% end %>
           </div>
 
           <% if joined.size.to_i < offer.persons_in_gathering.to_i %>
             <div style="width:100%;margin-top:10px;margin-bottom: 10px;">
-              <b>Applied</b>
+              <b><%= t(:applied) %></b>
               <% unless applied.blank? %>
                 <% count = 1 %>
                 <% applied.each do|member| %>
@@ -273,15 +273,15 @@
                   <% request = GatheringMember.where("user_id = #{member.id} and offer_id = #{offer.id}").first %>
                   <% if request.status == "confirmed" && current_user.id == offer.user_id %>
                     <% if joined.size <  offer.persons_in_gathering.to_i %>
-                      <%= link_to "Approve", "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> | 
-                      <%= link_to "Decline", "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
+                      <%= link_to t(:approve), "/approve_gathering_request/#{offer.id}?mem=#{member.id}" %> |
+                      <%= link_to t(:decline), "/decline_gathering_request/#{offer.id}?mem=#{member.id}" %>
                       <br /><br />
                     <% end %>
                   <% end %>
 
                 <% end %>
               <% else %>
-                No pending applications
+               <%= t(:no_pending) %>
               <% end %>
             </div>
           <% end %>
@@ -289,23 +289,23 @@
 
           <br/><br/>
 
-          <% if offer.status == "all joinings approved" && current_user.id == offer.user_id %>     
-            <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{offer.id}" %> 
+          <% if offer.status == "all joinings approved" && current_user.id == offer.user_id %>
+            <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{offer.id}" %>
           <% end %>
         <% end %>
 
 
 
         <div style="float:left;width:100%;">
-          <h1 class="size">Owner Rules:</h1><br />
-          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div_<%= offer.id %>').toggle()">Show Details</div><br />
+          <h1 class="size"><%= t(:owner_rules) %></h1><br />
+          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div_<%= offer.id %>').toggle()"><%= t(:show_details) %></div><br />
           <p class="size_text" id="rules_div_<%= offer.id %>" style="display:none;">
             <%= item.owner_rules.blank? ? "" : nl2br(item.owner_rules).html_safe %>
           </p>
           <div class="clear"></div>
 
-          <h1 class="size">Cancellation Policy:</h1><br />
-          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div_<%= offer.id %>').toggle()">Show Details</div><br />
+          <h1 class="size"><%= t(:cancellation_policy) %></h1><br />
+          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div_<%= offer.id %>').toggle()"><%= t(:show_details) %></div><br />
           <p class="size_text" id="policy_div_<%= offer.id %>" style="display:none;">
             <% unless item.cancellation_policy_flexible.blank? %>
     <%= t(:flexible) %><br/>
@@ -335,7 +335,7 @@
 
 
 
-      <%= link_to "Details", "/offers/#{offer.id}" %>
+      <%= link_to t(:details), "/offers/#{offer.id}" %>
       <br /><br />
       <% if (offer.status != "all joinings approved" and offer.status != "Cancelled" and offer.status != "Applied" and offer.status != "Declined") && current_user.id == offer.user_id && offer.rental_start_date >= Date.parse("#{Date.today}","%Y-%d-%m") %>
         <%= link_to "Cancel Booking", "/cancel_booking/#{offer.id}" %>
@@ -344,13 +344,13 @@
 
   <%end%>
 <%else%>
-  You don't currently have any offers listed with PopupStorz.
+  <%= t(:no_offer_listed) %>
 <%end%>
 </div>
 
 <script>
 
-  
+
   function defineDelete(){
     isChecked = "false";
     jQuery(".checkBoxClass").each(function(){
@@ -366,13 +366,13 @@
       alert('hideDelete');
     }
   }
-  
+
   function check_request_form(){
     if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy") {
       alert('Please enter response date.');
       return false;
     }
   }
-  
-  
+
+
 </script>
