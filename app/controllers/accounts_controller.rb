@@ -22,8 +22,6 @@ class AccountsController < ApplicationController
   def update
     @account = Account.find_by_id(params[:id])
     case params[:verification_type]
-    when "sms"
-      do_sms_verification
     when "cc"
       do_cc_verification
     end
@@ -84,29 +82,5 @@ class AccountsController < ApplicationController
       flash[:notice] = t(:card_verified)
     end
   end
-
-  def do_sms_verification
-    if @account.sms_verification_code.blank?
-      sms = SMS.new(CLICKATELL_CONFIG)
-      sms_code = generate_sms_code
-      if sms.create(params[:mobile_number], sms_code)
-        @account.update_attribute("sms_verification_code", sms_code)
-        flash[:notice] = t(:submit_code)
-      else
-        flash[:alert] = "Clickatell API error: #{Clickatell::API::Error.message}"
-      end
-    else
-      if params[:sms_verification_code].strip == @account.sms_verification_code.strip
-        @account.update_attribute("is_sms_verified", true)
-        flash[:notice] = t(:verified)
-      else
-        flash[:notice] = t(:verification_recheck)
-      end
-    end
-  end
-
-  def generate_sms_code
-    o =  [('a'..'z'),('A'..'Z'),(0..10)].map{|i| i.to_a}.flatten;
-    (0..10).map{ o[rand(o.length)]  }.join;
-  end
+  
 end
