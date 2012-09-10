@@ -7,17 +7,16 @@
     <%= stylesheet_link_tag "application" %>
     <%= stylesheet_link_tag "jquery-ui" %>
     <%= stylesheet_link_tag "ui.theme" %>
-    
     <%= javascript_include_tag "jquery-1.7.1" %>
     <%= javascript_include_tag "jquery-ui" %>
-    <%#*<script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>%>
-    <%#*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>    <!-- jsFiddle -->%>
-    
-    <%#*<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->%>
-    <%#*<link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->%>    
-    
-    <%#*<script src="http://maps.google.com/maps?file=api&amp;&amp;v=2&amp;key=AIzaSyAPEeqlhndG4KU6-bRWegIBrs-v-kFcdgY" type="text/javascript"></script>%>
-    <%#*<script src="http://www.facebook.com/assets.php/en_US/all.js" type="text/javascript"></script>%>
+<%#*<script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>%>
+<%#*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>    <!-- jsFiddle -->%>
+
+<%#*<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->%>
+<%#*<link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->%>    
+
+<%#*<script src="http://maps.google.com/maps?file=api&amp;&amp;v=2&amp;key=AIzaSyAPEeqlhndG4KU6-bRWegIBrs-v-kFcdgY" type="text/javascript"></script>%>
+<%#*<script src="http://www.facebook.com/assets.php/en_US/all.js" type="text/javascript"></script>%>
 
     <%= javascript_include_tag "maps" %>
     <%= javascript_include_tag "all" %>
@@ -34,20 +33,14 @@
     <%= javascript_include_tag "elastislide" %>
     <%= javascript_include_tag "gallery" %>
     <%= javascript_include_tag "jcarousel.min" %>
-
-    <%#*<script type="text/javascript" src="http://ww2.accudata.com/wp-content/themes/accudata/js/jquery.jcarousel.min.js"></script>%>
-
-
-
+<%#*<script type="text/javascript" src="http://ww2.accudata.com/wp-content/themes/accudata/js/jquery.jcarousel.min.js"></script>%>
     <%= GMap.header(:with_vml => false, :host => request.host).html_safe %>
     <%= raw(@map.to_html) if @map %>
     <%= csrf_meta_tags %>
 <%#= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
     <%= javascript_include_tag "dg" %>
-    <%#*<script type="text/javascript" src="https://www.paypalobjects.com/js/external/dg.js"></script>%>
-
+<%#*<script type="text/javascript" src="https://www.paypalobjects.com/js/external/dg.js"></script>%>
     <%= yield(:head) %>
-
     <noscript>
       <style>
         .es-carousel ul{
@@ -71,19 +64,14 @@
           </div>
         </div>
       </div>
-    </script> 
-
+    </script>
   </head>
 
   <body>
-
     <%= render :partial => "/layouts/social_medias" %>
-
     <div class="maincontainer">
-
       <div class="header">
         <div class="maincontainer">
-
           <div class="loginpannel">
             <% unless user_signed_in? %>
               <%= form_tag new_user_session_path do %>
@@ -91,7 +79,6 @@
                 <%= password_field_tag 'user[password]' %>
                 <input type="submit" value="Login" />
                 <%= link_to t(:forgot_password), new_password_path(User) %><br />
-
               <% end %>
             <% else %>
               <%= link_to "Hi #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
@@ -122,19 +109,13 @@
                   <li><%= link_to "€",  "#", :onclick => "addParamToUrl('curr', 'EUR')" %></li>
                 </ul>
               </div>
-
-
               <%= link_to(image_tag("listaspace.png"), new_item_path ) %>
-<%#*<img class="listaspace" src="../assets/" />%>
             </div>
 
             <% if user_signed_in? %>
               <span style="float: left;">
                 <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
-
                 <%=  link_to t(:dashboard), inbox_messages_path, :class => ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : "")%>
-
-  <%#=link_to "Dashboard", dashboard_path(current_user.id), :class => ((params[:controller] == "accounts" or params[:controller] == "items" ) ? "m_act" : "")%>
                 <% messages_size = current_user.messages.are_to(current_user).unread.size %>
                 <% if messages_size > 0 %>
                   <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
@@ -152,49 +133,36 @@
                     </span>
                   </div>
                 </div>
-  <%#= link_to 'Search', search_home_searches_path, :class => ((params[:controller] == "searches") ? "m_act" : "") %>
               </span>
               <div class="clear"></div>
               <span style="float: left;margin-left: 100px;">
                 <% if params[:controller] == "searches" %>
-    <%#= link_to 'Members', members_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "members" or params[:action] == "search_members" )) ? "m_act" : "") %>
-    <%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
                 <% end %>
-              </span>
-
-              <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || (params[:action] == "listings_home" && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" )||(params[:controller] == "accounts") %>
-
-                <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || ((params[:action] == "listings_home" or params[:action] == "new") && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" ) %>
-
+              </span>              
+              <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || (params[:action] == "listings_home" && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" )||(params[:controller] == "accounts") || (params[:controller] == "items" && params[:action] == "new") %>
+                <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || ((params[:action] == "listings_home" or params[:action] == "new") && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" ) || (params[:controller] == "items" && params[:action] == "new") %>
                   <span style="float: left;">
                     <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" or (params[:controller] == "email_settings") %>
                       <%= link_to 'Messages', inbox_messages_path %>
                       <%= link_to 'My Listings', overview_items_path %>
                       <%= link_to 'My Bookings', "/items/created_coming_gatherings"%>
-        <%#= link_to 'My Gatherings', "/items/gatherings"%>
                       <%= link_to 'My Favorites', favorites_items_path %>
-                      <%= link_to('My Profile', profile_path(current_user.id)) %>  <%= link_to "Account","/invitation" %>                 
-        <%#= link_to "Send Invitations","/invitation" %>
-        <%#= link_to "Email Settings","/email_settings/index" %>
-        <%#= link_to "Delete My Account","/users/delete_account", :confirm => "Are you sure you want to delete your account permanently?" %>
-                    <% end %><%end%>
+                      <%= link_to('My Profile', profile_path(current_user.id)) %>
+                      <%= link_to "Account","/invitation" %>
+                    <% end %>
+                  <% end %>
                 </span>
               <% end %>
-
             <% else %>
               <span style="float: left;">
                 <a href="/home/about">About</a>
-                <%= link_to('Signup', new_user_registration_path)  %>
+                <%= link_to('Signup', new_user_registration_path) %>
               </span>
             <% end %>
-
-            <br/>
-            <br/>
-
+            <br/><br/>
           </div>
         </div>
       </div>
-
       <div class="contentholder">        
         <% if notice %>
           <p class="notice" style="padding: 5px;width :95%;background-color:lightgreen;"><%= notice %></p>
@@ -204,32 +172,27 @@
         <% end %>
         <% if flash[:error] %>
           <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= flash[:error] %></p>
-        <% end %>          
-
+        <% end %>
         <%= yield %>
         <div class="clear"></div>
       </div>
-
       <div class="fltR footer mt30 mr100">
-        <a href="/home/feedback"><%= t(:popup_12) %></a>        <a href="/home/terms"><%= t(:terms) %></a>        <a href="/home/contact"><%= t(:contact) %></a>
+        <a href="/home/feedback"><%= t(:popup_12) %></a>
+        <a href="/home/terms"><%= t(:terms) %></a>
+        <a href="/home/contact"><%= t(:contact) %></a>
       </div>
-
     </div>
   </body>
 </html>
-
 <script type="text/javascript">
-
   function addParamToUrl(param, value)
   {
     //check if param exists
     var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
     result = result && result[1] || "";
-
     //added seperately to append ? before params
     var loc = window.location;
     var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
-
     //param doesn't exist in url, add it
     if (result == '')
     {
@@ -245,21 +208,16 @@
     }
     else
     {
-
       value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
       value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
       url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
-
     }
-
     //return the finished url
     window.location = url;
   }
-
   function search_menu(){
     $('#search_options').toggle();
   }
-
   $(document).click(function(event) {
     if($(event.target).hasClass("searchMenu") == true){      
       $('#search_options').show();
@@ -270,6 +228,4 @@
       }
     }
   });
-
-
 </script>

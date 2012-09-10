@@ -93,8 +93,8 @@ class ItemsController < ApplicationController
     @availability_options = AvailabilityOption.all    
   end
   
-  def create    
-    @countries = Country.all    
+  def create
+    @countries = Country.all
     if params[:item][:available_forever] == "1"
       params[:item][:availability_from] = ""
       params[:item][:availability_to] = ""

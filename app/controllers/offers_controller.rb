@@ -168,7 +168,7 @@ class OffersController < ApplicationController
     @booked_dates = []
     @manage_dates_array = []
     @offers = @item.offers.where("(status LIKE '%Confirmed%') and parent_id is NULL")   
-    offers.each do|offer|
+    @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
     @manage_dates_array << @booked_dates
@@ -194,7 +194,7 @@ class OffersController < ApplicationController
     @booked_dates = []
     @manage_dates_array = []
     @offers = @item.offers.where("(status LIKE '%Confirmed%') and parent_id is NULL")
-    offers.each do|offer|
+    @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
     @manage_dates_array << @booked_dates
@@ -204,8 +204,6 @@ class OffersController < ApplicationController
     params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time
 
     @offer.attributes = params[:offer]
-
-
     if @offer.changed?
       if @offer.save
         current_user.send_message(@offer.user != current_user ? @offer.user : @item.user, :topic => "Offer Updated", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been modified by #{@offer.user != current_user ? "Owner": "Renter"}. Please review to accept or decline.".html_safe)
