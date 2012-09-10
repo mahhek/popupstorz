@@ -95,17 +95,7 @@ class ItemsController < ApplicationController
   
   def create
     @countries = Country.all
-    if params[:item][:available_forever] == "1"
-      params[:item][:availability_from] = ""
-      params[:item][:availability_to] = ""
-    end
-    
-    unless params[:item][:availability_from].blank?
-      params[:item][:availability_from] = DateTime.strptime(params[:item][:availability_from], "%m/%d/%Y").to_time
-    end
-    unless params[:item][:availability_to].blank?
-      params[:item][:availability_to] = DateTime.strptime(params[:item][:availability_to], "%m/%d/%Y").to_time
-    end
+    set_values
     
     @item = Item.new(params[:item])
     @map = GMap.new("map")
@@ -142,7 +132,20 @@ class ItemsController < ApplicationController
       render :action => "new"
     end
   end
-
+  
+  def set_values
+    if params[:item][:available_forever] == "1"
+      params[:item][:availability_from] = ""
+      params[:item][:availability_to] = ""
+    end    
+    unless params[:item][:availability_from].blank?
+      params[:item][:availability_from] = DateTime.strptime(params[:item][:availability_from], "%m/%d/%Y").to_time
+    end
+    unless params[:item][:availability_to].blank?
+      params[:item][:availability_to] = DateTime.strptime(params[:item][:availability_to], "%m/%d/%Y").to_time
+    end
+  end
+  
   def edit
     @countries = Country.all
     @item = Item.find_by_id(params[:id])
@@ -158,23 +161,13 @@ class ItemsController < ApplicationController
 
   def update
     @countries = Country.all
-    @item = Item.find(params[:id])
-    
-    if params[:item][:available_forever] == "1"
-      params[:item][:availability_from] = ""
-      params[:item][:availability_to] = ""
-    end    
-    unless params[:item][:availability_from].blank?
-      params[:item][:availability_from] = DateTime.strptime(params[:item][:availability_from], "%m/%d/%Y").to_time
-    end
-    unless params[:item][:availability_to].blank?
-      params[:item][:availability_to] = DateTime.strptime(params[:item][:availability_to], "%m/%d/%Y").to_time
-    end
-    
+    @item = Item.find(params[:id])    
+    set_values    
     @item.availability_option_ids = params[:availability_options]
     if @item.update_attributes(params[:item])
       flash[:notice] = t(:updating_space)
-      redirect_to edit_item_avatar_path(@item,@item.avatars.first)
+#      redirect_to edit_item_avatar_path(@item,@item.avatars.first)
+      redirect_to edit_item_avatar_path(@item.id)
     else
       @listing_types = ListingType.all :order =>"name asc"
       @availability_options = AvailabilityOption.all
@@ -217,17 +210,13 @@ class ItemsController < ApplicationController
       @available_days << 6
     end
             
-    @offers = @item.offers.where("(status LIKE '%Confirmed%') and parent_id is NULL")
-    
+    @offers = @item.offers.where("(status LIKE '%Confirmed%') and parent_id is NULL")    
     @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
-    @manage_dates_array << @booked_dates
-        
-    @comment = Comment.new
-   
-    @curr_offers = @item.offers.where("(status NOT LIKE '%Confirmed%' and status != 'Cancelled') and parent_id is NULL")
-    
+    @manage_dates_array << @booked_dates        
+    @comment = Comment.new   
+    @curr_offers = @item.offers.where("(status NOT LIKE '%Confirmed%' and status != 'Cancelled') and parent_id is NULL")    
     @user = @item.user
     @map = GMap.new("map")
     @map.control_init(:map_type => true, :small_zoom => true)
@@ -338,7 +327,7 @@ class ItemsController < ApplicationController
     
     items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
     @items = items - booked_items    
-#    Items whose owners are active users
+    #    Items whose owners are active users
     active_items = []  
     @items.each do|item|
       if item.user.is_active == true
@@ -431,7 +420,7 @@ class ItemsController < ApplicationController
     @offers = Offer.find(:all, :conditions => ["owner_id = ? and (status = 'joinings approved' or status = 'confirmed' or status = 'Declined' or status = 'Confirmed' or status = 'Cancelled')",current_user.id], :order => "rental_start_date ASC")
   end
   
-  def  past_transactions 
+  def past_transactions 
     @gatherings = Offer.find(:all, :conditions => ["(owner_id = ? and user_id != ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_end_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'",current_user.id,current_user.id], :order => "rental_start_date ASC")
     gathers = @gatherings.group_by(&:item_id)
     gathers.each do|k,v|

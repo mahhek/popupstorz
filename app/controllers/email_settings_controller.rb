@@ -1,8 +1,6 @@
 # -*- encoding : utf-8 -*-
-class EmailSettingsController < ApplicationController
-  
-  before_filter :authenticate_user!, :except => [:index]
-  
+class EmailSettingsController < ApplicationController  
+  before_filter :authenticate_user!, :except => [:index]  
   def index
     @email_setting = current_user.email_setting
     if @email_setting.blank?
@@ -45,6 +43,5 @@ class EmailSettingsController < ApplicationController
       flash[:notice] = t(:email_setting_not_update)
       redirect_to :action => "edit"
     end
-  end
-  
+  end  
 end

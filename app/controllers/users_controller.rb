@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   
   def add_comment
     @comment = Comment.new(params[:comment])
-    @comment.user=current_user
+    @comment.user = current_user
     @user = User.find(params[:id])
     if @comment.save
       flash[:notice] = t(:comment_added)
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
         @invitation = Invitation.new
         @invitation.user = current_user      
         @invitation.email = params["email"+"#{i}"]
-        @invitation.token =  (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
+        @invitation.token = (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
         @invitation.save
         UserMailer.send_invitation_email(@invitation).deliver
       end

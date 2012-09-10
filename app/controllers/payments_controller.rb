@@ -69,8 +69,7 @@ class PaymentsController < ApplicationController
           flash[:notice] = t(:created_gathering)
         else
           flash[:notice] = t(:validation_from_gathering)
-        end
-        
+        end        
       else
         current_user.send_message(owner, :topic => "Booking Approval Required", :body => "#{current_user.first_name} would like to rent your space <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} and needs a response before #{@offer.cancellation_date.strftime("%m-%d-%Y")}. You need to go to 'My Listings', 'Manage Bookings' and Accept or Decline the offer. #{current_user.first_name} says: #{@offer.offer_messages.last.message}.".html_safe)
         @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering", :description => "#{current_user.first_name} would like to rent your space <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} and needs a response before #{@offer.cancellation_date.strftime("%m-%d-%Y")}. You need to go to 'My Listings', 'Manage Bookings' and Accept or Decline the offer. #{current_user.first_name} says: #{@offer.offer_messages.last.message}.".html_safe)
@@ -80,9 +79,8 @@ class PaymentsController < ApplicationController
       end
       redirect_to "/"
     else
-      puts pay_response.errors.first['message']
       redirect_to failed_payment_url
-    end    
+    end
   end
   
   def check_gathering_state(offer)

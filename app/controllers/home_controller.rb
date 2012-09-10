@@ -31,5 +31,4 @@ class HomeController < ApplicationController
     flash[:notice] = t(:feedback_sent)
     redirect_to "/"   
   end
-
 end

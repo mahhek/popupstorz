@@ -121,7 +121,7 @@
   <div class="shadowCont">
     <div class="fltL">
       <h1 class="charming"><%= @item.title %>!</h1>
-      <h6><%= link_to tt(:edit_item), edit_item_path(@item) if (current_user && @item.user.email == current_user.email)%></h6>
+      <h6><%= link_to t(:edit_item), edit_item_path(@item) if (current_user && @item.user.email == current_user.email)%></h6>
       <%= link_to t(:delete_space), item_path(@item), :method => :delete, :confirm => t(:sure_delete) if (current_user && @item.user.email == current_user.email)%>
 
       <p class="charming_text"><%= @item.address %>(<%= @item.zipcode %> - <%= @item.city %>, <%= @item.country_code   %>)</p>

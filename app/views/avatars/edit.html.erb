@@ -25,8 +25,11 @@
     <%= file_field_tag :photo_15 if @item.avatars.size == 0 or @item.avatars.size < 2  %><br />
     <%= f.hidden_field:photo %><br />
 
-    <center><button type="submit" class="large-max button orange"> <%= t(:upload_pic) %></button></center>
-
+    <center>
+      <button type="submit" class="large-max button orange"> 
+        <%= t(:upload_pic) %>
+      </button>
+    </center>
   </div>
 <% end %>
 
@@ -43,36 +46,40 @@
     </div>
   </div>
   <br/>
-  <div id="lisit-name"><h1><%= @avatars.first.item.title %></h1></div>
+  <% unless @avatars.blank? %>
+    <div id="lisit-name">
+      <h1><%= @avatars.first.item.title %></h1>
+    </div>
 
-  <div id="show-thumbnail">
-    <% unless @avatars.first.new_record? %>
-      <div id="thumbnail">
-        <%= image_tag(@avatars.first.photo.url(:thumb) )%>
-      </div>
-      <div id="thumbnail-txt"><%= t(:thumbnail) %></div>
-    <%end%>
-  </div>
-  <div id="thumnail-details">
-    <span class="familar-photo"><%= t(:photo) %></span>
-    <br/>
-    <br/>
-    <span class="gray-14"><%= t(:type_acceptable) %></span>
-    <br/>
-    <br/>
+    <div id="show-thumbnail">
+      <% unless @avatars.first.new_record? %>
+        <div id="thumbnail">
+          <%= image_tag(@avatars.first.photo.url(:thumb) )%>
+        </div>
+        <div id="thumbnail-txt"><%= t(:thumbnail) %></div>
+      <%end%>
+    </div>
+    <div id="thumnail-details">
+      <span class="familar-photo"><%= t(:photo) %></span>
+      <br/>
+      <br/>
+      <span class="gray-14"><%= t(:type_acceptable) %></span>
+      <br/>
+      <br/>
 
-    <br/>
-    <br/>
-    <%@avatars.each do |avatar|%>
-      <%= image_tag(avatar.photo.url(:large) )%>
       <br/>
       <br/>
-      <%= link_to  t(:delete_photo) , item_avatar_path(@item,avatar), :method => :delete, :confirm => t(:sure_delete) %>
+      <% @avatars.each do |avatar| %>
+        <%= image_tag(avatar.photo.url(:large) )%>
+        <br/>
+        <br/>
+        <%= link_to  t(:delete_photo) , item_avatar_path(@item,avatar), :method => :delete, :confirm => t(:sure_delete) %>
+        <br/>
+        <br/>
+      <% end %>
       <br/>
       <br/>
-    <%end%>
-    <br/>
-    <br/>
-  </div>
+    </div>
+  <% end %>
 
 </div>

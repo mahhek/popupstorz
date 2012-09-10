@@ -139,8 +139,7 @@ class SearchesController < ApplicationController
   
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
-    @shareable = Item.select("distinct(is_shareable)")
-    
+    @shareable = Item.select("distinct(is_shareable)")    
     #    Conditions to find booked items in given dates
     conds = "1=1 "
     unless params[:search_from].blank?
@@ -172,8 +171,7 @@ class SearchesController < ApplicationController
           booked_items << offer.item(:conditions => ["city LIKE '%#{params[:location]}%'"])
         end
       end
-    end
-    
+    end    
     #    Conditions on Items search
     item_conds = "1=1 "
     if !params[:min_price].blank? and !params[:max_price].blank?
@@ -220,7 +218,6 @@ class SearchesController < ApplicationController
     case params[:sort_option]
     when "1"
       order_by = "created_at DESC"
-      #      order_by = "is_recommended, price DESC"
     when "2"
       order_by = "price DESC"
     when "3"
@@ -231,17 +228,15 @@ class SearchesController < ApplicationController
       order_by = "price ASC"
     end
  
-    items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)
-    
-    @items = items - booked_items
-    
+    items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
+    @items = items - booked_items    
 # Items whose owners are active users
     active_items = []  
     @items.each do|item|
       if item.user.is_active == true
         active_items << item
       end
-    end    
+    end
     @items = active_items
     
     if params[:sort_option].blank?

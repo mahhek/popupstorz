@@ -79,7 +79,7 @@ class OffersController < ApplicationController
     @number_of_days += 1
     @calculated_price = calculate_price(@number_of_days, @item)
   end
-
+ 
   def create    
     @offer = Offer.find_by_item_id_and_user_id_and_status(params[:item_id],current_user.id,"Pending")
     @item = Item.find params[:item_id]
@@ -123,22 +123,15 @@ class OffersController < ApplicationController
     end
     
     unless @offer.blank?
-      params[:offer][:rental_start_date] = DateTime.strptime(params[:offer][:rental_start_date], "%m/%d/%Y").to_time
-      params[:offer][:rental_end_date] = DateTime.strptime(params[:offer][:rental_end_date], "%m/%d/%Y").to_time
-      params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time if params[:offer][:cancellation_date] != "mm/dd/yy"
-
+      set_dates
       @offer.update_attributes(params[:offer])
       redirect_to  new_item_offer_payment_path(@item,@offer)
     else
-      params[:offer][:rental_start_date] = DateTime.strptime(params[:offer][:rental_start_date], "%m/%d/%Y").to_time
-      params[:offer][:rental_end_date] = DateTime.strptime(params[:offer][:rental_end_date], "%m/%d/%Y").to_time
-      params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time if params[:offer][:cancellation_date] != "mm/dd/yy"
+      set_dates
       if params[:offer][:gathering_deadline] != "mm/dd/yy" and !params[:offer][:gathering_deadline].blank?
         params[:offer][:gathering_deadline] = DateTime.strptime(params[:offer][:gathering_deadline], "%m/%d/%Y").to_time
-      end
-      
-      params[:offer][:additional_message] = params[:offer][:offer_messages_attributes]
-            
+      end      
+      params[:offer][:additional_message] = params[:offer][:offer_messages_attributes]            
       @offer = Offer.new(params[:offer].merge(:item_id => params[:item_id]).merge(:user_id => current_user.id).merge(:status => "pending"))
 
       if @offer.save!
@@ -176,17 +169,8 @@ class OffersController < ApplicationController
     @offer = Offer.find params[:id]
     @offer.offer_messages.build
     load_map
-
   end
-
-  def load_map
-    @map = GMap.new("map")
-    @map.control_init(:map_type => false, :small_zoom => true)
-    coordinates = [@item.latitude,@item.longitude]
-    @map.center_zoom_init(coordinates, 15)
-    @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.popup_storz_display_name, :info_window => "#{@item.title}"))
-  end
-
+  
   def update
     @item = Item.find params[:item_id]
     @offer = Offer.find params[:id]
@@ -197,12 +181,8 @@ class OffersController < ApplicationController
     @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
-    @manage_dates_array << @booked_dates
-
-    params[:offer][:rental_start_date] = DateTime.strptime(params[:offer][:rental_start_date], "%m/%d/%Y").to_time
-    params[:offer][:rental_end_date] = DateTime.strptime(params[:offer][:rental_end_date], "%m/%d/%Y").to_time
-    params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time
-
+    @manage_dates_array << @booked_dates    
+    set_dates
     @offer.attributes = params[:offer]
     if @offer.changed?
       if @offer.save
@@ -223,6 +203,20 @@ class OffersController < ApplicationController
     end
   end
 
+  def set_dates
+    params[:offer][:rental_start_date] = DateTime.strptime(params[:offer][:rental_start_date], "%m/%d/%Y").to_time
+    params[:offer][:rental_end_date] = DateTime.strptime(params[:offer][:rental_end_date], "%m/%d/%Y").to_time
+    params[:offer][:cancellation_date] = DateTime.strptime(params[:offer][:cancellation_date], "%m/%d/%Y").to_time if params[:offer][:cancellation_date] != "mm/dd/yy"
+  end
+  
+  def load_map
+    @map = GMap.new("map")
+    @map.control_init(:map_type => false, :small_zoom => true)
+    coordinates = [@item.latitude,@item.longitude]
+    @map.center_zoom_init(coordinates, 15)
+    @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.popup_storz_display_name, :info_window => "#{@item.title}"))
+  end
+  
   def accept
     unless params[:item_id].blank?
       @item = Item.find params[:item_id]

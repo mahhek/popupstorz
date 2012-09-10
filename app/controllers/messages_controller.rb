@@ -64,8 +64,7 @@ class MessagesController < ApplicationController
   end
 
   def manage
-    @messages = ActsAsMessageable::Message.all :conditions => ["id IN (?)", params[:message]]
-    
+    @messages = ActsAsMessageable::Message.all :conditions => ["id IN (?)", params[:message]]    
     case params[:action_to_perform]
     when "mark_as_read"
       @messages.each do |message|
@@ -73,7 +72,6 @@ class MessagesController < ApplicationController
       end
       flash[:notice] = t(:marked_read)
       redirect_to :action => "inbox"
-
     when "mark_as_unread"
       @messages.each do |message|
         message.mark_as_unread

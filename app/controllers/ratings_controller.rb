@@ -1,10 +1,9 @@
 # -*- encoding : utf-8 -*-
 class RatingsController < ApplicationController
   before_filter :authenticate_user!
-
   def rate
     @asset = eval(params[:class_name]).find(params[:id])
-     @rating = Rating.find(:first, :conditions =>["rateable_id = ? and user_id = ? and rateable_type = ?",@asset.id,current_user.id,@asset.class.to_s])
+    @rating = Rating.find(:first, :conditions =>["rateable_id = ? and user_id = ? and rateable_type = ?",@asset.id,current_user.id,@asset.class.to_s])
     if @rating
       @rating.update_attribute(:accuracy_rating, params[:accuracy_rating]) unless params[:accuracy_rating].blank?
       @rating.update_attribute(:commodities_rating, params[:commodities_rating]) unless params[:commodities_rating].blank?
@@ -19,7 +18,6 @@ class RatingsController < ApplicationController
       @asset.add_rating(Rating.new(:seriousness_rating => params[:seriousness_rating], :user_id => current_user.id)) if params[:seriousness_rating]
       @asset.add_rating(Rating.new(:communication_rating => params[:communication_rating], :user_id => current_user.id)) if params[:communication_rating]
       @asset.add_rating(Rating.new(:value_rating => params[:value_rating], :user_id => current_user.id)) if params[:value_rating]
-
     end
     respond_to do |format|
       format.js do
