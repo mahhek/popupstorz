@@ -1,11 +1,8 @@
 class SearchesController < ApplicationController
-
   def search_home
   end
 
   def gatherings
-    #    #    @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
-    #    @sizes = Item.select("distinct(price)").where("price is not NULL").order("price ASC")
     @sizes = Offer.select("distinct(gathering_rental_price)").where("gathering_rental_price is not NULL").order("gathering_rental_price ASC")
     @start_price = @sizes.first
     @last_price = @sizes.last
@@ -15,17 +12,14 @@ class SearchesController < ApplicationController
       @last_price = @last_price.gathering_rental_price.to_f > 10000 ? @last_price.gathering_rental_price : 10000
     else
       @last_price = 10000
-    end    
-    
+    end
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
-    #    @users_with_uniq_cities = User.select("distinct(city)")
     @gatherings = Offer.find(:all,:conditions => [ "status != 'Cancelled' and parent_id is NULL" ], :order=> "rental_start_date ASC")
     @gatherings = @gatherings.paginate(:page => params[:page], :per_page => 6 )
   end
 
   def members
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
-    #    @users_with_uniq_cities = User.select("distinct(city)")
     @users_with_uniq_activites = User.select("distinct(activity)").where("activity is not NULL and activity != ''")
     @members = User.find(:all)
     @members = @members.paginate(:page => params[:page], :per_page => 6 )
@@ -115,8 +109,6 @@ class SearchesController < ApplicationController
       order_by = "gathering_rental_price ASC"
     when "4"
       order_by = "created_at DESC"
-      #    when "5"
-      #      order_by =
     else
       order_by = "gathering_rental_price ASC"
     end
@@ -128,19 +120,6 @@ class SearchesController < ApplicationController
       @offers = @offers.uniq
     end
    
-    
-    #    if params[:sort_option].blank?
-    #      @offers = @offers.sort_by{|e| e[:created_at]}
-    #    end
-    #    #   @rental_start_date = @offers.blank? ? 0 : @offers.rental_start_date
-    #    #   @rental_end_date = @offers.blank? ? 0 : @offers.rental_end_date
-    #    if params[:sort_option].blank?
-    #      @offers = @offers.sort_by{|e| e[:size]}
-    #    end
-    #    if params[:sort_option].blank?
-    #      @offers = @offers.sort_by{|e| e[:gathering_rental_price]}
-    #    end
-    
     @min_price = @offers.blank? ? 0 : @offers.first.gathering_rental_price
     @max_price = @offers.blank? ? 0 : @offers.last.gathering_rental_price
     @max_price = @max_price.to_f > 10000 ? @max_price : 10000
@@ -281,13 +260,11 @@ class SearchesController < ApplicationController
 
     respond_to do |format|
       format.html
-      #      format.js
       format.js do
         foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
         render :js => "$('#searched-items').html(#{foo});$.setAjaxPagination();update_form_values('#{params.to_json}');"
       end
-    end
-    
+    end    
   end
 
   def search_members    
@@ -301,10 +278,8 @@ class SearchesController < ApplicationController
       params["types"].each do|type|
         if count == 0
           type_arr += " LOWER(activity) = '#{type.downcase.to_s}'"
-          #          type_arr += " LOWER(activity) LIKE "+ "'%%" + type.downcase.to_s + "%%'"
         else
           type_arr += " OR LOWER(activity) = '#{type.downcase.to_s}'"
-          #          type_arr += " OR LOWER(activity) LIKE "+ "'%%" + type.downcase.to_s + "%%'"
         end
         count += 1
       end
@@ -328,8 +303,5 @@ class SearchesController < ApplicationController
         render :js => "update_member_values('#{params.to_json}');$('#searched-members').html(#{foo});$.setAjaxPagination();"
       end
     end
-    #    @members = User.paginate(:page => params[:page], :per_page => 4, :conditions => [conds])
   end
 end
-
-

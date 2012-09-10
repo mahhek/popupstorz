@@ -1,8 +1,6 @@
 # -*- encoding : utf-8 -*-
 class AvatarsController < ApplicationController
   before_filter :load_item
-
-
   def new
     @avatar = @item.avatars.build
   end
@@ -23,7 +21,6 @@ class AvatarsController < ApplicationController
     end
     return redirect_to items_path
   end
-
 
   def edit
     @avatars = @item.avatars
@@ -59,7 +56,6 @@ class AvatarsController < ApplicationController
   end
 
   protected
-
   def load_item
     @item = Item.find_by_id(params[:item_id])
   end

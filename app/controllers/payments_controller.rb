@@ -1,6 +1,5 @@
 # -*- encoding : utf-8 -*-
-class PaymentsController < ApplicationController
-  
+class PaymentsController < ApplicationController  
   def new
     session[:pay] = "new"
     @item = Item.find_by_id(params[:item_id])
@@ -21,7 +20,6 @@ class PaymentsController < ApplicationController
       flash[:notice] = t(:created_gathering)
       redirect_to "/"
     end
-
   end
 
   def create
@@ -60,14 +58,9 @@ class PaymentsController < ApplicationController
         
         reqs = GatheringMember.find(:all, :conditions => ["status = 'Approved' and offer_id = #{@offer.id}"])
         if reqs.size == @offer.persons_in_gathering.to_i and @offer.persons_in_gathering == 1
-          #          offer.update_attribute("status","joinings approved")
           @offer.update_attribute("status","joinings approved")
-        end
-        
+        end        
         check_gathering_state(@offer)
-        
-        
-        
         user = User.find(@offer.user_id)
         if gathering_member.offer.user_id == current_user.id
           current_user.send_message(owner, :topic => "Gathering", :body => "#{current_user.first_name} has created a gathering for #{@offer.persons_in_gathering} people from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} at your <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'> #{@offer.item.title} </a> and is now waiting for others to join before sending you an offer. You can check status of the gathering under 'My listings' sub-menu 'Gatherings at my place'".html_safe)
@@ -76,7 +69,6 @@ class PaymentsController < ApplicationController
           flash[:notice] = t(:created_gathering)
         else
           flash[:notice] = t(:validation_from_gathering)
-          #        current_user.send_message(user, :topic => "Booking Request", :body => "A new #{current_user.first_name} have applied to join your <a href='http://#{request.host_with_port}/items/#{@offer.item.id}'>gathering</a>".html_safe)
         end
         
       else
@@ -86,16 +78,11 @@ class PaymentsController < ApplicationController
         flash[:notice] = t(:applied_success)
         @offer.update_attribute("status","confirmed")
       end
-      
-      #      if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0
-      
-#      redirect_to "/items/#{@item.id}"
       redirect_to "/"
     else
       puts pay_response.errors.first['message']
       redirect_to failed_payment_url
-    end
-    
+    end    
   end
   
   def check_gathering_state(offer)
@@ -114,13 +101,10 @@ class PaymentsController < ApplicationController
   end
   
   def capture_gathering_commission(offer)
-    receivers = []    
-    
-    #    offers = Offer.find(:all, :conditions => ["status = 'Approved' and parent_id = #{offer.id}"])
+    receivers = []
     members = GatheringMember.find(:all, :conditions => ["status = 'Approved' and offer_id =  #{offer.id}"])
     
-    if offer.persons_in_gathering.to_i <= members.size.to_i
-   
+    if offer.persons_in_gathering.to_i <= members.size.to_i   
       offer.update_attribute("status","Accepted - Payment pending")
       offer.members.each do|mem|
         obj = {"email" => mem.email.to_s, "amount" => ((offer.total_amount.to_f*10)/100).to_s}
@@ -138,7 +122,6 @@ class PaymentsController < ApplicationController
         "ipnNotificationUrl"=>"http://localhost:3000/products/ipn_notification"
       }
     end
-
   end
   
   def capture_gathering_commission_and_payment(offer)
@@ -148,7 +131,6 @@ class PaymentsController < ApplicationController
   
   def capture_offer_commission_and_payment(offer)
     offer.update_attribute(:status, "Paid but waiting for FeedBack")
-  end
-  
+  end 
   
 end

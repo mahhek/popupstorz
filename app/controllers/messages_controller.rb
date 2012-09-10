@@ -2,8 +2,7 @@
 class MessagesController < ApplicationController  
 
   def inbox
-    @messages = current_user.received_messages
-    
+    @messages = current_user.received_messages    
   end
 
   def empty_trash
@@ -22,11 +21,8 @@ class MessagesController < ApplicationController
 
   def download_attachment
     file_info = Attachment.find params[:id]
-    puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-    puts file_info.attachment.path.inspect
     send_file( file_info.attachment.path ,:type => file_info.attachment_content_type)
   end
-
 
   def contact_me    
     user = User.find_by_id(params[:user_id])
@@ -37,13 +33,10 @@ class MessagesController < ApplicationController
           render :js => "alert(#{t(:message_sent)});$('#contact_me_div_#{params[:div_id]}').toggle('slow');$('#body').val('');"
         else
           render :js => "alert(#{t(:message_sent)});$('#contact_me_div').toggle('slow');$('#body').val('');"
-        end
-        
+        end        
       end
-    end
-    
-  end
-  
+    end    
+  end  
   
   def gathering_message    
     user = User.find_by_id(params[:user_id])
@@ -52,18 +45,15 @@ class MessagesController < ApplicationController
       format.js do
         render :js => "alert(#{t(:message_sent_to_owner)});$('#contact_me_div').toggle('slow');$('#body').val('');"
       end
-    end
-    
+    end    
   end
-
-
+  
   def trash
     @messages = current_user.deleted_messages
   end
 
   def reply
-    @message = ActsAsMessageable::Message.find_by_id(params[:id])
-    
+    @message = ActsAsMessageable::Message.find_by_id(params[:id])    
   end
 
   def do_reply
@@ -75,9 +65,6 @@ class MessagesController < ApplicationController
 
   def manage
     @messages = ActsAsMessageable::Message.all :conditions => ["id IN (?)", params[:message]]
-    puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-    puts @messages.inspect
-    puts params[:action_to_perform].inspect
     
     case params[:action_to_perform]
     when "mark_as_read"

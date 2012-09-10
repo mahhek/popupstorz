@@ -1,7 +1,6 @@
 # -*- encoding : utf-8 -*-
 class ItemsController < ApplicationController
   include ActionView::Helpers::NumberHelper
-
   before_filter :authenticate_user!, :except => [:set_dates, :exchange_price, :new, :create, :show, :search_via_price_range, :search_keyword, :search_category, :autocomplete_item_city, :autocomplete_item_title]
   autocomplete :item, :title
   autocomplete :item, :city
@@ -95,8 +94,7 @@ class ItemsController < ApplicationController
   end
   
   def create    
-    @countries = Country.all
-    
+    @countries = Country.all    
     if params[:item][:available_forever] == "1"
       params[:item][:availability_from] = ""
       params[:item][:availability_to] = ""
@@ -165,8 +163,7 @@ class ItemsController < ApplicationController
     if params[:item][:available_forever] == "1"
       params[:item][:availability_from] = ""
       params[:item][:availability_to] = ""
-    end
-    
+    end    
     unless params[:item][:availability_from].blank?
       params[:item][:availability_from] = DateTime.strptime(params[:item][:availability_from], "%m/%d/%Y").to_time
     end
@@ -246,13 +243,11 @@ class ItemsController < ApplicationController
     redirect_to items_path
   end
 
-
   def search_keyword
     session[:start_date] = nil
     session[:end_date] = nil
   
-    conds = "1=1 "
-    
+    conds = "1=1 "    
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @shareable = Item.select("distinct(is_shareable)")
@@ -260,8 +255,7 @@ class ItemsController < ApplicationController
     unless params[:search_from].blank?
       start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
       conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
-    end
-    
+    end    
     unless params[:search_to].blank?
       end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
       conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
@@ -342,10 +336,8 @@ class ItemsController < ApplicationController
       order_by = "price ASC"
     end
     
-    items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)
-    
-    @items = items - booked_items
-    
+    items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
+    @items = items - booked_items    
 #    Items whose owners are active users
     active_items = []  
     @items.each do|item|
@@ -366,9 +358,7 @@ class ItemsController < ApplicationController
     end
     session[:start_date] = params[:search_from]
     session[:end_date] = params[:search_to]
-    
-    #    @items = Item.paginate(:page => params[:page], :per_page => 4, :order => "price")
-    
+        
     @items = @items.paginate(:page => params[:page], :per_page => 4 )
     
     @map = GMap.new("map")
@@ -389,7 +379,6 @@ class ItemsController < ApplicationController
       end
     end
     @items_with_uniq_cities = Item.select("distinct(city)")
-
     respond_to do |format|
       format.html
       format.js do
@@ -399,8 +388,7 @@ class ItemsController < ApplicationController
     end
   end
 
-  def search_via_price_range
-    
+  def search_via_price_range    
     conds = "1=1 "
     conds += "AND price >= #{params[:min_price].to_f} AND price <= #{params[:max_price].to_f}"
     unless params[:city].blank?
@@ -415,8 +403,7 @@ class ItemsController < ApplicationController
     end
   end
 
-  def new_comment
-   
+  def new_comment   
   end
   
   def add_comment
@@ -429,16 +416,13 @@ class ItemsController < ApplicationController
     else
       flash[:error] = t(:not_saved)
       render :show
-    end
-   
+    end   
   end
 
-  def listings_home
-    
+  def listings_home    
   end
   
   def my_pop_ups
-    #    @offers = current_user.offers
     @offers = Offer.find(:all, :conditions => ["user_id = ?",current_user.id])
     @offers = @offers.uniq
   end
@@ -456,7 +440,6 @@ class ItemsController < ApplicationController
   end
       
   def created_prev_gatherings
-    #    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])     
     @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'",current_user.id,current_user.id], :order => "rental_start_date ASC")
     gathers = @gatherings.group_by(&:item_id)
     gathers.each do|k,v|
@@ -470,8 +453,7 @@ class ItemsController < ApplicationController
   def created_coming_gatherings
     @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])
     @gatherings = @gatherings + current_user.gatherings.where("owner_id != #{current_user.id} and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'", :order => "rental_start_date ASC")
-    @gatherings = @gatherings.uniq
-    
+    @gatherings = @gatherings.uniq    
     #    Gatherings which current user have joined and requests are accepted by creator
     gathering = []
     joined = Offer.find(:all, :conditions => ["owner_id != #{current_user.id} and parent_id is NOT NULL and status = 'Approved'"], :order => "rental_start_date ASC")
@@ -488,12 +470,9 @@ class ItemsController < ApplicationController
     @gatherings = @gatherings.uniq
     
     @offers = Offer.find(:all, :conditions => ["(user_id = ?) and persons_in_gathering is NULL and is_gathering = false and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id], :order => "rental_start_date ASC")
-    @gatherings = @gatherings + @offers
-    
-    @gatherings = @gatherings.uniq
-    
-  end
-  
+    @gatherings = @gatherings + @offers    
+    @gatherings = @gatherings.uniq    
+  end  
     
   def pending_gathering_acceptance
     @gatherings = current_user.gatherings.where("offers.user_id != #{current_user.id}  and gathering_members.status = 'confirmed' and (offers.status = 'Applied' or offers.status = 'all joinings approved' or offers.status ='joinings approved')", :order => "rental_start_date ASC")
@@ -501,26 +480,20 @@ class ItemsController < ApplicationController
   end
   
   def gatherings_at_my_place
-    #    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
     @offers = Offer.find(:all, :conditions => ["(owner_id = ? and user_id != ?) and persons_in_gathering is not NULL and parent_id is NULL and (status != 'joinings approved' and status != 'Confirmed')",current_user.id,current_user.id], :order => "rental_start_date ASC")
   end
   
   def payment_charge
     @offer = Offer.find(params[:id])
     @item = @offer.item    
-    #    payment = @offer.payment
-    #    if payment.purchase("charge").status == 3
-    #      @offer.update_attribute(:status, "Paid but waiting for FeedBack")
     payment = PaymentsController.new
     if @offer.is_gathering        
       payment.capture_gathering_commission_and_payment(@offer)
     else
       payment.capture_offer_commission_and_payment(@offer)
     end
-    if @offer.update_attribute(:status, "Paid but waiting for FeedBack")
-      
-      current_user.send_message(@offer.user, :topic => "Offer Updated", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!".html_safe)
-      
+    if @offer.update_attribute(:status, "Paid but waiting for FeedBack")      
+      current_user.send_message(@offer.user, :topic => "Offer Updated", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!".html_safe)      
       @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_updated", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!".html_safe)
       @notification.save
       redirect_to "/"

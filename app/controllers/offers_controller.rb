@@ -41,8 +41,6 @@ class OffersController < ApplicationController
     coordinates = [@item.latitude,@item.longitude]
     @map.center_zoom_init(coordinates, 15)
     @map.overlay_init(GMarker.new(coordinates,:title => current_user.nil? ? @item.title : current_user.popup_storz_display_name, :info_window => "#{@item.title}"))
-
-    #    @offer = Offer.find_by_item_id_and_user_id_and_status(@item.id ,current_user.id,"Pending")
     @available_days = []
     
     if @item.availablities_sunday == true
@@ -82,14 +80,12 @@ class OffersController < ApplicationController
     @calculated_price = calculate_price(@number_of_days, @item)
   end
 
-  def create
-    
+  def create    
     @offer = Offer.find_by_item_id_and_user_id_and_status(params[:item_id],current_user.id,"Pending")
     @item = Item.find params[:item_id]
     
     @booked_dates = []
     @manage_dates_array = []
-    #    offers = @item.offers(:conditions => ["status != 'applied' and parent_id is NULL"])    
     @offers = @item.offers.where("(status LIKE '%Confirmed%') and parent_id is NULL")
     @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
@@ -147,17 +143,8 @@ class OffersController < ApplicationController
 
       if @offer.save!
         session[:return] = nil
-        session[:pick_up] = nil
-        
+        session[:pick_up] = nil        
         @offer.update_attribute(:status, "Applied")
-        #        if !params[:offer].blank? && !params[:offer][:offer_messages_attributes].blank?
-        #          params[:offer][:offer_messages_attributes].each do|k,v|     
-        #            current_user.send_message(@item.user, :topic => "Booking Message", :body => "#{v[:message]}".html_safe)
-        #            @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"Booking Message", :description => "#{v[:message]}".html_safe)
-        #            @notification.save
-        #          end
-        #        end
-        #        @offer.update_attributes(:cancellation_date => (@offer.updated_at + 24.hours))
         redirect_to  new_item_offer_payment_path(@item,@offer)
       else
         render :new
@@ -244,8 +231,6 @@ class OffersController < ApplicationController
     end
     @offer = Offer.find params[:id]
     payment = @offer.payment
-    #    if payment.purchase("charge").status == 3
-    #    payment.save!
     if !@offer.is_gathering or @offer.persons_in_gathering.to_i == 0
       unless @item.blank?        
         if current_user.id == @offer.user_id
@@ -286,10 +271,6 @@ class OffersController < ApplicationController
     else
       redirect_to "/items/gatherings_at_my_place"
     end
-    #    else
-    #      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
-    #      redirect_to "/"
-    #    end
   end
 
   def decline
@@ -299,20 +280,16 @@ class OffersController < ApplicationController
       if current_user.id == @offer.user_id
         @offer.update_attribute("status", "Declined")
         flash[:notice] = t(:offer_declined)
-#        current_user.send_message(@item.user, :topic => "Offer Declined", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> made by #{@offer.user.popup_storz_display_name} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} on #{@item.title} has been declined".html_safe)
         current_user.send_message(@item.user, :topic => "Offer Declined", :body => "The gathering you created at #{@item.title} From #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid. ".html_safe)
         @notification = Notification.new(:user_id => @item.user.id, :notification_type =>"Offer Declined", :description => "The gathering you created at #{@item.title} From#{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid. ".html_safe)
         @notification.save
       else
         @offer.update_attribute("status", "Declined")
         flash[:notice] = t(:offer_declined)
-#        current_user.send_message(@offer.user, :topic => "Offer Declined", :body => "#{@offer.item.user.first_name} rejected your offer on #{@item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)        
         current_user.send_message(@offer.user, :topic => "Offer Declined", :body => "The gathering to which you have applied at #{@item.title} From #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid.".html_safe)
         @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"Offer Declined", :description => "The gathering to which you have applied at #{@item.title} From #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid.".html_safe)
-        @notification.save
-        
+        @notification.save        
       end
-      #      redirect_to "/"
     else      
       @item = @offer.item
       members = GatheringMember.find(:all, :conditions => "offer_id = #{@offer.id} and status = 'Approved'")
@@ -321,7 +298,6 @@ class OffersController < ApplicationController
       end      
       @offer.update_attribute("status", "Declined")
       flash[:notice] = t(:offer_declined)
-      #      redirect_to "/items/gatherings_at_my_place"
     end
     if @offer.item.user == current_user
       redirect_to "/items/overview"
@@ -329,15 +305,6 @@ class OffersController < ApplicationController
       redirect_to "/items/gatherings_at_my_place"
     end
   end
-
-  #  def payment_charge
-  #    sdfdsf
-  #    if payment.purchase("charge").status == 3
-  #    else
-  #      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
-  #      redirect_to "/"
-  #    end
-  #  end
   
   def join_gathering
     @offer = Offer.find(params[:id])
@@ -365,7 +332,6 @@ class OffersController < ApplicationController
       @notification.save
     end    
     redirect_to  new_item_offer_payment_path(@item,@offer)
-    #    redirect_to "/items/show/#{offer.item_id}"
   end
   
   def approve_gathering_request
@@ -396,14 +362,10 @@ class OffersController < ApplicationController
         @notification1 = Notification.new(:user_id => owner.id, :notification_type =>"User Joining Approved", :description => "#{user.popup_storz_display_name} joined the gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{current_user.popup_storz_display_name} from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
         @notification1.save
         if reqs.size == offer.persons_in_gathering.to_i
-          #          offer.update_attribute("status","joinings approved")
           offer.update_attribute("status","all joinings approved")
           current_user.send_message(current_user, :topic => "Send Offer to Owner", :body => "Gathering created at <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} is now full, please go to My bookings, sub-menu Upcoming to send offer to owner.".html_safe)
           @notification = Notification.new(:user_id => current_user.id, :notification_type =>"Send Offer to Owner", :description => "Gathering created at <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} is now full, please go to My bookings, sub-menu Upcoming to send offer to owner.".html_safe)
-          @notification.save#{@offer.item.user.first_name} rejected your offer on #{@item.title} from #{@offer.rental_start_date.strftime("%m-%d-%Y")} to #{@offer.rental_end_date.strftime("%m-%d-%Y")}
-          #          flash[:notice] = "Gathering is full now you has to send the offer to owner"
-          #          current_user.send_message(owner, :topic => "Gathering Approval Required", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} requires your approval.".html_safe)
-          
+          @notification.save          
         end
         flash[:notice] = t(:offer_accepted)
       else
@@ -448,7 +410,6 @@ class OffersController < ApplicationController
       flash[:notice] = "Request sent already"
       redirect_to "/items/created_coming_gatherings"
     end
-    #    @gathering.offer_messages.build
   end
   
   def update_gathering_deadline    
@@ -459,7 +420,6 @@ class OffersController < ApplicationController
       owner = User.find(offer.owner_id)
       unless params[:offer][:offer_messages_attributes].blank?
         params[:offer][:offer_messages_attributes].each do|k,v|
-          #          current_user.send_message(owner, :topic => "Gathering Approval Request Message", :body => "Gathering on your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{offer.user.popup_storz_display_name} requires your approval and request message is #{v[:message]}.".html_safe)
           OfferMessage.create(v)
         end
       end
@@ -487,27 +447,24 @@ class OffersController < ApplicationController
         appliers = offer.members.where("status = 'Approved'")
         appliers.each do |u|
           unless u == user
-            if current_user.id == offer.owner_id              
-#              current_user.send_message(u, :topic => "Gathering Cancelled", :body => "Gathering <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} for which you have applied, is cancelled by creator.".html_safe)
+            if current_user.id == offer.owner_id
               current_user.send_message(u, :topic => "Gathering Cancelled", :body => "The gathering to which you have applied at #{offer.item.title} from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid.".html_safe)
               @notification = Notification.new(:user_id => u.id, :notification_type =>"Gathering Cancelled", :description => "Gathering <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} for which you have applied, is cancelled by creator.".html_safe)
             else              
-#              current_user.send_message(u, :topic => "Gathering Cancelled", :body => "Gathering <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} for which you have applied, is cancelled by creator.".html_safe)
               current_user.send_message(u, :topic => "Gathering Cancelled", :body => "The gathering to which you have applied at #{offer.item.title} from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the creator #{offer.user.popup_storz_display_name}. We apologize for this inconvenience. You will be fully refunded for all fees you have paid. Please try to find a new participant in order to create a new gathering or re-create the same gathering with one participant less.".html_safe)
               @notification = Notification.new(:user_id => u.id, :notification_type =>"Gathering Cancelled", :description => "The gathering to which you have applied at #{offer.item.title} from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the creator #{offer.user.popup_storz_display_name}. We apologize for this inconvenience. You will be fully refunded for all fees you have paid. Please try to find a new participant in order to create a new gathering or re-create the same gathering with one participant less.".html_safe)
             end            
             @notification.save
           end
         end
-         if current_user.id == offer.owner_id      
-#        current_user.send_message(owner, :topic => "Gathering Cancelled", :body => "Gathering at your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} is cancelled by user.".html_safe)
-        current_user.send_message(owner, :topic => "Gathering Cancelled", :body => "The gathering you created at #{offer.item.title} from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid.".html_safe)
-        @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering Cancelled", :description => "The gathering you created at <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid.".html_safe)
-        @notification.save
-         else
-           current_user.send_message(owner, :topic => "Gathering Cancelled", :body => "The gathering which was created at your place  #{offer.item.title} created by #{user.popup_storz_display_name} from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by its creator. We apologize for this inconvenience.".html_safe)
-        @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering Cancelled", :description => "the gathering which was created at your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} has been cancelled by its creator. We apologize for this inconvenience.".html_safe)
-        @notification.save
+        if current_user.id == offer.owner_id
+          current_user.send_message(owner, :topic => "Gathering Cancelled", :body => "The gathering you created at #{offer.item.title} from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid.".html_safe)
+          @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering Cancelled", :description => "The gathering you created at <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid.".html_safe)
+          @notification.save
+        else
+          current_user.send_message(owner, :topic => "Gathering Cancelled", :body => "The gathering which was created at your place  #{offer.item.title} created by #{user.popup_storz_display_name} from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by its creator. We apologize for this inconvenience.".html_safe)
+          @notification = Notification.new(:user_id => owner.id, :notification_type =>"Gathering Cancelled", :description => "the gathering which was created at your place <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> created by #{user.popup_storz_display_name} has been cancelled by its creator. We apologize for this inconvenience.".html_safe)
+          @notification.save
         end 
         current_user.send_message(user, :topic => "Gathering Cancelled", :body => "The gathering you created at #{offer.item.title} from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid.".html_safe)
         @notification = Notification.new(:user_id => user.id, :notification_type =>"Gathering Cancelled", :description => "The gathering you created at #{offer.item.title} from #{offer.rental_start_date.strftime("%m-%d-%Y")} to #{offer.rental_end_date.strftime("%m-%d-%Y")} has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid.".html_safe)
@@ -535,7 +492,6 @@ class OffersController < ApplicationController
   end
   
   protected
-
   def calculate_price(number_of_days, item)
     ppm = item.price_per_month.nil? ? 0 : item.price_per_month
     ppw = item.price_per_week.nil? ? 0 : item.price_per_week
@@ -554,5 +510,4 @@ class OffersController < ApplicationController
       redirect_to "/"
     end
   end
-
 end

@@ -18,7 +18,6 @@ class User < ActiveRecord::Base
     :verify_email, :mobile_phone, :gender, :date_of_birth, :activity, :security_question,
     :security_answer, :city_country, :description, :avatars_attributes, :address1, :address2,
     :zip_code, :city, :country, :neighbourhood, :fb_pic_url, :fb_friends_count, :fb_pages, :works_at, :studied_at, :fb_interests, :show_fb_info, :is_active
-#  , :receiver
   
   acts_as_messageable :table_name => "messages",
     :required => [:topic, :body],
@@ -32,11 +31,6 @@ class User < ActiveRecord::Base
   validates :security_question, :presence => true
   validates :security_answer, :presence => true
   validates :date_of_birth, :presence => true
-
-#  validates :receiver,
-#            :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }, :unless => :receiver?
-
-  
   
   has_many :services
   has_many :items
@@ -54,24 +48,6 @@ class User < ActiveRecord::Base
     return"#{self.first_name[0..6]} #{self.last_name[0..0].capitalize} ." if self.last_name
     self.first_name
   end
-
-
-  #after_save :send_user_notification
-  #  after_save :create_account_just_activated_user
-
-  #def send_user_notification
-  #    if self.confirmed_at_changed? and self.email?
-  #      Notification.new(:user_id => self.id, :notification_type =>"Welcome", :description => "You have successfully signed up, thanks!").save
-  #    end
-  #  end
-
-  #  def create_account_just_activated_user
-  #    if self.confirmed_at_changed? and self.email?
-  #      Account.new(:email => self.email, :user_id => self.id).save if self.account.blank?
-  #    end
-  #  end
-
-  
 
   def update_with_password(params={})
     current_password = params.delete(:current_password)
@@ -93,9 +69,4 @@ class User < ActiveRecord::Base
     clean_up_passwords
     result
   end
-
-
-
-
-  
 end

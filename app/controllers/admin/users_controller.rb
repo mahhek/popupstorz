@@ -18,8 +18,7 @@ class Admin::UsersController < ApplicationController
     else
       flash[:notice] = t(:cant_delete_user)
     end
-    redirect_to admin_users_path
-    
+    redirect_to admin_users_path    
   end
 
 end

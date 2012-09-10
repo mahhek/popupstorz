@@ -1,6 +1,5 @@
 # -*- encoding : utf-8 -*-
-class RegistrationsController < Devise::RegistrationsController
-  
+class RegistrationsController < Devise::RegistrationsController  
   def new
     unless session[:fb_user].blank?
       @pre_user = User.find(session[:fb_user])
@@ -35,6 +34,4 @@ class RegistrationsController < Devise::RegistrationsController
   def after_update_path_for(resource)
     profile_path(resource.id)
   end
-
-
 end

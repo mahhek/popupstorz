@@ -29,7 +29,9 @@
       </div>
       <div class="sign_up_input">
         <label><%= t(:d_o_b) %></label>
-        <%=  f.date_select :date_of_birth, :start_year => 1970 %>
+        <%= f.date_select :date_of_birth, {:order =>
+            [:day, :month, :year], :start_year => 1970, :use_month_numbers => true} %>
+  <%#= f.date_select :date_of_birth, {:start_year => 1970} %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">

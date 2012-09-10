@@ -1,8 +1,6 @@
 # -*- encoding : utf-8 -*-
 class ServicesController < ApplicationController
   before_filter :authenticate_user!, :except => [:create]
-
-
   def index
     @services = current_user.services.all
   end
@@ -10,27 +8,23 @@ class ServicesController < ApplicationController
   def destroy
     @service = current_user.services.find(params[:id])
     @service.destroy
-
     redirect_to services_path
   end
 
   def create   
     request.env['omniauth.auth']['provider'] ? service_route = request.env['omniauth.auth']['provider'] : service_route = 'no service (invalid callback)'
-    omniauth = request.env['omniauth.auth']
+    omniauth = request.env['omniauth.auth']    
     if omniauth and omniauth['provider']
       service_route = omniauth['provider']
       if service_route == 'facebook'
         friends, fb_pic_url,fb_friends_count, birthday, city, country = ""
-        
-        unless omniauth['extra']['raw_info']['education'].blank?          
-          #          school = omniauth['extra']['raw_info']['education'].first['school'].name ? omniauth['extra']['raw_info']['education'].first['school'].name : ""
+        unless omniauth['extra']['raw_info']['education'].blank?
           education = omniauth['extra']['raw_info']['education'].collect(&:school).collect(&:name).to_sentence
         else
           education = ""
         end
                 
         unless omniauth['extra']['raw_info']['work'].blank?
-          #          worked_at = omniauth['extra']['raw_info']['work'].first['employer'].name ? omniauth['extra']['raw_info']['work'].first['employer'].name : ""
           worked_at = omniauth['extra']['raw_info']['work'].collect(&:employer).collect(&:name).to_sentence
         else
           worked_at = ""
@@ -43,7 +37,7 @@ class ServicesController < ApplicationController
           city = ""
           country = ""
         end
-
+        name = omniauth['extra']['raw_info']['name'] ? omniauth['extra']['raw_info']['name'] : ""
         email = omniauth['extra']['raw_info']['email'] ?  omniauth['extra']['raw_info']['email'] :  ''
         f_name = omniauth['extra']['raw_info']['first_name'] ? omniauth['extra']['raw_info']['first_name'] : ''
         l_name = omniauth['extra']['raw_info']['last_name'] ?  omniauth['extra']['raw_info']['last_name'] :  ''
@@ -58,10 +52,8 @@ class ServicesController < ApplicationController
         else
           gender = false
         end
-        #        omniauth['extra']['raw_info']["hometown"]["name"] ? addr = omniauth['extra']['raw_info']["hometown"]["name"] : addr = ''
         omniauth['extra']['raw_info']['id'] ? uid = omniauth['extra']['raw_info']['id'] : uid = ''
-        omniauth['provider'] ? provider = omniauth['provider'] : provider = ''
-        
+        omniauth['provider'] ? provider = omniauth['provider'] : provider = ''        
         
         graph = Koala::Facebook::GraphAPI.new(omniauth['credentials']['token'])
         friends = graph.get_connections("me", "friends")
@@ -87,16 +79,6 @@ class ServicesController < ApplicationController
         end
         fb_friends_count = friends.size
         fb_pic_url = omniauth['info']['image'] ? omniauth['info']['image'] : ''
-        
-        
-      elsif service_route == 'twitter'
-        email = '' # Twitter API never returns the email address
-        omniauth['info']['name'] ? name = omniauth['info']['name'] : name = ''
-        user_name = name.split(" ")
-        f_name = user_name[0]
-        l_name = user_name[1]
-        omniauth['uid'] ? uid = omniauth['uid'] : uid = ''
-        omniauth['provider'] ? provider = omniauth['provider'] : provider = ''
       else
         render :text => omniauth.to_yaml
         return
@@ -107,11 +89,16 @@ class ServicesController < ApplicationController
           if auth
             flash[:notice] = t(:signed_in) + provider.capitalize + '.'
             unless auth.user.blank?
-              sign_in_and_redirect(:user, auth.user)
+              if auth.user.is_active == true
+                sign_in_and_redirect(:user, auth.user)
+              else
+                session[:fb_user] = auth.user.id
+                flash[:notice] = ""
+                redirect_to new_user_registration_path
+              end
             else
               redirect_to "/"
-            end
-            
+            end            
           else
             if email != '' || (service_route == 'twitter' && name != '')              
               existinguser = User.find_by_email(email)
@@ -133,12 +120,9 @@ class ServicesController < ApplicationController
                   end
                   flash[:myinfo] = t(:account_communityguides) + provider.capitalize + t(:change_personal_info)
                   user.confirm!
-                  #                  sign_in user
+                  # sign_in user
                   session[:fb_user] = user.id
                   redirect_to new_user_registration_path
-                  #                  redirect_to edit_user_registration_path
-                  #                  user.skip_confirmation!
-                  #                  sign_in_and_redirect(:user, user)
                 else
                   flash[:myinfo] = t(:cant_login)
                   redirect_to "/"
@@ -169,11 +153,4 @@ class ServicesController < ApplicationController
       redirect_to new_user_session_path
     end
   end
-
-
-
-
-
-
-
 end
