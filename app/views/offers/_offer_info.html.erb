@@ -2,38 +2,38 @@
 
 <div style="float: left;font-style: italic;width: 95%;background-color: #eeeeee;padding: 10px;">
   <div style="float: left;width: 45%;">
-    <b>Email:</b>  <%= user.email %><br/>
-    <b>First Name:</b>  <%= user.first_name %><br/>
-    <b>Last Name:</b>  <%= user.last_name %><br/>
+    <b><%= t(:email2) %></b>  <%= user.email %><br/>
+    <b><%= t(:first_name) %></b>  <%= user.first_name %><br/>
+    <b><%= t(:last_name) %></b>  <%= user.last_name %><br/>
     <% if  (user.gender == true) then %>
-    <b>Gender:</b> &nbsp;Male.
+    <b><%= t(:gender) %></b> &nbsp;<%= t(:male) %>.
   <%else%>
-    <b>Gender:</b> &nbsp;Female.
+    <b><%= t(:gender) %></b> &nbsp;<%= t(:female) %>.
   <%end%>
     <br/>
-    <b>Address 1:</b>  <%= user.address1 %><br/>
+    <b><%= t(:addess_1) %></b>  <%= user.address1 %><br/>
       <%if user.address2 %>
-    <b>Address 2:</b><%= user.address2 %>
+    <b><%= t(:address_2) %></b><%= user.address2 %>
     <%end%>
   </div>
 </div>
 <br/><br/>
 
 <div style="float: left;width: 100%;margin-top: 20px;">
-  Rental Start Date: <%= @offer.rental_start_date.strftime("%d-%m-%Y %I:%M %p") %>
+  <%= t(:rental_date) %> <%= @offer.rental_start_date.strftime("%d-%m-%Y %I:%M %p") %>
   <br/>
-  Rental End Date: <%= @offer.rental_end_date.strftime("%d-%m-%Y %I:%M %p") %>
+  <%= t(:rental_end) %> <%= @offer.rental_end_date.strftime("%d-%m-%Y %I:%M %p") %>
   <br/>
-  Total Offer Amount: <%= number_to_currency(exchange_currency(@offer.total_amount.to_i, @offer.item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+  <%= t(:t_amount_offer) %> <%= number_to_currency(exchange_currency(@offer.total_amount.to_i, @offer.item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
   <br/>
-  Reservation Fee: <%= number_to_currency(exchange_currency(@offer.payment.rentareto_fee.to_i, @offer.item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+  <%= t(:reserve_fee) %> <%= number_to_currency(exchange_currency(@offer.payment.rentareto_fee.to_i, @offer.item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
   <br/>
-  Total Amount <%= number_to_currency(exchange_currency(@offer.payment.amount.to_i, @offer.item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+  <%= t(:t_amount) %> <%= number_to_currency(exchange_currency(@offer.payment.amount.to_i, @offer.item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
   <br/>
-  Status: <%= @offer.status %>
+  <%= t(:status) %> <%= @offer.status %>
   <br/>
   <% if @offer.preferred_location %>
-    Preferred Location / Address: <%= @offer.preferred_address  %>
+  <%= t(:preffered_loc) %> <%= @offer.preferred_address  %>
   <% end %>
   <br/>
 </div>

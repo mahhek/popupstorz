@@ -1,6 +1,6 @@
 <br/><br/>
 
-Message Details:
+<%= t(:msg_detail) %>
 
 <br/>
 
@@ -9,18 +9,18 @@ Message Details:
 
 
 
-  Sender: <%= @mail.message.sender.login %>
+  <%= t(:sender) %> <%= @mail.message.sender.login %>
   <br/>
-  Recipients: &nbsp;
+  <%= t(:recipients) %> &nbsp;
   <% @mail.message.recipients.each do |recipient|%>
       <%= recipient.login %> &nbsp;
   <%end%>
 
 
   <br/>
-  Tittel: <%= @mail.message.subject %>
+  <%= t(:tittel) %><%= @mail.message.subject %>
   <br/>
-  Melding:    <%= @mail.message.body %>
+  <%= t(:melding) %><%= @mail.message.body %>
   <br/>
   <br/>
 

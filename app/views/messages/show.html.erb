@@ -1,21 +1,21 @@
 <%= render "message_header" %>
 
 <div id="message_detail_div" style="width:700px;float:left;margin-top:10px;">
-  <%= link_to "Mark as unread", manage_messages_path(:message => [@message.id], :action_to_perform => "mark_as_unread"), :method => :post %>
+  <%= link_to t(:mark_unread), manage_messages_path(:message => [@message.id], :action_to_perform => "mark_as_unread"), :method => :post %>
   <br/>
   <br/>
-  From: <%= @message.from.popup_storz_display_name %>
+  <%= t(:from) %> <%= @message.from.popup_storz_display_name %>
   <br/>
   <br/>
-  Topic: <%= @message.topic %>
+  <%= t(:topic) %> <%= @message.topic %>
   <br/>
   <br/>
-  Body: <%=  raw (nl2br(@message.body).html_safe) %>
+ <%= t(:mail_body) %> <%=  raw (nl2br(@message.body).html_safe) %>
   <br/>
   <br/>
-  Date: <%=  @message.created_at.strftime("%d %b %y") %>
+  <%= t(:mail_date) %> <%=  @message.created_at.strftime("%d %b %y") %>
   <br/>
   <br/>
-  <%= link_to "Reply", reply_messages_path(:id => @message.id) %>
+  <%= link_to t(:reply), reply_messages_path(:id => @message.id) %>
 </div>
 
