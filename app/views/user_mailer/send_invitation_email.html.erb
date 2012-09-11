@@ -1,13 +1,13 @@
-Dear User
+<%= t(:dear) %>
 <br/>
 <br/>
-You have been invited by <%= @invitation.user.email %> to join PopUpStorz
+<%= t(:invited_by) %><%= @invitation.user.email %> <%= t(:to_join) %>
 <br/>
-Please confirm by clicking the link below
-<br/>
-<br/>
-<a href="<%= root_url(:only_path => false) %>users/sign_up?locale=el&token=<%= @invitation.token %>">Confirm Now</a>
+<%= t(:click_confirm) %>
 <br/>
 <br/>
-Kind Regards
-Admin PopUpStorz
+<a href="<%= root_url(:only_path => false) %>users/sign_up?locale=el&token=<%= @invitation.token %>"><%= t(:confirm_now) %></a>
+<br/>
+<br/>
+<%= t(:regards) %>
+<%= t(:admin) %>

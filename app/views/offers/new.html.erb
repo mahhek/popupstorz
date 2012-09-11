@@ -1,31 +1,31 @@
 <style>
-  .booked { 
+  .booked {
     border: 4px solid;
-    color: red; 
+    color: red;
   }
-  .booked span{ 
+  .booked span{
     background: darkgray !important;
     color: red !important;
     font-weight: bold !important;
   }
-  .selected{    
+  .selected{
   }
-  .selected a{ 
+  .selected a{
     background: aquamarine !important;
     font-weight: bold !important;
   }
-  .booked { 
+  .booked {
     border: 4px solid;
-    color: red; 
+    color: red;
   }
-  .booked span{ 
+  .booked span{
     background: darkgray !important;
     color: red !important;
     font-weight: bold !important;
   }
-  .selected{    
+  .selected{
   }
-  .selected a{ 
+  .selected a{
     background: aquamarine !important;
     font-weight: bold !important;
   }
@@ -33,14 +33,14 @@
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
     $(document).ready(function(){
-      
+
       var days_arr = <%= @available_days %>;
       function disableDays(date){
         return [$.inArray(date.getDay(), days_arr) > -1,""]
       }
-      
+
       var disabledDaysRange = new Array;
-      disabledDaysRange = <%= raw @manage_dates_array %>;      
+      disabledDaysRange = <%= raw @manage_dates_array %>;
       function disableRangeOfDays(d) {
         for(var i = 0; i < disabledDaysRange.length; i++) {
           if($.isArray(disabledDaysRange[i])) {
@@ -61,7 +61,7 @@
 
 <% if !params[:pick_up].blank? && !params[:return].blank? %>
 
-  <% 
+  <%
   date1 = params[:pick_up]
   date2 = params[:return]
   dates = (Date.strptime(date1,'%m/%d/%Y')..Date.strptime(date2,'%m/%d/%Y')).to_a
@@ -69,18 +69,18 @@
 %>
           var selectedDays = new Array;
           selectedDays = <%= raw dates %>
-        
+
           for(var i = 0; i < selectedDays.length; i++) {
-          
+
             var r = selectedDays[i];
             r = r.split("/");
             if(String(new Date(r[2], (r[0]-1), r[1])) == String(d)) {
               return [true, 'selected'];
-            }          
+            }
           }
 
 <% end %>
-        
+
         return [true];
       }
 
@@ -117,7 +117,7 @@
 
 <div id="hd-result">
   <div class="container_12">
-    <div id="r-nav" class="grid_9"> <a href="/">Home</a> &nbsp;&gt;&nbsp; Make a booking</div>
+  <div id="r-nav" class="grid_9"> <a href="/"><%= t(:home) %></a> &nbsp;&gt;&nbsp; <%= t(:make_booking) %></div>
     <div class="grid_3"> &nbsp; </div>
     <div class="clear">&nbsp;</div>
   </div>
@@ -128,10 +128,10 @@
       <div style="padding: 20px;float: left;">
         <% if @offer.errors.any? %>
           <div id="errorExplanation" class="erro_messages">
-            <h2>Oops! Looks like you need to include the following:</h2>
+            <h2><%= t(:include_following) %></h2>
             <ul>
               <li style="list-style: square;float: left;">
-                Required fields(and the display names): <%= @offer.errors.full_messages.to_sentence  %>
+                <%= t(:req_fields) %> <%= @offer.errors.full_messages.to_sentence  %>
               </li>
             </ul>
           </div>
@@ -140,8 +140,8 @@
       <div class="grid_12">
 
         <ul class="steps">
-          <li class="start"> <span>1</span> Make a Booking</li>
-          <li class="next"> <span> 2</span>Confirm & Contact</li>
+          <li class="start"> <span>1</span> <%= t(:make_booking) %></li>
+          <li class="next"> <span> 2</span><%= t(:confirm_contact) %></li>
 
         </ul>
 
@@ -158,22 +158,22 @@
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>
-          Owner : <%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/>
-          <strong>Description</strong><br/>
+          <%= t(:offer_owner) %><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/>
+          <strong><%= t(:offer_descrip) %></strong><br/>
           <%= raw @item.description %>
           <div class="clear">&nbsp;</div>
         </div>
 
         <div style="float:left;width:100%;">
-          <h1 class="size">Owner Rules:</h1><br />
-          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div').toggle()">Show Details</div><br />
+          <h1 class="size"><%= t(:owner_rules) %></h1><br />
+          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div').toggle()"><%= t(:show_details) %></div><br />
           <p class="size_text" id="rules_div" style="display:none;">
             <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
           </p>
           <div class="clear"></div>
 
-          <h1 class="size">Cancellation Policy:</h1><br />
-          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div').toggle()">Show Details</div><br />
+          <h1 class="size"><%= t(:cancellation_policy) %></h1><br />
+          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div').toggle()"><%= t(:show_details) %></div><br />
           <p class="size_text" id="policy_div" style="display:none;">
             <% unless @item.cancellation_policy_flexible.blank? %>
       <%= t(:flexible) %><br/>
@@ -203,23 +203,23 @@
 
       <% if @item.is_shareable %>
         <div style="width:100%; margin: 10px;">
-          <br><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> Standard Booking
-          <%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> Create a Gathering
+          <br><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> <%= t(:stand_booking) %>
+          <%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> <%= t(:create_gathering) %>
         </div>
       <% else %>
-        <br><%= radio_button_tag 'plan', 'standard_booking', true %> Standard Booking
+        <br><%= radio_button_tag 'plan', 'standard_booking', true %> <%= t(:stand_booking) %>
       <% end %>
 
-      <h3>Suggest Terms</h3> <br/>
+      <h3><%= t(:suggest_term) %></h3> <br/>
 
       <div id="booking-form">
 
         <div id="price-box">
 
           <div class="xfields">
-            <div style="float: left;width: 100px;font-weight: bold;">Daily Price</div>
-            <div style="float: left;width: 100px;font-weight: bold;">Duration</div>
-            <div style="float: left;width: 100px;font-weight: bold;">Total Price</div>
+            <div style="float: left;width: 100px;font-weight: bold;"><%= t(:daily_price) %></div>
+            <div style="float: left;width: 100px;font-weight: bold;"><%= t(:duration) %></div>
+            <div style="float: left;width: 100px;font-weight: bold;"><%= t(:t_price) %></div>
           </div>
           <br/>
           <div style="padding-top:4px; color:#f55c00;" class="xfields">
@@ -238,7 +238,7 @@
               <%= "#{@number_of_days} days" %>
             </div>
             <div style="float: left;width: 100px;" id="total_price">
-  <%#= session[:curr] == "USD" ? "$" : "€" %> 
+  <%#= session[:curr] == "USD" ? "$" : "€" %>
   <%#= number_to_currency(exchange_currency(@calculated_price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
             </div>
           </div>
@@ -246,12 +246,12 @@
         </div>
         <br/>
 
-        <strong>I need this... From: *</strong>
+        <strong><%= t(:need_this) %></strong>
 
-        <label>Pickup:</label>
+        <label><%= t(:pick_up) %></label>
         <%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %>
   <%#*<div class="clear"></div>%>
-        <label>Return:</label>
+        <label><%= t(:return2) %></label>
         <%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %>
 
         <br/>
@@ -305,7 +305,7 @@
   <%#= f.radio_button :want_to_bargain, false, :checked => true,  :class => "bargain_radio" %>
   <%#*</span>%>
   <%#*<span style="float: left;">%>
-  <%#= label :want_to_bargain_no, "No", :style => "padding-top:0px !important;line-height: 20px;" %> 
+  <%#= label :want_to_bargain_no, "No", :style => "padding-top:0px !important;line-height: 20px;" %>
   <%#*&nbsp;&nbsp;&nbsp;&nbsp;%>
   <%#*</span>%>
   <%#*<span style="float: left;">%>
@@ -322,16 +322,16 @@
   <%#*<br/>%>
         <div class="clear"></div>
 
-        <div id="bargain_div" style="display: none; font-size:13px; font-style:italic;">Please Enter Meeting <strong>Willing to Pay</strong> :
+        <div id="bargain_div" style="display: none; font-size:13px; font-style:italic;"><%= t(:enter_meeting) %><strong><%= t(:location2) %></strong> :
           <%= f.text_field :willingness_to_pay %>
-          <%= session[:curr] == "USD" ? "$" : "€" %> &nbsp;&nbsp;&nbsp;<font size="2"><em>For the whole rental period</em></font><br/>
+          <%= session[:curr] == "USD" ? "$" : "€" %> &nbsp;&nbsp;&nbsp;<font size="2"><em><%= t(:rental_period) %></em></font><br/>
         </div>
 
         <br/>
         <div id="response_div">
-          <label style="line-height:18px;">I need a response from the Owner  by:</label>
-          <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%>             <label style="line-height:18px; "><strong><br/>Send <%= @item.user.popup_storz_display_name%>  </strong> message:
-            <small>maybe tell him/her why you need the space</small></label><br/><br/>
+          <label style="line-height:18px;"><%= t(:owner_reply) %></label>
+          <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%>             <label style="line-height:18px; "><strong><br/><%= t(:send) %> <%= @item.user.popup_storz_display_name%>  </strong> <%= t(:msg2) %>
+            <small><%= t(:why_need_space) %></small></label><br/><br/>
           <%= f.fields_for :offer_messages do |offer_message| %>
             <% if offer_message.object.new_record? %>
               <%= offer_message.text_area :message %>
@@ -340,7 +340,7 @@
             <%end%>
             <%end%><br/><br/><br/>
           <div style="padding-left:200px;">
-            <button class="large-max button orange"> Confirm Booking </button>
+            <button class="large-max button orange"> <%= t(:confirm_book) %></button>
           </div>
         </div>
         <br/><br/>
@@ -348,7 +348,7 @@
         <div class="clear"></div>
 
   <%#*<label style="line-height:18px; ">%>
-  <%#*<strong>Send <%= @item.user.popup_storz_display_name%> 
+  <%#*<strong>Send <%= @item.user.popup_storz_display_name%>
   <%#*</strong> message:%>
   <%#*<small>maybe tell him/her why you need the space</small></label><br/><br/>%>
   <%#= f.fields_for :offer_messages do |offer_message| %>
@@ -364,20 +364,20 @@
         <br/>
 
         <div id="gathering_fields" style="display:none;">
-          <b>Maximum Number of people allowed:</b><%= @item.maximum_members %><br /><br />
-          <label>Persons in Gathering:</label>
+          <b><%= t(:max_no) %></b><%= @item.maximum_members %><br /><br />
+          <label><%= t(:gather_person) %></label>
           <%= f.text_field :persons_in_gathering, :onchange => "check_persons(this.value,#{@item.maximum_members.to_i})" %><br /><br />
-          <label>Gathering Rental Price:</label>
-          <%= f.text_field :gathering_rental_price, :readonly=>true %> <%= session[:curr] == "USD" ? "$" : "€" %> / person<br /><br />
-          <label>Gathering Description:</label>
+          <label><%= t(:gather_rent) %></label>
+          <%= f.text_field :gathering_rental_price, :readonly=>true %> <%= session[:curr] == "USD" ? "$" : "€" %><%= t(:per_person) %><br /><br />
+          <label><%= t(:gathering_description) %></label>
           <%= f.text_area  :gathering_description %>    <br/><br/>
-          <label style="line-height:18px;">Joining Deadline:</label>
+          <label style="line-height:18px;"><%= t(:join_deadline) %></label>
           <%= f.text_field :gathering_deadline, :class => "datex", :value => "mm/dd/yy"%>
 
 
           <br/><br/>
           <div style="padding-left:200px;">
-            <button class="large-max button orange"> Create Gathering </button>
+            <button class="large-max button orange"> <%= t(:create_gathering) %></button>
           </div>
         </div>
       </div>
@@ -399,7 +399,7 @@
     else
     {
       $('#preferred_address').hide();
-      $('#offer_preferred_address').val('');      
+      $('#offer_preferred_address').val('');
     }
   });
   $('.bargain_radio').change(function(){
@@ -413,14 +413,14 @@
       $('#offer_willingness_to_pay').val('');
     }
   });
-  
+
   function checkPrefferedAddress(){
     if($("input[@name=offer[preferred_location]]:checked").val() == "true"){
       if($("#offer_preferred_address").val() == "") {
         alert('Please enter some preferred location first!.');
         return false;
       }else{
-        if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {          
+        if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
           if($("#gathering_fields").is(":hidden") == false){
             return true;
           }
@@ -451,8 +451,8 @@
           return true;
         }
       }
-    }else{    
-      if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {        
+    }else{
+      if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
         if($("#gathering_fields").is(":hidden") == true){
           if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy" ){
             alert('Please enter response deadline date.');
@@ -460,7 +460,7 @@
           }
           else{
             return true;
-          }          
+          }
         }
         else{
           alert('Please enter gathering joining deadline date.');
@@ -490,8 +490,8 @@
       }
     }
   }
-  
-  
+
+
   function calculateTotalAmount(){
     $("#offer_rental_end_date").datepicker('option', 'minDate', new Date($("#offer_rental_start_date").val()));
 
@@ -511,45 +511,45 @@
       start_date = new Date(start);
       end = $('#offer_rental_end_date').val();
       end_date = new Date(end);
-      
+
       startTime = start_date.getTime();
       endTime = end_date.getTime();
       var new_days= 0;
       var days_arr = <%= @available_days %>;
-      
+
       for (loopTime = startTime; loopTime <= endTime; loopTime += 86400000) {
         if($.inArray(new Date(loopTime).getDay(), days_arr) > -1){
           new_days += 1;
-        }        
+        }
       }
 
 <%#*number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;%>
       number_of_days = new_days;
-      
+
       if(number_of_days == 0){
         number_of_days = 1;
       }
       number_of_days = Math.round(number_of_days)
       $("#offer_total_days").val(number_of_days);
-      
+
       $('#duration').text(number_of_days+ " days");
       calculated_price = calculate_price(number_of_days);
-      
+
       $('#offer_total_amount').val(calculated_price);
 <%#*$('#total_price').val(calculated_price);%>
-      
+
       if($("#gathering_fields").is(":hidden") == false){
         if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
-          alert("Please enter persons in gathering");            
+          alert("Please enter persons in gathering");
         }
         else if($("#offer_persons_in_gathering").val() == 1){
-          alert("Persons in gathering must be more than 1");          
+          alert("Persons in gathering must be more than 1");
         }
         else{
           $("#offer_gathering_rental_price").val(parseInt(calculated_price)/parseInt($("#offer_persons_in_gathering").val()));
         }
       }
-      
+
       jQuery.ajax({
         type:"GET",
         url: '/items/set_dates?start_date='+start+'&end_date='+end,
@@ -563,7 +563,7 @@
 
     }
   }
-  
+
   function calculate_price(number_of_days){
     months = Math.floor(number_of_days/30);
     weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);
@@ -694,19 +694,19 @@
     });
     //$('#new_location').validate();
   });
-  
+
   function show_gathering(){
     $("#offer_is_gathering").val(true);
     $("#gathering_fields").show();
     $("#response_div").hide();
   }
-  
+
   function hide_gathering(){
     $("#offer_is_gathering").val(false);
     $("#gathering_fields").hide();
     $("#response_div").show();
   }
-  
+
   function check_persons(obj,val){
     if(obj == '' || obj == 0){
       alert("Please enter number of persons in gathering.");
@@ -721,5 +721,5 @@
       }
     }
   }
-  
+
 </script>

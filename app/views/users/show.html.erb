@@ -338,7 +338,7 @@
       <%= link_to t(:details), "/offers/#{offer.id}" %>
       <br /><br />
       <% if (offer.status != "all joinings approved" and offer.status != "Cancelled" and offer.status != "Applied" and offer.status != "Declined") && current_user.id == offer.user_id && offer.rental_start_date >= Date.parse("#{Date.today}","%Y-%d-%m") %>
-        <%= link_to "Cancel Booking", "/cancel_booking/#{offer.id}" %>
+        <%= link_to t(:cancel_booking), "/cancel_booking/#{offer.id}" %>
       <% end %>
     </div>
 

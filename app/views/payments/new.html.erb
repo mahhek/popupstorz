@@ -1,10 +1,10 @@
 <script type="text/javascript">
-  var lastjavascripthash='';   
+  var lastjavascripthash='';
   $(document).ready(function(){
     if($("#is_confirm_terms").attr('checked') == "checked"){
       window.location.replace("<%= root_path %>");
-    }    
-  });  
+    }
+  });
   jQuery(function() {
     var payment;
 
@@ -51,7 +51,7 @@
 </script>
 <div id="hd-result">
   <div class="container_12">
-    <div id="r-nav" class="grid_9"> <a href="/">Home</a> &nbsp;&gt;&nbsp; Confirm your booking and Contact Owner  </div>
+    <div id="r-nav" class="grid_9"> <a href="/"><%= t(:home) %></a> &nbsp;&gt;&nbsp; <%= t(:confirm_book1) %> </div>
     <div class="grid_3"> &nbsp; </div>
     <div class="clear">&nbsp;</div>
   </div>
@@ -63,7 +63,7 @@
       <div style="padding: 20px;float: left;">
         <% if @payment.errors.any? %>
           <div class="error_messages">
-            <h2><%= pluralize(@payment.errors.count, "error") %> prohibited this subscription from being saved:</h2>
+            <h2><%= pluralize(@payment.errors.count, "error") %> <%= t(:prohibited) %></h2>
             <ul>
               <% @payment.errors.full_messages.each do |msg| %>
                 <li><%= msg %></li>
@@ -89,22 +89,22 @@
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>
-          Owner : <%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/>
-          <strong>Description</strong><br/>
+          <%= t(:offer_owner) %><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/>
+          <strong><%= t(:offer_descrip) %></strong><br/>
           <%= raw @item.description %>
           <div class="clear">&nbsp;</div>
         </div>
 
         <div style="float:left;width:100%;">
-          <h1 class="size">Owner Rules:</h1><br />
-          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div').toggle()">Show Details</div><br />
+          <h1 class="size"><%= t(:owner_rules) %></h1><br />
+          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div').toggle()"><%= t(:show_details) %></div><br />
           <p class="size_text" id="rules_div" style="display:none;">
             <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
           </p>
           <div class="clear"></div>
 
           <h1 class="size">Cancellation Policy:</h1><br />
-          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div').toggle()">Show Details</div><br />
+          <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div').toggle()"><%= t(:show_details) %></div><br />
           <p class="size_text" id="policy_div" style="display:none;">
             <% unless @item.cancellation_policy_flexible.blank? %>
               <%= t(:flexible) %><br/>
@@ -132,38 +132,38 @@
         </div>
       </div>
 
-      <h3>Confirm your booking and contact <%= link_to "Owner", profile_path(@item.user) %></h3> <br/>
+      <h3><%= t(:confirm_book2) %> <%= link_to "Owner", profile_path(@item.user) %></h3> <br/>
 
       <div id="booking-form">
 
 
         <div id="stripe_error" style="padding: 5px;width :100%;float:left;font-style: italic;color: red;">
           <noscript>
-          JavaScript is not enabled and is required for this form. First enable it in your web browser settings.
+          <%= t(:js_enabled) %>
           </noscript>
         </div>
 
-        <% if @offer.is_gathering %>  
-          <% rentareto_fee = @offer.gathering_rental_price.blank? ? 0 : (( @offer.gathering_rental_price * 10 ) / 100 ) %>    
+        <% if @offer.is_gathering %>
+          <% rentareto_fee = @offer.gathering_rental_price.blank? ? 0 : (( @offer.gathering_rental_price * 10 ) / 100 ) %>
           <% owner_amount = @offer.gathering_rental_price %>
           <% total_amount = rentareto_fee + owner_amount %>
           <%= f.hidden_field :rentareto_fee, :value => rentareto_fee %>
           <%= f.hidden_field :seller_amount, :value => owner_amount %>
           <br/>
-          Reservation Fee ( <b><%= rentareto_fee %></b>   )<br/>
-          Remaining balance to be paid to owner: ( <b><%= owner_amount %></b> )<br/>
-          Total ( <b><%= total_amount %></b> )<br/>
+          <%= t(:reserve_fee) %> ( <b><%= rentareto_fee %></b>   )<br/>
+          <%= t(:rem_balance) %>( <b><%= owner_amount %></b> )<br/>
+          <%= t(:total1) %> ( <b><%= total_amount %></b> )<br/>
 
         <%else%>
-          <% rentareto_fee = @offer.total_amount.blank? ? 0 : (( @offer.total_amount * 10 ) / 100 ) %>    
-          <% owner_amount = @offer.total_amount %>    
+          <% rentareto_fee = @offer.total_amount.blank? ? 0 : (( @offer.total_amount * 10 ) / 100 ) %>
+          <% owner_amount = @offer.total_amount %>
           <% total_amount = rentareto_fee + owner_amount %>
           <%= f.hidden_field :rentareto_fee, :value => rentareto_fee %>
           <%= f.hidden_field :seller_amount, :value => owner_amount %>
           <br/>
-          Reservation Fee ( <b><%= rentareto_fee %></b>   )<br/>
-          Remaining balance to be paid to owner: ( <b><%= owner_amount %></b> )<br/>
-          Total ( <b><%= total_amount %></b> )<br/>
+          <%= t(:reserve_fee) %> ( <b><%= rentareto_fee %></b>   )<br/>
+          <%= t(:rem_balance) %>( <b><%= owner_amount %></b> )<br/>
+          <%= t(:total1) %> ( <b><%= total_amount %></b> )<br/>
 
         <% end %>
 
@@ -176,7 +176,7 @@
           <%= f.label :amount, "Amount to Pay" %>
           <%= f.text_field :amount, :value => total_amount, :readonly => true %>
         </div>
-        <h3>Enter Credit Card</h3>
+        <h3><%= t(:enter_cc) %></h3>
         <%=label_tag :card_number, "Credit Card Number"%>
         <%= text_field_tag :card_number, "4242424242424242", name: nil %>
         <br/><br/>
@@ -188,20 +188,14 @@
         <select name="date[month]">
           <% for i in 1..12 %>
             <option value="<%= i %>"><%= i %></option>
-          <% end %>          
+          <% end %>
         </select>
         <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"} %>
         <br/>
         <br/>
-        <% terms_of_use = "THis is terms of use, you have to agree this to proceed.
-  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
-  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
-  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
-  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
-  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed.
-  THis is terms of use, you have to agree this to proceed.THis is terms of use, you have to agree this to proceed." %>
+        <% terms_of_use = t(:terms_use) %>
         <%= text_area_tag :terms_of_user, terms_of_use, :size => "50x4" %><br/><br/>
-        <%= check_box_tag "is_confirm_terms" %>By Confirming I Accept Terms of Use<br/><br/>
+        <%= check_box_tag "is_confirm_terms" %><%= t(:by_accepting) %><br/><br/>
         <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
           <%= f.submit "Confirm Application", :class=> "submit_button" %>
         <% else %>
@@ -221,6 +215,6 @@
     else{
       alert("You have to agree with terms and conditions first!");
       return false;
-    }    
+    }
   }
 </script>
