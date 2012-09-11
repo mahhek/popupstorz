@@ -42,6 +42,9 @@
       var disabledDaysRange = new Array;
       disabledDaysRange = <%= raw @manage_dates_array %>;
       function disableRangeOfDays(d) {
+        if($.inArray(d.getDay(), days_arr) > -1 == false){
+          return false;
+        }
         for(var i = 0; i < disabledDaysRange.length; i++) {
           if($.isArray(disabledDaysRange[i])) {
             for(var j = 0; j < disabledDaysRange[i].length; j++) {
@@ -89,16 +92,14 @@
         minDate: new Date(),
         maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
         dateFormat: 'mm/dd/yy',
-        beforeShowDay: disableRangeOfDays,
-        beforeShowDay:  disableDays
+        beforeShowDay: disableRangeOfDays
       });
 
       $("#offer_rental_end_date").datepicker({
         minDate: new Date(),
         maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
         dateFormat: 'mm/dd/yy',
-        beforeShowDay: disableRangeOfDays,
-        beforeShowDay:  disableDays
+        beforeShowDay: disableRangeOfDays
       });
       // end jsFiddle
       $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });

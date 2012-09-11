@@ -16,27 +16,24 @@
   }
 </style>
 
-
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
-    $(document).ready(function(){
-      
-      var days_arr = <%= @available_days %>;
-      function disableDays(date){
-        return [$.inArray(date.getDay(), days_arr) > -1,""]
-      }
-      
+    $(document).ready(function(){      
+      var days_arr = <%= @available_days %>;      
       var disabledDaysRange = new Array;
       disabledDaysRange = <%= raw @manage_dates_array %>;
+      
       function disableRangeOfDays(d) {
-        
+        if($.inArray(d.getDay(), days_arr) > -1 == false){
+          return false;
+        }
         for(var i = 0; i < disabledDaysRange.length; i++) {
           if($.isArray(disabledDaysRange[i])) {
             for(var j = 0; j < disabledDaysRange[i].length; j++) {
               var r = disabledDaysRange[i][j].split(" to ");
               r[0] = r[0].split("/");
               r[1] = r[1].split("/");
-              if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {
+              if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {                
                 return [false, 'booked'];
               }
             }
@@ -47,28 +44,23 @@
           }
         }
 
-<% if !session[:start_date].blank? && !session[:end_date].blank? %>
-
-  <% 
+<% if !session[:start_date].blank? && !session[:end_date].blank?
   date1 = session[:start_date]
   date2 = session[:end_date]
   dates = (Date.strptime(date1,'%m/%d/%Y')..Date.strptime(date2,'%m/%d/%Y')).to_a
   dates = dates.map{ |date_map| date_map.strftime('%m/%d/%Y') }
 %>
           var selectedDays = new Array;
-          selectedDays = <%= raw dates %>
-        
+          selectedDays = <%= raw dates %>        
           for(var i = 0; i < selectedDays.length; i++) {
-          
             var r = selectedDays[i];
             r = r.split("/");
             if(String(new Date(r[2], (r[0]-1), r[1])) == String(d)) {
               return [true, 'selected'];
-            }          
+            }
           }
 
-<% end %>
-        
+<% end %>        
         return [true];
       }
                   
@@ -77,8 +69,7 @@
           minDate: new Date(),
           maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
           dateFormat: 'mm/dd/yy',
-          beforeShowDay: disableRangeOfDays,
-          beforeShowDay:  disableDays
+          beforeShowDay: disableRangeOfDays
         });
       }else{
         $("#txtFromDate").val('<%= session[:start_date] %>');        
@@ -86,8 +77,7 @@
           minDate: new Date(),
           maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
           dateFormat: 'mm/dd/yy',
-          beforeShowDay: disableRangeOfDays,
-          beforeShowDay:  disableDays
+          beforeShowDay: disableRangeOfDays
 
         });
       }
@@ -96,8 +86,7 @@
           minDate: new Date(),
           maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
           dateFormat: 'mm/dd/yy',
-          beforeShowDay: disableRangeOfDays,
-          beforeShowDay:  disableDays
+          beforeShowDay: disableRangeOfDays
         });
       }else{
         $("#txtToDate").val('<%= session[:end_date] %>');
@@ -105,8 +94,7 @@
           minDate: new Date(),
           maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
           dateFormat: 'mm/dd/yy',
-          beforeShowDay: disableRangeOfDays,
-          beforeShowDay:  disableDays
+          beforeShowDay: disableRangeOfDays
         });
       }
       if('<%= session[:start_date] %>' != "" && '<%= session[:end_date] %>' != ""){
