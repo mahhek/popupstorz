@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/home/nouman/Ror_Projs/popupstorz/config/locales/en.yml</file>
-        <file>file:/home/nouman/Ror_Projs/popupstorz/app/views/users/invitations.html.erb</file>
-        <file>file:/home/nouman/Ror_Projs/popupstorz/app/views/users/members.html.erb</file>
-        <file>file:/home/nouman/Ror_Projs/popupstorz/app/views/users/search_members.html.erb</file>
-        <file>file:/home/nouman/Ror_Projs/popupstorz/app/views/users/show.html.erb</file>
-        <file>file:/home/nouman/Ror_Projs/popupstorz/app/views/user_mailer/send_feedback.html.erb</file>
-        <file>file:/home/nouman/Ror_Projs/popupstorz/app/views/items/show.html.erb</file>
-        <file>file:/home/nouman/Ror_Projs/popupstorz/app/views/offers/join_gathering.html.erb</file>
-    </open-files>
 </project-private>
