@@ -482,8 +482,8 @@ class ItemsController < ApplicationController
       payment.capture_offer_commission_and_payment(@offer)
     end
     if @offer.update_attribute(:status, "Paid but waiting for FeedBack")      
-      current_user.send_message(@offer.user, :topic => "Offer Updated", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!".html_safe)      
-      @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_updated", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!".html_safe)
+      current_user.send_message(@offer.user, :topic => t(:updated_offer), :body => "#{t(:offer_the)} <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> #{t(:you_made)} #{@item.title} #{t(:feedback_pending)}".html_safe)
+      @notification = Notification.new(:user_id => @offer.user.id, :notification_type => t(:updated_offer), :description => "#{t(:offer_the)} <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> #{t(:you_made)} #{@item.title} #{t(:feedback_pending)}".html_safe)
       @notification.save
       redirect_to "/"
     else
