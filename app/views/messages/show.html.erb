@@ -1,21 +1,16 @@
-<%= render "message_header" %>
-
-<div id="message_detail_div" style="width:700px;float:left;margin-top:10px;">
-  <%= link_to "Mark as unread", manage_messages_path(:message => [@message.id], :action_to_perform => "mark_as_unread"), :method => :post %>
-  <br/>
-  <br/>
-  From: <%= @message.from.popup_storz_display_name %>
-  <br/>
-  <br/>
-  Topic: <%= @message.topic %>
-  <br/>
-  <br/>
-  Body: <%=  raw (nl2br(@message.body).html_safe) %>
-  <br/>
-  <br/>
-  Date: <%=  @message.created_at.strftime("%d %b %y") %>
-  <br/>
-  <br/>
-  <%= link_to "Reply", reply_messages_path(:id => @message.id) %>
+<div id="message_detail_div" class="shadowCont message">
+	<%= render "message_header" %>
+	<div style="float: right;line-height: 20px; margin-bottom: 20px;"> 
+		<%= link_to "Mark as unread", manage_messages_path(:message => [@message.id], :action_to_perform => "mark_as_unread"), :method => :post, :class=>"action" %>
+      <%= link_to "Reply", reply_messages_path(:id => @message.id), :class=>"action" %>
+   </div>
+   <div class="clear" ></div>
+	<div style="border: 1px solid #999999; padding: 20px;">
+		<%= @message.topic %>
+	  <%= @message.from.popup_storz_display_name %><span style="float: right;" ><%=  @message.created_at.strftime("%d %b %Y") %></span>
+	  Body: <%=  raw (nl2br(@message.body).html_safe) %>
+	  <br/>
+	  <br/>
+	  Date: 
+	</div>
 </div>
-

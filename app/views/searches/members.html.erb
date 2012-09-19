@@ -3,8 +3,8 @@
 <br/>
 
 <%= form_for :search, :url => search_members_searches_path, :remote => true do|f|%>
-  <b>Member Search</b>
-  <div style="width:99%;float: left; border: 1px solid;padding: 10px;">
+  <div class="shadowCont" style="padding: 10px;">
+  	 <b>Member Search</b>
     <div class="refinesearchresults">
       <div style="width:35%;float:left;">
         <%= text_field_tag "user", "",:style=>["width:320px"] %>
