@@ -14,7 +14,7 @@ class SearchesController < ApplicationController
       @last_price = 10000
     end
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
-    @gatherings = Offer.find(:all,:conditions => [ "status != 'Cancelled' and parent_id is NULL" ], :order=> "rental_start_date ASC")
+    @gatherings = Offer.find(:all,:conditions => [ "status != 'Cancelled' and parent_id is NULL and is_gathering = true and persons_in_gathering > 0" ], :order=> "rental_start_date ASC")
     @gatherings = @gatherings.paginate(:page => params[:page], :per_page => 6 )
   end
 
@@ -72,7 +72,7 @@ class SearchesController < ApplicationController
   end
 
   def search_gatherings
-    conds = "1=1 "
+    conds = "status != 'Cancelled' and parent_id is NULL and is_gathering = true and persons_in_gathering > 0 "
     cities = []
     items = ""
     if params[:location] && !params[:location].blank?
@@ -97,6 +97,16 @@ class SearchesController < ApplicationController
       conds += " AND (gathering_rental_price <= '#{params[:max_price]}')"
     end
     
+    unless params[:search_from].blank?
+      start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
+      conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
+    end
+    
+    unless params[:search_to].blank?
+      end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
+      conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
+    end
+    
     unless sel_items.blank?
       conds += " AND item_id in(#{items})"
     end
@@ -112,7 +122,6 @@ class SearchesController < ApplicationController
     else
       order_by = "gathering_rental_price ASC"
     end
-    
     @offers = Offer.find(:all,:conditions => [ conds ], :order=> order_by)
     @offers = @offers.paginate(:page => params[:page], :per_page => 6 )
     
