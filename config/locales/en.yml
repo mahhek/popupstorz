@@ -442,7 +442,7 @@ en:
    low: "Low"
    high: "High"
    accuracy: "Accuracy:"
-   commodities: "Commodities"
+   commodities: "Amenities"
    communication: "Communication:"
    need_item: "needs your item from:"
    pick_up: "Pickup:"
