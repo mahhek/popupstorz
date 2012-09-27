@@ -552,13 +552,13 @@ fr:
 #   These are eamil translations
 
 
-   offer_accepted_email: "Offer Accepted"
-   accepted_offer: "accepted your offer on"
-   email_from: "from"
-   email_to: "to"
-   offer_declined_email: "Offer Declined"
-   gathering_created_email: "The gathering you created on the place: "
-   owner_cancelled: " has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid. "
+   offer_accepted_email: "Offre acceptée"
+   accepted_offer: "a accepté votre offre sur"
+   email_from: "de"
+   email_to: "à"
+   offer_declined_email: "Offre refusée"
+   gathering_created_email: "La réunion que vous avez créée sur l'espace: "
+   owner_cancelled: " a été annulée par le propriétaire. Nous vous présentons nos excuses pour ce désagrément. Vous recevrez un remboursement intégral de tous les frais que vous avez payés. "
    gathering_applied: "The gathering to which you have applied on the place"
    reject_place: "rejected your offer on the place:"
    app_gathering: "Gathering Application"
