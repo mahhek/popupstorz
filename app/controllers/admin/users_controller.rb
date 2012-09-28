@@ -7,6 +7,21 @@ class Admin::UsersController < ApplicationController
     @users = User.all
   end
 
+  def new
+    @user = User.new
+  end
+
+  def create
+    
+    @user=User.new(params[:user])
+    @user.skip_confirmation!
+    if @user.save
+      UserMailer.send_user_information(@user).deliver
+
+    end
+    redirect_to admin_items_path
+  end
+
   def show
     @user = User.find(params[:id])   
   end

@@ -19,8 +19,8 @@
     <%= javascript_include_tag "jquery.datepick" %>
 
 
-    <%= GMap.header(:with_vml => false, :host => request.host).html_safe %>
-    <%= raw(@map.to_html) if @map %>
+    <%#= GMap.header(:with_vml => false, :host => request.host).html_safe %>
+    <%#= raw(@map.to_html) if @map %>
     <%= csrf_meta_tags %>
     <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
     <%= yield(:head) %>
@@ -47,7 +47,7 @@
       <%= link_to t(:all_listings), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:create_listings), '/items/new' %>&nbsp;|&nbsp;
       <%= link_to t(:manage_listings), admin_items_path %>&nbsp;|&nbsp;
-      <%= link_to t(:create_users), new_user_registration_path %>&nbsp;|&nbsp;
+      <%= link_to t(:create_users), new_admin_user_path %>&nbsp;|&nbsp;
       <%= link_to t(:ownership), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:commision), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:specific_listing), admin_items_path %>&nbsp;|&nbsp;
