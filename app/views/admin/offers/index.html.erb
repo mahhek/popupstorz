@@ -1,0 +1,37 @@
+<div id="get-list-header">
+  <h2><%= 'all offers' %></h2>
+</div>
+<div class="listx-bg">
+  <% unless @offers.blank? %>
+    <% @offers.each do | offer | %>
+      OWNER:
+      <%@user=User.find_by_id(offer.owner_id)%>
+      <%=@user.email%>
+      <div class="btns">
+        <button id="fff"> change commision rate </button>|&nbsp;
+      </div>
+      <div id="rate_form" style="display: none;">
+        <%=form_tag change_commission_rate_admin_offers_path do |f|%>
+        <%=hidden_field_tag "offer_id", offer.id%>
+          <%=text_field_tag "commision_rate", offer.commission_rate%>%
+          <%=submit_tag "done"%>
+        <%end%>
+      </div>
+    <%end%>
+  <%else%>
+    <%= t(:no_item_listed) %>
+  <%end%>
+
+</div>
+<div class="btn-bar">
+
+</div>
+
+<script type="text/javascript">
+
+
+  $('#fff').click(function() {
+  $('#rate_form').toggle();
+  });
+
+</script>

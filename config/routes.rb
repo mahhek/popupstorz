@@ -9,7 +9,7 @@ PopupStorz::Application.routes.draw do
   match '/items/search_category/:id' => 'items#search_category'
   match '/notifications/destroy/:id' => 'notifications#destroy'
   match '/members' => 'users#members'
-#  match '/search_members' => 'users#search_members'
+  #  match '/search_members' => 'users#search_members'
   match '/search_gatherings' => 'searches#search_gatherings'
   match '/search_spaces' => 'searches#search_spaces'
   match '/admin_destroy_user/:id' => "admin/users#destroy_user"
@@ -119,9 +119,21 @@ PopupStorz::Application.routes.draw do
     resources :items do
       collection do
         get :change_recommendation
+        post :transfer_ownership
+        post :change_commission_rate
+        get :change_rate
+        post :change_all
+        post :display_on_home
+        get :active_inactive
+        get :offer_activation
       end      
     end
     resources :users
+    resources :offers do
+      collection do
+        post :change_commission_rate
+      end
+    end
   end
   resources :services do
     get "/services/create/:id" => "services#create"

@@ -1,0 +1,427 @@
+<script type='text/javascript'>//<![CDATA[
+  $(window).load(function(){
+  $(document).ready(function(){
+  var min = new Date();
+  min = '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%Y") %>';
+
+  $("#item_availability_from").val('<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%Y") %>');
+  $("#item_availability_from").datepicker({
+  minDate: min,
+  dateFormat: 'mm/dd/yy'
+  });
+
+  $("#item_availability_to").val('<%= @item.availability_to.blank? ? "" : @item.availability_to.strftime("%m/%d/%Y") %>');
+  $("#item_availability_to").datepicker({
+  minDate: new Date(),
+  dateFormat: 'mm/dd/yy'
+  });
+
+  });
+  });
+</script>
+<%= form_for @item, :html => {:name => "item_form", :multipart => true} do|f| %>
+  <%= f.hidden_field :user_id, :value => current_user.id if current_user %>
+
+  <div style="padding-bottom: 20px;float: left;">
+    <% if @item.errors.any? %>
+      <div id="errorExplanation" class="erro_messages">
+        <h2><%= t(:oops) %></h2>
+        <ul>
+          <li style="list-style: square;float: left;">
+            <%= t(:req_fields) %><%= @item.errors.full_messages.to_sentence  %>
+          </li>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+
+  <div style="float: left; width: 60%;margin-top: 20px;">
+    <div class="xfields"><%= t(:title) %>
+      <%= f.text_field :title, :style => "width:315px;" %>
+    </div>
+  </div>
+  <br />
+  <br />
+  <br />
+  <%#= f.fields_for :avatars do |avatar| %>
+  <%# if avatar.object.new_record? %>
+  <%#*<p>%>
+  <%#*Images of space Listing: <%= avatar.file_field :photo %>
+  <%#*</p>%>
+  <%#end%>
+  <%#end%>
+  <%#*<div style="width: 100%;padding: 10px;">%>
+  <%#= f.fields_for :avatars do |avatar| %>
+  <%# unless avatar.object.new_record? %>
+  <%#= link_to( image_tag(avatar.object.photo.url(:thumb)), avatar.object.photo.url(:original) ) %>
+  <%#= avatar.check_box :_destroy %>
+  <%#*&nbsp;&nbsp;&nbsp;%>
+  <%# end %>
+  <%# end %>
+  <%#*</div>%>
+
+  <br/>
+  <br/>
+  <div id="where-iteme">
+    <div class="field-address"><%= t(:location) %><br/>
+      <%= f.text_field :address, :class => "field-l", :style => "width:700px;" %>
+      <div id="item_advanced_container" style="display:none;">
+        <div id="item_advanced" style="display:none;">
+          <%= f.label(:longitude, "Coordinates") %>
+          <%= f.text_field :longitude, :class => 'required two-side-by-side' %>
+          <%= f.text_field :latitude , :class => 'required two-side-by-side second'%><br />
+        </div>
+        <div class="small">
+          <a href="javascript:void(0);" id="item_advanced_link"><%= "Advance Settings" %></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="xfields"><%= t(:neighbourhood) %>
+    <%= f.text_field :neighbourhood, :style => "width:315px;" %><br/>
+  </div>
+  <br/>
+  <div style="width: 40%;">
+    <% if @map %>
+      <%= raw(@map.div(:width => 500, :height => 400)) %>
+    <% end %>
+  </div>
+  <br/>
+
+  <div class="xfields" style="width: 100%;"><%= t(:size) %>
+    <%= f.text_field :size, :style => "width:80px;", :onchange => "update_units()" %>
+    <%= select_tag "item[size_unit]", options_for_select([["SQMT","SQMT"],["SQFT","SQFT"]], @item.size_unit),:onchange => "update_units()" , :style => "width:100px;"%>
+    <div id="other_unit">
+      <%= t(:sqft) %>
+    </div>
+  </div>
+
+
+  <br/>
+  <div class="xfields"><%= t(:type) %>
+    <%= select_tag( "item[listing_type_id]", options_from_collection_for_select(@listing_types,:id, :name, @item.listing_type_id)) %><br />
+  </div>
+  <br/>
+
+  <div class="xfields"><%= t(:detail_description) %><br/>
+    <%= f.text_area :description, :size => "50x7" %>
+  </div>
+  <br/>
+  <div class="xfields">
+    <%= t(:availabilities) %><br/><br/>
+    <div class="xfields">
+      <div style="width:25%;float:left;">
+        <%= t(:place_available) %><br/><br/>&nbsp;&nbsp;
+        <% if @item.availability_from.blank? and @item.availability_to.blank? %>
+          <% ava = true %>
+          <% date_disp = "none" %>
+        <% else %>
+          <% ava = false %>
+          <% date_disp = "block" %>
+        <% end %>
+        <%= t(:permanently) %><%= f.check_box :available_forever,:checked => ava, :onclick => "update_date_view()" %>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+      </div>
+
+      <div id="date_range" style="display:<%= date_disp %>;width:100%;float:left;">
+        <%= t(:from) %>
+        <%= f.text_field :availability_from, :style => "width:130px;" %>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <%= t(:to) %>
+        <%= f.text_field :availability_to, :style => "width:130px;" %>
+        <br /><br />
+      </div>
+  <%# @availability_options.each do |availability_option| %>
+  <%#= check_box_tag("availability_options[]", availability_option.id, @item.availability_options.include?(availability_option)) %>
+  <%#= availability_option.name %>
+  <%# end %>
+    </div>
+    <br /><br />
+    <%= f.check_box :availablities_daytime %>
+    <%= t(:daytime) %>&nbsp;&nbsp;
+    <%= f.check_box :availablities_evenings %>
+    <%= t(:evenings) %><br/><br/>
+    <%= f.check_box :availablities_monday %>
+    <%= t(:mondays) %>&nbsp;&nbsp;
+    <%= f.check_box :availablities_tuesday %>
+    <%= t(:tuesdays) %>&nbsp;&nbsp;
+    <%= f.check_box :availablities_wednesday %>
+    <%= t(:wednesdays) %>&nbsp;&nbsp;
+    <%= f.check_box :availablities_thursday %>
+    <%= t(:thursdays) %>&nbsp;&nbsp;
+    <%= f.check_box :availablities_friday %>
+    <%= t(:fridays) %>&nbsp;&nbsp;
+    <%= f.check_box :availablities_saturday %>
+    <%= t(:saturdays) %>&nbsp;&nbsp;
+    <%= f.check_box :availablities_sunday %>
+    <%= t(:sundays) %>&nbsp;&nbsp;
+    <div/>
+
+    <br/><br/><div style="float:left;width:100%;">
+      <div style="float:left;width:15%;">
+        <%= t(:shareability) %>&nbsp;
+        <%= select_tag "item[is_shareable]", options_for_select([["Yes",true],["No",false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)" %>&nbsp;&nbsp;
+      </div>
+      <div id="person_count" style="float:left;width:50%;">
+        <%= t(:up_to) %> &nbsp;&nbsp;&nbsp;
+        <%= f.text_field :maximum_members, :size => "5" %> persons
+      </div>
+    </div><br/>
+    <div class="xfields"><%= t(:pricing) %><br/><br/>
+      <span>
+        <%= t(:currency) %>
+      </span>
+      <span>
+        <%= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EUR","EUR"]], @item.price_unit), :onchange => "$('.unit').html($(this).val() == 'USD' ? '$' : '€');", :style => "width:100px;" %>
+      </span><br/><br/><span>
+        <%= t(:rental_price) %><br/><br/>
+      </span><span>
+        <%= f.text_field :price,  :class => "price", :size =>""%> <span class="unit">$</span> per day
+        <%= f.text_field :price_per_week,  :class => "price",:size =>""  %> <span class="unit">$</span> per week
+        <%= f.text_field :price_per_month,  :class => "price",:size =>"" %> <span class="unit">$</span> per month
+      </span>
+    </div>
+    <br/>
+    <br/>
+
+  <%#*<div class="xfields">%>
+  <%#*<span>%>
+  <%#*Rental Price:<br/><br/>%>
+  <%#*</span>%>
+  <%#*<span>%>
+  <%#= f.text_field :price,  :class => "price", :size =>""%>
+  <%#= f.text_field :price_per_week,  :class => "price",:size =>""  %>
+  <%#= f.text_field :price_per_month,  :class => "price",:size =>"" %>
+  <%#*</span>%>
+  <%#*</div>%>
+
+
+
+
+    <div class="xfields">
+      <span>
+        <%= t(:cleaning_fee) %>
+      </span>
+      <span>
+        <%= f.text_field :cleaning_fee %> <span class="unit"> $</span> &nbsp;&nbsp;
+    <!--    <%= select_tag "item[cleaning_fee]", options_for_select([["$","$"],["€","€"]], @item.cleaning_fee) %>&nbsp;&nbsp; -->
+      </span>
+    </div>
+    <br/>
+    <br/>
+
+    <div class="xfields">
+      <span>
+        <%= t(:deposit) %>
+      </span>
+      <span>
+        <%= f.text_field :deposit %><span class="unit"> $</span> &nbsp;&nbsp;
+       <!-- <%= select_tag "item[deposit]", options_for_select([["$","$"],["€","€"]], @item.deposit) %>&nbsp;&nbsp; -->
+      </span>
+    </div>
+
+    <br/>
+
+  </div><br/><div class="xfields"><%= t(:cancellation_policies) %><br/><br/>
+    <%= t(:offering_policies) %><br/><br/>
+    <%=f.radio_button :cancellation_policy_flexible,true%>
+    <%= t(:flexible) %><br/>
+    <%= t(:cancel_ln1) %><br/>
+    <%= t(:cancel_ln2) %><br/><br/>
+
+    <%= t(:cancel_ln3) %><br/><br/>
+
+    <%= t(:cancel_ln4)%><br/><br/>
+    <%= t(:cancel_ln5)%><br/><br/>
+
+    <%=f.radio_button :cancellation_policy_flexible,false%>
+    <%= t(:semi_flexible) %><br/>
+    <%= t(:semi_cancel_ln1) %><br/>
+    <%= t(:semi_cancel_ln2) %><br/><br/>
+
+    <%= t(:semi_cancel_ln3) %><br/><br/>
+
+    <%= t(:semi_cancel_ln4) %><br/><br/>
+    <%= t(:semi_cancel_ln5) %><div/>
+
+    <br/>
+    <br/><div class="xfields"><%= t(:owner_rules) %><br/>
+      <%= f.text_area :owner_rules, :style => "width:315px;" %><br/>
+    </div>
+
+    <div id="iteme-type" style="width: 100%;float: left;">
+      <div id="left-tellus">
+        <div id="save-addmore">
+          <%= f.submit @item.new_record? ? "Create Listing" : "Update Space" %>
+        </div>
+      </div>
+    </div>
+    <br/><br/>
+  <%end%>
+  <script>
+    var marker = null;
+    var get_location_name_timeout = null;
+
+    $(document).ready(function() {
+
+
+    $('#map').css("margin", "0 auto");
+
+
+    var update_location_fun = function(resolveName) {
+    if(resolveName == null) {
+    resolveName = true;
+    }
+
+    var form = $('#new_item');
+    var latlng = new GLatLng(
+    $('#item_latitude').val(),
+    $('#item_longitude').val()
+    );
+
+    map.setCenter(latlng);
+    if(marker) {
+    map.removeOverlay(marker);
+    }
+
+    marker = new GMarker(latlng);
+    map.setZoom(15);
+    map.addOverlay(marker);
+
+
+
+    if(resolveName) {
+
+
+    var get_location_name_fun = function() {
+    $.ajax({
+    url: "/xml/address_search.xml?lat=" + latlng.lat() + "&lon=" + latlng.lng(),
+    dataType: 'xml',
+    success: function(resp) {
+
+    $('#item_address').removeClass('ui-autocomplete-loading');
+    var name = $('address', resp).text();
+    if(name != '') {
+    $('#item_address').val($('address', resp).text());
+    }
+    }
+    });
+    }
+
+    if(get_location_name_timeout) {
+    clearTimeout(get_location_name_timeout);
+    }
+    get_location_name_timeout = setTimeout(get_location_name_fun, 300);
+    $('#item_address').addClass('ui-autocomplete-loading');
+    }
+    }
+
+    var register_map_event_fun = function() {
+    if(!map) {
+    setTimeout(register_map_event_fun, 100);
+    return;
+    }
+    GEvent.addListener(map, "click", function(overlay, latlng) {
+    if (latlng) {
+    $('#item_longitude').val(latlng.lng());
+    $('#item_latitude').val(latlng.lat());
+    update_location_fun();
+    }
+    });
+    }
+    setTimeout(register_map_event_fun, 100);
+
+    $('#item_address').autocomplete({
+    focus: function(event, ui) {
+    return false;
+    },
+    select: function(event, ui) {
+    var position = ui.item.id.split(";");
+    $('#item_longitude').val(position[0]);
+    $('#item_latitude').val(position[1]);
+    update_location_fun(false);
+    },
+    source: function(request, cb) {
+    $.ajax({
+    url: "/xml/location_search.xml?q=" + request.term,
+    dataType: 'xml',
+    success: function(resp) {
+    cb($("location", resp).map(function() {
+    return {label: $("address", this).text(), id: $("longitude", this).text() + ";" + $("latitude", this).text()
+    };
+    }).get());
+    }
+    });
+    },
+    minLength: 2,
+    change: function (event, ui) {
+    if (ui.item) {
+    $('#another_element').val(ui.item.source.label);
+    }
+    else {
+    if (!$(this).data('valid')) {
+    $(this).val('');
+    $('#another_element').val('');
+    }
+    }
+    $(this).data('valid', false);
+    }
+    }).live('blur', function (e) {
+    if ($('.ui-autocomplete li:visible').length > 0) {
+    $(".ui-autocomplete li:visible:first").click();
+    item = $($(".ui-autocomplete li:visible:first").data()).attr('item.autocomplete');
+    var position = item.id.split(";");
+    $('#item_longitude').val(position[0]);
+    $('#item_latitude').val(position[1]);
+    update_location_fun(false);
+    $(this).val(item.label);
+    $('#another_element').val(item.label);
+    $(this).data('valid', true);
+
+    }
+    });
+    //$('#new_location').validate();
+    });
+
+    function update_units(){
+    val = $("#item_size_unit").val();
+    if(val== "SQMT"){
+    if($("#item_size").val()){
+    fts = $("#item_size").val() * 10.76;
+    }
+    else{
+    fts = 0;
+    }
+    $("#other_unit").text(Math.round(fts)+" SQFT");
+    }
+    else{
+    if($("#item_size").val()){
+    mts = $("#item_size").val() / 10.76;
+    }
+    else{
+    mts = 0;
+    }
+    $("#other_unit").text(Math.round(mts)+" SQMT");
+    }
+    }
+
+    function check_persons_limit(val){
+    if(val == 'false'){
+    $("#item_maximum_members").attr('disabled', true);
+    $("#person_count").hide();
+    }
+    else{
+    $("#item_maximum_members").attr('disabled', false);
+    $("#person_count").show();
+    }
+    }
+
+
+    function update_date_view(){
+    $("#date_range").toggle();
+    }
+
+  </script>
+
+

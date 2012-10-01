@@ -2,11 +2,26 @@
   <div>
   </div>
   <div id="get-list-header">
-    <div id="lisit-txt"><%= @item.title %><br/><br/>
+    <div id="lisit-txt"><%= @item.title %>
+      <div>
+        <%if @item.is_active%>
+          <%=link_to "deactivate", active_inactive_admin_items_path(:item_id => @item.id), :confirm => "Are you sure"%>
+        <%else%>
+          <%=link_to "activate", active_inactive_admin_items_path(:item_id => @item.id), :confirm => "Are you sure"%>
+        <%end%>
+      </div>
+
       <span class="hel-14">
         <b><%= t(:location_show) %></b><%= "#{@item.street_name} #{@item.city}, #{@item.region}, #{@item.zipcode}" %>
         <br/>
       </span>
+    </div>
+    <div>
+      <%=form_tag display_on_home_admin_items_path do |f|%>
+        <%=hidden_field_tag "new_item_id", @item.id%>
+        <%=check_box_tag "item_id", @item.id, @item.display_on_home%>display on home
+        <%=submit_tag "done"%>
+      <%end%>
     </div>
     <div>
       <b><%= t(:owner_info) %></b><br/>
@@ -14,6 +29,14 @@
       <br/>
       <%= t(:lives_in) %><%= @user.address1 %> <%= @user.address2 %> <%= @user.city %> <%= @user.country %>
       <br/>
+    </div>
+    <button id="owner">transfer ownership</button>
+    <div id="change_owner" style="display:none">
+      <%=form_tag transfer_ownership_admin_items_path do |f|%>
+        <%=hidden_field_tag "item_id", @item.id%>
+        <%= select_tag( "user_id", options_from_collection_for_select( @users, :id, :first_name), :prompt => "select owner", :class => "paris") %>
+        <%=submit_tag "done"%>
+      <%end%>
     </div>
   </div>
   <br/><br/>
@@ -53,4 +76,56 @@
       <div id="price-x"><span class="font-24"><%=  @item.price %></span>&nbsp;<%= t(:euro_per_day) %> </div>
     </div>
   </div>
+
+  <div>
+    <h3>commission rate: <%=@item.commission_rate%> % </h3>
+
+
+    <div class="btns">
+      <button id="fff"> change commision rate </button>|&nbsp;
+    </div>
+    <div id="rate_form" style="display: none;">
+      <%=form_tag change_commission_rate_admin_items_path do |f|%>
+        <%=hidden_field_tag "item_id", @item.id%>
+        <%=text_field_tag "commission_rate", @item.commission_rate%>%
+        <%=submit_tag "done"%>
+      <%end%>
+    </div>
+
+
+  </div>
+
+  <div>
+    <h3>Bookings on this item</h3>
+    <%unless @item.offers.blank?%>
+      <%@item.offers.each do |offer|%>
+        Start date: <%=offer.rental_start_date%><br/>
+        End date : <%=offer.rental_end_date%><br/>
+       
+       
+        <%if offer.is_active%>
+          <%= link_to "deactivate", offer_activation_admin_items_path(:offer_id => offer.id), :confirm => "Are you sure" %>
+        <%else%>
+          <%= link_to "activate", offer_activation_admin_items_path(:offer_id => offer.id), :confirm => "Are you sure" %>
+        <%end%>
+      <%end%>
+
+    <%else%>
+      No bookings
+    <%end%>
+  </div>
 </div>
+
+
+<script type="text/javascript">
+
+
+  $('#fff').click(function() {
+  $('#rate_form').toggle();
+  });
+
+  $('#owner').click(function() {
+  $('#change_owner').toggle();
+  });
+
+</script>

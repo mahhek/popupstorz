@@ -5,14 +5,18 @@
   <% unless @users.blank? %>
     <% @users.each do | user | %>
       <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
-      
+
         <div class="name-list"><%= user.email %> - <%= user.first_name %> <%= user.last_name %></div>
         <div class="manage-bg">
           <div class="btns">
             <%= link_to t(:details) , admin_user_path(user)%>
           </div>
           <div class="btns">
-            <%= link_to t(:delete_user) , "/admin_destroy_user/#{user.id}", :confirm => t(:delete_user_user)%>
+            <%if user.is_active%>
+              <%= link_to "deactivate" , "/admin_destroy_user/#{user.id}", :confirm => "Are you sure"%>
+            <%else%>
+              <%= link_to "activate" , "/admin_destroy_user/#{user.id}", :confirm => "Are you sure"%>
+            <%end%>
           </div>
         </div>
       </div>

@@ -2,22 +2,34 @@
 class AvatarsController < ApplicationController
   before_filter :load_item
   def new
-    @avatar = @item.avatars.build
+    if current_user.admin
+      
+       @avatar = @item.avatars.build
+      render :layout => "admin"
+     
+      
+    else
+      @avatar = @item.avatars.build
+    end
   end
 
   def create
     upload_pics
-    return redirect_to items_path
+    if current_user.admin
+      return redirect_to admin_items_path
+    else
+      return redirect_to items_path
+    end
   end
 
   def edit
-#    @item = Item.find(params[:id])
+    #    @item = Item.find(params[:id])
     @avatars = @item.avatars
     unless @avatars.blank?
       @avatar = @avatars.first
     else
       @avatar = Avatar.new
-#      @avatar = @item.avatars.build
+      #      @avatar = @item.avatars.build
     end
   end
   

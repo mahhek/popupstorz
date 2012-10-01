@@ -28,11 +28,7 @@ class Admin::UsersController < ApplicationController
 
   def destroy_user
     user = User.find(params[:id])
-    if user.destroy
-      flash[:notice] = t(:user_deleted)
-    else
-      flash[:notice] = t(:cant_delete_user)
-    end
+    user.update_attribute(:is_active, !user.is_active)
     redirect_to admin_users_path    
   end
 

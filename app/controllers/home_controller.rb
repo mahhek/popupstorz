@@ -18,7 +18,7 @@ class HomeController < ApplicationController
       @items = Item.all(:limit => 10)
       active_items = []
       @items.each do|item|
-        if item.user.is_active == true
+        if item.user.is_active == true && item.display_on_home == true && item.is_active == true
           active_items << item
         end
       end
