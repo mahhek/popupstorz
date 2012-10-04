@@ -3,11 +3,12 @@
     <h2><%= t(:all_users) %></h2>
   </div>
   <div style="float:left;width: 100%;margin-bottom: 20px;margin-top: 20px;margin-left: 10px;">
-    <%= form_for :search, :url => "/admin/users",:html_options => {:id => "sort_form", :remote => true} do|f| %>        <span><%= t(:sort_by) %></span>  
-        <%= select_tag "sort_option", options_for_select([["Newest" ,"1"],["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).submit()" %>
+    <%= form_for :search, :url => "/admin_users", :remote => true do|f| %>
+      <span><%= t(:sort_by) %></span>  
+      <%= select_tag "sort_option", options_for_select([[t(:newest) ,"1"],[t(:oldest) ,"2"],[t(:activity), "3"],[t(:gender_search), "4"],[t(:city_add), "5"],[t(:country_add), "6"],[t(:fb_connected), "7"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).submit()" %>
     <% end %>
   </div>
-  <div class="listx-bg">
+  <div class="listx-bg" id="users_list">
     <%= render :partial => "users", :locals => {:users => @users} %>
   </div>
   <div class="btn-bar">

@@ -74,25 +74,25 @@
                   <%unless current_user.avatars.blank?%>
                     <%=  image_tag(current_user.avatars.first.photo.url, :style => "width:30px;height:25px;")%>
                   <%else%>
-                    <%=current_user.popup_storz_display_name%>
+                    <%= link_to "#{t('hi')} #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
                   <%end%>
-  <%#= "#{current_user.avatars.blank? ? "" : image_tag(current_user.avatars.first.photo.url)} #{current_user.popup_storz_display_name}" %>
+                  <% messages_size = current_user.messages.are_to(current_user).unread.size %>
+                  <% if messages_size > 0 %>
+                    <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
+                  <% end %>
                   <ul id="mini_drop_options" class="searchMenu">
                     <li class="searchdrop"><%= link_to 'My Listings', overview_items_path %></li>
                     <li class="searchdrop"><%= link_to('My Profile', profile_path(current_user.id)) %></li>
                     <li class="searchdrop"><%= link_to('Logout', destroy_user_session_path, :method => :delete) %></li>
                   </ul>
+                  <% if current_user && current_user.admin? %>
+                    <%= link_to t("admin_panel"), admin_items_path %>
+                  <% end %>
+                  <%= link_to(t('logout'), destroy_user_session_path, :method => :delete) %>
+                  
                 </span>
               </div>
-  <%#= link_to "#{t('hi')} #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
-  <%# messages_size = current_user.messages.are_to(current_user).unread.size %>
-  <%# if messages_size > 0 %>
-  <%#= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
-  <%# end %>
-  <%# if current_user && current_user.admin? %>
-  <%#= link_to t("admin_panel"), admin_items_path %>
-  <%# end %>
-  <%#= link_to(t('logout'), destroy_user_session_path, :method => :delete) %>
+
             <% end %>
           </div>
 
@@ -193,58 +193,58 @@
 <script type="text/javascript">
   function addParamToUrl(param, value)
   {
-  //check if param exists
-  var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
-  result = result && result[1] || "";
-  //added seperately to append ? before params
-  var loc = window.location;
-  var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
-  //param doesn't exist in url, add it
-  if (result == '')
-  {
-  //doesn't have any params
-  if (loc.search == '')
-  {
-  url += "?" + param + '=' + value;
-  }
-  else
-  {
-  url += "&" + param + '=' + value;
-  }
-  }
-  else
-  {
-  value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
-  value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
-  url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
-  }
-  //return the finished url
-  window.location = url;
+    //check if param exists
+    var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
+    result = result && result[1] || "";
+    //added seperately to append ? before params
+    var loc = window.location;
+    var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
+    //param doesn't exist in url, add it
+    if (result == '')
+    {
+      //doesn't have any params
+      if (loc.search == '')
+      {
+        url += "?" + param + '=' + value;
+      }
+      else
+      {
+        url += "&" + param + '=' + value;
+      }
+    }
+    else
+    {
+      value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
+      value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
+      url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
+    }
+    //return the finished url
+    window.location = url;
   }
   function search_menu(){
-  $('#search_options').toggle();
+    $('#search_options').toggle();
   };
   function mini_drop(){
-  $('#mini_drop_options').toggle();
+    $('#mini_drop_options').toggle();
   }
   $(document).click(function(event) {
-  if($(event.target).hasClass("searchMenu") == true){
-  $('#search_options').show();
-  }
-  else{
-  if($('#search_options').is(":hidden") == false){
-  $('#search_options').hide();
-  }
-  }
+    if($(event.target).hasClass("searchMenu") == true){
+      $('#search_options').show();
+    }
+    else{
+      if($('#search_options').is(":hidden") == false){
+        $('#search_options').hide();
+      }
+    }
   });
   $(document).click(function(event) {
-  if($(event.target).hasClass("searchdrop") == true){
-  $('#search_drop_options').show();
-  }
-  else{
-  if($('#search_drop_options').is(":hidden") == false){
-  $('#search_drop_options').hide();
-  }
-  }
+    if($(event.target).hasClass("searchdrop") == true){
+      $('#search_drop_options').show();
+    }
+    else{
+      if($('#search_drop_options').is(":hidden") == false){
+        $('#search_drop_options').hide();
+      }
+    }
   });
 </script>

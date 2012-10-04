@@ -4,7 +4,32 @@ class Admin::UsersController < ApplicationController
   layout "admin"
 
   def index
-    @users = User.all
+    case params[:sort_option]
+    when "1"
+      order_by = "created_at DESC"
+    when "2"
+      order_by = "created_at ASC"
+    when "3"
+      order_by = "activity ASC"
+    when "4"
+      order_by = "gender DESC"
+    when "5"
+      order_by = "city ASC"
+    when "6"
+      order_by = "country ASC"
+    when "7"
+      order_by = "show_fb_info"
+    else
+      order_by = "created_at DESC"
+    end
+    @users = User.all(:order => order_by)
+    respond_to do |format|
+      format.js do
+        foo = render_to_string(:partial => 'users', :locals => { :users => @users }).to_json
+        render :js => "$('#users_list').html(#{foo});"
+      end
+      format.html
+    end
   end
 
   def new
