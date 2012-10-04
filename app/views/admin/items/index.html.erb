@@ -1,5 +1,5 @@
 <div id="get-list-header">
-<h2><%= t(:all_items) %></h2>
+  <h2><%= t(:all_items) %></h2>
 </div>
 <div class="listx-bg">
   <% unless @items.blank? %>
@@ -7,32 +7,32 @@
       <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
         <div class="imgx">
           <% if item.avatars.size > 0 %>
-            <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo")  %>
-          <% else %>
-            <%= t(:no_image_provided) %>
-          <% end %>
-        </div>
-        <div id="recommendation_div_<%= item.id %>">
-          <%= render :partial => "recommendation", :locals => {:item => item} %>
-        </div>
+            <%= link_to(image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo"), admin_item_path(item))  %>
+            <% else %>
+              <%= t(:no_image_provided) %>
+            <% end %>
+          </div>
+          <div id="recommendation_div_<%= item.id %>">
+            <%= render :partial => "recommendation", :locals => {:item => item} %>
+          </div>
 
-        <div class="name-list"><%= item.title %></div>
-        <div class="manage-bg">
-          
-          <div class="btns">
-            <%= link_to t(:preview), admin_item_path(item) %>|&nbsp;
-          </div>
-          <div class="btns">
-            <%= link_to t(:edit), edit_admin_item_path(item) %>|&nbsp;
+          <div class="name-list"><%= item.title %></div>
+          <div class="manage-bg">
+
+            <div class="btns">
+              <%= link_to t(:preview), admin_item_path(item) %>|&nbsp;
+            </div>
+            <div class="btns">
+              <%= link_to t(:edit), edit_admin_item_path(item) %>|&nbsp;
+            </div>
           </div>
         </div>
-      </div>
+      <%end%>
+    <%else%>
+      <%= t(:no_item_listed) %>
     <%end%>
-  <%else%>
-  <%= t(:no_item_listed) %>
-  <%end%>
-</div>
+  </div>
 
-<div class="btn-bar">
+  <div class="btn-bar">
 
-</div>
+  </div>

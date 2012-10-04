@@ -62,4 +62,12 @@ class UsersController < ApplicationController
     flash[:notice] = t(:account_deleted)
     redirect_to "/users/sign_out"
   end
+
+  def callback
+    sdfS
+  end
+
+  def send_invitation_to_contacts
+    
+  end
 end

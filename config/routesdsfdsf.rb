@@ -13,7 +13,6 @@ PopupStorz::Application.routes.draw do
   match '/search_gatherings' => 'searches#search_gatherings'
   match '/search_spaces' => 'searches#search_spaces'
   match '/admin_destroy_user/:id' => "admin/users#destroy_user"
-  match '/admin_edit_user/:id' => "admin/users#edit"
   match '/delete_listings' => "admin/items#delete_listings"
   match "/search_via_price_range" => "items#search_via_price_range"
   match "/items/new/:id" => "items#new_comment"
@@ -42,6 +41,7 @@ PopupStorz::Application.routes.draw do
   match "/users/callback" => "users#callback"
   match "/users/send_invitation_to_contacts" => "users#send_invitation_to_contacts"
   match "/contacts/failure" => "users#send_invitation_to_contacts"
+
   
   match "/email_settings/index" => "email_settings#index"
   match "/email_settings/show" => "email_settings#show"
@@ -143,6 +143,7 @@ PopupStorz::Application.routes.draw do
     resources :offers do
       collection do
         post :change_commission_rate
+        
       end
     end
   end
@@ -195,7 +196,7 @@ PopupStorz::Application.routes.draw do
       member do
         get 'decline'
         get 'accept'
-      end
+      end      
     end
   end
 

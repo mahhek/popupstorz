@@ -69,6 +69,12 @@
     <span style="float: left;padding: 5px">
       <%= link_to t(:delete_my_account),"/users/delete_account", :confirm => t(:delete_permanently) %>
     </span>
+    <span style="float: left;padding: 5px">
+      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    </span>
+    <span style="float: left;padding: 5px">
+      <%= link_to "send invitation to contacts in your email account","/users/send_invitation_to_contacts", :class => (params[:controller] == "users" and params[:action] == "send_invitation_to_contacts"  ? "m_act" : "") %>
+    </span>
   </h2>
 </div>
 

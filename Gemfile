@@ -19,6 +19,7 @@ gem 'koala'
 gem "omniauth-facebook"
 gem 'omniauth-twitter'
 gem "omniauth"
+gem "omnicontacts"
 gem 'crack'
 gem 'uuidtools'
 gem 'execjs'

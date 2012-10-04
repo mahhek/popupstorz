@@ -6,7 +6,7 @@
       <div class="reqInfo"><%= t(:required_info) %></div>
       <div class="newPaperclipFiles" style="margin-left: 128px;">
         <%= t(:profile_pic_upload) %><br/>
-        <%(1 - resource.avatars.size).times { resource.avatars.build }%>
+        <%(3 - resource.avatars.size).times { resource.avatars.build }%>
 
         <%= f.fields_for :avatars do |avatar| %>
           <% if avatar.object.new_record? %>

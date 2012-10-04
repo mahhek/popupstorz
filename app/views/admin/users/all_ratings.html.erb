@@ -1,0 +1,20 @@
+<div id="get-list-header">
+  <h2><%= "All Ratings"%></h2>
+</div>
+<div class="listx-bg">
+  <%unless @ratings.blank?%>
+    <%@ratings.each do |rating|%>
+      <%@user=User.find_by_id(rating.user_id)%>
+      <%@item= Item.find_by_id(rating.rateable_id)%>
+      Rated by: <%=@user.first_name%> <%=@user.last_name%><br/>
+      TItle of listing: <%=  @item.title %><br/>
+      <%= render :partial => "/ratings/rating", :locals => { :asset => @item, :only_view => false } %>
+      <%=link_to "delete", delete_rating_admin_users_path(:id => rating.id)%><br/>
+
+      <%=link_to "edit", "/"%>
+      <br/><br/><br/>
+    <%end%>
+  <%else%>
+    There are no ratings to show!
+  <%end%>
+</div>
