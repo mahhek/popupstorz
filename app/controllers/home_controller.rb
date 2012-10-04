@@ -2,9 +2,10 @@
 class HomeController < ApplicationController
   def index
     session[:fb_user] = ""
-    if current_user && current_user.admin?
-      redirect_to admin_items_path
-    else
+#    if current_user && current_user.admin?
+##      redirect_to admin_items_path
+##        root_path
+#    else
       if !session[:items].blank?
         redirect_to new_item_path
       elsif !session[:item].blank?
@@ -23,7 +24,7 @@ class HomeController < ApplicationController
         end
       end
       @items = active_items
-    end
+#    end
   end
   
   def send_feedback

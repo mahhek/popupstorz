@@ -1,5 +1,11 @@
 en:
-
+   admin_panel: "Admin Panel" 
+   logout: "Logout"
+   hi: Hi
+   deactivate: "Deactivate"
+   activate: "Activate"
+   change_all_commission_rates: "Change commision rate of all items"
+   
    welcome_to_popup_storz: "Welcome to Popup Storz"
    popup: "PopUpStorz"
    admin_panel: "Admin Panel"

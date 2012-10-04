@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
       root_path
     else
       super
+      root_path
     end
   end
   
@@ -85,10 +86,10 @@ class ApplicationController < ActionController::Base
     true
   end
 
-  def authenticate_admin
+  def authenticate_admin    
     if current_user.blank? || !current_user.admin?
       flash[:error] = t(:authorized)
       redirect_to "/"
-    end
+    end    
   end
 end

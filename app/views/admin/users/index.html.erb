@@ -1,31 +1,15 @@
-<div id="get-list-header">
-  <h2><%= :all_users %></h2>
-</div>
-<div class="listx-bg">
-  <% unless @users.blank? %>
-    <% @users.each do | user | %>
-      <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
-
-        <div class="name-list"><%= user.email %> - <%= user.first_name %> <%= user.last_name %></div>
-        <div class="manage-bg">
-          <div class="btns">
-            <%= link_to t(:details) , admin_user_path(user)%>
-          </div>
-          <div class="btns">
-            <%if user.is_active%>
-              <%= link_to "deactivate" , "/admin_destroy_user/#{user.id}", :confirm => "Are you sure"%>
-            <%else%>
-              <%= link_to "activate" , "/admin_destroy_user/#{user.id}", :confirm => "Are you sure"%>
-            <%end%>
-          </div>
-        </div>
-      </div>
-    <%end%>
-  <%else%>
-    <%= t(:no_user_registered) %>
-  <%end%>
-</div>
-
-<div class="btn-bar">
-
+<div style="clear:both;width: 100%;float:left;">
+  <div id="get-list-header">
+    <h2><%= t(:all_users) %></h2>
+  </div>
+  <div style="float:left;width: 100%;margin-bottom: 20px;margin-top: 20px;margin-left: 10px;">
+    <%= form_for :search, :url => "/admin/users",:html_options => {:id => "sort_form", :remote => true} do|f| %>        <span><%= t(:sort_by) %></span>  
+        <%= select_tag "sort_option", options_for_select([["Newest" ,"1"],["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).submit()" %>
+    <% end %>
+  </div>
+  <div class="listx-bg">
+    <%= render :partial => "users", :locals => {:users => @users} %>
+  </div>
+  <div class="btn-bar">
+  </div>
 </div>
