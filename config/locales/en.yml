@@ -9,6 +9,9 @@ en:
    oldest: "Oldest to Newest"   
    gender_search: "Gender"
    fb_connected: "FB Connected"
+   all_bookings: "Bookings"
+   display_on_home: "Display on Home"
+   done: "Done"
    
    welcome_to_popup_storz: "Welcome to Popup Storz"
    popup: "PopUpStorz"

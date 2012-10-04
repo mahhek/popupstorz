@@ -5,8 +5,7 @@ class Admin::OffersController < ApplicationController
     @offers = Offer.all
   end
 
-  def change_commission_rate
-    
+  def change_commission_rate    
     @offer = Offer.find_by_id(params[:offer_id])
     @offer.commission_rate = params[:commision_rate].to_i
     @offer.save

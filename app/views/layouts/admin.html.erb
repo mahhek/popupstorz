@@ -46,10 +46,14 @@
       <br/>
       <br/>
       <%= link_to t(:all_users), admin_users_path %>&nbsp;|&nbsp;
+      <%= link_to t(:create_users), new_admin_user_path %>&nbsp;|&nbsp;
+      
       <%= link_to t(:all_listings), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:create_listings), new_admin_item_path %>&nbsp;|&nbsp;
       <%= link_to t(:manage_listings), admin_items_path %>&nbsp;|&nbsp;
-      <%= link_to t(:create_users), new_admin_user_path %>&nbsp;|&nbsp;
+      
+      <%= link_to t(:all_bookings), admin_offers_path %>&nbsp;|&nbsp;
+      
       <%= link_to t(:ownership), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:commision), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:specific_listing), admin_items_path %>&nbsp;|&nbsp;

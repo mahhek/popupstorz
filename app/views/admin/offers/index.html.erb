@@ -12,7 +12,7 @@
       </div>
       <div id="rate_form" style="display: none;">
         <%=form_tag change_commission_rate_admin_offers_path do |f|%>
-        <%=hidden_field_tag "offer_id", offer.id%>
+          <%=hidden_field_tag "offer_id", offer.id%>
           <%=text_field_tag "commision_rate", offer.commission_rate%>%
           <%=submit_tag "done"%>
         <%end%>
@@ -28,10 +28,8 @@
 </div>
 
 <script type="text/javascript">
-
-
   $('#fff').click(function() {
-  $('#rate_form').toggle();
+    $('#rate_form').toggle();
   });
 
 </script>
