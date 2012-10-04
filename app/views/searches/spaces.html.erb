@@ -16,7 +16,7 @@
       onSelect: function() {
         $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
       }});
-    
+
     $( "#amount-slider-range" ).slider({
       range: true,
       min: <%= @start_price %>,
@@ -31,7 +31,7 @@
     });
     $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
       " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
-     
+
     $( "#sizes-slider-range" ).slider({
       range: true,
       min: <%= @start_size %>,
@@ -47,7 +47,7 @@
     });
     $( "#size" ).val( "$" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
       " - $" + $( "#sizes-slider-range" ).slider( "values", 1 ) );
-  });  
+  });
 </script>
 <div class="clear"></div>
 <br/>
@@ -58,23 +58,23 @@
       <div style="width:55%;float:left;">
         <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
       </div>
-      <span>from</span>
+      <span><%= t(:from) %></span>
       <%= text_field_tag :search_from, params[:search_from], :id => "search_from" %>
-      <span>to</span>
+      <span><%= t(:to) %></span>
       <%= text_field_tag :search_to, params[:search_to], :id => "search_to" %>
       <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
     </div>
   </div><div class="sortby">
       <%= select_tag "sort_option", options_for_select([["Newest" ,"1"],["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
-      <span>sort by</span>
+      <span><%= t(:sort_by) %></span>
     </div>
 <% end %>
 
 <div class="rightcontent">
-  <h2>Refine your search</h2>
+  <h2><%= t(:refine_search) %></h2>
   <div class="pannelright">
     <p>
-      <label for="amount">Price range:</label>
+      <label for="amount"><%= t(:price_range) %></label>
       <input type="text" id="amount" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
     <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
     <%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
@@ -88,7 +88,7 @@
       <%= hidden_field_tag "sizes", !params[:sizes].blank? ? params[:sizes] : '' %>
       <div class="pannelright">
         <img class="closepannel" src="../assets/-.png" />
-        <div class="heading_right">Is Shareable</div>      
+        <div class="heading_right"><%= t(:shareable) %></div>
         <div class="twocol">
           <%= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
         </div>
@@ -97,7 +97,7 @@
       <div class="pannelright">
         <img class="closepannel" src="../assets/-.png" />
 
-        <label for="size">Sizes<small>(SQMT)</small>:</label>        
+        <label for="size"><%= t(:sizes) %><small><%= t(:sqmt) %></small>:</label>
         <input type="text" id="size" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
         <div class="twocol">
           <div id="sizes-slider-range" style="width: 90%;margin-left: 8px;"></div>
@@ -106,9 +106,9 @@
 
       <div class="pannelright">
         <img class="closepannel" src="../assets/-.png" />
-        <div class="heading_right">Types</div>
+        <div class="heading_right"><%= t(:types) %></div>
         <div class="twocol">
-          <% @types.each do |type| %>            
+          <% @types.each do |type| %>
             <%= check_box_tag 'types[]', type.id, params["types"].blank? ? false : params["types"].include?(type.id.to_s), :onclick => "$(this.form).trigger('submit.rails')" %>
             <b><%= type.name.capitalize %></b><br />
           <% end %>
@@ -120,19 +120,18 @@
   </div>
 </div>
 
-
 <div class="leftcontent">
   <div class="resultsholderlist">
     <div id="searched-items">
       <% unless @items.blank? %>
         <%= render :partial => "items", :locals => {:items => @items} %>
       <% else %>
-        Please try some other search criteria.
+        <%= t(:other_search) %>
       <% end %>
     </div>
   </div>
 </div>
 
 <script type="text/javascript">
-    
+
 </script>

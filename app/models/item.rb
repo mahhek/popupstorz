@@ -1,5 +1,4 @@
 # -*- encoding : utf-8 -*-
-#include Geokit::Geocoders
 
 class Item < ActiveRecord::Base
   acts_as_commentable
@@ -41,17 +40,13 @@ class Item < ActiveRecord::Base
     self.price_per_month = (self.price * 30).to_i if self.price_per_month.blank?
   end
 
-
   def geolocate_from_address
-
     # check if address has changed
     if self.address_changed?
       # check if an actual address has been set
       if self.address.to_s.strip.size > 0
         # find information related to address
         res = Geokit::Geocoders::GoogleGeocoder.geocode(self.address)
-        p "***********************************************************************"
-        p res.inspect
         
         if(res)          
           self.city = res.city
@@ -83,6 +78,4 @@ class Item < ActiveRecord::Base
     self.price_per_week = (self.price * 7).to_i if self.price_per_month.blank?
     self.price_per_month = (self.price * 30).to_i if self.price_per_month.blank?
   end
-
-
 end

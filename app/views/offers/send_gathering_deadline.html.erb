@@ -1,16 +1,16 @@
 <style>
-  .booked { 
+  .booked {
     border: 4px solid;
-    color: red; 
+    color: red;
   }
-  .booked span{ 
+  .booked span{
     background: darkgray !important;
     color: red !important;
     font-weight: bold !important;
   }
-  .selected{    
+  .selected{
   }
-  .selected a{ 
+  .selected a{
     background: aquamarine !important;
     font-weight: bold !important;
   }
@@ -19,15 +19,15 @@
 <div class="leftcontent">
   <div class="shadowCont">
 
-    <div style="width: 100%;clear: both;">      
+    <div style="width: 100%;clear: both;">
       <div style="border-bottom: 1px solid;">
-        Start Date: <%= @gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
-        End Date: <%= @gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
-        Total required Persons: <%= @gathering.persons_in_gathering %><br />
-        Joined Persons: <%= @gathering.members.size %><br/>
-        Rental Price per person: <%= @gathering.gathering_rental_price %><br />
+        <%= t(:start_date) %><%= @gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
+        <%= t(:end_date) %> <%= @gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
+        <%= t(:total_req_person) %> <%= @gathering.persons_in_gathering %><br />
+        <%= t(:joined_person) %> <%= @gathering.members.size %><br/>
+        <%= t(:rental_per_person) %> <%= @gathering.gathering_rental_price %><br />
 
-        Gathering Deadline: <%= @gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
+        <%= t(:deadline) %> <%= @gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
 
       </div>
     </div>
@@ -35,15 +35,15 @@
     <div style="width:100%;clear:both;">
       <div id="response_date">
         <%= form_for @gathering, :url => "/update_gathering_deadline", :html => {:onsubmit => "return check_request_form();"} do|f|  %>
-          <%= f.hidden_field "id", :value => @gathering.id %>  
+          <%= f.hidden_field "id", :value => @gathering.id %>
           <label style="line-height:18px; ">
-            Send <strong> <%= @gathering.item.user.popup_storz_display_name %></strong> message:
-            <small>maybe tell him/her why you need the space</small></label><br/><br/>
-          <%= f.fields_for :offer_messages do |offer_message| %>    
+            <%= t(:send) %> <strong> <%= @gathering.item.user.popup_storz_display_name %></strong> <%= t(:msg2) %>
+            <small><%= t(:why_need_space) %></small></label><br/><br/>
+          <%= f.fields_for :offer_messages do |offer_message| %>
             <%= offer_message.text_area :message %>
             <%= offer_message.hidden_field :user_id, :value => current_user.id %>
             <%= offer_message.hidden_field :offer_id, :value => @gathering.id %>
-            <%= offer_message.hidden_field :msg_posted_as, :value => @gathering.user == current_user ? "Owner" : "Renter"%>    
+            <%= offer_message.hidden_field :msg_posted_as, :value => @gathering.user == current_user ? "Owner" : "Renter"%>
           <% end %>
           <br/>
           <%= f.text_field :cancellation_date, :class => "offer_cancellation_date", :value => "mm/dd/yy" %>
@@ -62,7 +62,7 @@
     onSelect: function(dateText, inst) {
       $("#datepicker_value").val(dateText);
     }
-   
+
   });
 
   function check_request_form(){
@@ -72,4 +72,3 @@
     }
   }
 </script>
-

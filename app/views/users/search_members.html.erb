@@ -1,5 +1,5 @@
 <div id="get-list-header">
-  <h2>Members</h2>
+  <h2><%= t(:mem) %></h2>
 </div>
 <div class="listx-bg">
   <% unless @members.blank? %>
@@ -9,35 +9,35 @@
           <% if member.avatars.size > 0 %>
             <%= image_tag(member.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo")  %>
           <% else %>
-            NO IMAGE PROVIDED YET.
+            <%= t(:no_image_provided) %>
           <% end %>
         </div>
 
         <div class="name-list">
-          <b>Name:</b>
+          <b><%= t(:owner_name) %></b>
           <%=link_to "#{member.first_name + " " + member.last_name}", profile_path(member.id) %>
         </div>
 
         <div class="name-list">
-          <b>Activity:</b>
+          <b><%= t(:active2) %></b>
           <%= member.activity %>
         </div>
-        
+
         <div class="name-list">
-          <b>City:</b>
+          <b><%= t(:city2) %></b>
           <%= member.city %>
         </div>
-        
+
         <div class="name-list">
-          <b>Country:</b>
+          <b><%= t(:country2) %></b>
           <%= member.country %>
         </div>
-        <div class="manage-bg">          
+        <div class="manage-bg">
         </div>
       </div>
     <%end%>
   <%else%>
-    No Member with given criteria found!
+    <%= t(:no_member_given) %>
   <%end%>
 </div>
 

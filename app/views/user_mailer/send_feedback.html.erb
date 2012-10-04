@@ -1,12 +1,12 @@
 <html>
   <p>
-    You have a new Suggestion
+  <%= t(:new_suggest) %>
   <br/>
-  <b>Suggestion:</b>
+  <%= t(:suggest) %>
   <%= @suggestion %>
   <br/><br/>
-  <b>Description:</b>
+  <%= t(:space_description) %>
   <%= @description %>
   </p>
-  By <%= @user %>
-</html>
+  <%= t(:by) %><%= @user %>
+  </html>

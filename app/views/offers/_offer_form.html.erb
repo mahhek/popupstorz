@@ -89,7 +89,7 @@
 </script>
 <div id="hd-result">
   <div class="container_12">
-    <div id="r-nav" class="grid_9"> <a href="/">Home</a> &nbsp;&gt;&nbsp; Make a booking</div>
+    <div id="r-nav" class="grid_9"> <a href="/"><%= t(:home) %></a> &nbsp;&gt;&nbsp;<%= t(:make_booking) %></div>
     <div class="grid_3"> &nbsp; </div>
     <div class="clear">&nbsp;</div>
   </div>
@@ -98,10 +98,10 @@
   <div style="padding: 20px;float: left;">
     <% if @offer.errors.any? %>
       <div id="errorExplanation" class="erro_messages">
-        <h2>Oops! Looks like you need to include the following:</h2>
+        <h2><%= t(:include_following) %></h2>
         <ul>
           <li style="list-style: square;float: left;">
-            Required fields(and the display names): <%= @offer.errors.full_messages.to_sentence  %>
+            <%= t(:req_fields) %> <%= @offer.errors.full_messages.to_sentence  %>
           </li>
         </ul>
       </div>
@@ -113,7 +113,7 @@
 
         <% unless current_user == @offer.user %>
           <h1>
-            We have great news for you! <%= @offer.user.popup_storz_display_name %> requested your Item <%= @item.title %>
+            <%= t(:news) %><%= @offer.user.popup_storz_display_name %> <%= t(:req_ur_item) %> <%= @item.title %>
           </h1>
         <% end %>
         <br/>
@@ -127,22 +127,22 @@
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>
-          Owner : <%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/>
-          <strong>Description</strong><br/>
+          <%= t(:offer_owner) %><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/>
+          <strong><%= t(:offer_descrip) %></strong><br/>
           <%= raw @item.description %>
           <div class="clear">&nbsp;</div>
         </div>
 
-        <h3><%= @offer.user.popup_storz_display_name %> suggested the following terms:</h3> <br/>
+        <h3><%= @offer.user.popup_storz_display_name %> <%= t(:suggested_terms) %></h3> <br/>
 
         <div id="booking-form">
 
           <div id="price-box">
 
             <div class="xfields">
-              <div style="float: left;width: 100px;font-weight: bold;">Daily Price</div>
-              <div style="float: left;width: 100px;font-weight: bold;">Duration</div>
-              <div style="float: left;width: 100px;font-weight: bold;">Total Price</div>
+              <div style="float: left;width: 100px;font-weight: bold;"><%= t(:daily_price) %></div>
+              <div style="float: left;width: 100px;font-weight: bold;"><%= t(:duration) %></div>
+              <div style="float: left;width: 100px;font-weight: bold;"><%= t(:t_price) %></div>
             </div>
             <br/>
             <div style="padding-top:4px; color:#f55c00;" class="xfields">
@@ -165,16 +165,16 @@
 
           <%= @offer.user.popup_storz_display_name %> needs your item from:<br/>
 
-          <label>Pickup:</label>
+          <label><%= t(pick_up) %></label>
           <%= f.text_field :rental_start_date, :value => @offer.rental_start_date.strftime("%m/%d/%Y"), :class => "datex", :onchange => "calculateTotalAmount();" %>
           <div class="clear"></div>
           <br/>
-          <label>Return:</label>
+          <label><%= t(:return2) %></label>
           <%= f.text_field :rental_end_date, :value => @offer.rental_end_date.strftime("%m/%d/%Y"), :class => "datex", :onchange => "calculateTotalAmount();" %>
           <br/>
           <div class="clear"></div>
           <br/>
-          <label>Meeting Location:</label>
+          <label><%= t(:meet_location) %></label>
 
           <div style="padding-top:12px; font-size:13px;">
             <span style="float: left;">
@@ -184,7 +184,7 @@
               <%= label :preferred_location_email, "#{@item.user.popup_storz_display_name} Location", :style => "padding-top:0px !important;line-height: 20px;" %> &nbsp;&nbsp;&nbsp;&nbsp;
             </span>
             <span style="float: left;">
-              <strong>OR</strong>
+              <strong><%= t(:or) %></strong>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
             <span style="float: left;">
@@ -198,7 +198,7 @@
 
           <div class="clear"></div>
 
-          <div id="preferred_address" style="display: <%= @offer.preferred_location.to_s == "true" ? 'block' : 'none' %>; font-size:13px; font-style:italic;">Please Enter Meeting <strong>Location</strong> :
+          <div id="preferred_address" style="display: <%= @offer.preferred_location.to_s == "true" ? 'block' : 'none' %>; font-size:13px; font-style:italic;"><%= t(:enter_meeting) %><strong><%= t(:location2) %></strong> :
             <%= f.text_field :preferred_address %>
             <div id="item_advanced_container" style="display:none;">
               <div id="item_advanced" style="display:none;">
@@ -215,7 +215,7 @@
 
           <div class="clear"></div>
 
-          <label>Want to Bargain:</label>
+          <label><%= t(:bargain) %></label>
 
           <div style="padding-top:12px; font-size:13px;">
             <span style="float: left;">
@@ -225,7 +225,7 @@
               <%= label :want_to_bargain_no, "No", :style => "padding-top:0px !important;line-height: 20px;" %> &nbsp;&nbsp;&nbsp;&nbsp;
             </span>
             <span style="float: left;">
-              <strong>OR</strong>
+              <strong><%= t(:or) %></strong>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
             <span style="float: left;">
@@ -238,14 +238,14 @@
           <br/>
           <div class="clear"></div>
 
-          <div id="bargain_div" style="display:  <%= @offer.want_to_bargain.to_s == "true" ? 'block' : 'none' %>; font-size:13px; font-style:italic;">Please Enter Meeting <strong>Willing to Pay</strong> :
+          <div id="bargain_div" style="display:  <%= @offer.want_to_bargain.to_s == "true" ? 'block' : 'none' %>; font-size:13px; font-style:italic;"><%= t(:eneter_meeting) %><strong><%= t(:willing_pay) %></strong> :
             <%= f.text_field :willingness_to_pay %>
-            <%= session[:curr] == "USD" ? "$" : "€" %> &nbsp;&nbsp;&nbsp;<font size="2"><em>For the whole rental period</em></font><br/>
+            <%= session[:curr] == "USD" ? "$" : "€" %> &nbsp;&nbsp;&nbsp;<font size="2"><em><%= t(:rental_period) %></em></font><br/>
           </div>
           <br/>
 
 
-          <label style="line-height:18px;">She needs a response from you by:</label>
+          <label style="line-height:18px;"><%= t(:needs_response) %></label>
           <%= f.text_field :cancellation_date, :value => @offer.cancellation_date.strftime("%m/%d/%Y"),  :class => "datex" %>
           <script type="text/javascript">
             $('#offer_cancellation_date').datepicker();
@@ -255,7 +255,7 @@
 
 
           <label>
-            <strong><%= @offer.user.popup_storz_display_name %></strong> message you:<br/>
+            <strong><%= @offer.user.popup_storz_display_name %></strong> <%= t(:msg_you) %><br/>
           </label>
 
           <div style="padding:22px 60px 0 0; font-size:13px;">
@@ -266,15 +266,15 @@
 
           <div style="padding-left:200px; padding-top:20px;">
             <input type="checkbox" value="" id="terms_of_user" name="terms_use" />
-            <font size="2">I agree to the <a href="#">terms of use.</a></font>
+            <font size="2"><%= t(:agree) %> <a href="#"><%= t(:term_use) %></a></font>
             <br/>
             <br/>
 
             <a class="large-max button orange" href="<%= accept_item_offer_path(params[:item_id], params[:id]) %>"  >
-              Accept <%= current_user ==  @offer.user ? "Change" : "Request" %>
+              <%= t(:accepts) %> <%= current_user ==  @offer.user ? "Change" : "Request" %>
             </a> &nbsp; - &nbsp;
-            <button class="large button blue" type="submit"> Suggest other terms </button><br/><br/>
-            or <a href="<%= decline_item_offer_path(params[:item_id], params[:id]) %>">Decline</a>
+            <button class="large button blue" type="submit"> <%= t(:suggest2) %></button><br/><br/>
+            <%= t(:or2) %> <a href="<%= decline_item_offer_path(params[:item_id], params[:id]) %>"><%= t(:dec2) %></a>
           </div>
 
 

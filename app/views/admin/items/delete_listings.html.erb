@@ -1,5 +1,5 @@
 <div id="get-list-header">
-  <h2>All Items</h2>
+  <h2><%= t(:all_items) %></h2>
 </div>
 <div class="listx-bg">
   <% unless @items.blank? %>
@@ -9,20 +9,20 @@
           <% if item.avatars.size > 0 %>
             <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo")  %>
           <% else %>
-            NO IMAGE PROVIDED YET.
+            <%= t(:no_image_provided) %>
           <% end %>
         </div>
 
         <div class="name-list"><%= item.title %></div>
         <div class="manage-bg">
           <div class="btns">
-            <%= link_to "Destroy" , admin_item_path(item), :method => :delete, :confirm => "Are you sure you want to destroy this listing?" %>|&nbsp;
+            <%= link_to t(:destroy) , admin_item_path(item), :method => :delete, :confirm => t(:destroy_message) %>|&nbsp;
           </div>
         </div>
       </div>
     <%end%>
   <%else%>
-    No Items listed with PopUpStorz
+   <%= t(:no_item_listed) %>
   <%end%>
 </div>
 

@@ -1,23 +1,31 @@
 
 <%= form_for :feedback, :url => "/home/send_feedback", :html => {:onsubmit => "return check_form()"} do|f| %>
-<label>Your Feedback**</label>
-<%= f.text_field "suggestion" %>
-<br /><br />
-<label>Tell us about it *</label>
-<%= f.text_area "description" %>
-<br /><br />
-<div style="width: 100%;float: left;clear: both;">
-  <div style="width:48%;float:left;">
-    <label>Name*</label>
-    <% full_name = "#{current_user.first_name.to_s}" + " " + "#{current_user.last_name.to_s}" %>    
-    <%= f.text_field "user_name", :value => full_name, :readonly => true %>
+  <label><%= t(:your_feedback) %></label>
+  <%= f.text_field "suggestion" %>
+  <br /><br />
+  <label><%= t(:tell_us) %></label>
+  <%= f.text_area "description" %>
+  <br /><br />
+  <div style="width: 100%;float: left;clear: both;">
+    <div style="width:48%;float:left;">
+      <label><%= t(:name) %></label>
+      <% if current_user.blank? %>
+        <%= f.text_field "user_name" %>
+      <% else %>
+        <% full_name = "#{current_user.first_name.to_s}" + " " + "#{current_user.last_name.to_s}" %>    
+        <%= f.text_field "user_name", :value => full_name, :readonly => true %>
+      <% end %>
+    </div>
+    <div style="width:48%;float:left;margin-left: 10px;">
+      <label><%= t(:your_email) %></label>
+      <% if current_user.blank? %>
+        <%= f.text_field "email" %>
+      <% else %>
+        <%= f.text_field "email", :value => current_user.email, :readonly => true %>
+      <% end %>
+    </div>
   </div>
-  <div style="width:48%;float:left;margin-left: 10px;">
-    <label>Your Email Address*</label>
-    <%= f.text_field "email", :value => current_user.email, :readonly => true %>
-  </div>
-</div>
-<%= f.submit "Submit" %>
+  <%= f.submit "Submit" %>
 <% end %>
 
 
@@ -30,7 +38,24 @@
     if($("#feedback_description").val() == ""){
       alert("Feedback description can't be blank!");
       return false;
-    }    
+    }
+    if($("#feedback_user_name").val() == ""){
+      alert("Please enter your name first!");
+      return false;
+    }
+    if($("#feedback_email").val() == ""){
+      alert("Please enter your name Email address!");
+      return false;
+    }
+    else{
+      var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
+      if(pattern.test($("#feedback_email").val()) == false){
+        alert("Please enter a valid email address");
+        return false;
+      }
+    }
+
+
     return true;
   }
 </script>

@@ -4,7 +4,7 @@
   <% form_tag search_location_path , {:id => "search_form"} do %>
     <div id="search-list">
       <span style="float: left;">
-        Sort by:
+        <%= t(:sort_by) %>
       </span>
       <%= select_tag "requested_city",options_for_select([["Philadelphia" , "Philadelphia"],
           ["Atlanta" ,"Atlanta"], ["Austin" ,"Austin"] , ["Baltimore", "Baltimore"],["Boston", "Boston"],
@@ -78,7 +78,7 @@
     <% end  %>
   <% else %>
     <div class="extra_city_div" style="height: 30px;padding-top: 5px;margin-top: 15px;display: block;width: 560px;">
-      There are no listings in this city. Be the first to <%= link_to "add your space", new_location_path %>!
+      <%= t(:no_listing_for_city) %><%= link_to "add your space", new_location_path %>!
     </div>
   <% end %>
 

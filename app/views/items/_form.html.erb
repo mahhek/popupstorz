@@ -1,3 +1,24 @@
+<script type='text/javascript'>//<![CDATA[
+  $(window).load(function(){
+    $(document).ready(function(){
+      var min = new Date();
+      min = '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%Y") %>';
+      
+      $("#item_availability_from").val('<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%Y") %>');
+      $("#item_availability_from").datepicker({
+        minDate: min,
+        dateFormat: 'mm/dd/yy'
+      });
+      
+      $("#item_availability_to").val('<%= @item.availability_to.blank? ? "" : @item.availability_to.strftime("%m/%d/%Y") %>');
+      $("#item_availability_to").datepicker({
+        minDate: new Date(),
+        dateFormat: 'mm/dd/yy'
+      });
+
+    });
+  });
+</script>
 <%= f.hidden_field :user_id, :value => current_user.id if current_user %>
 
 <h2>DESCRIPTION</h2>
@@ -5,21 +26,21 @@
 <div style="padding-bottom: 20px;float: left;">
   <% if @item.errors.any? %>
     <div id="errorExplanation" class="erro_messages">
-      <h2>Oops! Looks like you need to include the following:</h2>
+      <h2><%= t(:oops) %></h2>
       <ul>
         <li style="list-style: square;float: left;">
-          Required fields(and the display names): <%= @item.errors.full_messages.to_sentence  %>
+          <%= t(:req_fields) %><%= @item.errors.full_messages.to_sentence  %>
         </li>
       </ul>
     </div>
   <% end %>
 </div>
 
-<div class="xfields"><label>Title</label>
+<div class="xfields"><label><%= t(:title) %></label>
 	<%= f.text_field :title, :style => "width:315px;", :class => "input" %>
 </div>
 
-<div class="xfields" id="where-iteme"><label>Location</label>
+<div class="xfields" id="where-iteme"><label><%= t(:location) %></label>
  <%= f.text_field :address, :class => "field-l input", :style => "width:315px;" %>
  <div id="item_advanced_container" style="display:none;">
    <div id="item_advanced" style="display:none;">
@@ -33,7 +54,7 @@
  </div>
 </div>
 
-<div class="xfields"><label>Neighbourhood</label>
+<div class="xfields"><label><%= t(:neighbourhood) %></label>
   <%= f.text_field :neighbourhood, :style => "width:315px;", :class => "input" %><br/>
 </div>
 
@@ -43,13 +64,13 @@
   <% end %>
 </div>
 
-<div class="xfields"><label>Size</label>
+<div class="xfields"><label><%= t(:size) %></label>
   <%= f.text_field :size, :style => "width:80px;", :onchange => "update_units()", :class => "input" %>
   <%= select_tag "item[size_unit]", options_for_select([["SQMT","SQMT"],["SQFT","SQFT"]], @item.size_unit),:onchange => "update_units()" , :style => "width:100px; margin: 6px;", :class => "input"%>
-  <div id="other_unit" class="input" style="display: bloc-inline;"> = 0 SQFT</div>
+  <div id="other_unit" class="input" style="display: bloc-inline;"> = <%= t(:sqft) %></div>
 </div>
 
-<div class="xfields"><label>Type</label>
+<div class="xfields"><label><%= t(:type) %></label>
   <%= select_tag "item[listing_type_id]", options_from_collection_for_select(@listing_types,:id, :name, @item.listing_type_id), :style => "margin: 6px;", :class => "input" %>
 </div>
 
@@ -155,163 +176,167 @@
 	<%= f.submit @item.new_record? ? "Create Listing" : "Update Space", :class => "search" %>
 </div>
 
-<script>
-  var marker = null;
-  var get_location_name_timeout = null;
+  <script>
+    var marker = null;
+    var get_location_name_timeout = null;
 
-  $(document).ready(function() {
-
-
-    $('#map').css("margin", "0 auto");
+    $(document).ready(function() {
 
 
-    var update_location_fun = function(resolveName) {
-      if(resolveName == null) {
-        resolveName = true;
-      }
-
-      var form = $('#new_item');
-      var latlng = new GLatLng(
-      $('#item_latitude').val(),
-      $('#item_longitude').val()
-    );
-
-      map.setCenter(latlng);
-      if(marker) {
-        map.removeOverlay(marker);
-      }
-
-      marker = new GMarker(latlng);
-      map.setZoom(15);
-      map.addOverlay(marker);
+      $('#map').css("margin", "0 auto");
 
 
+      var update_location_fun = function(resolveName) {
+        if(resolveName == null) {
+          resolveName = true;
+        }
 
-      if(resolveName) {
+        var form = $('#new_item');
+        var latlng = new GLatLng(
+        $('#item_latitude').val(),
+        $('#item_longitude').val()
+      );
+
+        map.setCenter(latlng);
+        if(marker) {
+          map.removeOverlay(marker);
+        }
+
+        marker = new GMarker(latlng);
+        map.setZoom(15);
+        map.addOverlay(marker);
 
 
-        var get_location_name_fun = function() {
-          $.ajax({
-            url: "/xml/address_search.xml?lat=" + latlng.lat() + "&lon=" + latlng.lng(),
-            dataType: 'xml',
-            success: function(resp) {
 
-              $('#item_address').removeClass('ui-autocomplete-loading');
-              var name = $('address', resp).text();
-              if(name != '') {
-                $('#item_address').val($('address', resp).text());
+        if(resolveName) {
+
+
+          var get_location_name_fun = function() {
+            $.ajax({
+              url: "/xml/address_search.xml?lat=" + latlng.lat() + "&lon=" + latlng.lng(),
+              dataType: 'xml',
+              success: function(resp) {
+
+                $('#item_address').removeClass('ui-autocomplete-loading');
+                var name = $('address', resp).text();
+                if(name != '') {
+                  $('#item_address').val($('address', resp).text());
+                }
               }
-            }
-          });
-        }
+            });
+          }
 
-        if(get_location_name_timeout) {
-          clearTimeout(get_location_name_timeout);
+          if(get_location_name_timeout) {
+            clearTimeout(get_location_name_timeout);
+          }
+          get_location_name_timeout = setTimeout(get_location_name_fun, 300);
+          $('#item_address').addClass('ui-autocomplete-loading');
         }
-        get_location_name_timeout = setTimeout(get_location_name_fun, 300);
-        $('#item_address').addClass('ui-autocomplete-loading');
       }
-    }
 
-    var register_map_event_fun = function() {
-      if(!map) {
-        setTimeout(register_map_event_fun, 100);
-        return;
-      }
-      GEvent.addListener(map, "click", function(overlay, latlng) {
-        if (latlng) {
-          $('#item_longitude').val(latlng.lng());
-          $('#item_latitude').val(latlng.lat());
-          update_location_fun();
+      var register_map_event_fun = function() {
+        if(!map) {
+          setTimeout(register_map_event_fun, 100);
+          return;
         }
-      });
-    }
-    setTimeout(register_map_event_fun, 100);
-
-    $('#item_address').autocomplete({
-      focus: function(event, ui) {
-        return false;
-      },
-      select: function(event, ui) {
-        var position = ui.item.id.split(";");
-        $('#item_longitude').val(position[0]);
-        $('#item_latitude').val(position[1]);
-        update_location_fun(false);
-      },
-      source: function(request, cb) {
-        $.ajax({
-          url: "/xml/location_search.xml?q=" + request.term,
-          dataType: 'xml',
-          success: function(resp) {
-            cb($("location", resp).map(function() {
-              return {label: $("address", this).text(), id: $("longitude", this).text() + ";" + $("latitude", this).text()
-              };
-            }).get());
+        GEvent.addListener(map, "click", function(overlay, latlng) {
+          if (latlng) {
+            $('#item_longitude').val(latlng.lng());
+            $('#item_latitude').val(latlng.lat());
+            update_location_fun();
           }
         });
-      },
-      minLength: 2,
-      change: function (event, ui) {
-        if (ui.item) {
-          $('#another_element').val(ui.item.source.label);
-        }
-        else {
-          if (!$(this).data('valid')) {
-            $(this).val('');
-            $('#another_element').val('');
+      }
+      setTimeout(register_map_event_fun, 100);
+
+      $('#item_address').autocomplete({
+        focus: function(event, ui) {
+          return false;
+        },
+        select: function(event, ui) {
+          var position = ui.item.id.split(";");
+          $('#item_longitude').val(position[0]);
+          $('#item_latitude').val(position[1]);
+          update_location_fun(false);
+        },
+        source: function(request, cb) {
+          $.ajax({
+            url: "/xml/location_search.xml?q=" + request.term,
+            dataType: 'xml',
+            success: function(resp) {
+              cb($("location", resp).map(function() {
+                return {label: $("address", this).text(), id: $("longitude", this).text() + ";" + $("latitude", this).text()
+                };
+              }).get());
+            }
+          });
+        },
+        minLength: 2,
+        change: function (event, ui) {
+          if (ui.item) {
+            $('#another_element').val(ui.item.source.label);
           }
+          else {
+            if (!$(this).data('valid')) {
+              $(this).val('');
+              $('#another_element').val('');
+            }
+          }
+          $(this).data('valid', false);
         }
-        $(this).data('valid', false);
-      }
-    }).live('blur', function (e) {
-      if ($('.ui-autocomplete li:visible').length > 0) {
-        $(".ui-autocomplete li:visible:first").click();
-        item = $($(".ui-autocomplete li:visible:first").data()).attr('item.autocomplete');
-        var position = item.id.split(";");
-        $('#item_longitude').val(position[0]);
-        $('#item_latitude').val(position[1]);
-        update_location_fun(false);
-        $(this).val(item.label);
-        $('#another_element').val(item.label);
-        $(this).data('valid', true);
+      }).live('blur', function (e) {
+        if ($('.ui-autocomplete li:visible').length > 0) {
+          $(".ui-autocomplete li:visible:first").click();
+          item = $($(".ui-autocomplete li:visible:first").data()).attr('item.autocomplete');
+          var position = item.id.split(";");
+          $('#item_longitude').val(position[0]);
+          $('#item_latitude').val(position[1]);
+          update_location_fun(false);
+          $(this).val(item.label);
+          $('#another_element').val(item.label);
+          $(this).data('valid', true);
 
-      }
+        }
+      });
+      //$('#new_location').validate();
     });
-    //$('#new_location').validate();
-  });
 
-  function update_units(){
-    val = $("#item_size_unit").val();
-    if(val== "SQMT"){
-      if($("#item_size").val()){
-        fts = $("#item_size").val() * 10.76;
+    function update_units(){
+      val = $("#item_size_unit").val();
+      if(val== "SQMT"){
+        if($("#item_size").val()){
+          fts = $("#item_size").val() * 10.76;
+        }
+        else{
+          fts = 0;
+        }
+        $("#other_unit").text("= " + Math.round(fts)+" SQFT");
       }
       else{
-        fts = 0;
+        if($("#item_size").val()){
+          mts = $("#item_size").val() / 10.76;
+        }
+        else{
+          mts = 0;
+        }
+        $("#other_unit").text("= " + Math.round(mts)+" SQMT");
       }
-      $("#other_unit").text("= " + Math.round(fts)+" SQFT");
     }
-    else{
-      if($("#item_size").val()){
-        mts = $("#item_size").val() / 10.76;
+
+    function check_persons_limit(val){
+      if(val == 'false'){
+        $("#item_maximum_members").attr('disabled', true);
+        $("#person_count").hide();
       }
       else{
-        mts = 0;
+        $("#item_maximum_members").attr('disabled', false);
+        $("#person_count").show();
       }
-      $("#other_unit").text("= " + Math.round(mts)+" SQMT");
     }
-  }
-
-  function check_persons_limit(val){
-    if(val == 'false'){
-      $("#item_maximum_members").attr('disabled', true);
-      $("#person_count").hide();
+    
+    
+    function update_date_view(){
+      $("#date_range").toggle();
     }
-    else{
-      $("#item_maximum_members").attr('disabled', false);
-      $("#person_count").show();
-    }
-  }
 
-
-</script>
+  </script>

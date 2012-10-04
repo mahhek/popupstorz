@@ -25,13 +25,12 @@
       <div class="body"><%= raw (nl2br(conv.body).html_safe) %></div>
     </div>
   <% end %>
-
   <%= form_tag  do_reply_messages_path, { :id => "email_compose_form" } do %>
     <%= hidden_field_tag :message_id , @message.id %>
 
     <!--div style="width:100%;float:left;height:50px;margin-top: 10px;">
       <div style="width: 75px;float:left;margin-top: 7px;">
-        Subject:&nbsp;&nbsp;&nbsp;
+        <%= t(:sub_mail) %>&nbsp;&nbsp;&nbsp;
       </div>
       <div style="width: 500px;float:left;">
         <%= text_field_tag :topic,"Re: #{@message.topic}"  , :style => "width:520px;"%>

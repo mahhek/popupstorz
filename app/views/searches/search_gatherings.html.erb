@@ -1,7 +1,7 @@
 <script type="text/javascript">
-  
+
   $(function() {
-        
+
     $( "#amount-slider-range" ).slider({
       range: true,
       min: <%= @min_price %>,
@@ -21,11 +21,11 @@
 
 <div class="rightcontent">
 
-  <h2>Refine your search</h2>
+  <h2><%= t(:refine_search)%></h2>
 
   <div class="pannelright">
     <p>
-      <label for="amount">Price range:</label>
+      <label for="amount"><%= t(:price_range)%></label>
       <input type="text" id="amount" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
     <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
 
@@ -41,7 +41,7 @@
 
 <div class="leftcontent">
   <div id="get-list-header">
-    <h2>Gatherings</h2>
+    <h2><%= t(:gatherings2) %></h2>
   </div>
   <div class="listx-bg">
     <% unless @offers.blank? %>
@@ -49,7 +49,7 @@
       <%= render :partial => "gatherings", :locals => {:gatherings => @offers} %>
       </div>
     <%else%>
-      No gathering with given criteria found!
+      <%= t(:gather_found)%>
     <%end%>
   </div>
 </div>

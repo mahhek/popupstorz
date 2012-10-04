@@ -2,11 +2,11 @@
 <%= render :partial => "search_header" %>
 <script type="text/javascript">
   $(function() {
-    
+
     $('#search_from1').datepicker(
     {
       minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
-      onSelect: function() {        
+      onSelect: function() {
         $('#search_to2').datepicker('option', {minDate: $(this).datepicker('getDate')});
       }});
     $('#search_to2').datepicker({
@@ -14,7 +14,7 @@
       onSelect: function() {
         $('#search_from1').datepicker('option', {maxDate: $(this).datepicker('getDate')});
       }});
-    
+
     $( "#amount-slider-range" ).slider({
       range: true,
       min: <%= @start_price %>,
@@ -30,7 +30,7 @@
     $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
       " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
   });
-  
+
 </script>
 <div class="clear"></div>
 <br/>
@@ -41,25 +41,25 @@
       <div style="width:55%;float:left;">
         <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
       </div>
-      <span>from</span>
+      <span><%= t(:from2)%></span>
       <%= text_field_tag :search_from, params[:search_from], :id => "search_from1" %>
-      <span>to</span>
+      <span><%= t(:to2)%></span>
       <%= text_field_tag :search_to, params[:search_to], :id => "search_to2" %>
       <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
     </div>
   </div><div class="sortby">
     <%= select_tag "sort_option", options_for_select([["High to Low" ,"2"],["Low to High", "3"],["By Date","4"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
-    <span>sort by</span>
+    <span><%= t(:sort_by)%></span>
   </div>
 <%end%>
 
 <div class="rightcontent">
 
-  <h2>Refine your search</h2>
+  <h2><%= t(:refine_search)%></h2>
 
   <div class="pannelright">
     <p>
-      <label for="amount">Price range:</label>
+      <label for="amount"><%= t(:price_range)%></label>
       <input type="text" id="amount" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
     <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
     <%= form_tag "/search_gatherings", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
@@ -79,7 +79,7 @@
       <% unless @gatherings.blank? %>
         <%= render :partial => "gatherings", :locals => {:offers => @gatherings} %>
       <% else %>
-        Please try some other search criteria.
+        <%= t(:other_search)%>
       <% end %>
     </div>
   </div>
@@ -87,7 +87,7 @@
 
 
 <script type="text/javascript">
-  function update_gathering_values(params){    
+  function update_gathering_values(params){
     var str = $.parseJSON(params);
     $("#gathering_searched_location").attr("value",str.location.toString());
     $("#gathering_searched_from").attr("value",str.search_from.toString());

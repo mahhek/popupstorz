@@ -67,7 +67,7 @@
     <% end %>
   <% else %>
     <div style="float: left;width: 100%;margin: 20px;">
-      No Record Found! please <%= link_to "Create new space", new_location_path %>
+      <%= t(:no_record_found) %> <%= link_to "Create new space", new_location_path %>
     </div>
   <% end %>
 </div>

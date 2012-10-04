@@ -1,28 +1,47 @@
-<h1>Update Email Settings:</h1>
+<div style="float: left;width: 100%;border: 1px solid black;padding: 5px;">
+  <h2> 
+     <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'send_invitation' or params[:action] == 'invitations') ? 'silver' : '' %>">
+      <%= link_to t(:send_invitation), invitation_path, :class => ((params[:controller] == "users" and ( params[:action] == "send_invitations" or params[:action] == "invitations" )) ? "m_act" : "") %>
+    </span>
+    <span style="float: left;padding: 5px">
+      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    </span>
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'index' or params[:action] == 'new') ? 'silver' : '' %>">
+      <%= link_to t(:email_setting), email_settings_path, :class => ((params[:controller] == "email_settings" and ( params[:action] == "index" or params[:action] == "new" )) ? "m_act" : "") %>
+    </span>
+    <span style="float: left;padding: 5px">
+      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    </span>
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'pending_gathering_acceptance') ? 'silver' : '' %>">
+      <%= link_to t(:delete_my_account),"/users/delete_account", :confirm => t(:delete_permanently)%>
+    </span>
+  </h2>
+</div>
+<h1><%= t(:email_setting_update) %></h1>
 <%= form_for @email_setting,:url => "/email_settings/update/#{@email_setting.id}"  do|f| %>
   <br /><br />
   <%= f.check_box :receive_person_message %>
-  <label>I receive a message from another person</label>
+  <label><%= t(:received_msg_from_other) %></label>
   <br /><br />
   
   <%= f.check_box :booking_request_update %>
-  <label>An outstanding booking request is accepted or declined.</label>
+  <label><%= t(:outstanding_booking_request) %></label>
   <br /><br />
   
   <%= f.check_box :receive_booking_request %>
-  <label>I receive a booking request</label>
+  <label><%= t(:received_booking_request) %></label>
   <br /><br />
   
   <%= f.check_box :upcoming_booking %>
-  <label>I have an upcoming booking</label>
+  <label><%= t(:upcoming_bookings) %></label>
   <br /><br />
   
   <%= f.check_box :new_review %>
-  <label>I have received a new review</label>
+  <label><%= t(:received_review) %></label>
   <br /><br />
   
   <%= f.check_box :review_required %>
-  <label>I need to leave a review </label>
+  <label><%= t(:leave_review) %> </label>
   <br /><br />
   
   <%= f.submit "Submit" %>

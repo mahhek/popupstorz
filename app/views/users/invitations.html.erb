@@ -1,15 +1,60 @@
 <script type="text/javascript">
-  function check_email() {    
-    email = $("#email").val();
+  function check_email() {
+    email1 = $("#email1").val();
+    email2 = $("#email2").val();
+    email3 = $("#email3").val();
+    email4 = $("#email4").val();
+    email5 = $("#email5").val();
+
     var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    if(regex.test(email) == false){
-      alert("Invalid Email Address.");
+
+    if(email1 != ""){
+      if(regex.test(email1) == false){
+        alert("Invalid First Email Address.");
+        return false;
+      }
     }
-    return regex.test(email);
+
+    if(email2 != ""){
+      if(regex.test(email2) == false){
+        alert("Invalid Second Email Address.");
+        return false;
+      }
+    }
+
+    if(email3 != ""){
+      if(regex.test(email3) == false){
+        alert("Invalid Third Email Address.");
+        return false;
+      }
+    }
+
+    if(email4 != ""){
+      if(regex.test(email4) == false){
+        alert("Invalid Fourth Email Address.");
+        return false;
+      }
+    }
+
+    if(email5 != ""){
+      if(regex.test(email5) == false){
+        alert("Invalid fifth Email Address.");
+        return false;
+      }
+    }
+
+    if(email1 == "" && email2 == "" && email3 == "" && email4 == "" && email5 == ""){
+      alert("Please insert some email addresses first");
+      return false;
+    }
+
+    return true;
   }
-</script><br/><div style="float: left;width: 100%;border: 1px solid black;padding: 5px;">
+</script>
+<br/>
+<div style="float: left;width: 100%;border: 1px solid black;padding: 5px;">
   <h2>
-     <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'send_invitation' or params[:action] == 'invitations') ? 'silver' : '' %>">
+    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'send_invitation' or params[:action] == 'invitations') ? 'silver' : '' %>">
       <%= link_to 'Send Inivtations', invitation_path, :class => ((params[:controller] == "users" and ( params[:action] == "send_invitations" or params[:action] == "invitations" )) ? "m_act" : "") %>
     </span>
     <span style="float: left;padding: 5px">
@@ -22,7 +67,7 @@
       &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
     </span>
     <span style="float: left;padding: 5px">
-      <%= link_to "Delete My Account","/users/delete_account", :confirm => "Are you sure you want to delete your account permanently?" %>
+      <%= link_to t(:delete_my_account),"/users/delete_account", :confirm => t(:delete_permanently) %>
     </span>
   </h2>
 </div>
@@ -32,8 +77,12 @@
   <%= form_tag "send_invitation", :url => "/send_invitation" , :onsubmit => "return check_email();" do %>
     <%= hidden_field_tag :user_id, current_user.id %>
     <span style="width: auto;float: left;">
-      <b>Send Invitation to:</b><br />
-      <%= text_field_tag  :email %>
+      <b><%= t(:send_invite) %></b><br />
+      <%= text_field_tag  "email1" %><br />
+      <%= text_field_tag  "email2" %><br />
+      <%= text_field_tag  "email3" %><br />
+      <%= text_field_tag  "email4" %><br />
+      <%= text_field_tag  "email5" %><br />
     </span>
     <div style="float: left;margin-top: 5px;clear:both;">
       <%= submit_tag "Send Invitation" %>&nbsp;&nbsp;&nbsp;

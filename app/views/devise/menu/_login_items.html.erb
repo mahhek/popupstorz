@@ -1,6 +1,6 @@
 <% if user_signed_in? %>
   <li>
-    Hello! <%= current_user.first_name %>&nbsp;&nbsp;|
+    <%= t(:hello) %><%= t(:symbol) %> <%= current_user.first_name %>&nbsp;&nbsp;|
   </li>
   <li>
     &nbsp;&nbsp;|

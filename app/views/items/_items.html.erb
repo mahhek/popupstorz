@@ -19,7 +19,7 @@
     <span class="details">
       <%= item.description %></span>
     <div id="favorite_div_<%= item.id %>" style="margin-left: 172px"> <br/>
-      <%= render :partial => "favorite", :locals => {:item => item} %>
+      <%= render :partial => t(:favorite), :locals => {:item => item} %>
      
     </div>
      <%#*<p style="text-align:right; margin-right: 10px;">%>

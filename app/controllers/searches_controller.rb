@@ -1,11 +1,8 @@
 class SearchesController < ApplicationController
-
   def search_home
   end
 
   def gatherings
-    #    #    @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
-    #    @sizes = Item.select("distinct(price)").where("price is not NULL").order("price ASC")
     @sizes = Offer.select("distinct(gathering_rental_price)").where("gathering_rental_price is not NULL").order("gathering_rental_price ASC")
     @start_price = @sizes.first
     @last_price = @sizes.last
@@ -15,17 +12,14 @@ class SearchesController < ApplicationController
       @last_price = @last_price.gathering_rental_price.to_f > 10000 ? @last_price.gathering_rental_price : 10000
     else
       @last_price = 10000
-    end    
-    
+    end
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
-    #    @users_with_uniq_cities = User.select("distinct(city)")
-    @gatherings = Offer.find(:all,:conditions => [ "status != 'Cancelled' and parent_id is NULL" ], :order=> "rental_start_date ASC")
+    @gatherings = Offer.find(:all,:conditions => [ "status != 'Cancelled' and parent_id is NULL and is_gathering = true and persons_in_gathering > 0" ], :order=> "rental_start_date ASC")
     @gatherings = @gatherings.paginate(:page => params[:page], :per_page => 6 )
   end
 
   def members
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
-    #    @users_with_uniq_cities = User.select("distinct(city)")
     @users_with_uniq_activites = User.select("distinct(activity)").where("activity is not NULL and activity != ''")
     @members = User.find(:all)
     @members = @members.paginate(:page => params[:page], :per_page => 6 )
@@ -53,12 +47,21 @@ class SearchesController < ApplicationController
       @last_price = @last_price.price.to_f > 10000 ? @last_price.price : 10000
     else
       @last_price = 10000
-    end
+    end    
     
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
-    @items = Item.paginate(:page => params[:page], :per_page => 6, :order => "created_at DESC" )
-    
+    @items = Item.all
+    active_items = []
+    unless @items.blank?
+      @items.each do|item|
+        if item.user.is_active == true
+          active_items << item
+        end
+      end
+    end
+    @items = active_items
+    @items = @items.paginate(:page => params[:page], :per_page => 6, :order => "created_at DESC" )
     respond_to do |format|
       format.html
       format.js do
@@ -69,7 +72,7 @@ class SearchesController < ApplicationController
   end
 
   def search_gatherings
-    conds = "1=1 "
+    conds = "status != 'Cancelled' and parent_id is NULL and is_gathering = true and persons_in_gathering > 0 "
     cities = []
     items = ""
     if params[:location] && !params[:location].blank?
@@ -94,6 +97,16 @@ class SearchesController < ApplicationController
       conds += " AND (gathering_rental_price <= '#{params[:max_price]}')"
     end
     
+    unless params[:search_from].blank?
+      start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
+      conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
+    end
+    
+    unless params[:search_to].blank?
+      end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
+      conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
+    end
+    
     unless sel_items.blank?
       conds += " AND item_id in(#{items})"
     end
@@ -106,31 +119,16 @@ class SearchesController < ApplicationController
       order_by = "gathering_rental_price ASC"
     when "4"
       order_by = "created_at DESC"
-      #    when "5"
-      #      order_by =
     else
       order_by = "gathering_rental_price ASC"
     end
-    
     @offers = Offer.find(:all,:conditions => [ conds ], :order=> order_by)
     @offers = @offers.paginate(:page => params[:page], :per_page => 6 )
     
     unless @offers.blank?
       @offers = @offers.uniq
     end
-    
-#    if params[:sort_option].blank?
-#      @offers = @offers.sort_by{|e| e[:created_at]}
-#    end
-#    #   @rental_start_date = @offers.blank? ? 0 : @offers.rental_start_date
-#    #   @rental_end_date = @offers.blank? ? 0 : @offers.rental_end_date
-#    if params[:sort_option].blank?
-#      @offers = @offers.sort_by{|e| e[:size]}
-#    end
-#    if params[:sort_option].blank?
-#      @offers = @offers.sort_by{|e| e[:gathering_rental_price]}
-#    end
-    
+   
     @min_price = @offers.blank? ? 0 : @offers.first.gathering_rental_price
     @max_price = @offers.blank? ? 0 : @offers.last.gathering_rental_price
     @max_price = @max_price.to_f > 10000 ? @max_price : 10000
@@ -150,8 +148,7 @@ class SearchesController < ApplicationController
   
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
-    @shareable = Item.select("distinct(is_shareable)")
-    
+    @shareable = Item.select("distinct(is_shareable)")    
     #    Conditions to find booked items in given dates
     conds = "1=1 "
     unless params[:search_from].blank?
@@ -183,8 +180,7 @@ class SearchesController < ApplicationController
           booked_items << offer.item(:conditions => ["city LIKE '%#{params[:location]}%'"])
         end
       end
-    end
-    
+    end    
     #    Conditions on Items search
     item_conds = "1=1 "
     if !params[:min_price].blank? and !params[:max_price].blank?
@@ -231,7 +227,6 @@ class SearchesController < ApplicationController
     case params[:sort_option]
     when "1"
       order_by = "created_at DESC"
-#      order_by = "is_recommended, price DESC"
     when "2"
       order_by = "price DESC"
     when "3"
@@ -242,9 +237,17 @@ class SearchesController < ApplicationController
       order_by = "price ASC"
     end
  
-    items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)
+    items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
+    @items = items - booked_items    
+# Items whose owners are active users
+    active_items = []  
+    @items.each do|item|
+      if item.user.is_active == true
+        active_items << item
+      end
+    end
+    @items = active_items
     
-    @items = items - booked_items
     if params[:sort_option].blank?
       @items = @items.sort_by{|e| e[:price]}
     end
@@ -261,13 +264,11 @@ class SearchesController < ApplicationController
 
     respond_to do |format|
       format.html
-#      format.js
       format.js do
         foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
         render :js => "$('#searched-items').html(#{foo});$.setAjaxPagination();update_form_values('#{params.to_json}');"
       end
-    end
-    
+    end    
   end
 
   def search_members    
@@ -281,10 +282,8 @@ class SearchesController < ApplicationController
       params["types"].each do|type|
         if count == 0
           type_arr += " LOWER(activity) = '#{type.downcase.to_s}'"
-          #          type_arr += " LOWER(activity) LIKE "+ "'%%" + type.downcase.to_s + "%%'"
         else
           type_arr += " OR LOWER(activity) = '#{type.downcase.to_s}'"
-          #          type_arr += " OR LOWER(activity) LIKE "+ "'%%" + type.downcase.to_s + "%%'"
         end
         count += 1
       end
@@ -308,8 +307,5 @@ class SearchesController < ApplicationController
         render :js => "update_member_values('#{params.to_json}');$('#searched-members').html(#{foo});$.setAjaxPagination();"
       end
     end
-    #    @members = User.paginate(:page => params[:page], :per_page => 4, :conditions => [conds])
   end
 end
-
-

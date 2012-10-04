@@ -14,9 +14,10 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
-/vendor
 
 *.*~
 
 # tempory
 /config/database.yml
+/vendor/bundle/*
+

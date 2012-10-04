@@ -45,12 +45,12 @@ class Admin::ItemsController < ApplicationController
     @item = Item.find(params[:id])
     @item.availability_option_ids = params[:availability_options]
     if @item.update_attributes(params[:item])
-      flash[:notice] = "Thanks for updating your space."
+      flash[:notice] = t(:updating)
       redirect_to admin_item_path(@item)
     else
       @listing_types = ListingType.all :order =>"name asc"
       @availability_options = AvailabilityOption.all
-      flash[:notice] = "We couldn't update your space. Please check your listing for missing information."
+      flash[:notice] = t(:cant_update)
       render :action => "edit"
     end
   end
@@ -62,9 +62,9 @@ class Admin::ItemsController < ApplicationController
   def destroy
     item = Item.find(params[:id])
     if item.destroy
-      flash[:notice] = "Item deleted successfully!"
+      flash[:notice] = t(:deleted)
     else
-      flash[:notice] = "Item can't be deleted. Please try again or later."
+      flash[:notice] = t(:cant_delete)
     end
     redirect_to admin_items_path
   end

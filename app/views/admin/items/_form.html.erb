@@ -3,10 +3,10 @@
 <div style="padding-bottom: 20px;float: left;">
   <% if @item.errors.any? %>
     <div id="errorExplanation" class="erro_messages">
-      <h2>Oops! Looks like you need to include the following:</h2>
+      <h2><%= t(:include_following) %></h2>
       <ul>
         <li style="list-style: square;float: left;">
-          Required fields(and the display names): <%= @item.errors.full_messages.to_sentence  %>
+          <%= t(:required_fields) %> <%= @item.errors.full_messages.to_sentence  %>
         </li>
       </ul>
     </div>
@@ -14,7 +14,7 @@
 </div>
 
 <div style="float: left; width: 60%;margin-top: 20px;">
-  <div class="xfields">Title:
+  <div class="xfields"> <%= t(:title) %>
     <%= f.text_field :title, :style => "width:315px;" %><br/>
   </div>
 </div>
@@ -23,7 +23,7 @@
 <%= f.fields_for :avatars do |avatar| %>
   <% if avatar.object.new_record? %>
     <p>
-      Images of space Listing: <%= avatar.file_field :photo %><br/>
+      <%= t(:image_space) %><%= avatar.file_field :photo %><br/>
     </p>
   <%end%>
 <%end%>
@@ -42,7 +42,7 @@
 <br/>
 <br/>
 <div id="where-iteme">
-  <div class="field-address">Location*:<br/>
+  <div class="field-address"><%= t(:location) %><br/>
     <%= f.text_field :address, :class => "field-l", :style => "width:700px;" %>
     <div id="item_advanced_container" style="display:none;">
       <div id="item_advanced" style="display:none;">
@@ -56,7 +56,7 @@
     </div>
   </div>
 </div>
-<div class="xfields">Neighbourhood:
+<div class="xfields"><%= t(:neighbourhood) %>
   <%= f.text_field :neighbourhood, :style => "width:315px;" %><br/>
 </div>
 
@@ -68,22 +68,22 @@
 </div>
 <br/>
 
-<div class="xfields" style="width: 100%;">Size of Space:
+<div class="xfields" style="width: 100%;"><%= t(:space_size) %>
   <%= f.text_field :size, :style => "width:80px;", :onchange => "update_units()" %>
   <%= select_tag "item[size_unit]", options_for_select([["SQMT","SQMT"],["SQFT","SQFT"]], @item.size_unit),:onchange => "update_units()" %>
   <div id="other_unit">
-    SQFT
+    <%= t(:sqft) %>
   </div>
 </div>
 
 
 <br/>
-<div class="xfields">Type of Space:
+<div class="xfields"><%= t(:space_type) %>
   <%= select_tag( "item[listing_type_id]", options_from_collection_for_select(@listing_types,:id, :name, @item.listing_type_id)) %><br />
 </div>
 <br/>
 
-<div class="xfields">Description:<br/>
+<div class="xfields"><%= t(:space_description) %><br/>
   <%= f.text_area :description, :size => "50x7" %>
 </div>
 
@@ -92,7 +92,7 @@
 
 <div class="xfields">
   <span>
-    Price:
+    <%= t(:space_price) %>
   </span>
   <span>
     <%= f.text_field :price %> &nbsp;&nbsp;
@@ -103,20 +103,20 @@
 <br/>
 
 <div>
-  Gathering: &nbsp;&nbsp;&nbsp;
+  <%= t(:gathering) %>&nbsp;&nbsp;&nbsp;
   <%= select_tag "item[is_shareable]", options_for_select([["Yes","Yes"],["No","No"]], @item.is_shareable) %>&nbsp;&nbsp;
-  Up to: &nbsp;&nbsp;&nbsp;
-  <%= f.text_field :maximum_members, :size => "5" %> persons
+  <%= t(:up_to) %>&nbsp;&nbsp;&nbsp;
+  <%= f.text_field :maximum_members, :size => "5" %> <%= t(:persons) %>
 </div>
 <br/>
 <br/>
 
 
 <div class="xfields">  
-  Availability From:<br/><br/>
+  <%= t(:availability) %><br/><br/>
   <%= f.datetime_select :availability_from, :order => [:year, :month, :day]   %> &nbsp;&nbsp;-&nbsp;&nbsp;
   <br/><br/>
-  Availability To:
+  <%= t(:availability_to) %>
   <br/><br/>
   <%= f.datetime_select :availability_to, :order => [:year, :month, :day]   %><br/><br/>
 

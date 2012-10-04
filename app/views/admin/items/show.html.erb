@@ -4,15 +4,15 @@
   <div id="get-list-header">
     <div id="lisit-txt"><%= @item.title %><br/><br/>
       <span class="hel-14">
-        <b>Location:</b><%= "#{@item.street_name} #{@item.city}, #{@item.region}, #{@item.zipcode}" %>
+        <b><%= t(:location_show) %></b><%= "#{@item.street_name} #{@item.city}, #{@item.region}, #{@item.zipcode}" %>
         <br/>
       </span>
     </div>
     <div>
-      <b>Owner info</b><br/>
-      Name: <%= @user.first_name %> <%= @user.last_name %>
+      <b><%= t(:owner_info) %></b><br/>
+      <%= t(:owner_name) %><%= @user.first_name %> <%= @user.last_name %>
       <br/>
-      Lives in: <%= @user.address1 %> <%= @user.address2 %> <%= @user.city %> <%= @user.country %>
+      <%= t(:lives_in) %><%= @user.address1 %> <%= @user.address2 %> <%= @user.city %> <%= @user.country %>
       <br/>
     </div>
   </div>
@@ -31,7 +31,7 @@
           </div>
         <% else %>
           <div id="space-img">
-            No Image Available
+            <%= t(:no_image) %>
           </div>
         <%end%>
       </div>
@@ -50,7 +50,7 @@
 
   <div id="right-widgets">
     <div class="blue-box">
-      <div id="price-x"><span class="font-24"><%=  @item.price %></span>&nbsp; euros per day</div>
+      <div id="price-x"><span class="font-24"><%=  @item.price %></span>&nbsp;<%= t(:euro_per_day) %> </div>
     </div>
   </div>
 </div>

@@ -4,7 +4,7 @@
 
 <%= form_for :search, :url => search_members_searches_path, :remote => true do|f|%>
   <div class="shadowCont" style="padding: 10px;">
-  	 <b>Member Search</b>
+  	 <b><%= t(:mem_search)%></b>
     <div class="refinesearchresults">
       <div style="width:35%;float:left;">
         <%= text_field_tag "user", "",:style=>["width:320px"] %>
@@ -19,7 +19,7 @@
 
 <div class="rightcontent">
 
-  <h2>Refine your search</h2>
+  <h2><%= t(:refine_search)%></h2>
   <div class="pannelright">
     <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
     <%= form_tag "/searches/search_members", {:remote => true, :id => "price_range_form", :pars => params } do %>
@@ -27,9 +27,9 @@
       <%= hidden_field_tag "user", '', :id => "searched_member_name" %>
       <div class="pannelright">
         <img class="closepannel" src="../assets/-.png" />
-        <div class="heading_right">Activities</div>
+        <div class="heading_right"><%= t(:active3)%></div>
         <div class="twocol">
-          <% @users_with_uniq_activites.each do |type| %>            
+          <% @users_with_uniq_activites.each do |type| %>
             <%= check_box_tag 'types[]', type.activity, params["types"].blank? ? false : params["types"].include?(type.activity.to_s), :onclick => "$(this.form).trigger('submit.rails')" %>
             <b><%= type.activity.capitalize %></b><br />
           <% end %>
@@ -47,13 +47,13 @@
       <% unless @members.blank? %>
         <%= render :partial => "members", :locals => {:members => @members} %>
       <% else %>
-        Please try some other search criteria.
+        <%= t(:other_search)%>
       <% end %>
     </div>
   </div>
 </div>
 <script type="text/javascript">
-  function update_member_values(params){    
+  function update_member_values(params){
     var str = $.parseJSON(params);
     $("#searched_member_location").attr("value",str.location.toString());
     $("#searched_member_user").attr("value",str.user.toString());

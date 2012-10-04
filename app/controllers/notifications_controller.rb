@@ -1,7 +1,6 @@
 # -*- encoding : utf-8 -*-
 class NotificationsController < ApplicationController
-def destroy
-    
+  def destroy    
     @notification = Notification.find(params[:id])
     @notification.destroy
     respond_to do |format|
@@ -10,7 +9,6 @@ def destroy
         foo = render_to_string(:partial => '/accounts/notifications', :locals => { :notifications => @notifications }).to_json
         render :js => "$('#notifications_div').html(#{foo})"
       end
-    end
-    
+    end    
   end
 end

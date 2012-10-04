@@ -16,7 +16,18 @@ class ApplicationController < ActionController::Base
   helper_method :message_user
   helper_method :exchange_currency
   before_filter :currency_conversion
-
+    
+  def after_sign_in_path_for(resource)
+    if resource.is_a?(User) && !resource.is_active?
+      sign_out resource
+      flash[:notice] = nil
+      flash[:error] = t(:not_active)
+      root_path
+    else
+      super
+    end
+  end
+  
   def currency_conversion
     session[:curr] = params[:curr] if params[:curr]
     session[:curr] = "USD" if session[:curr].blank?
@@ -76,10 +87,8 @@ class ApplicationController < ActionController::Base
 
   def authenticate_admin
     if current_user.blank? || !current_user.admin?
-      flash[:error] = "you are not authorized."
+      flash[:error] = t(:authorized)
       redirect_to "/"
     end
   end
-
 end
-

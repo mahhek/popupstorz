@@ -20,16 +20,16 @@
         <%= check_box_tag "check_all" , false  , false %>
       </span>
       <span style="width:130px;float:left;margin-left:5px;padding-top:2px;font-weight: bold;">
-        From
+        <%= t(:mail_from) %>
       </span>
       <span style="width:150px;float:left;padding-top:2px;font-weight: bold;">
-        Subject
+        <%= t(:subject) %>
       </span>
       <span style="width:320px;float:left;padding-top:2px;font-weight: bold;">
-        Body
+        <%= t(:body) %>
       </span>
       <span style="width:70px;float:left;padding-top:2px;font-weight: bold;">
-        Date
+        <%= t(:date) %>
       </span>
     </div-->
     <% @messages.each do |message| %>
@@ -93,7 +93,7 @@
 	
 <%else%>
 	<div class="clear" ></div>
-	<div class="row" style="cursor: not-allowed;">No Message Found.</div>
+	<div class="row" style="cursor: not-allowed;"><%= t(:no_msg) %></div>
 <%end%>
 
 

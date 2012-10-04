@@ -1,6 +1,6 @@
+# -*- encoding : utf-8 -*-
 class ItemsController < ApplicationController
   include ActionView::Helpers::NumberHelper
-
   before_filter :authenticate_user!, :except => [:set_dates, :exchange_price, :new, :create, :show, :search_via_price_range, :search_keyword, :search_category, :autocomplete_item_city, :autocomplete_item_title]
   autocomplete :item, :title
   autocomplete :item, :city
@@ -95,6 +95,8 @@ class ItemsController < ApplicationController
   
   def create
     @countries = Country.all
+    set_values
+    
     @item = Item.new(params[:item])
     @map = GMap.new("map")
     if params[:item][:latitude].blank?
@@ -107,30 +109,43 @@ class ItemsController < ApplicationController
     if @item.valid?
       if !user_signed_in?
         session[:items] = params[:item]
-        flash[:notice] = "Please login to continue."
+        flash[:notice] = t(:login)
         redirect_to new_user_session_path
       else
         @item.availability_option_ids = params[:availability_options]
         if @item.save
           @item.update_attribute("item_status","Available")
           session[:items] = nil
-          flash[:notice] = "Thanks for adding your space."
+          flash[:notice] = t(:adding_space)
           redirect_to new_item_avatar_path(@item)
         else
           @listing_types = ListingType.all :order =>"name asc"
           @availability_options = AvailabilityOption.all
-          flash[:notice] = "We couldn't add your space. Please check your listing for missing information."
+          flash[:notice] = t(:cant_add_space)
           render :action => "new"
         end
       end
     else
       @listing_types = ListingType.all :order =>"name asc"
       @availability_options = AvailabilityOption.all
-      flash[:notice] = "We couldn't add your space. Please check your listing for missing information."
+      flash[:notice] = t(:cant_add_space)
       render :action => "new"
     end
   end
-
+  
+  def set_values
+    if params[:item][:available_forever] == "1"
+      params[:item][:availability_from] = ""
+      params[:item][:availability_to] = ""
+    end    
+    unless params[:item][:availability_from].blank?
+      params[:item][:availability_from] = DateTime.strptime(params[:item][:availability_from], "%m/%d/%Y").to_time
+    end
+    unless params[:item][:availability_to].blank?
+      params[:item][:availability_to] = DateTime.strptime(params[:item][:availability_to], "%m/%d/%Y").to_time
+    end
+  end
+  
   def edit
     @countries = Country.all
     @item = Item.find_by_id(params[:id])
@@ -146,15 +161,17 @@ class ItemsController < ApplicationController
 
   def update
     @countries = Country.all
-    @item = Item.find(params[:id])
+    @item = Item.find(params[:id])    
+    set_values    
     @item.availability_option_ids = params[:availability_options]
     if @item.update_attributes(params[:item])
-      flash[:notice] = "Thanks for updating your space."
-      redirect_to edit_item_avatar_path(@item,@item.avatars.first)
+      flash[:notice] = t(:updating_space)
+#      redirect_to edit_item_avatar_path(@item,@item.avatars.first)
+      redirect_to edit_item_avatar_path(@item.id)
     else
       @listing_types = ListingType.all :order =>"name asc"
       @availability_options = AvailabilityOption.all
-      flash[:notice] = "We couldn't update your space. Please check your listing for missing information."
+      flash[:notice] = t(:cant_update_space)
       render :action => "edit"
     end
   end
@@ -193,17 +210,13 @@ class ItemsController < ApplicationController
       @available_days << 6
     end
             
-    @offers = @item.offers.where("(status LIKE '%Confirmed%') and parent_id is NULL")
-    
+    @offers = @item.offers.where("(status LIKE '%Confirmed%') and parent_id is NULL")    
     @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
     end
-    @manage_dates_array << @booked_dates
-        
-    @comment = Comment.new
-   
-    @curr_offers = @item.offers.where("(status NOT LIKE '%Confirmed%' and status != 'Cancelled') and parent_id is NULL")
-    
+    @manage_dates_array << @booked_dates        
+    @comment = Comment.new   
+    @curr_offers = @item.offers.where("(status NOT LIKE '%Confirmed%' and status != 'Cancelled') and parent_id is NULL")    
     @user = @item.user
     @map = GMap.new("map")
     @map.control_init(:map_type => true, :small_zoom => true)
@@ -215,17 +228,15 @@ class ItemsController < ApplicationController
   def destroy
     @item = Item.find_by_id(params[:id])
     @item.destroy
-    flash[:notice] = "Item deleted Successfully!"
+    flash[:notice] = t(:deleted)
     redirect_to items_path
   end
-
 
   def search_keyword
     session[:start_date] = nil
     session[:end_date] = nil
   
-    conds = "1=1 "
-    
+    conds = "1=1 "    
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @shareable = Item.select("distinct(is_shareable)")
@@ -233,8 +244,7 @@ class ItemsController < ApplicationController
     unless params[:search_from].blank?
       start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
       conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
-    end
-    
+    end    
     unless params[:search_to].blank?
       end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
       conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
@@ -315,9 +325,17 @@ class ItemsController < ApplicationController
       order_by = "price ASC"
     end
     
-    items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)
+    items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
+    @items = items - booked_items    
+    #    Items whose owners are active users
+    active_items = []  
+    @items.each do|item|
+      if item.user.is_active == true
+        active_items << item
+      end
+    end    
+    @items = active_items
     
-    @items = items - booked_items
     if params[:sort_option].blank?
       @items = @items.sort_by{|e| e[:price]}
     end
@@ -329,9 +347,7 @@ class ItemsController < ApplicationController
     end
     session[:start_date] = params[:search_from]
     session[:end_date] = params[:search_to]
-    
-    #    @items = Item.paginate(:page => params[:page], :per_page => 4, :order => "price")
-    
+        
     @items = @items.paginate(:page => params[:page], :per_page => 4 )
     
     @map = GMap.new("map")
@@ -352,7 +368,6 @@ class ItemsController < ApplicationController
       end
     end
     @items_with_uniq_cities = Item.select("distinct(city)")
-
     respond_to do |format|
       format.html
       format.js do
@@ -362,8 +377,7 @@ class ItemsController < ApplicationController
     end
   end
 
-  def search_via_price_range
-    
+  def search_via_price_range    
     conds = "1=1 "
     conds += "AND price >= #{params[:min_price].to_f} AND price <= #{params[:max_price].to_f}"
     unless params[:city].blank?
@@ -378,8 +392,7 @@ class ItemsController < ApplicationController
     end
   end
 
-  def new_comment
-   
+  def new_comment   
   end
   
   def add_comment
@@ -390,18 +403,15 @@ class ItemsController < ApplicationController
       flash[:notice] = "Comment Added"
       redirect_to "/items/show/#{@item.id}"
     else
-      flash[:error] = "Not saved"
+      flash[:error] = t(:not_saved)
       render :show
-    end
-   
+    end   
   end
 
-  def listings_home
-    
+  def listings_home    
   end
   
   def my_pop_ups
-    #    @offers = current_user.offers
     @offers = Offer.find(:all, :conditions => ["user_id = ?",current_user.id])
     @offers = @offers.uniq
   end
@@ -410,7 +420,7 @@ class ItemsController < ApplicationController
     @offers = Offer.find(:all, :conditions => ["owner_id = ? and (status = 'joinings approved' or status = 'confirmed' or status = 'Declined' or status = 'Confirmed' or status = 'Cancelled')",current_user.id], :order => "rental_start_date ASC")
   end
   
-  def  past_transactions 
+  def past_transactions 
     @gatherings = Offer.find(:all, :conditions => ["(owner_id = ? and user_id != ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_end_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'",current_user.id,current_user.id], :order => "rental_start_date ASC")
     gathers = @gatherings.group_by(&:item_id)
     gathers.each do|k,v|
@@ -419,7 +429,6 @@ class ItemsController < ApplicationController
   end
       
   def created_prev_gatherings
-    #    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])     
     @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date < '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'",current_user.id,current_user.id], :order => "rental_start_date ASC")
     gathers = @gatherings.group_by(&:item_id)
     gathers.each do|k,v|
@@ -432,19 +441,8 @@ class ItemsController < ApplicationController
   
   def created_coming_gatherings
     @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id,current_user.id])
-    #    @gatherings = Offer.find(:all, :conditions => ["(owner_id != ? and user_id = ?) and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status !='joinings approved'",current_user.id,current_user.id], :order => "rental_start_date ASC")
-    
-    #    gathers = @gatherings.group_by(&:item_id)
-    #    gathers.each do|k,v|
-    #      @gatherings = v
-    #    end
-    #    p "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",@gatherings.inspect
-    #    ddd
-    
-    
     @gatherings = @gatherings + current_user.gatherings.where("owner_id != #{current_user.id} and persons_in_gathering is not NULL and parent_id is NULL and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}' and offers.status != 'Applied' and offers.status != 'all joinings approved' and offers.status !='joinings approved'", :order => "rental_start_date ASC")
-    @gatherings = @gatherings.uniq
-    
+    @gatherings = @gatherings.uniq    
     #    Gatherings which current user have joined and requests are accepted by creator
     gathering = []
     joined = Offer.find(:all, :conditions => ["owner_id != #{current_user.id} and parent_id is NOT NULL and status = 'Approved'"], :order => "rental_start_date ASC")
@@ -461,12 +459,9 @@ class ItemsController < ApplicationController
     @gatherings = @gatherings.uniq
     
     @offers = Offer.find(:all, :conditions => ["(user_id = ?) and persons_in_gathering is NULL and is_gathering = false and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id], :order => "rental_start_date ASC")
-    @gatherings = @gatherings + @offers
-    
-    @gatherings = @gatherings.uniq
-    
-  end
-  
+    @gatherings = @gatherings + @offers    
+    @gatherings = @gatherings.uniq    
+  end  
     
   def pending_gathering_acceptance
     @gatherings = current_user.gatherings.where("offers.user_id != #{current_user.id}  and gathering_members.status = 'confirmed' and (offers.status = 'Applied' or offers.status = 'all joinings approved' or offers.status ='joinings approved')", :order => "rental_start_date ASC")
@@ -474,31 +469,25 @@ class ItemsController < ApplicationController
   end
   
   def gatherings_at_my_place
-    #    @offers = Offer.find(:all, :conditions => ["owner_id = ? and persons_in_gathering is not NULL and parent_id is NULL",current_user.id])
     @offers = Offer.find(:all, :conditions => ["(owner_id = ? and user_id != ?) and persons_in_gathering is not NULL and parent_id is NULL and (status != 'joinings approved' and status != 'Confirmed')",current_user.id,current_user.id], :order => "rental_start_date ASC")
   end
   
   def payment_charge
     @offer = Offer.find(params[:id])
     @item = @offer.item    
-    #    payment = @offer.payment
-    #    if payment.purchase("charge").status == 3
-    #      @offer.update_attribute(:status, "Paid but waiting for FeedBack")
     payment = PaymentsController.new
     if @offer.is_gathering        
       payment.capture_gathering_commission_and_payment(@offer)
     else
       payment.capture_offer_commission_and_payment(@offer)
     end
-    if @offer.update_attribute(:status, "Paid but waiting for FeedBack")
-      
-      current_user.send_message(@offer.user, :topic => "Offer Updated", :body => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!".html_safe)
-      
-      @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>"offer_updated", :description => "The <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> you made on #{@item.title} has been paid but FeedBack is pending!".html_safe)
+    if @offer.update_attribute(:status, "Paid but waiting for FeedBack")      
+      current_user.send_message(@offer.user, :topic => t(:updated_offer), :body => "#{t(:offer_the)} <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> #{t(:you_made)} #{@item.title} #{t(:feedback_pending)}".html_safe)
+      @notification = Notification.new(:user_id => @offer.user.id, :notification_type => t(:updated_offer), :description => "#{t(:offer_the)} <a href='http://#{request.host_with_port}/#{edit_item_offer_url(@item.id,@offer.id)}'>offer</a> #{t(:you_made)} #{@item.title} #{t(:feedback_pending)}".html_safe)
       @notification.save
       redirect_to "/"
     else
-      flash[:flash] = "There is some problem in charging renter card, please contact Administrator, thanks."
+      flash[:flash] = t(:problem_charging)
       redirect_to "/"
     end
   end

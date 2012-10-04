@@ -1,19 +1,19 @@
 <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
-  <h2>Gathering</h2>
+  <h2><%= t(:gather) %></h2>
 <% else %>
-  <h2>Standard Booking</h2>
+  <h2><%= t(:stand_booking) %></h2>
 <% end %>
 
 <% if current_user.id == @offer.owner_id %>
   <% if @offer.status == "joinings approved" %>
-    <%= link_to "Approve", "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}" %> | 
-    <%= link_to "Decline", "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}" %>
+    <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}" %> |
+    <%= link_to t(:decline), "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}" %>
   <% end %>
 
   <% if @offer.status == "confirmed" && @offer.persons_in_gathering.blank? %>
-    <%= link_to "Approve", "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}" %> | 
-    <%= link_to "Decline", "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}" %>
-  <% end %>  
+    <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}" %> |
+    <%= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}" %>
+  <% end %>
   <br />
   <% if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
     <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}" %>
@@ -21,8 +21,8 @@
 <% end %>
 
 <br/>
-<% if @offer.status == "all joinings approved" && current_user.id == @offer.user_id %>     
-  <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{@offer.id}" %> 
+<% if @offer.status == "all joinings approved" && current_user.id == @offer.user_id %>
+  <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{@offer.id}" %>
 <% end %>
 <% if (@offer.status == "Confirmed" ) && current_user.id == @offer.user_id && @offer.rental_start_date >= Date.parse("#{Date.today}","%Y-%d-%m") %>
   <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}" %>
@@ -33,98 +33,98 @@
 <% approved = @offer.members.where("status ='Approved'").size %>
 <div style="float:left;clear:both;width:100%;">
   <div style="float:left;width: 30%;margin: 10px;">
-    <h3>Location</h3><br />
+    <h3><%= t(:location2) %></h3><br />
     <b><%= @offer.item.description %></b><br />
     <b><%= @offer.item.title %></b><br />
     <b><%= @offer.item.address %></b><br /><br />
 
-    <h3>Price</h3>
+    <h3><%= t(:price5) %></h3>
     <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
       <%= number_to_currency(exchange_currency(@offer.gathering_rental_price.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-      per person<br /><br />
+      <%= t(:per_person2) %><br /><br />
     <% else %>
       <%= number_to_currency(exchange_currency(@offer.total_amount.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
     <% end %>
 
-    <h3>Application Deadline</h3>
+    <h3><%= t(:app_deadline) %></h3>
     <% if @offer.persons_in_gathering.to_i > 0 or @offer.is_gathering %>
       <%= @offer.gathering_deadline.blank? ? '' : @offer.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
     <% else %>
       <%= @offer.cancellation_date.blank? ? '' : @offer.cancellation_date.strftime("%m-%d-%Y") %><br /><br />
     <% end %>
-    <b>Renting From:<%= @offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= @offer.rental_end_date.strftime("%m-%d-%Y") %></b><br />
+    <b><%= t(:rent_form) %><%= @offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= @offer.rental_end_date.strftime("%m-%d-%Y") %></b><br />
     <% joined = GatheringMember.where("status = 'Approved' and offer_id = #{@offer.id}") %>
-    <b>Status:</b>    
+    <b><%= t(:status) %></b>
     <% if @offer.status == "Accepted - Payment pending" or @offer.status == "all joinings approved" or @offer.status == "Accepted - Confirmation pending" or @offer.status == "joinings approved" or @offer.status == "Applied" or @offer.status == "confirmed" %>
       <% if joined.size.to_i < @offer.persons_in_gathering.to_i or @offer.cancellation_date.blank? %>
-        <%= "Creating" %>
+        <%= t(:creating) %>
       <% else %>
-        <%= "Applied" %>
+        <%= t(:applied) %>
       <% end %>
     <% else %>
       <%= @offer.status %>
     <% end %>
     <br /><br />
     <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
-      <b>Gathering Description:</b>
+      <b><%= t(:gathering_des) %></b>
       <%= raw nl2br(@offer.gathering_description) %>
     <% end %>
     <br /><br />
-    <b>Security deposit:<b/>
+    <b><%= t(:sec_deposit) %><b/>
       <%= number_to_currency(exchange_currency(@item.deposit.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
-      <br/> 
-      <b>Cleaning Fee:<b/>
+      <br/>
+      <b><%= t(:cleaning_fee) %><b/>
         <%= number_to_currency(exchange_currency(@offer.item.cleaning_fee.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-        <br/> 
-        <b>Price Per Day:<b/>
+        <br/>
+        <b><%= t(:per_day_rate) %><b/>
           <%= number_to_currency(exchange_currency(@offer.item.price.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
           <br/>
 
-          <b> Total days:<b/>          
+          <b> <%= t(:total_days) %>:<b/>
             <%= @offer.total_days %>
             <br/><br/>
-            <b>Available During:</b><br />
+            <b><%= t(:avail_dur) %></b><br />
             <% @offer.item.availability_options.each do|opt| %>
               <%= opt.name %><br />
             <% end %><br /><br />
             <div style="float:left;width:100%;">
-              <h1 class="size">Owner Rules:</h1><br />
-              <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div').toggle()">Show Details</div><br />
+              <h1 class="size"><%= t(:owner_rules) %></h1><br />
+              <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div').toggle()"><%= t(:show_details) %></div><br />
               <p class="size_text" id="rules_div" style="display:none;">
                 <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
               </p>
               <div class="clear"></div>
 
-              <h1 class="size">Cancellation Policy:</h1><br />
-              <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div').toggle()">Show Details</div><br />
+              <h1 class="size"><%= t(:cancellation_policies) %></h1><br />
+              <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div').toggle()"><%= t(:show_details) %></div><br />
               <p class="size_text" id="policy_div" style="display:none;">
                 <% unless @item.cancellation_policy_flexible.blank? %>
-                  Flexible<br/>
-                  If renter cancels more than 7 days before booking start date: full refund<br/>
-                  If renter cancels less than 7 days before booking start date: no refund<br/><br/>
+     <%= t(:flexible) %><br/>
+          <%= t(:cancel_ln1) %><br/>
+          <%= t(:cancel_ln2) %><br/><br/>
 
-                  Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the Thursday of the prior week at 23:59 (local time of the booked space).<br/><br/>
+          <%= t(:cancel_ln3) %><br/><br/>
 
-                  Please be informed that the 10% Pop Up Storz service fee is not refundable.<br/><br/>
-                  Exemple
-                  If renter has done a booking for an amount of 110 € and cancels more than 7 days before booking start date, the amount of the refund will be 100 €.<br/><br/>
-                <% else %>
-                  SemiFlexible<br/>If renter cancels more than 3 days before booking start date: partial refund (50%)<br/>
-                  If renter cancels less than 3 days before booking start date: no refund<br/><br/>
+          <%= t(:cancel_ln4)%><br/><br/>
+          <%= t(:cancel_ln5)%><br/><br/>
+     <% else %>
+        <%= t(:semi_flexible) %><br/>
+        <%= t(:semi_cancel_ln1) %><br/>
+        <%= t(:semi_cancel_ln2) %><br/><br/>
 
-                  Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the prior Monday at 23:59 (local time of the booked space).<br/><br/>
+        <%= t(:semi_cancel_ln3) %><br/><br/>
 
-                  Please be informed that the 10% Pop Up Storz service fee is not refundable. <br/><br/>
-                  Exemple
-                  If renter has done a booking for an amount of 110 € and cancels more than 3 days before booking start date, the amount of the refund will be 50 €.<div/>
-              <% end %>
+        <%= t(:semi_cancel_ln4) %><br/><br/>
+        <%= t(:semi_cancel_ln5) %><div/>
+
+    <% end %>
               </p>
               <div class="clear"></div>
               <br />
             </div>
             </div>
 
-            <b>Created By:</b><br />
+            <b><%= t(:create_by) %></b><br />
             <%= @offer.user.popup_storz_display_name %>  <br />
             <% if current_user != @offer.user %>
               <div id="store-btn">
@@ -145,11 +145,11 @@
             </div>
             <br /><br />
 
-            <h3>Guests</h3>
+            <h3><%= t(:guests) %></h3>
             <% if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0 %>
-              <b><%= @offer.persons_in_gathering %> persons needed</b><br />
-              <%= applied %> applied<br />
-              <%= approved %> confirmed<br />
+              <b><%= @offer.persons_in_gathering %> <%= t(:need2) %></b><br />
+              <%= applied %> <%= t(:applied) %><br />
+              <%= approved %> <%= t(:confirm4) %><br />
               <% unless current_user.blank? %>
                 <% if @offer.members.size.to_i < @offer.persons_in_gathering.to_i && @offer.user_id != current_user.id && @offer.owner_id != current_user.id %>
                   <% if !@offer.members.include?(current_user) && @offer.rental_start_date >= Date.today %>
@@ -160,9 +160,9 @@
                 <% end %>
               <% end %>
             <% else %>
-              <b>1 person needed</b><br />
-              0 applied<br />
-              1 confirmed<br />
+              <b><%= t(:needed_1) %></b><br />
+              <%= t(:zero_applied) %><br />
+              <%= t(:one_confirm) %><br />
             <% end %>
 
             </div>
@@ -177,8 +177,8 @@
                     <!-- Elastislide Carousel Thumbnail Viewer -->
                     <div class="es-carousel-wrapper">
                       <div class="es-nav">
-                        <span class="es-nav-prev">Previous</span>
-                        <span class="es-nav-next">Next</span>
+                        <span class="es-nav-prev"><%= t(:pre) %></span>
+                        <span class="es-nav-next"><%= t(:next) %></span>
                       </div>
                       <div class="es-carousel">
                         <ul>
@@ -204,9 +204,9 @@
 
             <div style="float:left;width: 30%;margin: 10px;">
               <div style="width: 100%;float: left;clear: both;margin: 10px;border-bottom: 1px solid;">
-                <h2>Members</h2>
+                <h2><%= t(:mem) %></h2>
                 <% if @offer.is_gathering or @offer.persons_in_gathering.to_i > 0 %>
-                  <b>Confirmed(<%= approved %>)</b>
+                  <b><%= t(:confirm4) %>(<%= approved %>)</b>
                   <% approved_requests = @offer.members.where("status ='Approved'") %>
                   <% approved_requests.each do|req| %>
                     <div style="margin:5px;float: left;width:100%;">
@@ -239,7 +239,7 @@
                     </div>
                   <% end %>
                 <% else %>
-                  <b>Confirmed( 1 )</b>
+                  <b><%= t(:confirm3) %></b>
                   <% req = @offer.user  %>
                   <div style="margin:5px;float: left;width:100%;">
                     <div style="float: left;width: 50%;">
@@ -274,8 +274,8 @@
                 <% end %>
               </div>
 
-              <div style="width: 100%;float: left;clear: both;margin: 10px;">      
-                <b>Applied(<%= applied %>)</b>
+              <div style="width: 100%;float: left;clear: both;margin: 10px;">
+                <b><%= t(:applied) %>(<%= applied %>)</b>
                 <% applied_requests = @offer.members.where("status !='Approved'") %>
                 <% applied_requests.each do|req| %>
                   <div style="margin:5px;float: left;width:100%;">
@@ -306,11 +306,11 @@
                       <% end %>
                     </div>
                     <br/>
-                    <% request = GatheringMember.where("user_id = #{req.id} and offer_id = #{@offer.id}").first %>          
+                    <% request = GatheringMember.where("user_id = #{req.id} and offer_id = #{@offer.id}").first %>
                     <% if request.status == "confirmed" && current_user.id == @offer.user_id %>
                       <% if approved_requests.size <  @offer.persons_in_gathering.to_i %>
-                        <%= link_to "Approve", "/approve_gathering_request/#{@offer.id}?mem=#{req.id}" %> | 
-                        <%= link_to "Decline", "/decline_gathering_request/#{@offer.id}?mem=#{req.id}" %> 
+                       <%= link_to t(:approve), "/approve_gathering_request/#{@offer.id}?mem=#{req.id}" %> |
+                       <%= link_to t(:decline), "/decline_gathering_request/#{@offer.id}?mem=#{req.id}" %>
                         <br /><br />
                       <% end %>
                     <% end %>
@@ -318,17 +318,17 @@
                 <% end %><br/><br/>
               </div>
 
-            </div> 
+            </div>
 
 
-            <div style="float:left;width:65%;margin-left: 20px;">    
-              <h1> Wall </h1>
+            <div style="float:left;width:65%;margin-left: 20px;">
+              <h1> <%= t(:wall) %> </h1>
               <div id="comments" style="height: 200px;display: block;">
 
                 <%= form_for @comment, :url => "/offers/add_comment" do |f| %>
                   <% if @comment.errors.any? %>
                     <div id="errorExplanation" class="erro_messages">
-                      <h2>Oops! Looks like you need to include the following:</h2>
+                      <h2><%= t(:include_following) %></h2>
                       <ul>
                         <li style="list-style: square;float: left;">
                           <%= @comment.errors.full_messages.to_sentence  %>
@@ -341,15 +341,15 @@
                   <div class="field">
                     <%= f.label :comment %><br />
                     <%= f.text_area "comment", :rows => 5 %><br />
-                    <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
+                    <a class="search ml70" onclick="$('#new_comment').submit();" href="#"><%= t(:leave_comment) %>Leave Comment</a>
                   </div>
                 <% end %>
               </div>
 
               <div id="show_comments" style="display: block;" >
-                <b>Previous Comments:</b><br/>
+                <b><%= t(:prev_comments) %></b><br/>
                 <% unless @offer.comments.blank? %>
-                  <% @offer.comments.each do|f| %>          
+                  <% @offer.comments.each do|f| %>
                     <%= f.comment %><br/>
                     <i>
                       <%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %>
@@ -358,7 +358,7 @@
                     <br/>
                   <%end%>
                 <% else %>
-                  <i>No Comments added yet!</i>
+                  <i><%= t(:no_added_comments)%></i>
                 <%end%>
               </div>
             </div>

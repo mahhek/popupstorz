@@ -17,10 +17,10 @@
   <div class='spread'>
     <div class='twshare left'>
       <% if params[:controller] == "items" && params[:action] == "show" %>
-        <a href='http://twitter.com/share?text=<%= request.host_with_port+"/"+request.fullpath  %>' class="twitter-share-button" data-count="horizontal">Tweet</a><br /><br />
+        <a href='http://twitter.com/share?text=<%= request.host_with_port+"/"+request.fullpath  %>' class="twitter-share-button" data-count="horizontal"><%= t(:tweet1) %></a><br /><br />
         <a href='http://www.facebook.com/sharer.php' expr:share_url='<%= request.host_with_port+"/"+request.fullpath%>' name='fb_share' rel='nofollow' type='button_countt'></a>
       <% else %>
-        <a href="http://twitter.com/share?text=<%= request.host_with_port %>" class="twitter-share-button" data-count="horizontal">Tweet</a><br /><br />
+        <a href="http://twitter.com/share?text=<%= request.host_with_port %>" class="twitter-share-button" data-count="horizontal"><%= t(:tweet1) %></a><br /><br />
         <a href='http://www.facebook.com/sharer.php' expr:share_url='<%= request.host_with_port+"/"+request.fullpath%>' name='fb_share' rel='nofollow' type='button_countt'></a>
       <% end %>
 

@@ -8,11 +8,11 @@
       </span>
     </div>
     <div>
-      Other information
+      <%= t(:other_info) %>
       <br/>
-      Name: <%= @user.first_name %> <%= @user.last_name %>
+      <%= t(:name_info) %> <%= @user.first_name %> <%= @user.last_name %>
       <br/>
-      Lives in: <%= @user.address1 %> <%= @user.address2 %> <%= @user.city %> <%= @user.country %>
+      <%= t(:lives_in) %>Lives in: <%= @user.address1 %> <%= @user.address2 %> <%= @user.city %> <%= @user.country %>
       <br/>
     </div>
   <!--  <div>

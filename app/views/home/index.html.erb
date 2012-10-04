@@ -35,7 +35,7 @@
           <h1><%=item.city%>, <%=item.country_code%></h1>
           <p><%= item.availability_from.blank? ? "" : item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.blank? ? "" :item.availability_to.strftime("%m/%y")%></p>
 
-          <h5>2/3</h5>
+          <h5><%= t(:symbol2) %></h5>
           <h6><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h6>
           <div class="clear"></div>
         </div>
@@ -47,7 +47,6 @@
 
 <!--div class="paris_hold mt30" style="padding: 20px; margin-left: 35px;">
     <h1 class="text_he">Ideas, suggestions? We would love your <samp><b>FEEDBACK!</b></samp></h1>
-
   </div>
 </div-->
 

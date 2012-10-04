@@ -67,11 +67,11 @@
 
 <div class="rightcontent">
 
-  <h2>Refine your search</h2>
+  <h2><%= t(:refine_search) %></h2>
 
   <div class="pannelright">
     <p>
-      <label for="amount">Price range:</label>
+      <label for="amount"><%= t(:price_range) %></label>
       <input type="text" id="amount" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
     <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
 
@@ -89,16 +89,16 @@
 
       <div class="pannelright">
         <img class="closepannel" src="../assets/-.png" />
-        <div class="heading_right">Is Shareable</div>      
+        <div class="heading_right"><%= t(:shareable) %></div>
         <div class="twocol">
-          <%= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "this.form.submit()" %>
+          <%= check_box_tag t(:searchable) , params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "this.form.submit()" %>
         </div>
       </div>
 
       <div class="pannelright">
         <img class="closepannel" src="../assets/-.png" />
 
-        <label for="size">Sizes<small>(SQMT)</small>:</label>        
+        <label for="size"><%= t(:sizes) %><small><%= t(:sqmt) %></small>:</label>
         <input type="text" id="size" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
 
         <div class="twocol">
@@ -109,7 +109,7 @@
 
       <div class="pannelright">
         <img class="closepannel" src="../assets/-.png" />
-        <div class="heading_right">Types</div>
+        <div class="heading_right"><%= t(:types) %></div>
         <div class="twocol">
           <% @types.each do |type| %>            
             <%= check_box_tag 'types[]', type.id, params["types"].blank? ? false : params["types"].include?(type.id.to_s), :onclick => "this.form.submit()" %>
@@ -129,16 +129,16 @@
 
     <div class="refinesearchresults">
       <%= select_tag( "location", options_from_collection_for_select(@items_with_uniq_cities, :city, :city, params[:location]), :prompt => "Select City", :class => "search_dd") %>
-      <span>from</span>
+      <span><%= t(:from2) %></span>
       <%= text_field_tag :search_from, params[:search_from], :id => "search_from1" %>
-      <span>to</span>
+      <span><%= t(:to) %></span>
       <%= text_field_tag :search_to, params[:search_to], :id => "search_to2" %>
       <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
     </div>
 
     <div class="sortby">
       <%= select_tag "sort_option", options_for_select([["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#search_form').submit();" %>
-      <span>sort by</span>
+      <span><%= t(:sort) %></span>
     </div>
 
   <%end%>
@@ -149,7 +149,7 @@
         <%= render :partial => "items", :locals => {:items => @items} %>
       </div>
     <% else %>
-      Please try some other search criteria.
+      <%= t(:other_search) %>
     <% end %>
 
   </div>

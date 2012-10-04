@@ -16,22 +16,22 @@
 
       <div class="reqInfo">Required information</div>
       <div class="sign_up_input">
-        <label>First Name</label>
+        <label><%= t(:first_name) %></label>
         <%= f.text_field :first_name, :autocomplete=> "off" %>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
-        <label>Last Name</label>
+        <label><%= t(:last_name) %></label>
         <%= f.text_field :last_name , :autocomplete=> "off"%> <span class="info">Only the first letter of your last name will be displayed</span>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
-        <label style="margin-right: 13px;">Date of Birth</label>
+        <label style="margin-right: 13px;"><%= t(:d_o_b) %></label>
         <%=  f.date_select :date_of_birth, {:start_year => 1970}, {:style=>"margin: 3px 0;", :class=>"dateselect"} %> <span class="info" style="margin-left: 27px;">will not be shown</span>
         <div class="clear"></div>
       </div>
       <div class="sign_up_input">
-        <label>Gender</label>
+        <label><%= t(:gender) %></label>
         <div class="fltL" style="margin: 5px 0;">
           <div style="float: left; width: 218px; line-height: 15px; font-size: 0.9em;">
             <span>

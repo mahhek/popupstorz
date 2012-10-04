@@ -10,8 +10,7 @@
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended to check this file into your version control system.
-
-ActiveRecord::Schema.define(:version => 20120815084554) do
+ActiveRecord::Schema.define(:version => 20120903081829) do
 
   create_table "accounts", :force => true do |t|
     t.datetime "created_at"
@@ -44,6 +43,14 @@ ActiveRecord::Schema.define(:version => 20120815084554) do
     t.integer  "user_id"
   end
 
+  create_table "bookings", :force => true do |t|
+    t.integer  "item_id"
+    t.date     "from"
+    t.date     "to"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "comments", :force => true do |t|
     t.string   "title",            :limit => 50, :default => ""
     t.string   "comment",                        :default => ""
@@ -63,7 +70,7 @@ ActiveRecord::Schema.define(:version => 20120815084554) do
   end
 
   create_table "email_settings", :force => true do |t|
-    t.integer  "user_id"
+    t.integer  "user_id",                 :null => false
     t.boolean  "receive_person_message"
     t.boolean  "booking_request_update"
     t.boolean  "receive_booking_request"
@@ -86,7 +93,7 @@ ActiveRecord::Schema.define(:version => 20120815084554) do
   create_table "invitations", :force => true do |t|
     t.integer  "user_id"
     t.string   "email"
-    t.string   "token"
+    t.string   "token" :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -144,6 +151,7 @@ ActiveRecord::Schema.define(:version => 20120815084554) do
     t.boolean  "availablities_friday"
     t.boolean  "availablities_saturday"
     t.boolean  "availablities_sunday"
+    t.boolean  "available_forever"
   end
 
   create_table "items_users", :id => false, :force => true do |t|
@@ -309,6 +317,7 @@ ActiveRecord::Schema.define(:version => 20120815084554) do
     t.integer  "fb_friends_count"
     t.string   "fb_pages"
     t.boolean  "show_fb_info"
+    t.boolean  "is_active",                             :default => true
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

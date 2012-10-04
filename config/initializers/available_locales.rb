@@ -11,6 +11,7 @@ module Backend
   end
 end
 # You need to "force-initialize" loaded locales
+I18n.default_locale = :en
 I18n.backend.send(:init_translations)
 AVAILABLE_LOCALES = I18n.backend.available_locales
 Rails.logger.info  "* Loaded locales: #{AVAILABLE_LOCALES.inspect}"
