@@ -1,4 +1,9 @@
+<div class="shadowCont offer">
 <%= render :partial => "items_header" %>
+
+<div class="clear"></div>
+
 <%= form_for @item, :html => {:name => "item_form", :multipart => true} do|f| %>
   <%= render :partial => "form", :locals => {:f => f} %>
 <% end %>
+</div>

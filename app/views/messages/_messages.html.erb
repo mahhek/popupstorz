@@ -48,8 +48,8 @@
             <span style="float:left;padding-top:2px;">
               <%=  message.topic %> - <span style="color:grey;"><%=  raw message.body[0...35] + '...'%></span>
             </span>
-            <span style="width:95px;float:right;padding-top:2px;">
-              <%=  message.created_at.strftime("%d %b %Y") %>
+            <span style="width:105px;float:right;padding-top:2px;">
+              <%=  message.created_at.strftime("%b. %d, %Y") %>
             </span>
           </div>
         </div>
@@ -81,10 +81,10 @@
 	    }
 	  }
 	  
-	  jQuery(document).ready(function(){
-	    jQuery("#check_all").click(function(){
+	  $(document).ready(function(){
+	    $("#check_all").click(function(){
 	      var checked_status = this.checked;
-	      jQuery(".checkBoxClass").each(function(){
+	      $(".checkBoxClass").each(function(){
 	        this.checked = checked_status;
 	      });
 	    });

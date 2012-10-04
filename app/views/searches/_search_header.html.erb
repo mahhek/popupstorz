@@ -1,21 +1,16 @@
-<div style="float: left;width: 100%;border: 1px solid black;padding: 5px;">
-  <h2>
-    <span style="float: left;padding: 5px;background-color: <%= ((params[:action] == "search_keyword") or params[:action] == 'spaces' or params[:action] == 'search_spaces') ? 'silver' : '' %>">      
-      <%= link_to 'Spaces', spaces_searches_path, :class => (((params[:action] == "search_keyword") or (params[:controller] == "searches" and ( params[:action] == "spaces" or params[:action] == "search_spaces" ))) ? "m_act" : "") %>
-    </span>
-    <span style="float: left;padding: 5px">
-      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+<div class="menu-sub-layout" >
+    <span class="menu-sub" style="background-color: <%= ((params[:action] == "search_keyword") or params[:action] == 'spaces' or params[:action] == 'search_spaces') ? 'cyan' : '' %>">      
+      <%= link_to 'Spaces', spaces_searches_path #, :class => ( ( (params[:action] == "search_keyword") ||  (params[:controller] == "searches" &&  (params[:action] == "spaces" || params[:action] == "search_spaces" )) ) ? "m_act" : "")
+      %>
     </span>
     
-    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'search_gatherings') ? 'silver' : '' %>">
-      <%= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
+    <span class="menu-sub" style="background-color: <%= (params[:action] == 'gatherings' || params[:action] == 'search_gatherings') ? 'cyan' : '' %>">
+      <%= link_to 'Gatherings', gatherings_searches_path #, :class => ((params[:controller] == "searches" && (params[:action] == "gatherings" || params[:action] == "search_gatherings" ) ) ? "m_act" : "") 
+      %>
     </span>    
-    <span style="float: left;padding: 5px">
-      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-    </span>
     
-    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'members' or params[:action] == 'search_members') ? 'silver' : '' %>">
-      <%= link_to 'Members', members_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "members" or params[:action] == "search_members" )) ? "m_act" : "") %>
+    <span class="menu-sub" style="background-color: <%= (params[:action] == 'members' or params[:action] == 'search_members') ? 'cyan' : '' %>">
+      <%= link_to 'Members', members_searches_path #, :class => ( (params[:controller] == "searches" &&  (params[:action] == "members" || params[:action] == "search_members" ) ) ? "m_act" : "") 
+      %>
     </span>
-  </h2>
 </div>

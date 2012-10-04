@@ -3,10 +3,14 @@
 	<div class="myTableMenu" align="center" style="cursor: pointer; margin-bottom: 10px; text-align: left;"  onclick="window.location='<%= inbox_messages_path %>'">
      <a><span><div>&lt; Back to messages</div></span></a>
    </div>
-
+   
+   <div style="color: #CC33CC; font-weight: bold; position: absolute; text-align: center; width: 75%; line-height: 20px;" >TODO Title Offer...</div>
   <div class="submenu"> <!-- style="float: left; height: 500px; width: 250px;margin-top: 10px;" -->
 	  <%= @message.topic %>
 	</div>
+	
+	
+	
   <div style="float: right;line-height: 20px; margin-bottom: 10px;"> 
 		<%= link_to "Mark as unread", manage_messages_path(:message => [@message.id], :action_to_perform => "mark_as_unread"), :method => :post, :style=>"background: none repeat scroll 0 0 #00DAFF;", :class=>"action" %>
   </div>

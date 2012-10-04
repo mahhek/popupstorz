@@ -1,55 +1,49 @@
-<%= render :partial => "items_header" %>
-<div class="clear"></div>
-<br/>
+<div class="shadowCont offer">
 
-<div id="get-list-header">
-  <h2>Your Listings</h2>
+	<%= render :partial => "items_header" %>
+	<div class="clear"></div>
+	
+	<div class="listx-bg">
+		<% unless @items.blank? %>
+	   	<% @items.each do | offer | %>
+	      	<%item=offer%>
+	      	<div class="listx" 	style="margin-bottom: 20px;border: 1px solid gray;">
+					<div class="row" style="float:left; width: 83%;padding: 5px;border-right: 1px solid;" onclick="window.location='<%= "/items/#{item.id}" %>'">
+			      	<div class="imgx">
+							<%#=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
+			         	<% if item.avatars.size > 0 %>
+			            	<%= image_tag(item.avatars.first.photo.url(:thumb), :width => "178", :height => "119", :alt => "Space-Photo")  %>
+			         	<% else %>
+			            	NO IMAGE PROVIDED YET.
+			        		<% end %>
+						</div>
+		
+						<div style="color: grey; float: right; font-size: 26px;text-align: right;">TODO 10<br>
+							<span style="font-size: 0.7em;">TODO by day</span></div>
+				   	
+				   	<div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
+				      <div class="name-list" style="margin-bottom: 5px;"><%= item.address %></div>
+				      <div class="name-list" style="margin-bottom: 5px;">
+			          <b>Price: </b>
+			          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/day,
+			          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/week,
+			          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
+			        </div>
+					</div>
+					<div style="float: left;text-align: center; width: 15.7%;">
+						<div style="margin-top: 55px;">
+							<%= link_to "Edit listing" , edit_item_path(item)%>
+	            		<%#= link_to "Preview Space" , item_path(item)%>
+	            		<%#= link_to "Create New Space" , new_item_path %>
+	            		<%#= link_to "Delete this Item", item_path(item), :method => :delete, :confirm => "Are you sure?" %>      
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+	  		<%end%>
+		<%else%>
+	  		You don't currently have any space listed with PopupStorz. Why not get started by <%= link_to "creating a space?", new_item_path %>
+		<%end%>
+	</div>
 </div>
-
-<div class="listx-bg">
-  <% unless @items.blank? %>
-  <%#*<div class="btn-bar" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">%>
-  <%#= link_to 'Messages', inbox_messages_path %>
-  <%#= link_to 'My Listings',items_path %>
-  <%#= link_to 'My Pop Ups',"#" %>
-  <%#= link_to('My Profile', profile_path(current_user.id)) %>
-  <%#= link_to "My Account","#" %>
-  <%#*</div>%>
-
-    <% @items.each do | item | %>
-      <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
-        <div class="imgx">
-          <% if item.avatars.size > 0 %>
-            <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo")  %>
-          <% else %>
-            NO IMAGE PROVIDED YET.
-          <% end %>
-        </div>
-
-        <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
-        <div class="name-list" style="margin-bottom: 5px;"><b>Location: </b><%= item.address %></div>
-
-
-        <div class="name-list" style="margin-bottom: 5px;">
-          <b>Price: </b>
-          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/day,
-          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/week,
-          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
-        </div>
-
-        <div class="manage-bg" style="margin-bottom: 5px;margin-top: 5px;">
-          <div class="btns">
-            <%= link_to "Edit Space" , edit_item_path(item)%>&nbsp;|&nbsp;
-            <%= link_to "Preview Space" , item_path(item)%>&nbsp;|&nbsp;
-            <%= link_to "Create New Space" , new_item_path %>&nbsp;|&nbsp;
-            <%= link_to "Delete this Item", item_path(item), :method => :delete, :confirm => "Are you sure?" %>
-          </div>
-        </div>
-      </div>
-    <%end%>
-  <%else%>
-    You don't currently have any space listed with PopupStorz. Why not get started by <%= link_to "creating a space?", new_item_path %>
-  <%end%>
-</div>
-
 

@@ -14,6 +14,40 @@ a {
     text-decoration: none;
 }
 
+a.info {
+   position: relative;
+   color: black;
+   text-decoration: none;
+   border-bottom: 1px gray dotted; /* On souligne le texte. */
+   line-height: inherit;
+}
+a.info span {
+   display: none; /* On masque l'infobulle. */
+}
+a.info:hover {
+   background: none; /* Correction d'un bug d'Internet Explorer. */
+   z-index: 500; /* On définit une valeur pour l'ordre d'affichage. */
+
+   cursor: help; /* On change le curseur par défaut par un curseur d'aide. */
+}
+a.info:hover span {
+   display: inline; /* On affiche l'infobulle. */
+   position: absolute;
+
+   white-space: nowrap; /* On change la valeur de la propriété white-space pour qu'il n'y ait pas de retour à la ligne non désiré. */
+
+   top: 18px; /* On positionne notre infobulle. */
+   left: 20px;
+
+   background: white;
+
+   color: green;
+   padding: 3px;
+
+   border: 1px solid grey;
+   border-left: 4px solid grey;
+}
+
 input[type="text"], input[type="email"], input[type="password"], input[type="file"], input[type="tel"], textarea {
 	background: none repeat scroll 0 0 #F8F8F8;
     border: 1px solid #DDDDDD;
@@ -130,12 +164,12 @@ body {
 	margin: 0 auto;	
 }
 
-.submenu a.selected {
-   
+.submenu a.unselected:hover {
+   color: #999999;
 }
 
 .submenu a.unselected {
-	color: grey;
+	color: #BBBBBB;
 }
 
 .submenu {
@@ -168,6 +202,7 @@ body {
 	margin-top: 10px; 
 	float: left;
 	width: 100%;	
+	min-height: 400px;
 }
 
 .message .body {
@@ -176,7 +211,6 @@ body {
 }
 
 .message .row {
-	cursor: pointer;
    font-size: 12px;
    line-height: 30px;
    margin: 10px 0;
@@ -187,8 +221,9 @@ body {
    font-size: 1em;
 }
 
-.message .row:hover {
+.row:hover {
 	background: none repeat scroll 0 0 #FF99FF;
+	cursor: pointer;
 }
 
 .message .action {
@@ -204,6 +239,15 @@ body {
 
 .unread {
 	font-weight: bold;
+}
+
+.offer {
+	min-height: 400px;	
+}
+
+.imgx {
+	float: left;
+	margin-right: 20px;	
 }
 
 .menubar-left {
@@ -308,6 +352,46 @@ body {
 
 .listaspace {
     margin-top: 6px;
+}
+
+.xfields {
+	clear: both;
+   display: inline-block;
+   line-height: 32px;
+   padding: 0 5px;
+   width: 900px;
+   font-size: 0.9em;
+}
+
+.xfields label {
+	float: left;
+   font-weight: bold;
+   text-align: right;
+   width: 150px;
+   margin-right: 10px;
+   color: gray;
+}
+
+.xfields .input {
+	float: left;
+}
+
+.xfields .input input[type="checkbox"] {
+		margin: 6px;
+}
+
+.offer h2 {
+	font-size: 16px;
+   margin: 23px 0 0;	
+} 
+
+.offer .policy {
+	color: gray;
+   font-size: 0.8em;
+   font-weight: bold;
+   line-height: 15px;
+   margin-left: 5px;
+   width: 96%;
 }
 
 .contentholder {
