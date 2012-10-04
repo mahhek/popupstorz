@@ -14,6 +14,7 @@ PopupStorz::Application.routes.draw do
   match '/search_spaces' => 'searches#search_spaces'
   match '/admin_destroy_user/:id' => "admin/users#destroy_user"
   match '/admin_edit_user/:id' => "admin/users#edit"
+  match '/admin_users' => "admin/users#index"
   match '/delete_listings' => "admin/items#delete_listings"
   match "/search_via_price_range" => "items#search_via_price_range"
   match "/items/new/:id" => "items#new_comment"

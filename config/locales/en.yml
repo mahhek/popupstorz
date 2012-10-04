@@ -5,6 +5,10 @@ en:
    deactivate: "Deactivate"
    activate: "Activate"
    change_all_commission_rates: "Change commision rate of all items"
+   newest: "Newest to Oldest"
+   oldest: "Oldest to Newest"   
+   gender_search: "Gender"
+   fb_connected: "FB Connected"
    
    welcome_to_popup_storz: "Welcome to Popup Storz"
    popup: "PopUpStorz"
