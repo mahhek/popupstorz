@@ -4,8 +4,8 @@
     <title><%= t(:popup) %></title>
     <%= stylesheet_link_tag "application" %>
     <%= stylesheet_link_tag "jquery-ui" %>
-    <%= stylesheet_link_tag "ui.theme" %>
-    
+<%#= stylesheet_link_tag "ui.theme" %>
+
     <%= javascript_include_tag "application" %>
     <%= javascript_include_tag "jquery-ui" %>
     <%= javascript_include_tag "maps" %>
@@ -19,8 +19,8 @@
     <%= javascript_include_tag "tmpl" %>
     <%= javascript_include_tag "easing" %>
     <%= javascript_include_tag "elastislide" %>
-    <%= javascript_include_tag "gallery" %>
-    <%= javascript_include_tag "jcarousel.min" %>
+<%#= javascript_include_tag "gallery" %>
+<%#= javascript_include_tag "jcarousel.min" %>
     <%= GMap.header(:with_vml => false, :host => request.host).html_safe %>
     <%= raw(@map.to_html) if @map %>
     <%= csrf_meta_tags %>
@@ -30,14 +30,14 @@
 
   </head>
   <body>
-    
-     <div class='spread'>
+
+    <div class='spread'>
       <div class='twshare left'>
         <a href="http://twitter.com/share?text=aaaaaaaaaa" class="twitter-share-button" data-count="horizontal" data="qqqqqqqq"><%= t(:tweet1) %></a>
         <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
       </div>
     </div>
-    
+
     <div>
       <%= t(:admin_panel) %> &nbsp;|&nbsp;
       <% if user_signed_in? %>
@@ -47,13 +47,14 @@
       <br/>
       <%= link_to t(:all_users), admin_users_path %>&nbsp;|&nbsp;
       <%= link_to t(:create_users), new_admin_user_path %>&nbsp;|&nbsp;
-      
+
       <%= link_to t(:all_listings), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:create_listings), new_admin_item_path %>&nbsp;|&nbsp;
       <%= link_to t(:manage_listings), admin_items_path %>&nbsp;|&nbsp;
-      
+
       <%= link_to t(:all_bookings), admin_offers_path %>&nbsp;|&nbsp;
-      
+      <%= link_to t(:gatherings), "/admin_gatherings" %>&nbsp;|&nbsp;
+
       <%= link_to t(:ownership), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:commision), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:specific_listing), admin_items_path %>&nbsp;|&nbsp;
@@ -62,7 +63,7 @@
       <%= link_to t(:delete_booking), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:delete_listing), "/delete_listings" %>&nbsp;|&nbsp;
       <%= link_to t(:validate_guest), admin_items_path %>
-      <%#= link_to t(:offers), admin_offers_path %>&nbsp;|&nbsp;
+<%#= link_to t(:offers), admin_offers_path %>&nbsp;|&nbsp;
       <%= link_to t(:change_all_commission_rates), change_rate_admin_items_path %>&nbsp;|&nbsp;
       <%=  link_to t(:all_messages), all_messages_admin_users_path%>&nbsp;|&nbsp;
       <%=  link_to t(:all_ratings), all_ratings_admin_users_path%>&nbsp;|&nbsp;

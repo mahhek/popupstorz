@@ -3,7 +3,42 @@ class Admin::ItemsController < ApplicationController
   before_filter :authenticate_admin
   
   layout "admin"
-
+  
+  def index
+    case params[:sort_option]
+    when "1"
+      order_by = "created_at DESC"
+    when "2"
+      order_by = "created_at ASC"
+    when "3"
+      order_by = "price ASC"
+    when "4"
+      order_by = "price DESC"
+    when "5"
+      order_by = "city ASC"
+    when "6"
+      order_by = "country ASC"
+    when "7"
+      order_by = "listing_type_id ASC"
+    when "8"
+      order_by = "size ASC"
+    when "9"
+      order_by = "size DESC"
+    when "10"
+      order_by = "maximum_members ASC"
+    else
+      order_by = "created_at DESC"
+    end
+    @items = Item.all(:order => order_by)
+    respond_to do |format|
+      format.js do
+        foo = render_to_string(:partial => 'items', :locals => {:items => @items }).to_json
+        render :js => "$('#admin_items_list').html(#{foo});"
+      end
+      format.html
+    end
+  end
+  
   def new
     @item = Item.new
     @map = GMap.new("map")
@@ -52,10 +87,6 @@ class Admin::ItemsController < ApplicationController
       flash[:notice] = t(:cant_add_space)
       render :action => "new"
     end
-  end
-
-  def index
-    @items = Item.all
   end
 
   def change_recommendation

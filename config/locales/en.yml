@@ -12,6 +12,12 @@ en:
    all_bookings: "Bookings"
    display_on_home: "Display on Home"
    done: "Done"
+   increasing_price: "Increasing Price"
+   decreasing_price: "Decreasing Price"
+   space_type : "Space Type"
+   increasing_size: "Increasing Size"
+   decreasing_size: "Decreasing Size"
+   search_shareable: "Shareable"
    
    welcome_to_popup_storz: "Welcome to Popup Storz"
    popup: "PopUpStorz"

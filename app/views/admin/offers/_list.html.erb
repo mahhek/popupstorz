@@ -1,0 +1,50 @@
+<div class="listx-bg">
+  <% unless offers.blank? %>
+    <% offers.each do | offer | %>
+      OWNER:
+      <%@user = User.find_by_id(offer.owner_id)%>
+      <%= @user.email%>
+
+      <div style="border-bottom: 1px solid;">
+        <%= t(:start_date) %><%= offer.rental_start_date.strftime("%m-%d-%Y") %><br />
+        <%= t(:end_date) %><%= offer.rental_end_date.strftime("%m-%d-%Y") %><br />
+        <%= t(:total_req_person) %><%= offer.persons_in_gathering %><br />
+        <%= t(:joined_person) %><%= offer.members.size %><br/>
+        <%= t(:offer_description) %>:<%= offer.gathering_description %><br/>
+        <%= t(:rental_per_person) %><%= offer.gathering_rental_price %><br />
+
+        <%= t(:deadline) %><%= offer.gathering_deadline.blank? ? '' : offer.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
+        <%= t(:cancellation_policy) %><b/>
+        <%if offer.item.cancellation_policy_flexible%>
+          <%= t(:flexible) %>
+        <% else%>
+        <%= t(:semifelxible) %>
+        <%end%>
+        <br/> 
+        <%= t(:owner_rules) %>
+        <%= offer.item.owner_rules %><br/><br/>
+      </div>
+
+      <div class="btns">
+        <button id="fff"> <%= t(:change_commision_rate) %> </button>|&nbsp;
+      </div>
+      <div id="rate_form" style="display: none;">
+        <%= form_tag change_commission_rate_admin_offers_path do |f| %>
+          <%= hidden_field_tag "offer_id", offer.id %>
+      <%#= text_field_tag "commision_rate", offer.commission_rate %>
+          <%= submit_tag t(:done) %>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= t(:no_item_listed) %>
+  <% end %>
+</div>
+<div class="btn-bar">
+</div>
+
+<script type="text/javascript">
+  $('#fff').click(function() {
+    $('#rate_form').toggle();
+  });
+</script>

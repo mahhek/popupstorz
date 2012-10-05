@@ -9,6 +9,8 @@ PopupStorz::Application.routes.draw do
   match '/items/search_category/:id' => 'items#search_category'
   match '/notifications/destroy/:id' => 'notifications#destroy'
   match '/members' => 'users#members'
+  match '/admin_items' => "admin/items#index"
+  match '/admin_gatherings' => "admin/offers#gatherings"
   #  match '/search_members' => 'users#search_members'
   match '/search_gatherings' => 'searches#search_gatherings'
   match '/search_spaces' => 'searches#search_spaces'

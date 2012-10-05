@@ -18,89 +18,89 @@
 
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
-  $(document).ready(function(){
-  var days_arr = <%= @available_days %>;
-  var disabledDaysRange = new Array;
-  disabledDaysRange = <%= raw @manage_dates_array %>;
+    $(document).ready(function(){
+      var days_arr = <%= @available_days %>;
+      var disabledDaysRange = new Array;
+      disabledDaysRange = <%= raw @manage_dates_array %>;
 
-  function disableRangeOfDays(d) {
-  if($.inArray(d.getDay(), days_arr) > -1 == false){
-  return false;
-  }
-  for(var i = 0; i < disabledDaysRange.length; i++) {
-  if($.isArray(disabledDaysRange[i])) {
-  for(var j = 0; j < disabledDaysRange[i].length; j++) {
-  var r = disabledDaysRange[i][j].split(" to ");
-  r[0] = r[0].split("/");
-  r[1] = r[1].split("/");
-  if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {
-  return [false, 'booked'];
-  }
-  }
-  }else{
-  if(((d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear()) == disabledDaysRange[i]) {
-  return [false, 'booked'];
-  }
-  }
-  }
+      function disableRangeOfDays(d) {
+        if($.inArray(d.getDay(), days_arr) > -1 == false){
+          return false;
+        }
+        for(var i = 0; i < disabledDaysRange.length; i++) {
+          if($.isArray(disabledDaysRange[i])) {
+            for(var j = 0; j < disabledDaysRange[i].length; j++) {
+              var r = disabledDaysRange[i][j].split(" to ");
+              r[0] = r[0].split("/");
+              r[1] = r[1].split("/");
+              if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {
+                return [false, 'booked'];
+              }
+            }
+          }else{
+            if(((d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear()) == disabledDaysRange[i]) {
+              return [false, 'booked'];
+            }
+          }
+        }
 
-  <% if !session[:start_date].blank? && !session[:end_date].blank?
-    date1 = session[:start_date]
-    date2 = session[:end_date]
-    dates = (Date.strptime(date1,'%m/%d/%Y')..Date.strptime(date2,'%m/%d/%Y')).to_a
-    dates = dates.map{ |date_map| date_map.strftime('%m/%d/%Y') }
-  %>
-    var selectedDays = new Array;
-    selectedDays = <%= raw dates %>
-    for(var i = 0; i < selectedDays.length; i++) {
-    var r = selectedDays[i];
-    r = r.split("/");
-    if(String(new Date(r[2], (r[0]-1), r[1])) == String(d)) {
-    return [true, 'selected'];
-    }
-    }
+<% if !session[:start_date].blank? && !session[:end_date].blank?
+  date1 = session[:start_date]
+  date2 = session[:end_date]
+  dates = (Date.strptime(date1,'%m/%d/%Y')..Date.strptime(date2,'%m/%d/%Y')).to_a
+  dates = dates.map{ |date_map| date_map.strftime('%m/%d/%Y') }
+%>
+          var selectedDays = new Array;
+          selectedDays = <%= raw dates %>
+          for(var i = 0; i < selectedDays.length; i++) {
+            var r = selectedDays[i];
+            r = r.split("/");
+            if(String(new Date(r[2], (r[0]-1), r[1])) == String(d)) {
+              return [true, 'selected'];
+            }
+          }
 
-  <% end %>
-  return [true];
-  }
+<% end %>
+        return [true];
+      }
 
-  if('<%= session[:start_date] %>' == ""){
-  $("#txtFromDate").datepicker({
-  minDate: new Date(),
-  maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
-  dateFormat: 'mm/dd/yy',
-  beforeShowDay: disableRangeOfDays
-  });
-  }else{
-  $("#txtFromDate").val('<%= session[:start_date] %>');
-  $("#txtFromDate").datepicker({
-  minDate: new Date(),
-  maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
-  dateFormat: 'mm/dd/yy',
-  beforeShowDay: disableRangeOfDays
+      if('<%= session[:start_date] %>' == ""){
+        $("#txtFromDate").datepicker({
+          minDate: new Date(),
+          maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
+          dateFormat: 'mm/dd/yy',
+          beforeShowDay: disableRangeOfDays
+        });
+      }else{
+        $("#txtFromDate").val('<%= session[:start_date] %>');
+        $("#txtFromDate").datepicker({
+          minDate: new Date(),
+          maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
+          dateFormat: 'mm/dd/yy',
+          beforeShowDay: disableRangeOfDays
 
-  });
-  }
-  if('<%= session[:start_date] %>' == ""){
-  $("#txtToDate").datepicker({
-  minDate: new Date(),
-  maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
-  dateFormat: 'mm/dd/yy',
-  beforeShowDay: disableRangeOfDays
-  });
-  }else{
-  $("#txtToDate").val('<%= session[:end_date] %>');
-  $("#txtToDate").datepicker({
-  minDate: new Date(),
-  maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
-  dateFormat: 'mm/dd/yy',
-  beforeShowDay: disableRangeOfDays
-  });
-  }
-  if('<%= session[:start_date] %>' != "" && '<%= session[:end_date] %>' != ""){
-  calculateTotalAmount();
-  }
-  });
+        });
+      }
+      if('<%= session[:start_date] %>' == ""){
+        $("#txtToDate").datepicker({
+          minDate: new Date(),
+          maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
+          dateFormat: 'mm/dd/yy',
+          beforeShowDay: disableRangeOfDays
+        });
+      }else{
+        $("#txtToDate").val('<%= session[:end_date] %>');
+        $("#txtToDate").datepicker({
+          minDate: new Date(),
+          maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
+          dateFormat: 'mm/dd/yy',
+          beforeShowDay: disableRangeOfDays
+        });
+      }
+      if('<%= session[:start_date] %>' != "" && '<%= session[:end_date] %>' != ""){
+        calculateTotalAmount();
+      }
+    });
   });//]]>
 </script>
 
@@ -286,7 +286,15 @@
             <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
               <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
             <% end %>
-          <% end %><br/><b><%= t(:cancellation_policy) %><b/><%if @item.cancellation_policy_flexible%>flexible<% else%>semifelxible<%end%><br/> Owner Rules:<%=@item.owner_rules%><br/><br/>
+          <% end %><br/><b><%= t(:cancellation_policy) %><b/>
+            <%if @item.cancellation_policy_flexible %>
+              <%= t(:flexible) %>
+            <% else %>
+              <%= t(:semifelxible) %>
+            <% end %>
+            <br/>
+            <%= t(:owner_rules) %>
+            <%=@item.owner_rules%><br/><br/>
             <%= link_to t(:details), "/offers/#{gathering.id}" %>
           <% end %>
       </div>
@@ -471,28 +479,28 @@
 
 <script type="text/javascript">
   $("#datepicker").datepicker({
-  onSelect: function(dateText, inst) {
-  $("#datepicker_value").val(dateText);
-  }
+    onSelect: function(dateText, inst) {
+      $("#datepicker_value").val(dateText);
+    }
 
   });
 </script>
 
 <script type="text/javascript">
   function send_rating(rating_url, mode){
-  jQuery.ajax({
-  type:"GET",
-  url: rating_url,
-  data: ({'rate': true }),
-  beforeSend: function (response) {
-  jQuery('#'+mode+'_ajax_loader').show();
-  },
-  success: function (response) {
-  jQuery("div #rating_<%= @item.id %>").html(response);
-  jQuery('#'+mode+'_ajax_loader').hide();
+    jQuery.ajax({
+      type:"GET",
+      url: rating_url,
+      data: ({'rate': true }),
+      beforeSend: function (response) {
+        jQuery('#'+mode+'_ajax_loader').show();
+      },
+      success: function (response) {
+        jQuery("div #rating_<%= @item.id %>").html(response);
+        jQuery('#'+mode+'_ajax_loader').hide();
 
-  }
-  });
+      }
+    });
   }
 </script>
 
@@ -500,80 +508,80 @@
 
 <script type="text/javascript">
   function change_price_to_book(elem){
-  $('#price').html(elem.val());
+    $('#price').html(elem.val());
   }
   function check_dates(){
-  if($('#txtFromDate').val() == "" || $('#txtFromDate').val() == "mm/dd/yy" || $('#txtToDate').val() == "" || $('#txtToDate').val() == "mm/dd/yy" ){
-  alert('Please select right date');
-  $('#txtFromDate').focus();
-  return false;
-  }else{
-  return true;
-  }
+    if($('#txtFromDate').val() == "" || $('#txtFromDate').val() == "mm/dd/yy" || $('#txtToDate').val() == "" || $('#txtToDate').val() == "mm/dd/yy" ){
+      alert('Please select right date');
+      $('#txtFromDate').focus();
+      return false;
+    }else{
+      return true;
+    }
   }
 </script>
 
 <script>
   function calculateTotalAmount(){
-  $("#txtToDate").datepicker('option', 'minDate', new Date($("#txtFromDate").val()));
+    $("#txtToDate").datepicker('option', 'minDate', new Date($("#txtFromDate").val()));
 
-  if($("#txtFromDate").val()=="mm/dd/yy"){
-  alert('Please select pickup date first, thanks.');
-  $("#txtToDate").val("mm/dd/yy");
-  }
-  else
-  {
-  if($("#txtToDate").val()=="")
-  {
-  $("#txtToDate").val($("#txtFromDate").val());
-  }
-  }
+    if($("#txtFromDate").val()=="mm/dd/yy"){
+      alert('Please select pickup date first, thanks.');
+      $("#txtToDate").val("mm/dd/yy");
+    }
+    else
+    {
+      if($("#txtToDate").val()=="")
+      {
+        $("#txtToDate").val($("#txtFromDate").val());
+      }
+    }
 
-  if($('#txtFromDate').val() != 'mm/dd/yy' && $('#txtToDate').val() != 'mm/dd/yy'){
+    if($('#txtFromDate').val() != 'mm/dd/yy' && $('#txtToDate').val() != 'mm/dd/yy'){
 
-  start = $('#txtFromDate').val();
-  start_date = new Date(start);
-  end = $('#txtToDate').val();
-  end_date = new Date(end);
+      start = $('#txtFromDate').val();
+      start_date = new Date(start);
+      end = $('#txtToDate').val();
+      end_date = new Date(end);
 
-  startTime = start_date.getTime();
-  endTime = end_date.getTime();
-  var new_days= 0;
-  var days_arr = <%= @available_days %>;
+      startTime = start_date.getTime();
+      endTime = end_date.getTime();
+      var new_days= 0;
+      var days_arr = <%= @available_days %>;
 
-  for (loopTime = startTime; loopTime <= endTime; loopTime += 86400000) {
-  if($.inArray(new Date(loopTime).getDay(), days_arr) > -1){
-  new_days += 1;
-  }
-  }
+      for (loopTime = startTime; loopTime <= endTime; loopTime += 86400000) {
+        if($.inArray(new Date(loopTime).getDay(), days_arr) > -1){
+          new_days += 1;
+        }
+      }
 
 <%#*number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;%>
-  number_of_days = new_days;
-  if(number_of_days == 0){
-  number_of_days = 1;
-  }
+      number_of_days = new_days;
+      if(number_of_days == 0){
+        number_of_days = 1;
+      }
 
-  $('#total_days').text( Math.round(number_of_days)+ " days");
-  calculated_price = calculate_price(number_of_days);
+      $('#total_days').text( Math.round(number_of_days)+ " days");
+      calculated_price = calculate_price(number_of_days);
 
-  jQuery.ajax({
-  type:"GET",
-  url: '/items/set_dates?start_date='+start+'&end_date='+end,
-  success: function(){
-  jQuery.ajax({
-  type:"GET",
-  url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= @item.price_unit %>'
-  });
-  }
-  });
-  }
+      jQuery.ajax({
+        type:"GET",
+        url: '/items/set_dates?start_date='+start+'&end_date='+end,
+        success: function(){
+          jQuery.ajax({
+            type:"GET",
+            url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= @item.price_unit %>'
+          });
+        }
+      });
+    }
   }
 
   function calculate_price(number_of_days){
-  months = Math.floor(number_of_days/30);
-  weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);
-  days = (number_of_days - (30 * months)) - (weeks * 7);
-  return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
+    months = Math.floor(number_of_days/30);
+    weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);
+    days = (number_of_days - (30 * months)) - (weeks * 7);
+    return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
   }
 </script>
 
