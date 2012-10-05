@@ -1,14 +1,9 @@
-# -*- encoding : utf-8 -*-
-class RatingsController < ApplicationController
-  before_filter :authenticate_user!
+class Admin::RatingsController < ApplicationController
+  layout "admin"
   def rate
-    
+    asd
     @asset = eval(params[:class_name]).find(params[:id])
-    unless current_user.admin
-      @rating = Rating.find(:first, :conditions =>["rateable_id = ? and user_id = ? and rateable_type = ?",@asset.id,current_user.id,@asset.class.to_s])
-    else
-      @rating = Rating.find(:first, :conditions =>["rateable_id = ? and rateable_type = ?",@asset.id,@asset.class.    to_s])
-    end
+    @rating = Rating.find(:first, :conditions =>["rateable_id = ? and user_id = ? and rateable_type = ?",@asset.id,current_user.id,@asset.class.to_s])
     if @rating
       @rating.update_attribute(:accuracy_rating, params[:accuracy_rating]) unless params[:accuracy_rating].blank?
       @rating.update_attribute(:commodities_rating, params[:commodities_rating]) unless params[:commodities_rating].blank?
@@ -26,11 +21,7 @@ class RatingsController < ApplicationController
     end
     respond_to do |format|
       format.js do
-        if current_user.admin
-          foo = render_to_string(:partial => 'admin/ratings/rating' , :locals=>{ :asset => @asset, :only_view =>  "false" }).to_json
-        else
-          foo = render_to_string(:partial => '/ratings/rating' , :locals=>{ :asset => @asset, :only_view =>  "false" }).to_json
-        end
+        foo = render_to_string(:partial => '/ratings/rating' , :locals=>{ :asset => @asset, :only_view =>  "false" }).to_json
         if @asset.class.to_s == "User"
           render :js => "$('#rating_of_user_#{@asset.id}').html(#{foo});"
         elsif @asset.class.to_s == "Item"
@@ -39,5 +30,4 @@ class RatingsController < ApplicationController
       end
     end
   end
-
 end

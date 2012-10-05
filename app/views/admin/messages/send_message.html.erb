@@ -1,0 +1,15 @@
+<div id="get-list-header">
+  <h2> Send Message</h2>
+</div>
+<div>
+  <%= form_tag send_message_to_user_admin_messages_path do %>
+  <%#= hidden_field_tag :topic, "Inquiry" %>
+    <%= hidden_field_tag :user_id, @user.id %>
+
+    <%= text_area_tag  :body, "", :style => "width:400px; height:200px;" %><br/>
+
+    <div style="float: left;margin-top: 5px;">
+      <%= submit_tag "Send" %>
+    </div>
+  <% end %>
+</div>

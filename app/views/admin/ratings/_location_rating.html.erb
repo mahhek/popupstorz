@@ -13,10 +13,7 @@
       <% if !(user_signed_in?) %>
         <li class="current-rating" style="width:<%= ( asset.location_rating * 20).to_i -%>px;"></li>
       <%else%>
-        <%if asset == current_user||!(current_user.rating.blank?)%>
-        <%#if false%>
-          <li class='current-rating' style='width:<%= (asset.location_rating * 20).to_i -%>px;'></li>
-        <%else%>
+       
           <li class='current-rating' style='width:<%= (asset.location_rating * 20).to_i -%>px;'></li>
           <li>
             <%= link_to_function "#", only_view == false ? "send_rating('/ratings/rate?id=#{asset.id}&location_rating=1&class_name=#{asset.class}', 'location_rating');" : "javascript:void(0);" ,
@@ -38,7 +35,7 @@
             <%= link_to_function "#", only_view == false ? "send_rating('/ratings/rate?id=#{asset.id}&location_rating=5&class_name=#{asset.class}', 'location_rating');" : "javascript:void(0);" ,
               :class => 'five-stars', :name => '5 stars out of 5' %>
           </li>
-        <%end%>
+       
       <%end%>
     </ul>
   </span>

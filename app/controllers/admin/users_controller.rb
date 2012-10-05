@@ -94,7 +94,9 @@ class Admin::UsersController < ApplicationController
   end
 
   def delete_rating
-    sdf
+    @rating = Rating.find_by_id(params[:id])
+    @rating.destroy
+    redirect_to all_ratings_admin_users_path
   end
   
 end

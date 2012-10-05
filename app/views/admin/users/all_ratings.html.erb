@@ -8,13 +8,33 @@
       <%@item= Item.find_by_id(rating.rateable_id)%>
       Rated by: <%=@user.first_name%> <%=@user.last_name%><br/>
       TItle of listing: <%=  @item.title %><br/>
-      <%= render :partial => "/ratings/rating", :locals => { :asset => @item, :only_view => false } %>
-      <%=link_to "delete", delete_rating_admin_users_path(:id => rating.id)%><br/>
+      <div id="rating_of_item_<%= @item.id%>" >
+        <%= render :partial => "admin/ratings/rating", :locals => { :asset => @item, :only_view => false } %>
+      </div>
+      <%=link_to "delete", delete_rating_admin_users_path(:id => rating.id), :confirm => "Are you sure!"%><br/>
 
-      <%=link_to "edit", "/"%>
+      
       <br/><br/><br/>
     <%end%>
   <%else%>
     There are no ratings to show!
   <%end%>
 </div>
+
+<script type="text/javascript">
+  function send_rating(rating_url, mode){
+    jQuery.ajax({
+      type:"GET",
+      url: rating_url,
+      data: ({'rate': true }),
+      beforeSend: function (response) {
+        jQuery('#'+mode+'_ajax_loader').show();
+      },
+      success: function (response) {
+        jQuery("div #rating_of_user_<%= @item.id %>").html(response);
+        jQuery('#'+mode+'_ajax_loader').hide();
+
+      }
+    });
+  }
+</script>

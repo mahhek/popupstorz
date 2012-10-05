@@ -146,6 +146,14 @@ PopupStorz::Application.routes.draw do
         post :change_commission_rate
       end
     end
+    resources :messages do
+      collection do
+        get :send_to_all
+        post :send_message_to_all
+        post :send_message_to_user
+        get :send_message
+      end
+    end
   end
   resources :services do
     get "/services/create/:id" => "services#create"
