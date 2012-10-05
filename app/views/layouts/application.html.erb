@@ -12,7 +12,6 @@
     <%= javascript_include_tag "jquery.hint" %>
     <%= javascript_include_tag "jquery.jcarousel.min" %>
     <%= javascript_include_tag "jquery.chosen.min" %>
-    
     <%= javascript_include_tag "jquery.fileinput" %>
     
     <!-- Script Old -->
@@ -97,29 +96,10 @@
                   <li><%= link_to "€", "#", :onclick => "addParamToUrl('curr', 'EUR')" %></li>
                 </ul>
               </div>
-					<%= link_to(image_tag("listaspace.png"), new_item_path ) %>
+				<br/><%= link_to(image_tag("listaspace.png"), new_item_path, :style=>"display: block; margin-top: 10px;" ) %>
 					<%#*<img class="listaspace" src="../assets/" />%>
             </div>
-            
-            	 <div class="loginpannel">
-	            <% unless user_signed_in? %>
-	              <%= form_tag new_user_session_path do %>
-	                <%= text_field_tag 'user[email]' %>
-	                <%= password_field_tag 'user[password]' %>
-	                <input type="submit" value="Login" />
-	                <%= link_to "Forgot your password?", new_password_path(User) %><br />
-	
-	              <% end %>
-	            <% else %>
-	              <%= link_to "Hi #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
-	              <% messages_size = current_user.messages.are_to(current_user).unread.size %>
-	              <% if messages_size > 0 %>
-	                <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
-	              <% end %>
-	              <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
-	            <% end %>
-	          </div>
-	          
+                    
             <% if user_signed_in? %>
               <span id="bar-navigate" class="menubar-left">
                 <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
@@ -140,6 +120,12 @@
                       </ul>
                     </span>
                   </div>
+                  <%= link_to "Hi #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
+	              <% messages_size = current_user.messages.are_to(current_user).unread.size %>
+	              <% if messages_size > 0 %>
+	                <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
+	              <% end %>
+	              <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
                 </div>
   					 <%#= link_to 'Search', search_home_searches_path, :class => ((params[:controller] == "searches") ? "m_act" : "") %>
               </span>
@@ -151,8 +137,34 @@
     					<%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
                 <% end %>
               </span>
+              
+            <% else %> <!-- Test : if unauthorized -->
+              <span id="bar-unauth" class="menubar-left">
+                <a href="/home/about" class="<%= (( params[:controller] == "home" && params[:action] == "about") ? "m_act" : "")%>">About</a>
+                <%= link_to 'Signup', new_user_registration_path, :class=>((( params[:controller] == "registrations" || params[:controller] == "devise/passwords" )&& params[:action] == "new") ? "m_act" : "")  %>
+                <a href="#" onclick="login_menu()">Login</a>
+                <div class="clear"></div>
+                <div id="loginpannel" class="loginpannel" style="margin-left: 179px;">
+	            <% unless user_signed_in? %>
+	              <%= form_tag new_user_session_path do %>
+	                <%= text_field_tag 'user[email]' %>
+	                <%= password_field_tag 'user[password]' %>
+	                <input type="submit" value="Login" />
+	                <%#= link_to "Forgot your password?", new_password_path(User) %><br />
+	
+	              <% end %>
+	            <% else %>
+	              
+	            <% end %>
+	          </div>
+              </span>
+              
+            <% end %> <!-- End Test Authorized -->
+          </div>
+        </div>
+      </div>
 
-				  <!-- Test B  TACT=This is a joke ??? -->
+		<!-- Test B  TACT=This is a joke ??? -->
               <% if 
               		(params[:action] == "dashboard")  || 
               		(params[:controller] == "messages") ||		# TACT= allway true (params[:action] == "inbox" && params[:controller] == "messages") ||
@@ -176,7 +188,7 @@
 	              			params[:action] == "past_transactions" )
               		) %>
 
-                <span id="bar-useraction" class="menubar-left">
+                <div id="bar-useraction" class="menu-sub-layout" style="margin-top: 86px;">
                 		<!-- Test C  TACT=This is a joke ??? why check Test B ?-->
 	                  <% if (
 	                  	params[:controller] == "accounts"	|| 
@@ -185,34 +197,33 @@
 	                  	params[:controller] == "users"		|| 
 	                  	params[:controller] == "email_settings" 
 	                  	) %>
+	                  	<span class="menu-sub" style="background-color: <%= (params[:controller] == 'messages' ) ? 'cyan' : '' %>">
 		                    <%= link_to 'Messages', inbox_messages_path %>
+		                  </span>
+		                  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
 		                    <%= link_to 'My Listings', overview_items_path %>
+		                  </span>
+		                  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
 		                    <%= link_to 'My Bookings', "/items/created_coming_gatherings"%>
-		      				  <%#= link_to 'My Gatherings', "/items/gatherings"%>
+		                  </span>
+		                  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
 		                    <%= link_to 'My Favorites', favorites_items_path %>
-		                    <%= link_to('My Profile', profile_path(current_user.id)) %>  <%= link_to "Account","/invitation" %>                 
+		                  </span>
+		                  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
+		                    <%= link_to('My Profile', profile_path(current_user.id)) %>  
+		                  </span>
+		                  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
+		                    <%= link_to "Account","/invitation" %>
+		                  </span>
+		                    <%#= link_to 'My Gatherings', "/items/gatherings"%>
 		                    <%#= link_to "Send Invitations","/invitation" %>
 		                    <%#= link_to "Email Settings","/email_settings/index" %>
 		                    <%#= link_to "Delete My Account","/users/delete_account", :confirm => "Are you sure you want to delete your account permanently?" %>
 	                  <% end %> <!-- End Test C -->
-                </span>
-              <% end %> <!-- End Test B -->
-              
-            <% else %> <!-- Test : if unauthorized -->
-              <span id="bar-unauth" class="menubar-left">
-                <a href="/home/about" class="<%= (( params[:controller] == "home" && params[:action] == "about") ? "m_act" : "")%>">About</a>
-                <%= link_to 'Signup', new_user_registration_path, :class=>((( params[:controller] == "registrations" || params[:controller] == "devise/passwords" )&& params[:action] == "new") ? "m_act" : "")  %>
-                <a href="" >Login</a>
-              </span>
-              
-            <% end %> <!-- End Test Authorized -->
-          </div>
-        	 
-        
-        	 
-        </div>
-      </div>
-      <div class="contentholder">        
+                </div>
+              <% end %> <!-- End Test B -->          
+      
+      <div class="contentholder">    
         <% if notice %>
           <div class="notice"><p style="background-color:lightgreen;"><%= notice %></p></div>
         <% end %>
@@ -242,9 +253,13 @@
 		$(document).ready(function() {
 				$("input[hint]").hint();
 				$("textarea[hint]").hint();
+				$('#loginpannel').toggle();
 			});
 	
 		$(window).load(function() {
+			$("input[hint]").hint();
+			$("textarea[hint]").hint();
+			$('#loginpannel').toggle();
 			$('.notice').delay(3500).fadeTo("slow", 0.00, function(){
 				$(this).slideUp("slow", function() {
 					$(this).remove();
@@ -282,16 +297,20 @@
 	  function search_menu(){
 	  		$('#search_options').toggle();
 	  }
+	  
+	  function login_menu(){
+	  		$('#loginpannel').toggle();
+	  }
 	
-	  $(document).click(function(event) {
+	  $(document).click(function(event) {  
 	  		if($(event.target).hasClass("searchMenu") == true){      
 	  			$('#search_options').show();
-	  		}
-	  		else{
+	  		} else {
 	  			if($('#search_options').is(":hidden") == false){
 	  				$('#search_options').hide();
 	  			}
 	  		}
+	  		
 	  });
 </script>
   </body>

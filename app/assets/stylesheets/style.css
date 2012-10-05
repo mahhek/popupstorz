@@ -119,6 +119,7 @@ body {
 
 .layout-center {
    text-align: center;
+   margin-top: 86px;
 }
 
 .menu-sub-layout {
@@ -140,6 +141,7 @@ body {
 
 .home {
 	text-align: center;
+	margin-top: 86px;
 }
 
 .home .paris_hold input[type="text"] {
@@ -180,7 +182,7 @@ body {
 }
 
 .submenu .separator {
-	border-color: #00DAFF;
+	border-color: cyan;
    border-image: none;
    border-style: solid;
    border-width: 0 1px 0 1px;
@@ -199,9 +201,9 @@ body {
 }
 
 .message {
-	margin-top: 10px; 
+	margin-top: 20px; 
 	float: left;
-	width: 100%;	
+	width: 96%;	
 	min-height: 400px;
 }
 
@@ -242,7 +244,8 @@ body {
 }
 
 .offer {
-	min-height: 400px;	
+	min-height: 400px;
+	margin-top: 20px;	
 }
 
 .imgx {
@@ -292,7 +295,7 @@ body {
 }
 
 .header-background {
-	background: none repeat scroll 0 0 #00daff; /* cyan; */
+	background: none repeat scroll 0 0 cyan; /* cyan; */
     height: 37px;
     position: absolute;
     width: 100%;
@@ -302,7 +305,6 @@ body {
 
 
 .loginpannel {
-    float: right;
     height: 22px;
     padding-top: 10px;
 }
@@ -396,7 +398,6 @@ body {
 
 .contentholder {
     float: left;
-    margin-top: 86px;
     padding-bottom: 20px;
     width: 100%;
     min-height: 425px;
@@ -404,6 +405,14 @@ body {
 
 .header .contentholder {
     margin-top: 0px;
+}
+
+#bar-useraction .menu-sub {
+    margin: 0 20px;
+}
+
+#bar-useraction .menu-sub a {
+	padding: 2px 13px;
 }
 
 .rightcontent {
@@ -605,7 +614,7 @@ h2 {
 .fltR{float:right;}
 .leftArrow, .rightArrow{background:url(../assets/left_arrow.png) no-repeat;float:left; width:19px;height:29px;margin:64px 30px 0 30px;}
 .rightArrow{background:url(../assets/right_arrow.png) no-repeat !important;margin:64px 0 0 10px;}
-.gellaryHold{margin: 0 auto;}
+.gellaryHold{margin: 0 auto; width: 877px}
 .g_hold {
     background-color: #FFFFFF;
     box-shadow: 2px 2px 6px #333333;
