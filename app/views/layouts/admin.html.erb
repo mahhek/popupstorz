@@ -64,9 +64,10 @@
       <%= link_to t(:validate_guest), admin_items_path %>
       <%#= link_to t(:offers), admin_offers_path %>&nbsp;|&nbsp;
       <%= link_to t(:change_all_commission_rates), change_rate_admin_items_path %>&nbsp;|&nbsp;
-      <%=  link_to "All messages", all_messages_admin_users_path%>&nbsp;|&nbsp;
-      <%=  link_to "All ratings", all_ratings_admin_users_path%>&nbsp;|&nbsp;
-      <%= link_to "send message to all users", send_to_all_admin_messages_path %>
+      <%=  link_to t(:all_messages), all_messages_admin_users_path%>&nbsp;|&nbsp;
+      <%=  link_to t(:all_ratings), all_ratings_admin_users_path%>&nbsp;|&nbsp;
+      <%= link_to t(:send_message_to_all_users), send_to_all_admin_messages_path %>&nbsp;|&nbsp;
+      <%= link_to t(:send_invitation_to_users), send_invitation_admin_users_path %>
 
     </div>
 

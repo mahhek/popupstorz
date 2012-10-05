@@ -1,23 +1,23 @@
 <div id="get-list-header">
-  <h2><%= "All Ratings"%></h2>
+  <h2><%= t(:all_ratings)%></h2>
 </div>
 <div class="listx-bg">
   <%unless @ratings.blank?%>
     <%@ratings.each do |rating|%>
       <%@user=User.find_by_id(rating.user_id)%>
       <%@item= Item.find_by_id(rating.rateable_id)%>
-      Rated by: <%=@user.first_name%> <%=@user.last_name%><br/>
-      TItle of listing: <%=  @item.title %><br/>
+      <%= t(:rated_by) %>: <%=@user.first_name%> <%=@user.last_name%><br/>
+      <%= t(:title_of_listing) %> : <%=  @item.title %><br/>
       <div id="rating_of_item_<%= @item.id%>" >
         <%= render :partial => "admin/ratings/rating", :locals => { :asset => @item, :only_view => false } %>
       </div>
-      <%=link_to "delete", delete_rating_admin_users_path(:id => rating.id), :confirm => "Are you sure!"%><br/>
+      <%=link_to t(:delete_rating), delete_rating_admin_users_path(:id => rating.id), :confirm => "Are you sure!"%><br/>
 
       
       <br/><br/><br/>
     <%end%>
   <%else%>
-    There are no ratings to show!
+    <%= t(:no_ratings) %>
   <%end%>
 </div>
 

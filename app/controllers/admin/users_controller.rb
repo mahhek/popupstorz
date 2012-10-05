@@ -98,5 +98,25 @@ class Admin::UsersController < ApplicationController
     @rating.destroy
     redirect_to all_ratings_admin_users_path
   end
+
+  def send_invitation
+    @users = User.all
+  end
+
+  def send_invitation_to_users
+    unless params[:user].blank?
+      params[:user][0].split(',').each do |val|
+        unless val.blank?
+        @invitation = Invitation.new
+        @invitation.user = current_user
+        @invitation.email = val
+        @invitation.token = (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
+        @invitation.save
+        UserMailer.send_invitation_email(@invitation).deliver
+        end
+      end
+    end    
+    redirect_to admin_items_path
+  end
   
 end

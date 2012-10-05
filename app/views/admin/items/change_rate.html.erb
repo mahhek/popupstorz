@@ -1,7 +1,11 @@
-<h3> CHANGE COMMISSION RATE OF ALL LISTINGS</h3>
+<h3>
+<%=t(:change_commission_rate_of_all_listings)%>
+</h3>
 
 <%=form_tag change_all_admin_items_path do |f|%>
-Set rate: <br/>
-<%=text_field_tag "commission_rate"%> % <br/>
-<%=submit_tag "done"%>
+ <%= t(:set_owner_commission_rate) %>: <br/>
+  <%=text_field_tag "owner_commission_rate"%> % <br/>
+  <%= t(:set_guest_commission_rate) %>: <br/>
+  <%=text_field_tag "guest_commission_rate"%> % <br/>
+  <%=submit_tag "done"%>
 <%end%>

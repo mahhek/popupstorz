@@ -5,11 +5,13 @@ class RatingsController < ApplicationController
     
     @asset = eval(params[:class_name]).find(params[:id])
     unless current_user.admin
+      
       @rating = Rating.find(:first, :conditions =>["rateable_id = ? and user_id = ? and rateable_type = ?",@asset.id,current_user.id,@asset.class.to_s])
     else
-      @rating = Rating.find(:first, :conditions =>["rateable_id = ? and rateable_type = ?",@asset.id,@asset.class.    to_s])
+      @rating = Rating.find(:first, :conditions =>["rateable_id = ? and rateable_type = ?",@asset.id,@asset.class.to_s])
     end
     if @rating
+      
       @rating.update_attribute(:accuracy_rating, params[:accuracy_rating]) unless params[:accuracy_rating].blank?
       @rating.update_attribute(:commodities_rating, params[:commodities_rating]) unless params[:commodities_rating].blank?
       @rating.update_attribute(:location_rating, params[:location_rating]) unless params[:location_rating].blank?
@@ -34,6 +36,7 @@ class RatingsController < ApplicationController
         if @asset.class.to_s == "User"
           render :js => "$('#rating_of_user_#{@asset.id}').html(#{foo});"
         elsif @asset.class.to_s == "Item"
+          
           render :js => "$('#rating_of_item_#{@asset.id}').html(#{foo});"
         end
       end

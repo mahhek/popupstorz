@@ -79,16 +79,21 @@
   </div>
 
   <div>
-    <h3>commission rate: <%=@item.commission_rate%> % </h3>
-
+    <h3><%= t(:guest_rate) %>: <%=@item.guest_commission_rate%> % </h3>
+    <h3><%= t(:owner_rate)  %>: <%=@item.owner_commission_rate%> % </h3>
 
     <div class="btns">
-      <button id="fff"> change commision rate </button>|&nbsp;
+      <button id="fff"> <% t(:change_commision_rate) %> </button>|&nbsp;
     </div>
     <div id="rate_form" style="display: none;">
       <%=form_tag change_commission_rate_admin_items_path do |f|%>
         <%=hidden_field_tag "item_id", @item.id%>
-        <%=text_field_tag "commission_rate", @item.commission_rate%>%
+        <%=t(:set_owner_commission_rate)%>: <br/>
+        <%=text_field_tag "guest_commission_rate", @item.guest_commission_rate%>%
+        <br/>
+        <%= t(:set_guest_commission_rate) %>: <br/>
+        <%=text_field_tag "owner_commission_rate", @item.owner_commission_rate%>%
+        <br/>
         <%=submit_tag "done"%>
       <%end%>
     </div>
@@ -96,22 +101,22 @@
 
   <div>
     <div>
-      <h3>Bookings on this item</h3>
+      <h3> <%= t(:bookings_on_this_item) %></h3>
       <%unless @item.offers.blank?%>
         <%@item.offers.each do |offer|%>
           <%= t(:start_date) %> <%= offer.rental_start_date%><br/>
           <%= t(:end_date) %>  <%= offer.rental_end_date%><br/>
           <div style="float:left;width:100%;margin:10px;">
             <%if offer.is_active%>
-              <%= link_to t(:deactivate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => "Are you sure" %>
+              <%= link_to t(:deactivate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => t(:sure_delete) %>
             <%else%>
-              <%= link_to t(:activate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => "Are you sure" %>
+              <%= link_to t(:activate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => t(:sure_delete) %>
             <%end%>
           </div>
         <%end%>
 
       <%else%>
-        No bookings
+        <%= t(:no_bookings) %>
       <%end%>
     </div>
   </div>
@@ -120,10 +125,10 @@
 
 <script type="text/javascript">
   $('#fff').click(function() {
-    $('#rate_form').toggle();
+  $('#rate_form').toggle();
   });
 
   $('#owner').click(function() {
-    $('#change_owner').toggle();
+  $('#change_owner').toggle();
   });
 </script>

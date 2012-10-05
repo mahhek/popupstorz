@@ -44,6 +44,14 @@ ActiveRecord::Schema.define(:version => 20121001115901) do
     t.integer  "user_id"
   end
 
+  create_table "bookings", :force => true do |t|
+    t.integer  "item_id"
+    t.date     "from"
+    t.date     "to"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "comments", :force => true do |t|
     t.string   "title",            :limit => 50, :default => ""
     t.string   "comment",                        :default => ""
@@ -63,7 +71,7 @@ ActiveRecord::Schema.define(:version => 20121001115901) do
   end
 
   create_table "email_settings", :force => true do |t|
-    t.integer  "user_id"
+    t.integer  "user_id",                 :null => false
     t.boolean  "receive_person_message"
     t.boolean  "booking_request_update"
     t.boolean  "receive_booking_request"
@@ -79,16 +87,16 @@ ActiveRecord::Schema.define(:version => 20121001115901) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status"
     t.text     "user_message"
+    t.string   "status"
   end
 
   create_table "invitations", :force => true do |t|
     t.integer  "user_id"
     t.string   "email"
-    t.string   "token"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "token",      :null => false
   end
 
   create_table "items", :force => true do |t|
@@ -145,9 +153,10 @@ ActiveRecord::Schema.define(:version => 20121001115901) do
     t.boolean  "availablities_saturday"
     t.boolean  "availablities_sunday"
     t.boolean  "available_forever"
-    t.integer  "commission_rate",                                                   :default => 10
     t.boolean  "display_on_home",                                                   :default => true
     t.boolean  "is_active",                                                         :default => true
+    t.integer  "guest_commission_rate",                                             :default => 10
+    t.integer  "owner_commission_rate",                                             :default => 10
   end
 
   create_table "items_users", :id => false, :force => true do |t|

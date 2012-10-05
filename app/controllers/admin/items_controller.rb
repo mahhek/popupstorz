@@ -91,7 +91,12 @@ class Admin::ItemsController < ApplicationController
   def change_commission_rate
 
     @item = Item.find_by_id(params[:item_id])
-    @item.commission_rate = params[:commission_rate]
+    if params[:guest_commission_rate]
+      @item.guest_commission_rate = params[:guest_commission_rate]
+    end
+    if params[:owner_commission_rate]
+      @item.owner_commission_rate = params[:owner_commission_rate]
+    end
     @item.save
     redirect_to admin_items_path
   end
@@ -104,8 +109,14 @@ class Admin::ItemsController < ApplicationController
    
     @items = Item.all
     @items.each do |item|
+      if params[:guest_commission_rate]
       
-      item.commission_rate=params[:commission_rate]
+        item.guest_commission_rate=params[:guest_commission_rate]
+      end
+      if params[:owner_commission_rate]
+
+        item.owner_commission_rate=params[:owner_commission_rate]
+      end
       item.save
     end
     redirect_to admin_items_path

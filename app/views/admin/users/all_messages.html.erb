@@ -1,15 +1,15 @@
 <div id="get-list-header">
-  <h2><%= "All Messages"%></h2>
+  <h2><%= t(:all_messages)%></h2>
 </div>
 <div class="listx-bg">
   <%unless @messages.blank?%>
     <%@messages.each do |msg|%>
       <%@sender = User.find_by_id(msg.sent_messageable_id)%>
       <%@receiver = User.find_by_id(msg.received_messageable_id)%>
-      Message Body:<%=raw(msg.body)%><br/>
-      Sender: <%=@sender.first_name%> <%=@sender.last_name%><br/>
-      Receiver: <%=@receiver.first_name%> <%=@receiver.last_name%><br/>
-      <%=link_to "delete message", delete_message_admin_users_path(:id => msg.id), :confirm => "Are you sure!"%>
+     <%= t(:message_body) %> :<%=raw(msg.body)%><br/>
+     <%= t(:sender) %> : <%=@sender.first_name%> <%=@sender.last_name%><br/>
+     <%= t(:receiver)  %> : <%=@receiver.first_name%> <%=@receiver.last_name%><br/>
+      <%=link_to t(:delete_message), delete_message_admin_users_path(:id => msg.id), :confirm => "Are you sure!"%>
       <br/><br/><br/>
     <%end%>
   <%else%>
