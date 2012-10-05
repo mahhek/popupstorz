@@ -645,3 +645,7 @@ en:
    send_message_to_all_users: "send message to all users"
    send_invitation_to_users: "send invtation to users"
    select_user: "select user"
+   all_payments: "All payments"
+   no_payments: "There are no payments to show!"
+   seller: "Seller"
+   renter: "Renter"

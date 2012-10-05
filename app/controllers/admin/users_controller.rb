@@ -118,5 +118,16 @@ class Admin::UsersController < ApplicationController
     end    
     redirect_to admin_items_path
   end
+
+  def all_payments
+    @payments = Payment.all
+  end
+
+  def cancel_payment
+    @payment = Payment.find_by_id(params[:id])
+    @payment.update_attribute(:cancelled_at, date.today)
+    @payment.update_attribute(:is_active, !user.is_active)
+    redirect_to all_payments_admin_users_path
+  end
   
 end

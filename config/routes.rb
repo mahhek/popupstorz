@@ -143,6 +143,8 @@ PopupStorz::Application.routes.draw do
         get :delete_rating
         get :send_invitation
         post :send_invitation_to_users
+        get :all_payments
+        get :cancel_payment
       end
     end
     resources :offers do
