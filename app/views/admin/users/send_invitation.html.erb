@@ -1,0 +1,31 @@
+<br/>
+<p>
+  <%= t(:send_invitation_to_users) %>
+</p>
+<select id="user_select">
+  <option value=""> <%= t(:select_user) %></option>
+  <%@users.each do |user| %>
+    <%unless user==current_user%>
+      <option value="<%=user.email%> "><%= user.email %></option>
+    <%end%>
+  <%end%>
+</select>
+<div style="margin-top: 20px;">
+  <%=form_tag send_invitation_to_users_admin_users_path do |f|%>
+    <%=text_field_tag "user[]"%><br/>
+    <%= submit_tag t(:send) %>
+  <%end%>
+</div>
+
+<script type="text/javascript">
+  var s = "";
+  $("#user_select").change(function() {
+  
+  var $option = $(this).val();
+  s +=  ", " + $option + "\n";
+  <%#*var selectedValue = $(this).val();%>
+  $('#user_').val(s);
+  var index = $('#user_select').get(0).selectedIndex;
+  $('#user_select option:eq(' + index + ')').remove();
+  });
+</script>

@@ -1,0 +1,56 @@
+<div style="float: left; padding: 10px; border: 1px solid gray;">
+  <div>
+  </div>
+  <div id="get-list-header">
+    <div id="lisit-txt"><%= @item.title %><br/><br/>
+      <span class="hel-14">
+        <b><%= t(:location_show) %></b><%= "#{@item.street_name} #{@item.city}, #{@item.region}, #{@item.zipcode}" %>
+        <br/>
+      </span>
+    </div>
+    <div>
+      <b><%= t(:owner_info) %></b><br/>
+      <%= t(:owner_name) %><%= @user.first_name %> <%= @user.last_name %>
+      <br/>
+      <%= t(:lives_in) %><%= @user.address1 %> <%= @user.address2 %> <%= @user.city %> <%= @user.country %>
+      <br/>
+    </div>
+  </div>
+  <br/><br/>
+  <div id="left-side">
+    <div class="left-gray">
+      <div id="white-btn">
+        <%= link_to_function "PHOTO" , "if($('#photo_div').is(':hidden')){$('#photo_div').show();$('#my_map_div').css('visibility','hidden');$('#my_map_div').css('position','absolute');}"  %>
+        <%= link_to_function "MAP", "$('#photo_div').hide();$('#my_map_div').css('visibility','visible');$('#my_map_div').css('position','');"  %>
+      </div>
+      <br/><br/>
+      <div id="photo_div">
+        <% if @item.avatars.size > 0 %>
+          <div id="space-img">
+            <%= image_tag(@item.avatars.first.photo.url(:large), :height => "286") %>
+          </div>
+        <% else %>
+          <div id="space-img">
+            <%= t(:no_image) %>
+          </div>
+        <%end%>
+      </div>
+
+      <div id="my_map_div" style="visibility:hidden;position:absolute;">
+        <%= raw(@map.div(:width => 500, :height => 400)) %>
+      </div>
+    </div>
+
+    <div class="left-gray">
+      <div id="space-details-txt"><%= raw @item.description %></div>
+    </div>
+
+  </div>
+
+
+  <div id="right-widgets">
+    <div class="blue-box">
+      <div id="price-x"><span class="font-24"><%=  @item.price %></span>&nbsp;<%= t(:euro_per_day) %> </div>
+    </div>
+  </div>
+</div>

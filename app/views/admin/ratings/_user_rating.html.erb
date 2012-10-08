@@ -1,0 +1,13 @@
+<style>
+  th,td {
+    /*borders and padding to make the table readable*/
+    border:0px;
+    padding:0em;
+  }
+</style>
+<% my_rating = Rating.find(:first, :conditions =>["rateable_id = ? and user_id = ? and rateable_type = ?",asset.id,current_user.id,asset.class.to_s]) %>
+<ul class='star-rating'>
+  <% if !my_rating.nil? %>
+    <li class="current-rating" style="width:<%= ( my_rating.rating * 20).to_i -%>px;">
+  <%end%>
+</ul>

@@ -3,9 +3,90 @@ class Admin::ItemsController < ApplicationController
   before_filter :authenticate_admin
   
   layout "admin"
-
+  
   def index
-    @items = Item.all
+    case params[:sort_option]
+    when "1"
+      order_by = "created_at DESC"
+    when "2"
+      order_by = "created_at ASC"
+    when "3"
+      order_by = "price ASC"
+    when "4"
+      order_by = "price DESC"
+    when "5"
+      order_by = "city ASC"
+    when "6"
+      order_by = "country ASC"
+    when "7"
+      order_by = "listing_type_id ASC"
+    when "8"
+      order_by = "size ASC"
+    when "9"
+      order_by = "size DESC"
+    when "10"
+      order_by = "maximum_members ASC"
+    else
+      order_by = "created_at DESC"
+    end
+    @items = Item.all(:order => order_by)
+    respond_to do |format|
+      format.js do
+        foo = render_to_string(:partial => 'items', :locals => {:items => @items }).to_json
+        render :js => "$('#admin_items_list').html(#{foo});"
+      end
+      format.html
+    end
+  end
+  
+  def new
+    @item = Item.new
+    @map = GMap.new("map")
+    @map.control_init(:map_type => true, :small_zoom => true)
+    @map.center_zoom_init([48.48, 2.20], 6)
+    @countries = Country.all
+    @listing_types = ListingType.all :order =>"name asc"
+    @availability_options = AvailabilityOption.all 
+  end
+
+  def create
+    @countries = Country.all
+    set_values
+
+    @item = Item.new(params[:item])
+    @map = GMap.new("map")
+    if params[:item][:latitude].blank?
+      @map.control_init(:map_type => true, :small_zoom => false)
+      @map.center_zoom_init([48.48, 2.20], 6)
+    else
+      coordinates = [params[:item][:latitude],params[:item][:longitude]]
+      @map.center_zoom_init(coordinates, 15)
+    end
+    if @item.valid?
+      if !user_signed_in?
+        session[:items] = params[:item]
+        flash[:notice] = t(:login)
+        redirect_to new_user_session_path
+      else
+        @item.availability_option_ids = params[:availability_options]
+        if @item.save
+          @item.update_attribute("item_status","Available")
+          session[:items] = nil
+          flash[:notice] = t(:adding_space)
+          redirect_to new_item_avatar_path(@item)
+        else
+          @listing_types = ListingType.all :order =>"name asc"
+          @availability_options = AvailabilityOption.all
+          flash[:notice] = t(:cant_add_space)
+          render :action => "new"
+        end
+      end
+    else
+      @listing_types = ListingType.all :order =>"name asc"
+      @availability_options = AvailabilityOption.all
+      flash[:notice] = t(:cant_add_space)
+      render :action => "new"
+    end
   end
 
   def change_recommendation
@@ -19,7 +100,61 @@ class Admin::ItemsController < ApplicationController
     end
   end
 
+  def transfer_ownership
+    @item = Item.find_by_id(params[:item_id])
+    @item.owner_id = params[:user_id]
+    @item.save
+    redirect_to :back
+    
+  end
+
+  def display_on_home
+    unless params[:item_id].blank?
+      @item = Item.find_by_id(params[:item_id])
+      @item.update_attribute(:display_on_home, true)
+    else
+      @item = Item.find_by_id(params[:new_item_id])
+      @item.update_attribute(:display_on_home, false)
+    end
+    redirect_to :back
+  end
+
+  def change_commission_rate
+
+    @item = Item.find_by_id(params[:item_id])
+    if params[:guest_commission_rate]
+      @item.guest_commission_rate = params[:guest_commission_rate]
+    end
+    if params[:owner_commission_rate]
+      @item.owner_commission_rate = params[:owner_commission_rate]
+    end
+    @item.save
+    redirect_to admin_items_path
+  end
+
+  def change_rate
+    
+  end
+
+  def change_all
+   
+    @items = Item.all
+    @items.each do |item|
+      if params[:guest_commission_rate]
+      
+        item.guest_commission_rate=params[:guest_commission_rate]
+      end
+      if params[:owner_commission_rate]
+
+        item.owner_commission_rate=params[:owner_commission_rate]
+      end
+      item.save
+    end
+    redirect_to admin_items_path
+  end
+
   def show
+    @users = User.all
     @item = Item.find(params[:id])
     @user = @item.user
     @map = GMap.new("map")
@@ -57,6 +192,18 @@ class Admin::ItemsController < ApplicationController
   
   def delete_listings
     @items = Item.all
+  end
+
+  def active_inactive
+    @item = Item.find_by_id(params[:item_id])
+    @item.update_attribute(:is_active,!@item.is_active)
+    redirect_to :back
+  end
+
+  def offer_activation
+    @offer = Offer.find_by_id(params[:offer_id])
+    @offer.update_attribute(:is_active,!@offer.is_active)
+    redirect_to :back
   end
   
   def destroy

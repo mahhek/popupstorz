@@ -1,0 +1,248 @@
+<div class="leftcontent">
+  <div class="shadowCont" style="float: left;">
+    <div class="s_head">Create User</div>
+    <%= form_for [:admin,@user], :multipart => true do |f| %>
+
+      <div class="reqInfo"><%= t(:required_info) %></div>
+      <div class="newPaperclipFiles" style="margin-left: 128px;">
+        <%= t(:profile_pic_upload) %><br/>
+        <%(1 - @user.avatars.size).times { @user.avatars.build }%>
+
+        <%= f.fields_for :avatars do |avatar| %>
+          <% if avatar.object.new_record? %>
+            <%= avatar.file_field :photo %>
+          <% end %>
+
+        <% end %>
+      </div>
+
+      <div class="sign_up_input">
+        <label><%= t(:first_name) %></label>
+        <%= f.text_field :first_name, :value => @pre_user.blank? ? "" : @pre_user.first_name, :autocomplete=> "off", :id => "first_name_field" %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label><%= t(:last_name) %></label>
+  <%#= f.text_field :first_name, :value => @pre_user.blank? ? "" : @pre_user.first_name, :autocomplete=> "off", :id => "first_name_field" %>
+        <%= f.text_field :last_name ,:value => @pre_user.blank? ? "" : @pre_user.last_name, :autocomplete=> "off", :id => "lastww_name_field" %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label><%= t(:d_o_b) %></label>
+        <%= f.date_select :date_of_birth, {:order =>
+            [:day, :month, :year], :start_year => 1970, :use_month_numbers => true} %>
+  <%#= f.date_select :date_of_birth, {:start_year => 1970} %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label><%= t(:gender) %></label>
+        <div class="fltL">
+          <div style="float: left;">
+            <%
+            m_gender = true
+            f_gender = false
+            unless @pre_user.blank?
+              if @pre_user.gender == true
+                m_gender = true
+                f_gender = false
+              else
+                m_gender = false
+                f_gender = true
+              end
+            end
+          %>
+            <span>
+              <%= f.radio_button :gender, true, :checked => m_gender, :style => "margin-top: 2px;" %>
+            </span>
+            <span style="margin-left: 5px;"><%= t(:male) %></span>
+          </div>
+          <div style="float: left;margin-left: 10px;">
+            <span>
+              <%= f.radio_button :gender, false, :checked => f_gender , :style => "margin-top: 2px;" %>
+            </span>
+            <span style="margin-left: 5px;"><%= t(:female) %></span>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div><br/>
+      <div class="sign_up_input">
+        <label><%= t(:email) %></label>
+        <%= f.email_field :email, :value => @pre_user.blank? ? "" : @pre_user.email,:autocomplete=> "off", :id => "email_field" %>
+      </div>
+      <div class="sign_up_input">
+        <label><%= t(:verify_email) %></label>
+        <%= f.email_field :verify_email, :value => @pre_user.blank? ? "" : @pre_user.verify_email, :autocomplete=> "off", :id => "verify_email_field" %>
+  <%#= @user.errors.messages[:verify_email].blank? ? "" : " Email Verification "+@user.errors.messages[:verify_email][0] %>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+
+      <div class="sign_up_input">
+        <label><%= t(:password) %></label>
+        <%= f.password_field :password , :autocomplete=> "off", :id => "password_field", :onclick => "$(this).val('')" %>
+  <%#= @user.errors.messages[:password].blank? ? "" : " Password "+@user.errors.messages[:password][0] %>
+  <%#*<div class="clear"></div>%>
+      </div>
+      <div class="sign_up_input fltL">
+        <label><%= t(:confirm_password) %></label>
+        <%= f.password_field :password_confirmation, :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+
+      <div class="sign_up_input">
+        <label><%= t(:security_question) %></label>
+        <%= f.text_field :security_question, :autocomplete=> "off", :id => "security_question_field", :onclick => "$(this).val('')" %>
+  <%#= @user.errors.messages[:security_question].blank? ? "" : " Security Question "+@user.errors.messages[:security_question][0] %>
+  <%#*<div class="clear"></div>%>
+      </div>
+      <div class="sign_up_input">
+        <label><%= t(:security_answer) %></label>
+        <%= f.text_field :security_answer, :autocomplete=> "off", :id => "security_answer_field", :onclick => "$(this).val('')" %>
+  <%#= @user.errors.messages[:security_answer].blank? ? "" : " Security Answer "+@user.errors.messages[:security_answer][0] %>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+      <div class="sign_up_input">
+        <label><%= t(:mobile_num) %></label>
+        <%= f.text_field :mobile_phone , :value => @pre_user.blank? ? "" : @pre_user.mobile_phone,:autocomplete=> "off", :id => "mobile_phone_field", :onclick => "$(this).val('')"%><br />
+        <div style="float:left;clear:both;margin-left: 130px;margin-top: 10px;"><%= t(:ph_format) %></div>
+  <%#= @user.errors.messages[:mobile_phone].blank? ? "" : " Mobile Phone "+@user.errors.messages[:mobile_phone][0] %>
+        <div class="clear"></div>
+      </div>
+
+      <div class="reqInfo"><%= t(:optional_info) %></div>
+      <div class="sign_up_input">
+        <label><%= t(:address_1) %></label>
+        <%= f.text_field :address1, :value => @pre_user.blank? ? "" : @pre_user.address1,:autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label><%= t(:address_2) %></label>
+        <%= f.text_field :address1, :value => @pre_user.blank? ? "" : @pre_user.address2,:autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label><%= t(:city_add) %></label>
+        <%= f.text_field :city , :value => @pre_user.blank? ? "" : @pre_user.city.to_s.gsub(/ /,''), :autocomplete=> "off"%>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input fltL">
+        <label><%= t(:country_add) %></label>
+        <%= f.select( :country, options_from_collection_for_select( Country.all, :printable_name, :printable_name, @pre_user.blank? ? "" : @pre_user.country.to_s.gsub(/ /,'').camelize), :prompt => "Select Country") %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input fltL">
+        <label><%= t(:zip) %></label>
+        <%= f.text_field :zip_code, :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input fltL">
+        <label><%= t(:activity) %></label>
+        <%= f.text_field :activity , :autocomplete=> "off"%>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+      <div class="sign_up_input">
+        <label><%= t(:description) %></label><br/>
+        <%= f.text_area :description, :size => "40x4", :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+
+      <%= f.submit "Create", :class => "search" %>
+
+    <% end %>
+    <br/>
+    <%#*<div style="float:left;width: 100%;margin-left: 100px;margin-top: 35px;">%>
+      <%#= render :partial => "devise/shared/links" %>
+    <%#*</div>%>
+
+    <script type='text/javascript'>
+
+      $("#user_date_of_birth").datepicker();
+
+      $(document).ready(function(){
+        if("<%= @user.errors.messages[:email][0] %>" != ""){
+          $("#email_field").css('border', '1px solid red');
+          $("#email_field").val("Email is required.");
+        }
+        else{
+          $("#email_field").css('border', '1px solid black');
+          if($("#email_field").val() == "Email is required."){
+            $("#email_field").val("");
+          }
+        }
+
+        if("<%= @user.errors.messages[:first_name][0] %>" != ""){
+          $("#first_name_field").css('border', '1px solid red');
+          $("#first_name_field").val("First Name is required.");
+        }
+        else{
+          $("#first_name_field").css('border', '1px solid black');
+          $("#first_name_field").val();
+        }
+
+        if("<%= @user.errors.messages[:last_name][0] %>" != ""){
+          $("#last_name_field").css('border', '1px solid red');
+          $("#last_name_field").val("Last Name is required");
+        }
+        else{
+          $("#last_name_field").css('border', '1px solid black');
+          if($("#last_name_field").val() == "Last Name is required"){
+            $("#last_name_field").val("");
+          }
+        }
+
+        if("<%= @user.errors.messages[:verify_email][0] %>" != ""){
+          $("#verify_email_field").css('border', '1px solid red');
+          $("#verify_email_field").val("Email Verification is required.");
+        }
+        else{
+          $("#verify_email_field").css('border', '1px solid black');
+          if($("#verify_email_field").val() == "Email Verification is required."){
+            $("#verify_email_field").val("");
+          }
+        }
+
+        if("<%= @user.errors.messages[:password][0] %>" != ""){
+          $("#password_field").css('border', '1px solid red');
+          $("#password_field").val("Password is required");
+        }
+        else{
+          $("#password_field").css('border', '1px solid black');
+          $("#password_field").val("");
+        }
+
+        if("<%= @user.errors.messages[:mobile_phone][0] %>" != ""){
+          $("#mobile_phone_field").css('border', '1px solid red');
+          $("#mobile_phone_field").val("Mobile Phone is required.");
+        }
+        else{
+          $("#mobile_phone_field").css('border', '1px solid black');
+          $("#mobile_phone_field").val("");
+        }
+
+        if("<%= @user.errors.messages[:security_question][0] %>" != ""){
+          $("#security_question_field").css('border', '1px solid red');
+          $("#security_question_field").val("Security Question is required.");
+        }
+        else{
+          $("#security_question_field").css('border', '1px solid black');
+          $("#security_question_field").val("");
+        }
+
+        if("<%= @user.errors.messages[:security_answer][0] %>" != ""){
+          $("#security_answer_field").css('border', '1px solid red');
+          $("#security_answer_field").val("Security Answer is required!");
+        }
+        else{
+          $("#security_answer_field").css('border', '1px solid black');
+          $("#security_answer_field").val("");
+        }
+
+      })
+
+    </script>
+  </div>
+</div>

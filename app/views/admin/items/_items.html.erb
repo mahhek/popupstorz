@@ -1,0 +1,72 @@
+<div class="listx-bg">
+  <% unless items.blank? %>
+    <% items.each do | item | %>
+      <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
+        <div class="imgx">
+          <% if item.avatars.size > 0 %>
+            <%= link_to(image_tag(item.avatars.first.photo.url(:thumb), :width => "115", :height => "81", :alt => "Space-Photo"), admin_item_path(item))  %>
+          <% else %>
+            <%= t(:no_image_provided) %>
+          <% end %>
+        </div>
+        <div id="recommendation_div_<%= item.id %>">
+          <%= render :partial => "recommendation", :locals => {:item => item} %>
+        </div>
+
+        <div class="name-list"><%= item.title %></div>
+        <div class="name-list" style="margin-bottom: 5px;">
+          <b><%= t(:space_price) %> </b>
+          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_day) %>
+          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_week) %>
+          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%= t(:per_month) %>
+        </div>
+
+        <div class="name-list" style="margin-bottom: 5px;">
+          <b><%= t(:space_size) %> </b>
+          <%= item.size %>
+          <%= item.size_unit %>
+        </div>
+
+        <h1 class="size"><%= t(:type) %></h1>
+        <p class="size_text"><%= item.listing_type.name %></p>
+        <div class="clear"></div>
+        <h1 class="size"><%= t(:no_of_floors) %></h1>
+        <p class="size_text"></p>
+        <div class="clear"></div>
+        <h1 class="size"><%= t(:cleaning_fee) %></h1>
+        <p class="size_text"><%= number_to_currency(exchange_currency(item.cleaning_fee.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+        </p>
+        <div class="clear"></div>
+        <h1 class="size"><%= t(:deposit_fee) %></h1>
+        <p class="size_text"><%= number_to_currency(exchange_currency(item.deposit.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></p>
+        <div class="clear"></div>
+        <h1 class="size"><%= t(:avail_from) %></h1>
+        <p class="size_text"><%= item.availability_from.blank? ? "" : item.availability_from.strftime("%m/%d/%y")%> - <%=item.availability_to.blank? ? "" :item.availability_to.strftime("%m/%d/%y")%></p>
+        <div class="clear"></div>
+        <h1 class="size"><%= t(:avail_to) %></h1>
+        <p class="size_text"><%= item.availability_from.blank? ? "" : item.availability_from.strftime("%m/%d/%y")%> - <%=item.availability_to.blank? ? "" :item.availability_to.strftime("%m/%d/%y")%></p>
+        <div class="clear"></div>
+
+        <h1 class="size"><%= t(:gathering_available) %></h1>
+        <p class="size_text">
+          <% if (item.is_shareable == true) %>Upto
+            <%= item.maximum_members %> persons
+          <%else%>
+            <%= t(:no) %>
+          <%end%>  </p>
+
+        <div class="manage-bg" style="float: left;clear: both;width: 100%;">
+          <div class="btns">
+            <%= link_to t(:preview), admin_item_path(item) %>|&nbsp;          
+            <%= link_to t(:edit), edit_admin_item_path(item) %>|&nbsp;          
+            <%= link_to t(:delete_space), admin_item_path(item), :method => :delete, :confirm => t(:sure_delete) %>
+          </div>
+        </div>
+
+        <div class="clear"></div>
+      </div>
+    <%end%>
+  <%else%>
+    <%= t(:no_item_listed) %>
+  <%end%>
+</div>

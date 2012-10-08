@@ -1,27 +1,16 @@
-<div id="get-list-header">
-  <h2><%= :all_users %></h2>
-</div>
-<div class="listx-bg">
-  <% unless @users.blank? %>
-    <% @users.each do | user | %>
-      <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
-      
-        <div class="name-list"><%= user.email %> - <%= user.first_name %> <%= user.last_name %></div>
-        <div class="manage-bg">
-          <div class="btns">
-            <%= link_to t(:details) , admin_user_path(user)%>
-          </div>
-          <div class="btns">
-            <%= link_to t(:delete_user) , "/admin_destroy_user/#{user.id}", :confirm => t(:delete_user_user)%>
-          </div>
-        </div>
-      </div>
-    <%end%>
-  <%else%>
-    <%= t(:no_user_registered) %>
-  <%end%>
-</div>
-
-<div class="btn-bar">
-
+<div style="clear:both;width: 100%;float:left;">
+  <div id="get-list-header">
+    <h2><%= t(:all_users) %></h2>
+  </div>
+  <div style="float:left;width: 100%;margin-bottom: 20px;margin-top: 20px;margin-left: 10px;">
+    <%= form_for :search, :url => "/admin_users", :remote => true do|f| %>
+      <span><%= t(:sort_by) %></span>  
+      <%= select_tag "sort_option", options_for_select([[t(:newest) ,"1"],[t(:oldest) ,"2"],[t(:activity), "3"],[t(:gender_search), "4"],[t(:city_add), "5"],[t(:country_add), "6"],[t(:fb_connected), "7"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).submit()" %>
+    <% end %>
+  </div>
+  <div class="listx-bg" id="users_list">
+    <%= render :partial => "users", :locals => {:users => @users} %>
+  </div>
+  <div class="btn-bar">
+  </div>
 </div>

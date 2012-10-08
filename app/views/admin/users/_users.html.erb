@@ -1,0 +1,23 @@
+<% unless users.blank? %>
+  <% users.each do | user | %>
+    <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
+      <div class="name-list"><%= user.email %> - <%= user.first_name %> <%= user.last_name %></div>
+      <div class="manage-bg">
+        <div class="btns">
+          <%= link_to t(:details) , admin_user_path(user)%>
+        </div>
+        <div class="btns">
+          <% if user.is_active %>
+            <%= link_to t(:deactivate) , "/admin_destroy_user/#{user.id}", :confirm => "Are you sure"%>|
+          <% else %>
+            <%= link_to t(:activate) , "/admin_destroy_user/#{user.id}", :confirm => "Are you sure"%>|
+          <% end %>
+          <%= link_to t(:edit), "/admin_edit_user/#{user.id}" %>|
+          <%= link_to t(:send_message), send_message_admin_messages_path(:user_id => user.id) %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <%= t(:no_user_registered) %>
+<% end %>

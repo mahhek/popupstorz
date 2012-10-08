@@ -1,0 +1,22 @@
+<div id="get-list-header">
+  <h2><%= t(:all_payments) %></h2>
+</div>
+
+<br/>
+<div>
+  <%unless @payments.blank?%>
+    <%@payments.each do |payment|%>
+      <%@seller = User.find_by_id(payment.seller_id)%>
+      <%@renter = User.find_by_id(payment.renter_id)%>
+      <%= t(:seller) %>: <%= @seller.first_name %> <%= @seller.last_name %><br/>
+      <%= t(:renter) %>: <%= @renter.first_name %> <%= @renter.last_name %><br/>
+      <%if payment.is_active %>
+        <%= link_to t(:deactivate), cancel_payment_admin_users_path(:id => payment.id), :confirm => "Are you sure" %>
+      <%else%>
+        <%= link_to t(:activate), cancel_payment_admin_users_path(:id => payment.id), :confirm => "Are you sure" %>
+      <%end%>
+    <%end%>
+  <%else%>
+    <%= t(:no_payments) %>
+  <%end%>
+</div>

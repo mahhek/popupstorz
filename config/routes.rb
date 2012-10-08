@@ -9,10 +9,14 @@ PopupStorz::Application.routes.draw do
   match '/items/search_category/:id' => 'items#search_category'
   match '/notifications/destroy/:id' => 'notifications#destroy'
   match '/members' => 'users#members'
-#  match '/search_members' => 'users#search_members'
+  match '/admin_items' => "admin/items#index"
+  match '/admin_gatherings' => "admin/offers#gatherings"
+  #  match '/search_members' => 'users#search_members'
   match '/search_gatherings' => 'searches#search_gatherings'
   match '/search_spaces' => 'searches#search_spaces'
   match '/admin_destroy_user/:id' => "admin/users#destroy_user"
+  match '/admin_edit_user/:id' => "admin/users#edit"
+  match '/admin_users' => "admin/users#index"
   match '/delete_listings' => "admin/items#delete_listings"
   match "/search_via_price_range" => "items#search_via_price_range"
   match "/items/new/:id" => "items#new_comment"
@@ -38,6 +42,9 @@ PopupStorz::Application.routes.draw do
   match "products/completed_payment_request" => "products#completed_payment_request", :as => :complete_request
   match "/send_invitation" => "users#send_invitation"
   match "/invitation" => "users#invitations"
+  match "/users/callback" => "users#callback"
+  match "/users/send_invitation_to_contacts" => "users#send_invitation_to_contacts"
+  match "/contacts/failure" => "users#send_invitation_to_contacts"
   
   match "/email_settings/index" => "email_settings#index"
   match "/email_settings/show" => "email_settings#show"
@@ -119,9 +126,40 @@ PopupStorz::Application.routes.draw do
     resources :items do
       collection do
         get :change_recommendation
+        post :transfer_ownership
+        post :change_commission_rate
+        get :change_rate
+        post :change_all
+        post :display_on_home
+        get :active_inactive
+        get :offer_activation
       end      
     end
-    resources :users
+    resources :users do
+      collection do
+        get :delete_message
+        get :all_messages
+        get :all_ratings
+        get :delete_rating
+        get :send_invitation
+        post :send_invitation_to_users
+        get :all_payments
+        get :cancel_payment
+      end
+    end
+    resources :offers do
+      collection do
+        post :change_commission_rate
+      end
+    end
+    resources :messages do
+      collection do
+        get :send_to_all
+        post :send_message_to_all
+        post :send_message_to_user
+        get :send_message
+      end
+    end
   end
   resources :services do
     get "/services/create/:id" => "services#create"
@@ -172,7 +210,7 @@ PopupStorz::Application.routes.draw do
       member do
         get 'decline'
         get 'accept'
-      end      
+      end
     end
   end
 

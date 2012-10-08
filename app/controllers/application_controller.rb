@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
       root_path
     else
       super
+      root_path
     end
   end
   
