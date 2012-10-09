@@ -7,29 +7,11 @@
     <title><%=  t(:popup)%></title>
 
     <%= stylesheet_link_tag "application" %>
-
-<%#*<script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script>%>
-<%#*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>    <!-- jsFiddle -->%>
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->
     <link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->    
     <script src="http://maps.google.com/maps?file=api&amp;&amp;v=2&amp;key=AIzaSyAPEeqlhndG4KU6-bRWegIBrs-v-kFcdgY"
     type="text/javascript"></script>
     <script src="http://www.facebook.com/assets.php/en_US/all.js" type="text/javascript"></script>
-
-<%#= javascript_include_tag "application" %>
-
-<%#= javascript_include_tag "geoRssOverlay" %>
-
-<%#= javascript_include_tag "markerGroup" %>
-<%#= javascript_include_tag "ym4r-gm" %>
-<%#= javascript_include_tag "https://js.stripe.com/v1/" %>
-
-
-<%#= javascript_include_tag "tmpl" %>
-<%#= javascript_include_tag "easing" %>
-<%#= javascript_include_tag "elastislide" %>
-<%#= javascript_include_tag "gallery" %>
-<%#*<script type="text/javascript" src="http://ww2.accudata.com/wp-content/themes/accudata/js/jquery.jcarousel.min.js"></script>%>
 
     <!-- Script TACTfactory -->
     <%= javascript_include_tag "application" %>
@@ -39,6 +21,14 @@
     <%= javascript_include_tag "jquery.jcarousel.min" %>
     <%= javascript_include_tag "jquery.chosen.min" %>
     <%= javascript_include_tag "jquery.fileinput" %>
+
+    <%= stylesheet_link_tag "jquery-ui" %>
+    <%= stylesheet_link_tag "ui.theme" %>
+
+<%#= javascript_include_tag "application" %>
+    <%= javascript_include_tag "jquery-ui" %>
+    <%= javascript_include_tag "maps" %>
+    <%= javascript_include_tag "all" %>
 
     <!-- Script Old -->    
     <%= javascript_include_tag "geoRssOverlay" %>
@@ -69,8 +59,7 @@
     <%= csrf_meta_tags %>
     <%= javascript_include_tag "dg" %>
     <%= yield(:head) %>
-
-    <noscript>    
+    <noscript>
       <style>
         .es-carousel ul{
           display:block;
@@ -123,13 +112,13 @@
                 </ul>
               </div>
               <br/><%= link_to(image_tag("listaspace.png"), new_item_path, :style=>"display: block; margin-top: 10px;" ) %>
-<%#*<img class="listaspace" src="../assets/" />%>
             </div>
 
             <% if user_signed_in? %>
               <span id="bar-navigate" class="menubar-left">
                 <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
-                <%= link_to t(:dashboard), inbox_messages_path, :class => ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : ""), :style => "float: left; padding-bottom: 5px;" %>
+
+                <%= link_to t(:dashboard), inbox_messages_path, :class => ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : ""), :style => "float: left; padding-bottom: 5px;" %>                
                 <% messages_size = current_user.messages.are_to(current_user).unread.size %>
                 <% if messages_size > 0 %>
                   <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
@@ -140,7 +129,7 @@
                 <div style="float:left;" class='<%= (((params[:controller] == "items" and params[:action] == "search_keyword")  or params[:controller] == "searches" or (params[:controller] == "items" and params[:action] == "show")) ? "m_act" : "") %>'>
                   <div class="searchDropdown searchMenu" onclick="search_menu()">
                     <span class="searchMenu" >
-                      <%= 'Search' %> 
+                      <%= 'Search' %>
                       <ul id="search_options" class="searchMenu">
                         <li class="searchMenu"><%= link_to t(:spaces3), "/searches/spaces" %></li>
                         <li class="searchMenu"><%= link_to t(:gatherings2),  "/searches/gatherings" %></li>
@@ -155,14 +144,13 @@
                   <% end %>
                   <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
                 </div>
-  <%#= link_to 'Search', search_home_searches_path, :class => ((params[:controller] == "searches") ? "m_act" : "") %>
               </span>
               <div divclass="clear"></div>
 
               <span id="bar-search" class="menubar-left" style="margin-left: 100px;">
                 <% if params[:controller] == "searches" %>
-    <%#= link_to 'Members', members_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "members" or params[:action] == "search_members" )) ? "m_act" : "") %>
-    <%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
+                    <%#= link_to 'Members', members_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "members" or params[:action] == "search_members" )) ? "m_act" : "") %>
+                    <%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
                 <% end %>
               </span>
 
@@ -178,15 +166,24 @@
                       <%= text_field_tag 'user[email]' %>
                       <%= password_field_tag 'user[password]' %>
                       <input type="submit" value="Login" />
-      <%#= link_to "Forgot your password?", new_password_path(User) %><br />
-
+                      <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || (params[:action] == "listings_home" && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" )||(params[:controller] == "accounts") || (params[:controller] == "items" && params[:action] == "new") %>
+                        <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || ((params[:action] == "listings_home" or params[:action] == "new") && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" ) || (params[:controller] == "items" && params[:action] == "new") %>
+                          <span style="float: left;">
+                            <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" or (params[:controller] == "email_settings") %>
+                              <%= link_to 'Messages', inbox_messages_path %>
+                              <%= link_to 'My Listings', overview_items_path %>
+                              <%= link_to 'My Bookings', "/items/created_coming_gatherings"%>
+                              <%= link_to 'My Favorites', favorites_items_path %>
+                              <%= link_to('My Profile', profile_path(current_user.id)) %>
+                              <%= link_to "Account","/invitation" %>
+                            <% end %>
+                          </span>
+                        <% end %>
+                      <% end %>
                     <% end %>
-                  <% else %>
-
                   <% end %>
                 </div>
               </span>
-
             <% end %> <!-- End Test Authorized -->
           </div>
         </div>
@@ -243,10 +240,6 @@
             <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
               <%= link_to "Account","/invitation" %>
             </span>
-    <%#= link_to 'My Gatherings', "/items/gatherings"%>
-    <%#= link_to "Send Invitations","/invitation" %>
-    <%#= link_to "Email Settings","/email_settings/index" %>
-    <%#= link_to "Delete My Account","/users/delete_account", :confirm => "Are you sure you want to delete your account permanently?" %>
           <% end %> <!-- End Test C -->
         </div>
       <% end %> <!-- End Test B -->          
@@ -268,14 +261,8 @@
         <a href="/home/feedback"><%= t(:popup_12) %></a>
         <a href="/home/terms"><%= t(:terms) %></a>
         <a href="/home/contact"><%= t(:contact) %></a>        
-      </div>
-      <div>
-        <h2>Debug</h2>
-        <div><span>Controller : </span><span><%= params[:controller] %></span></div>
-        <div><span>Action : </span><span><%= params[:action] %></span></div>
-      </div>
+      </div>      
     </div>
-
     <%= render :partial => "/layouts/social_medias" %>
     <script type="text/javascript">    
       $(document).ready(function() {
@@ -339,6 +326,20 @@
           }
         }
 	  		
+      });
+            
+      function mini_drop(){
+        $('#mini_drop_options').toggle();
+      }
+      $(document).click(function(event) {
+        if($(event.target).hasClass("searchMenu") == true){
+          $('#search_options').show();
+        }
+        else{
+          if($('#search_options').is(":hidden") == false){
+            $('#search_options').hide();
+          }
+        }
       });
     </script>
   </body>

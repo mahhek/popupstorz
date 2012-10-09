@@ -14,6 +14,7 @@
         <li class="current-rating" style="width:<%= ( asset.location_rating * 20).to_i -%>px;"></li>
       <%else%>
         <%if asset == current_user||!(current_user.rating.blank?)%>
+        <%#if false%>
           <li class='current-rating' style='width:<%= (asset.location_rating * 20).to_i -%>px;'></li>
         <%else%>
           <li class='current-rating' style='width:<%= (asset.location_rating * 20).to_i -%>px;'></li>

@@ -80,6 +80,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def delete_message
+#    @messages = ActsAsMessageable::Message.all
     @msg= ActsAsMessageable::Message.find_by_id(params[:id])
     @msg.destroy
     redirect_to all_messages_admin_users_path

@@ -2,7 +2,8 @@
 class MessagesController < ApplicationController  
 
   def inbox
-    @messages = current_user.received_messages    
+    @messages = current_user.received_messages
+    @messages = @messages.paginate(:page => params[:page], :per_page => 10)
   end
 
   def empty_trash

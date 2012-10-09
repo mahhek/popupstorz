@@ -21,4 +21,11 @@ class UserMailer < ActionMailer::Base
     @email = params[:email]    
     mail(:to => "john.aghayan@gmail.com,aboukhater@gmail.com", :subject => "A feedback is sent by #{params[:email]} for PopUpStorz")
   end
+
+
+  def send_user_information(user)
+    @url = root_url
+    @user = user
+    mail(:to => @user.email, :subject => "New Account Created")
+  end
 end

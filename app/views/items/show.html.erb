@@ -18,11 +18,11 @@
 
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
-    $(document).ready(function(){      
-      var days_arr = <%= @available_days %>;      
+    $(document).ready(function(){
+      var days_arr = <%= @available_days %>;
       var disabledDaysRange = new Array;
       disabledDaysRange = <%= raw @manage_dates_array %>;
-      
+
       function disableRangeOfDays(d) {
         if($.inArray(d.getDay(), days_arr) > -1 == false){
           return false;
@@ -33,7 +33,7 @@
               var r = disabledDaysRange[i][j].split(" to ");
               r[0] = r[0].split("/");
               r[1] = r[1].split("/");
-              if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {                
+              if(new Date(r[0][2], (r[0][0]-1), r[0][1]) <= d && d <= new Date(r[1][2], (r[1][0]-1), r[1][1])) {
                 return [false, 'booked'];
               }
             }
@@ -51,7 +51,7 @@
   dates = dates.map{ |date_map| date_map.strftime('%m/%d/%Y') }
 %>
           var selectedDays = new Array;
-          selectedDays = <%= raw dates %>        
+          selectedDays = <%= raw dates %>
           for(var i = 0; i < selectedDays.length; i++) {
             var r = selectedDays[i];
             r = r.split("/");
@@ -60,10 +60,10 @@
             }
           }
 
-<% end %>        
+<% end %>
         return [true];
       }
-                  
+
       if('<%= session[:start_date] %>' == ""){
         $("#txtFromDate").datepicker({
           minDate: new Date(),
@@ -72,7 +72,7 @@
           beforeShowDay: disableRangeOfDays
         });
       }else{
-        $("#txtFromDate").val('<%= session[:start_date] %>');        
+        $("#txtFromDate").val('<%= session[:start_date] %>');
         $("#txtFromDate").datepicker({
           minDate: new Date(),
           maxDate: '<%= @item.availability_to.blank? ? '' : @item.availability_to.strftime("%m/%d/%y") %>',
@@ -251,101 +251,105 @@
           <%= t(:semi_cancel_ln3) %><br/><br/>
 
           <%= t(:semi_cancel_ln4) %><br/><br/>
-        <%= t(:semi_cancel_ln5) %><div/>
+          <%= t(:semi_cancel_ln5) %>
+      </div>
 
-      <% end %>
-      </p>
-      <div class="clear"></div>
-      <br />
+    <% end %>
+    </p>
+    <div class="clear"></div>
+    <br />
+
+
+    <div id="favorite_div_<%= @item.id %>">
+      <%= render :partial => "favorite", :locals => {:item => @item} %>
     </div>
-  </div>
 
-  <div id="favorite_div_<%= @item.id %>">
-    <%= render :partial => "favorite", :locals => {:item => @item} %>
-  </div>
+    <p class="charming_text mt30"><%= @item.description %></p>
 
-  <p class="charming_text mt30"><%= @item.description %></p>
+    <div class="line"></div>
+    <h1 class="charming"><%= t(:gatherings2) %></h1>
+    <p class="charming_text">
+      <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
+    <div style="width: 100%;clear: both;">
+      <% gatherings.each do|gathering| %>
+        <div style="border-bottom: 1px solid;">
+          <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
+          <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
+          <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
+          <%= t(:joined_person) %><%= gathering.members.size %><br/>
+          <%= t(:gathering_des) %><%= gathering.gathering_description %><br/>
+          <%= t(:rental_per_person) %><%= gathering.gathering_rental_price %><br />
 
-  <div class="line"></div>
-  <h1 class="charming"><%= t(:gatherings2) %></h1>
-  <p class="charming_text">
-    <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
-  <div style="width: 100%;clear: both;">
-    <% gatherings.each do|gathering| %>
-      <div style="border-bottom: 1px solid;">
-        <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
-        <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
-        <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
-        <%= t(:joined_person) %><%= gathering.members.size %><br/>
-        <%= t(:gathering_des) %><%= gathering.gathering_description %><br/>
-        <%= t(:rental_per_person) %><%= gathering.gathering_rental_price %><br />
-
-        <%= t(:deadline) %><%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
-        <% unless current_user.blank? %>
-          <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
-            <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
-              <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
+          <%= t(:deadline) %><%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
+          <% unless current_user.blank? %>
+            <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
+              <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
+                <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
+              <% end %>
+            <% end %><br/><b><%= t(:cancellation_policy) %><b/>
+              <%if @item.cancellation_policy_flexible %>
+                <%= t(:flexible) %>
+              <% else %>
+                <%= t(:semifelxible) %>
+              <% end %>
+              <br/>
+              <%= t(:owner_rules) %>
+              <%=@item.owner_rules%><br/><br/>
+              <%= link_to t(:details), "/offers/#{gathering.id}" %>
             <% end %>
-          <% end %><br/><b><%= t(:cancellation_policy) %><b/><%if @item.cancellation_policy_flexible%>flexible<% else%>semifelxible<%end%><br/> Owner Rules:<%=@item.owner_rules%><br/><br/>
-            <%= link_to t(:details), "/offers/#{gathering.id}" %>
-          <% end %>
-      </div>
-    <% end %>
+        </div>
+      <% end %>
+    </div>
+    </p>
+
+    <div class="line"></div>
+    <h1 class="charming"><%= t(:what_other_people) %></h1>
+    <p class="charming_text"><%= t(:what_other_people2) %></p>
+
+    <div class="line"></div>
+    <div id="comments" style="height: 200px;display: none;">
+      <%= form_for @comment, :url => "/items/add_comment" do |f| %>
+        <% if @comment.errors.any? %>
+          <div id="errorExplanation" class="erro_messages">
+            <h2><%= t(:include_following) %></h2>
+            <ul>
+              <li style="list-style: square;float: left;">
+                <%= @comment.errors.full_messages.to_sentence  %>
+              </li>
+            </ul>
+          </div>
+        <% end %>
+
+        <%= hidden_field_tag "id",@item.id %>
+        <div class="field">
+          <%= f.label :title %><br/>
+          <%= f.text_field "title" %>
+        </div>
+        <div class="field">
+          <%= f.label :comment %><br />
+          <%= f.text_area "comment", :rows => 5 %><br />
+          <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
+        </div>
+      <% end %>
+    </div>
+    <br/><br/>
+    <div id="show_comments" style="display: none;" >
+      <b><%= t(:prev_comments) %></b><br/>
+      <%unless @item.comments.blank? %>
+        <%@item.comments.each do|f|%>
+          <b><%=f.title  %></b><br/>
+          <%= f.comment %><br/>
+          <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+          <br/>
+          <br/>
+        <%end%>
+      <%end%>
+    </div>
+    <div id="rating_of_item_<%= @item.id %>">
+      <%= render :partial => "/ratings/rating", :locals => { :asset => @item, :only_view => false } %>
+    </div>
   </div>
-</p>
-
-<div class="line"></div>
-<h1 class="charming"><%= t(:what_other_people) %></h1>
-<p class="charming_text"><%= t(:what_other_people2) %></p>
-<div class="line"></div>
-<div id="comments" style="height: 200px;display: none;">
-
-  <%= form_for @comment, :url => "/items/add_comment" do |f| %>
-    <% if @comment.errors.any? %>
-      <div id="errorExplanation" class="erro_messages">
-        <h2><%= t(:include_following) %></h2>
-        <ul>
-          <li style="list-style: square;float: left;">
-            <%= @comment.errors.full_messages.to_sentence  %>
-          </li>
-        </ul>
-      </div>
-    <% end %>
-
-    <%= hidden_field_tag "id",@item.id %>
-    <div class="field">
-      <%= f.label :title %><br/>
-      <%= f.text_field "title" %>
-    </div>
-    <div class="field">
-      <%= f.label :comment %><br />
-      <%= f.text_area "comment", :rows => 5 %><br />
-      <a class="search ml70" onclick="$('#new_comment').submit();" href="#">Leave Comment</a>
-    </div>
-  <% end %>
 </div>
-<br/><br/>
-<%#if current_user%>
-<div id="show_comments" style="display: none;" >
-  <b><%= t(:prev_comments) %></b><br/>
-  <%unless @item.comments.blank? %>
-    <%@item.comments.each do|f|%>
-      <b><%=f.title  %></b><br/>
-      <%= f.comment %><br/>
-      <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
-      <br/>
-      <br/>
-    <%end%>
-  <%end%>
-</div>
-<%#*<div id="rating_of_item_<%= @item.id %>
-<%#= render :partial => "/ratings/rating", :locals => { :asset => @item, :only_view => false } 
-<%#*</div>%>
-
-<%#end%>
-</div>
-</div>
-
 
 <div class="fltR">
   <div class="shadowCont w212">
@@ -397,7 +401,7 @@
               <select name="price_per_span" onchange="change_price_to_book($(this));">
                 <option value="<%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>"><%= t(:per_day) %></option>
                 <option value="<%= number_to_currency(exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_week) %></option>
-                <option value="<%= number_to_currency(exchange_currency(@item.price_per_month.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_month) %></option>                
+                <option value="<%= number_to_currency(exchange_currency(@item.price_per_month.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_month) %></option>
               </select>
               <%= hidden_field_tag :per_day_price, @item.price %>
               <%= hidden_field_tag :per_week_price, @item.price_per_week %>
@@ -474,7 +478,7 @@
     onSelect: function(dateText, inst) {
       $("#datepicker_value").val(dateText);
     }
-   
+
   });
 </script>
 
@@ -530,21 +534,21 @@
     }
 
     if($('#txtFromDate').val() != 'mm/dd/yy' && $('#txtToDate').val() != 'mm/dd/yy'){
-      
-      start = $('#txtFromDate').val();      
+
+      start = $('#txtFromDate').val();
       start_date = new Date(start);
       end = $('#txtToDate').val();
       end_date = new Date(end);
-      
+
       startTime = start_date.getTime();
       endTime = end_date.getTime();
       var new_days= 0;
       var days_arr = <%= @available_days %>;
-      
+
       for (loopTime = startTime; loopTime <= endTime; loopTime += 86400000) {
         if($.inArray(new Date(loopTime).getDay(), days_arr) > -1){
           new_days += 1;
-        }        
+        }
       }
 
 <%#*number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;%>
@@ -552,7 +556,7 @@
       if(number_of_days == 0){
         number_of_days = 1;
       }
-      
+
       $('#total_days').text( Math.round(number_of_days)+ " days");
       calculated_price = calculate_price(number_of_days);
 
@@ -565,10 +569,10 @@
             url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= @item.price_unit %>'
           });
         }
-      });      
+      });
     }
   }
-  
+
   function calculate_price(number_of_days){
     months = Math.floor(number_of_days/30);
     weeks = Math.floor((number_of_days - (Math.floor((30 * months))))/7);

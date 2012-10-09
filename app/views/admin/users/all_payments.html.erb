@@ -11,9 +11,11 @@
       <%= t(:seller) %>: <%= @seller.first_name %> <%= @seller.last_name %><br/>
       <%= t(:renter) %>: <%= @renter.first_name %> <%= @renter.last_name %><br/>
       <%if payment.is_active %>
-        <%= link_to t(:deactivate), cancel_payment_admin_users_path(:id => payment.id), :confirm => "Are you sure" %>
-      <%else%>
-        <%= link_to t(:activate), cancel_payment_admin_users_path(:id => payment.id), :confirm => "Are you sure" %>
+        <%if payment.is_active%>
+          <%= link_to t(:deactivate), cancel_payment_admin_users_path(:id => payment.id), :confirm => "Are you sure" %>
+        <%else%>
+          <%= link_to t(:activate), cancel_payment_admin_users_path(:id => payment.id), :confirm => "Are you sure" %>
+        <%end%>
       <%end%>
     <%end%>
   <%else%>

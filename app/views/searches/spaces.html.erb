@@ -1,9 +1,9 @@
 <%= javascript_include_tag "items.js" %>
 <%= render :partial => "search_header" %>
 <%#*<script>%>
-  <%#*$(document).ready(function() {%>
-    <%#*$('.pagination a').attr('data-remote', 'true');%>
-  <%#*});%>
+<%#*$(document).ready(function() {%>
+<%#*$('.pagination a').attr('data-remote', 'true');%>
+<%#*});%>
 <%#*</script>%>
 <script type="text/javascript">
   $(function() {
@@ -55,7 +55,7 @@
 <%= form_for :search, :url => "/search_spaces", :remote => true do|f| %>
   <div style="width:99%;float: left; border: 1px solid;padding: 10px;">
     <div class="refinesearchresults">
-      <div style="width:55%;float:left;">
+      <div style="width:50%;float:left;">
         <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
       </div>
       <span><%= t(:from) %></span>
@@ -64,10 +64,11 @@
       <%= text_field_tag :search_to, params[:search_to], :id => "search_to" %>
       <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
     </div>
-  </div><div class="sortby">
-      <%= select_tag "sort_option", options_for_select([["Newest" ,"1"],["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
-      <span><%= t(:sort_by) %></span>
-    </div>
+  </div>
+  <div class="sortby">
+    <%= select_tag "sort_option", options_for_select([["Newest" ,"1"],["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
+    <span><%= t(:sort_by) %></span>
+  </div>
 <% end %>
 
 <div class="rightcontent">

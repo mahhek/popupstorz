@@ -1,13 +1,21 @@
 <div style="padding: 20px;">
   <div id="get-list-header">
     <div class="white-button" style="float: left;margin-right: 10px;">
+      <%if current_user.admin%>
+      <%= link_to t(:details), edit_admin_item_path(@item) %>
+      <%else%>
       <%= link_to t(:details), edit_item_path(@item) %>
+      <%end%>
     </div>
     <div class="white-button" style="float: left;margin-right: 10px;">
       <%= link_to t(:photo), "#" %>
     </div>
     <div class="white-button" style="float: left;margin-right: 10px;">
+      <%if current_user.admin%>
+      <%= link_to t(:preview), admin_item_path(@item) %>
+      <%else%>
       <%= link_to t(:preview), item_path(@item) %>
+      <%end%>
     </div>
   </div>
   <br/>

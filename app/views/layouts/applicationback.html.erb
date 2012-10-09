@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://opengraphprotocol.org/schema/"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><%=  t(:popup)%></title>
+    <%= stylesheet_link_tag "application" %>
+    <%= stylesheet_link_tag "jquery-ui" %>
+    <%= stylesheet_link_tag "ui.theme" %>
+
+    <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag "jquery-ui" %>
+    <%= javascript_include_tag "maps" %>
+    <%= javascript_include_tag "all" %>
+
+    <%= javascript_include_tag "geoRssOverlay" %>
+
+    <%= javascript_include_tag "markerGroup" %>
+    <%= javascript_include_tag "ym4r-gm" %>
+
+    <%= javascript_include_tag "tmpl" %>
+    <%= javascript_include_tag "easing" %>
+    <%= javascript_include_tag "elastislide" %>
+    <%= javascript_include_tag "gallery" %>
+    <%= javascript_include_tag "jcarousel.min" %>
+    <%= GMap.header(:with_vml => false, :host => request.host).html_safe %>
+    <%= raw(@map.to_html) if @map %>
+    <%= csrf_meta_tags %>
+    <%= javascript_include_tag "dg" %>
+    <%= yield(:head) %>
+    <noscript>
+
+      <style>
+        .es-carousel ul{
+          display:block;
+        }
+      </style>
+    </noscript>
+    <script id="img-wrapper-tmpl" type="text/x-jquery-tmpl">
+      <div class="rg-image-wrapper">
+        {{if itemsCount > 1}}
+        <div class="rg-image-nav">
+          <a href="#" class="rg-image-nav-prev"><%= t(:prev_image) %></a>
+          <a href="#" class="rg-image-nav-next"><%= t(:next_image) %></a>
+        </div>
+        {{/if}}
+        <div class="rg-image"></div>
+        <div class="rg-loading"></div>
+        <div class="rg-caption-wrapper">
+          <div class="rg-caption" style="display:none;">
+            <p></p>
+          </div>
+        </div>
+      </div>
+    </script>
+  </head>
+
+  <body>
+    <%= render :partial => "/layouts/social_medias" %>
+    <div class="maincontainer">
+      <div class="header">
+        <div class="maincontainer">
+          <div class="loginpannel">
+            <% unless user_signed_in? %>
+              <%= form_tag new_user_session_path do %>
+                <%= text_field_tag 'user[email]' %>
+                <%= password_field_tag 'user[password]' %>
+                <input type="submit" value="Login" />
+                <%= link_to t(:forgot_password), new_password_path(User) %><br />
+              <% end %>
+            <% else %>
+              <div class="searchDropdown searchMenu" onclick="mini_drop()">
+                <span class="searchdrop" >
+                  <%unless current_user.avatars.blank?%>
+                    <%=  image_tag(current_user.avatars.first.photo.url, :style => "width:30px;height:25px;")%>
+                  <%else%>                  
+                    <%=current_user.popup_storz_display_name%>
+                  <%end%>
+                  <%#= "#{current_user.avatars.blank? ? "" : image_tag(current_user.avatars.first.photo.url)} #{current_user.popup_storz_display_name}" %>
+                  <ul id="mini_drop_options" class="searchMenu">
+                    <li class="searchdrop"><%= link_to 'My Listings', overview_items_path %></li>
+                    <li class="searchdrop"><%= link_to('My Profile', profile_path(current_user.id)) %></li>
+                    <li class="searchdrop"><%= link_to('Logout', destroy_user_session_path, :method => :delete) %></li>
+                  </ul>
+                </span>
+              </div>
+  <%#= link_to "Hi #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
+  <%# messages_size = current_user.messages.are_to(current_user).unread.size %>
+  <%# if messages_size > 0 %>
+  <%#= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
+  <%# end %>
+  <%#= link_to('Logout', destroy_user_session_path, :method => :delete) %>
+            <% end %>
+          </div>
+
+          <div class="logo">
+            <%= link_to image_tag("Objet-dynamique-vectoriel.png"), root_path %>
+          </div>
+          <div class="menubar">
+            <div class="dropdowns">
+              <div class="dropdown">
+                <span><%= params[:locale]== 'fr' ? 'FR' : 'EN' %></span>
+                <ul>
+                  <li><%= link_to "FR", "#", :onclick => "addParamToUrl('locale', 'fr')" %></li>
+                  <li><%= link_to "EN", "#", :onclick => "addParamToUrl('locale', 'en')" %></li>
+                </ul>
+              </div>
+              <div class="dropdown">
+                <span> <%= session[:curr]== 'USD' ? '$' : '€' %> </span>
+                <ul>
+                  <li><%= link_to "$", "#", :onclick => "addParamToUrl('curr', 'USD')" %></li>
+                  <li><%= link_to "€",  "#", :onclick => "addParamToUrl('curr', 'EUR')" %></li>
+                </ul>
+              </div>
+              <%= link_to(image_tag("listaspace.png"), new_item_path ) %>
+            </div>
+
+            <% if user_signed_in? %>
+              <span style="float: left;">
+                <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
+                <%=  link_to t(:dashboard), inbox_messages_path, :class => ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : "")%>
+                <% messages_size = current_user.messages.are_to(current_user).unread.size %>
+                <% if messages_size > 0 %>
+                  <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
+                <% end %>
+
+                <div style="float:left;" class='<%= (((params[:controller] == "items" and params[:action] == "search_keyword")  or params[:controller] == "searches" or (params[:controller] == "items" and params[:action] == "show")) ? "m_act" : "") %>'>
+                  <div class="searchDropdown searchMenu" onclick="search_menu()">
+                    <span class="searchMenu" >
+                      <%= 'Search' %>
+                      <ul id="search_options" class="searchMenu">
+                        <li class="searchMenu"><%= link_to t(:spaces3), "/searches/spaces" %></li>
+                        <li class="searchMenu"><%= link_to t(:gatherings2),  "/searches/gatherings" %></li>
+                        <li class="searchMenu"><%= link_to "Members",  "/searches/members" %></li>
+                      </ul>
+                    </span>
+                  </div>
+                </div>
+              </span>
+              <div class="clear"></div>
+              <span style="float: left;margin-left: 100px;">
+                <% if params[:controller] == "searches" %>
+                <% end %>
+              </span>
+              <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || (params[:action] == "listings_home" && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" )||(params[:controller] == "accounts") || (params[:controller] == "items" && params[:action] == "new") %>
+                <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || ((params[:action] == "listings_home" or params[:action] == "new") && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" ) || (params[:controller] == "items" && params[:action] == "new") %>
+                  <span style="float: left;">
+                    <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" or (params[:controller] == "email_settings") %>
+                      <%= link_to 'Messages', inbox_messages_path %>
+                      <%= link_to 'My Listings', overview_items_path %>
+                      <%= link_to 'My Bookings', "/items/created_coming_gatherings"%>
+                      <%= link_to 'My Favorites', favorites_items_path %>
+                      <%= link_to('My Profile', profile_path(current_user.id)) %>
+                      <%= link_to "Account","/invitation" %>
+                    <% end %>
+                  <% end %>
+                </span>
+              <% end %>
+            <% else %>
+              <span style="float: left;">
+                <a href="/home/about">About</a>
+                <%= link_to('Signup', new_user_registration_path) %>
+              </span>
+            <% end %>
+            <br/><br/>
+          </div>
+        </div>
+      </div>
+      <div class="contentholder">        
+        <% if notice %>
+          <p class="notice" style="padding: 5px;width :95%;background-color:lightgreen;"><%= notice %></p>
+        <% end %>
+        <% if alert %>
+          <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= alert %></p>
+        <% end %>
+        <% if flash[:error] %>
+          <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= flash[:error] %></p>
+        <% end %>
+        <%= yield %>
+        <div class="clear"></div>
+      </div>
+      <div class="fltR footer mt30 mr100">
+        <a href="/home/feedback"><%= t(:popup_12) %></a>
+        <a href="/home/terms"><%= t(:terms) %></a>
+        <a href="/home/contact"><%= t(:contact) %></a>
+      </div>
+    </div>
+  </body>
+</html>
+<script type="text/javascript">
+  function addParamToUrl(param, value)
+  {
+  //check if param exists
+  var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
+  result = result && result[1] || "";
+  //added seperately to append ? before params
+  var loc = window.location;
+  var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
+  //param doesn't exist in url, add it
+  if (result == '')
+  {
+  //doesn't have any params
+  if (loc.search == '')
+  {
+  url += "?" + param + '=' + value;
+  }
+  else
+  {
+  url += "&" + param + '=' + value;
+  }
+  }
+  else
+  {
+  value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
+  value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
+  url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
+  }
+  //return the finished url
+  window.location = url;
+  }
+  function search_menu(){
+  $('#search_options').toggle();
+  };
+  function mini_drop(){
+  $('#mini_drop_options').toggle();
+  }
+  $(document).click(function(event) {
+  if($(event.target).hasClass("searchMenu") == true){
+  $('#search_options').show();
+  }
+  else{
+  if($('#search_options').is(":hidden") == false){
+  $('#search_options').hide();
+  }
+  }
+  });
+  $(document).click(function(event) {
+  if($(event.target).hasClass("searchdrop") == true){
+  $('#search_drop_options').show();
+  }
+  else{
+  if($('#search_drop_options').is(":hidden") == false){
+  $('#search_drop_options').hide();
+  }
+  }
+  });
+</script>

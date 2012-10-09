@@ -10,7 +10,12 @@
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended to check this file into your version control system.
-ActiveRecord::Schema.define(:version => 20120903081829) do
+#<<<<<<< HEAD
+#ActiveRecord::Schema.define(:version => 20120903081829) do
+#=======
+
+ActiveRecord::Schema.define(:version => 20121001115901) do
+#>>>>>>> d45bee8084fe1e42519dbf9d21b3f88c97fe0c5b
 
   create_table "accounts", :force => true do |t|
     t.datetime "created_at"
@@ -93,7 +98,7 @@ ActiveRecord::Schema.define(:version => 20120903081829) do
   create_table "invitations", :force => true do |t|
     t.integer  "user_id"
     t.string   "email"
-    t.string   "token" :null => false
+    t.string   "token", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -152,6 +157,10 @@ ActiveRecord::Schema.define(:version => 20120903081829) do
     t.boolean  "availablities_saturday"
     t.boolean  "availablities_sunday"
     t.boolean  "available_forever"
+    t.boolean  "display_on_home",                                                   :default => true
+    t.boolean  "is_active",                                                         :default => true
+    t.integer  "guest_commission_rate",                                             :default => 10
+    t.integer  "owner_commission_rate",                                             :default => 10
   end
 
   create_table "items_users", :id => false, :force => true do |t|
@@ -229,6 +238,7 @@ ActiveRecord::Schema.define(:version => 20120903081829) do
     t.boolean  "is_gathering"
     t.boolean  "is_captured",                       :default => false
     t.integer  "total_days"
+    t.boolean  "is_active",                         :default => true
   end
 
   create_table "payments", :force => true do |t|

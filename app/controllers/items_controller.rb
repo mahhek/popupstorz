@@ -330,7 +330,7 @@ class ItemsController < ApplicationController
     #    Items whose owners are active users
     active_items = []  
     @items.each do|item|
-      if item.user.is_active == true
+      if item.user.is_active == true && item.is_active == true
         active_items << item
       end
     end    
