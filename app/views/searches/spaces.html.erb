@@ -1,10 +1,10 @@
 <%= javascript_include_tag "items.js" %>
 <%= render :partial => "search_header" %>
-<%#*<script>%>
-<%#*$(document).ready(function() {%>
-<%#*$('.pagination a').attr('data-remote', 'true');%>
-<%#*});%>
-<%#*</script>%>
+<script>
+  $(document).ready(function() {
+    $('.pagination a').attr('data-remote', 'true');
+  });
+</script>
 <script type="text/javascript">
   $(function() {
     $('#search_from').datepicker(
@@ -17,7 +17,7 @@
         $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
       }});
 
-    $( "#amount-slider-range" ).slider({
+    $("#amount-slider-range").slider({
       range: true,
       min: <%= @start_price %>,
       max: <%= @last_price %>,
@@ -52,7 +52,7 @@
 <div class="clear"></div>
 <br/>
 
-<%= form_for :search, :url => "/search_spaces", :remote => true do|f| %>
+<%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
   <div style="width:99%;float: left; border: 1px solid;padding: 10px;">
     <div class="refinesearchresults">
       <div style="width:50%;float:left;">
@@ -78,7 +78,7 @@
       <label for="amount"><%= t(:price_range) %></label>
       <input type="text" id="amount" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
     <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
-    <%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
+    <%= form_tag "/search_spaces", {:remote => true, :method => :get } do %>
       <%= hidden_field_tag "min_price", "" %>
       <%= hidden_field_tag "max_price", "" %>
       <%= hidden_field_tag "min_size", "" %>
