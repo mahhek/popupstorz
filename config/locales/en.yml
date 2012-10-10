@@ -2,6 +2,10 @@ en:
    admin_panel: "Admin Panel" 
    logout: "Logout"
    hi: Hi
+   my_favorites: "My Favorites"
+   my_profile: "My Profile"
+   account: "Account"
+   search: "Search"
    deactivate: "Deactivate"
    activate: "Activate"
    change_all_commission_rates: "Change commision rate of all items"
@@ -10,6 +14,7 @@ en:
    gender_search: "Gender"
    fb_connected: "FB Connected"
    all_bookings: "Bookings"
+   my_bookings: "My Bookings"
    display_on_home: "Display on Home"
    done: "Done"
    increasing_price: "Increasing Price"
@@ -167,6 +172,8 @@ en:
    show_details: "Show Details"
    gatherings_you_have: "The Gatherings you have"
    fav_listings: "Favorite Listings"
+   my_listings: "My Listings"
+   
    location_show: "Location:"
    val: "Value:"
    serious: "Seriousness:"

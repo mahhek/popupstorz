@@ -125,12 +125,12 @@
                   <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
                 <% end %>
                 <% if current_user && current_user.admin? %>
-                  <%= link_to t("admin_panel"), admin_items_path %>
+                  <%= link_to t(:admin_panel), admin_items_path %>
                 <% end %>
                 <div style="float:left;" class='<%= (((params[:controller] == "items" and params[:action] == "search_keyword")  or params[:controller] == "searches" or (params[:controller] == "items" and params[:action] == "show")) ? "m_act" : "") %>'>
                   <div class="searchDropdown searchMenu" onclick="search_menu()">
                     <span class="searchMenu" >
-                      <%= 'Search' %>
+                      <%= t(:search) %>
                       <ul id="search_options" class="searchMenu">
                         <li class="searchMenu"><%= link_to t(:spaces3), "/searches/spaces" %></li>
                         <li class="searchMenu"><%= link_to t(:gatherings2),  "/searches/gatherings" %></li>
@@ -138,12 +138,12 @@
                       </ul>
                     </span>
                   </div>
-                  <%= link_to "Hi #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
+                  <%= link_to "#{t(:hi)} #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
                   <% messages_size = current_user.messages.are_to(current_user).unread.size %>
                   <% if messages_size > 0 %>
                     <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
                   <% end %>
-                  <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
+                  <%= link_to(t(:logout), destroy_user_session_path, :method => :delete) %>
                 </div>
               </span>
               <div divclass="clear"></div>
@@ -158,8 +158,8 @@
             <% else %> <!-- Test : if unauthorized -->
               <span id="bar-unauth" class="menubar-left">
                 <a href="/home/about" class="<%= (( params[:controller] == "home" && params[:action] == "about") ? "m_act" : "")%>">About</a>
-                <%= link_to 'Signup', new_user_registration_path, :class=>((( params[:controller] == "registrations" || params[:controller] == "devise/passwords" )&& params[:action] == "new") ? "m_act" : "")  %>
-                <a href="#" onclick="login_menu()">Login</a>
+                <%= link_to t(:signup), new_user_registration_path, :class=>((( params[:controller] == "registrations" || params[:controller] == "devise/passwords" )&& params[:action] == "new") ? "m_act" : "")  %>
+                <a href="#" onclick="login_menu()"><%= t(:login)%></a>
                 <div class="clear"></div>
                 <div id="loginpannel" class="loginpannel" style="margin-left: 179px;">
                   <% unless user_signed_in? %>
@@ -171,12 +171,12 @@
                         <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || ((params[:action] == "listings_home" or params[:action] == "new") && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" ) || (params[:controller] == "items" && params[:action] == "new") %>
                           <span style="float: left;">
                             <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" or (params[:controller] == "email_settings") %>
-                              <%= link_to 'Messages', inbox_messages_path %>
-                              <%= link_to 'My Listings', overview_items_path %>
-                              <%= link_to 'My Bookings', "/items/created_coming_gatherings"%>
-                              <%= link_to 'My Favorites', favorites_items_path %>
-                              <%= link_to('My Profile', profile_path(current_user.id)) %>
-                              <%= link_to "Account","/invitation" %>
+                              <%= link_to t(:messages), inbox_messages_path %>
+                              <%= link_to t(:my_listings), overview_items_path %>
+                              <%= link_to t(:my_bookings), "/items/created_coming_gatherings"%>
+                              <%= link_to t(:my_favorites), favorites_items_path %>
+                              <%= link_to t(:my_profile), profile_path(current_user.id) %>
+                              <%= link_to t(:account),"/invitation" %>
                             <% end %>
                           </span>
                         <% end %>
@@ -224,22 +224,22 @@
                 params[:controller] == "email_settings" 
             ) %>
             <span class="menu-sub" style="background-color: <%= (params[:controller] == 'messages' ) ? 'cyan' : '' %>">
-              <%= link_to 'Messages', inbox_messages_path %>
+              <%= link_to t(:messages), inbox_messages_path %>
             </span>
             <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
-              <%= link_to 'My Listings', overview_items_path %>
+              <%= link_to t(:my_listings), overview_items_path %>
             </span>
             <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
-              <%= link_to 'My Bookings', "/items/created_coming_gatherings"%>
+              <%= link_to t(:my_bookings), "/items/created_coming_gatherings"%>
             </span>
             <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
-              <%= link_to 'My Favorites', favorites_items_path %>
+              <%= link_to t(:my_favorites), favorites_items_path %>
             </span>
             <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
-              <%= link_to('My Profile', profile_path(current_user.id)) %>  
+              <%= link_to(t(:my_profile), profile_path(current_user.id)) %>  
             </span>
             <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
-              <%= link_to "Account","/invitation" %>
+              <%= link_to t(:account),"/invitation" %>
             </span>
           <% end %> <!-- End Test C -->
         </div>
