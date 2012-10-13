@@ -1,5 +1,4 @@
-<%= render "message_header" %>
-<div id="message_detail_div" style="width:700px;float:left;margin-top:10px;">
-  <%= render :partial => "messages", :locals => {:messages => @messages } %>
+<div id="message_detail_div" class="shadowCont message">
+	<%= render "message_header" %>
+	<%= render :partial => "messages", :locals => {:messages => @messages } %>
 </div>
-<%= will_paginate @messages %>
