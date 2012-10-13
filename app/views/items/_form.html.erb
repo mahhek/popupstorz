@@ -58,9 +58,9 @@
   <%= f.text_field :neighbourhood, :style => "width:315px;", :class => "input" %><br/>
 </div>
 
-<div class="xfields">
+<div class="xfields"><label>&nbsp;</label>
   <% if @map %>
-    <%= raw(@map.div(:width => 500, :height => 400, :class => "input")) %>
+    <%= raw(@map.div(:width => 500, :height => 400, :class => "input", :style => "margin-top: 10px;" )) %>
   <% end %>
 </div>
 

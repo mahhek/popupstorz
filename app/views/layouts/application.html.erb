@@ -26,7 +26,7 @@
     <%= stylesheet_link_tag "jquery-ui" %>
     <%= stylesheet_link_tag "ui.theme" %>
 
-<%#= javascript_include_tag "application" %>
+ 	 <%#= javascript_include_tag "application" %>
     <%= javascript_include_tag "jquery-ui" %>
     <%= javascript_include_tag "maps" %>
     <%= javascript_include_tag "all" %>
@@ -54,11 +54,7 @@
     <%= stylesheet_link_tag "jquery-ui" %>
     <%= stylesheet_link_tag "jquery.chosen" %> 
 
-<%#*<!-- CSS Old -->%>
-    <%= GMap.header(:with_vml => false, :host => request.host).html_safe %>
-    <%= raw(@map.to_html) if @map %>
-    <%= csrf_meta_tags %>
-    <%= javascript_include_tag "dg" %>
+    <%#= javascript_include_tag "dg" %>
     <%= yield(:head) %>
     <noscript>
       <style>
@@ -269,13 +265,13 @@
       $(document).ready(function() {
         $("input[hint]").hint();
         $("textarea[hint]").hint();
-        $('#loginpannel').toggle();
+        $('#loginpannel').hide();
       });
 	
       $(window).load(function() {
         $("input[hint]").hint();
         $("textarea[hint]").hint();
-        $('#loginpannel').toggle();
+        $('#loginpannel').hide();
         $('.notice').delay(3500).fadeTo("slow", 0.00, function(){
           $(this).slideUp("slow", function() {
             $(this).remove();
