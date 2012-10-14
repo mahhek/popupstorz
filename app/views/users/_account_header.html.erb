@@ -1,0 +1,11 @@
+<div class="submenu" style="font-size: 1.05em; margin-bottom: 20px;">
+
+    <%= link_to t(:send_invitation), invitation_path, :class => ((params[:controller] == "users" and ( params[:action] == "send_invitations" or params[:action] == "invitations" )) ? 'selected' : 'unselected') %>
+    <span class="separator"></span>
+    
+    <%= link_to t(:email_setting), "/email_settings/edit", :class => ((params[:controller] == "email_settings") ? 'selected' : 'unselected') %>
+    <span class="separator"></span>
+    
+    <%= link_to t(:delete_my_account),"/users/delete_account", :confirm => t(:delete_permanently), :class => 'unselected' %>
+
+</div>

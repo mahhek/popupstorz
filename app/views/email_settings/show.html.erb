@@ -1,47 +1,45 @@
-<div style="float: left;width: 100%;border: 1px solid black;padding: 5px;">
-  <h2> 
-     <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'send_invitation' or params[:action] == 'invitations') ? 'silver' : '' %>">
-      <%= link_to t(:send_invitation), invitation_path, :class => ((params[:controller] == "users" and ( params[:action] == "send_invitations" or params[:action] == "invitations" )) ? "m_act" : "") %>
-    </span>
-    <span style="float: left;padding: 5px">
-      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-    </span>
-    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'index' or params[:action] == 'new') ? 'silver' : '' %>">
-      <%= link_to t(:email_setting), email_settings_path, :class => ((params[:controller] == "email_settings" and ( params[:action] == "index" or params[:action] == "new" )) ? "m_act" : "") %>
-    </span>
-    <span style="float: left;padding: 5px">
-      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-    </span>
-    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'gatherings' or params[:action] == 'pending_gathering_acceptance') ? 'silver' : '' %>">
-      <%= link_to t(:delete_my_account),"/users/delete_account", :confirm => t(:delete_permanently) %>
-    </span>
-  </h2>
+<div class="shadowCont offer">
+	<!-- sub-Header -->
+	<%= render :partial => "users/account_header" %>
+	<div class="clear"></div>
+
+	<div style="overflow: auto;" id="invitation_div">
+			<div class="xfields"><b><%= t(:email_setting) %></b></div>
+	
+	
+		  <div class="xfields" style="line-height: 22px;">
+			  <%= check_box_tag :receive_person_message, '' ,@email_setting.receive_person_message %>
+			  <span><%= t(:received_msg_from_other) %></span>
+		  </div>
+		  
+		  <div class="xfields" style="line-height: 22px;">
+			  <%= check_box_tag :booking_request_update, '' ,@email_setting.booking_request_update %>
+			  <span><%= t(:outstanding_booking_request) %></span>
+		  </div>
+		  
+		  <div class="xfields" style="line-height: 22px;">
+			  <%= check_box_tag :receive_booking_request, '' ,@email_setting.receive_booking_request %>
+			  <span><%= t(:received_booking_request) %></span>
+		  </div>
+		  
+		  <div class="xfields" style="line-height: 22px;">
+			  <%= check_box_tag :upcoming_booking, '' ,@email_setting.upcoming_booking %>
+			  <span><%= t(:upcoming_bookings) %></span>
+		  </div>
+		  
+		  <div class="xfields" style="line-height: 22px;">
+			  <%= check_box_tag :new_review, '' ,@email_setting.new_review %>
+			  <span><%= t(:received_review) %></span>
+		  </div>
+		  
+		  <div class="xfields" style="line-height: 22px">
+			  <%= check_box_tag :review_required, '', @email_setting.review_required %>
+			  <span><%= t(:leave_review) %> </span>
+		  </div>
+		  
+		  <div class="xfields" style="margin-top: 17px;">
+		  	<%= link_to "Edit", "/email_settings/edit", :class=> "search", :style => "font-size: 16px; padding: 3px 20px;"  %> | 
+  			<%= link_to "Back", "/messages/inbox", :class=> "search", :style => "font-size: 16px; padding: 3px 20px;" %>
+		  </div>
+	</div>
 </div>
-<h1><%= t(:email_setting) %></h1>
-  <br /><br />
-  <%= check_box_tag :receive_person_message, '' ,@email_setting.receive_person_message %>
- <label><%= t(:received_msg_from_other) %></label>
-  <br /><br />
-  
-  <%= check_box_tag :booking_request_update, '' ,@email_setting.booking_request_update %>
-  <label><%= t(:outstanding_booking_request) %></label>
-  <br /><br />
-  
-  <%= check_box_tag :receive_booking_request, '' ,@email_setting.receive_booking_request %>
-  <label><%= t(:received_booking_request) %></label>
-  <br /><br />
-  
-  <%= check_box_tag :upcoming_booking, '' ,@email_setting.upcoming_booking %>
-  <label><%= t(:upcoming_bookings) %></label>
-  <br /><br />
-  
-  <%= check_box_tag :new_review, '' ,@email_setting.new_review %>
-  <label><%= t(:received_review) %></label>
-  <br /><br />
-  
-  <%= check_box_tag :review_required, '', @email_setting.review_required %>
-  <label><%= t(:leave_review) %> </label>
-  <br /><br />
-  
-  <%= link_to "Edit", "/email_settings/edit" %> | 
-  <%= link_to "Back", "/messages/inbox" %>
