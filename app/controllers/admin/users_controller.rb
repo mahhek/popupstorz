@@ -19,6 +19,8 @@ class Admin::UsersController < ApplicationController
       order_by = "country ASC"
     when "7"
       order_by = "show_fb_info"
+    when "8"
+      order_by = "last_name ASC"
     else
       order_by = "created_at DESC"
     end
@@ -80,7 +82,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def delete_message
-#    @messages = ActsAsMessageable::Message.all
+    #    @messages = ActsAsMessageable::Message.all
     @msg= ActsAsMessageable::Message.find_by_id(params[:id])
     @msg.destroy
     redirect_to all_messages_admin_users_path
@@ -96,25 +98,25 @@ class Admin::UsersController < ApplicationController
     redirect_to all_ratings_admin_users_path
   end
 
-  def send_invitation
-    @users = User.all
-  end
+#  def send_invitation
+#    @users = User.all
+#  end
 
-  def send_invitation_to_users
-    unless params[:user].blank?
-      params[:user][0].split(',').each do |val|
-        unless val.blank?
-        @invitation = Invitation.new
-        @invitation.user = current_user
-        @invitation.email = val
-        @invitation.token = (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
-        @invitation.save
-        UserMailer.send_invitation_email(@invitation).deliver
-        end
-      end
-    end    
-    redirect_to admin_items_path
-  end
+#  def send_invitation_to_users
+#    unless params[:user].blank?
+#      params[:user][0].split(',').each do |val|
+#        unless val.blank?
+#          @invitation = Invitation.new
+#          @invitation.user = current_user
+#          @invitation.email = val
+#          @invitation.token = (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
+#          @invitation.save
+#          UserMailer.send_invitation_email(@invitation).deliver
+#        end
+#      end
+#    end    
+#    redirect_to admin_items_path
+#  end
 
   def all_payments
     @payments = Payment.all
@@ -125,6 +127,21 @@ class Admin::UsersController < ApplicationController
     @payment.update_attribute(:cancelled_at, date.today)
     @payment.update_attribute(:is_active, !user.is_active)
     redirect_to all_payments_admin_users_path
+  end
+  
+  def send_invitations
+    (1..10).each do |i|
+      unless params["email"+"#{i}"].blank?
+        @invitation = Invitation.new
+        @invitation.user = current_user      
+        @invitation.email = params["email"+"#{i}"]
+        @invitation.token = (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
+        @invitation.save
+        UserMailer.send_invitation_email(@invitation).deliver
+      end
+    end
+    flash[:notice] = t(:invitation_sent)
+    redirect_to admin_users_path
   end
   
 end

@@ -31,7 +31,7 @@
       <%= t(:lives_in) %><%= @user.address1 %> <%= @user.address2 %> <%= @user.city %> <%= @user.country %>
       <br/>
     </div>
-    <button id="owner">transfer ownership</button>
+    <button id="owner"><%= t(:ownership) %></button>
     <div id="change_owner" style="display:none">
       <%=form_tag transfer_ownership_admin_items_path do |f|%>
         <%=hidden_field_tag "item_id", @item.id%>
@@ -68,13 +68,11 @@
     <div class="left-gray">
       <div id="space-details-txt"><%= raw @item.description %></div>
     </div>
-
   </div>
-
 
   <div id="right-widgets">
     <div class="blue-box">
-      <div id="price-x"><span class="font-24"><%=  @item.price %></span>&nbsp;<%= t(:euro_per_day) %> </div>
+      <div id="price-x"><span class="font-24"><%= @item.price %></span>&nbsp;<%= t(:euro_per_day) %> </div>
     </div>
   </div>
 
@@ -83,7 +81,7 @@
     <h3><%= t(:owner_rate)  %>: <%=@item.owner_commission_rate%> % </h3>
 
     <div class="btns">
-      <button id="fff"> <% t(:change_commision_rate) %> </button>|&nbsp;
+      <button id="fff"> <%= t(:change_commision_rate) %> </button>|&nbsp;
     </div>
     <div id="rate_form" style="display: none;">
       <%=form_tag change_commission_rate_admin_items_path do |f|%>
@@ -94,7 +92,7 @@
         <%= t(:set_guest_commission_rate) %>: <br/>
         <%=text_field_tag "owner_commission_rate", @item.owner_commission_rate%>%
         <br/>
-        <%=submit_tag "done"%>
+        <%= submit_tag t(:update) %>
       <%end%>
     </div>
   </div>
@@ -121,8 +119,6 @@
     </div>
   </div>
 </div>
-
-
 <script type="text/javascript">
   $('#fff').click(function() {
   $('#rate_form').toggle();
