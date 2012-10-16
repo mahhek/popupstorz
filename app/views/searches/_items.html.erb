@@ -1,35 +1,35 @@
 <% items.each do | item | %>
-	      	<div class="listx" 	style="border-bottom: 1px solid gray;">
-					<div class="row" style="float:left; width: 706px;padding: 5px;" onclick="window.location='<%= "/item/#{item.id}" %>'">
-			        <div class="imgx">
-						 <%#=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
-			          <% if item.avatars.size > 0 %>
-			            <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "178", :height => "119", :alt => "Space-Photo")  %>
-			          <% else %>
-			            NO IMAGE PROVIDED YET.
-			          <% end %>
-			        </div>
-		
-					  <div style="color: grey; float: right; font-size: 26px;text-align: right;"><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %><br>
-							<span class="perweek" style="font-size: 0.7em;">TODO by <%= item.time_for_unit_price %></span></div>
-			        
-			        <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
-			        
-			        <div class="name-list XXII" style="margin-bottom: 5px;"><%= item.address %></div>
-			
-			        <div class="name-list" style="margin-bottom: 5px;">
-			          <b>Price: </b>
-			          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/day,
-			          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/week,
-			          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
-			        </div>
-			         
-				     <div id="favorite_div_<%= item.id %>" style="margin-top: 17px; color: grey;">
-				     		<%= render :partial => "favorite", :locals => {:item => item} %>
-			        </div>
-			        <a class="info"></span>
-				     </a>
-					</div>
-					<div class="clear"></div>
-				</div>
-	  		<%end%>
+	<div class="listx" 	style="border-bottom: 1px solid gray;">
+		<div class="row" style="float:left; width: 706px;padding: 5px;" onclick="window.location='<%= "/item/#{item.id}" %>'">
+        <div class="imgx">
+			 <%#=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
+          <% if item.avatars.size > 0 %>
+            <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "178", :height => "119", :alt => "Space-Photo")  %>
+          <% else %>
+            NO IMAGE PROVIDED YET.
+          <% end %>
+        </div>
+
+		  <div style="color: grey; float: right; font-size: 26px;text-align: right;"><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %><br>
+				<span class="perweek" style="font-size: 0.7em;">TODO by <%= item.time_for_unit_price %></span></div>
+        
+        <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
+        
+        <div class="name-list XXII" style="margin-bottom: 5px;"><%= item.address %></div>
+
+        <div class="name-list" style="margin-bottom: 5px;">
+          <b>Price: </b>
+          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/day,
+          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/week,
+          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
+        </div>
+         
+	     <div id="favorite_div_<%= item.id %>" style="margin-top: 17px; color: grey;">
+	     		<%= render :partial => "favorite", :locals => {:item => item} %>
+        </div>
+        <a class="info"></span>
+	     </a>
+		</div>
+		<div class="clear"></div>
+	</div>
+<%end%>

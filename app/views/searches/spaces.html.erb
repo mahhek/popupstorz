@@ -4,32 +4,30 @@
 
 <div class="rightcontent shadowCont">
   <h2><%= t(:refine_search) %></h2>
-  <div class="pannelright">
-    <p>
-      <label for="amount"><%= t(:price_range) %></label>
-      <input type="text" id="amount" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
-    <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
-    <%= form_tag "/search_spaces", {:remote => true, :method => :get } do %>
-      <%= hidden_field_tag "min_price", "" %>
-      <%= hidden_field_tag "max_price", "" %>
-      <%= hidden_field_tag "min_size", "" %>
-      <%= hidden_field_tag "max_size", "" %>
-      <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '', :id => "searched_location" %>
-      <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '', :id => "searched_from" %>
-      <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '', :id => "searched_to" %>
-      <%= hidden_field_tag "sizes", !params[:sizes].blank? ? params[:sizes] : '' %>
-      <div class="pannelright">
-        <img class="closepannel" src="../assets/-.png" />
-        <div class="heading_right"><%= t(:shareable) %></div>
-        <div class="twocol">
-          <%= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
-        </div>
-      </div>
-
-      <div class="pannelright">
+  		<%= form_tag "/search_spaces", {:remote => true, :method => :get } do %>
+		      <%= hidden_field_tag "min_price", "" %>
+		      <%= hidden_field_tag "max_price", "" %>
+		      <%= hidden_field_tag "min_size", "" %>
+		      <%= hidden_field_tag "max_size", "" %>
+		      <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '', :id => "searched_location" %>
+		      <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '', :id => "searched_from" %>
+		      <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '', :id => "searched_to" %>
+		      <%= hidden_field_tag "sizes", !params[:sizes].blank? ? params[:sizes] : '' %>
+		      
+	   <div class="pannelright">
+	   	<img class="closepannel" src="../assets/-.png" />
+	   	
+	      <label class="heading_right" for="amount"><%= t(:price_range) %></label>
+	      <input type="text" id="amount" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
+			<div class="twocol">		   
+		   	<div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
+		   </div>
+	   </div>
+	   
+	   <div class="pannelright">
         <img class="closepannel" src="../assets/-.png" />
 
-        <label for="size"><%= t(:sizes) %><small><%= t(:sqmt) %></small>:</label>
+        <label class="heading_right" for="size"><%= t(:sizes) %><small><%= t(:sqmt) %></small>:</label>
         <input type="text" id="size" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
         <div class="twocol">
           <div id="sizes-slider-range" style="width: 90%;margin-left: 8px;"></div>
@@ -38,6 +36,7 @@
 
       <div class="pannelright">
         <img class="closepannel" src="../assets/-.png" />
+        
         <div class="heading_right"><%= t(:types) %></div>
         <div class="twocol">
           <% @types.each do |type| %>
@@ -46,10 +45,17 @@
           <% end %>
         </div>
       </div>
-
+      
+      <div class="pannelright">
+        <img class="closepannel" src="../assets/-.png" />
+        
+        <div class="heading_right"><%= t(:shareable) %></div>
+        <div class="twocol">
+          <%= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
+        </div>
+      </div>
+      
     <% end %>
-    </p>
-  </div>
 </div>
 
 <div class="leftcontent">

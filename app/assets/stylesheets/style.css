@@ -1092,3 +1092,19 @@ ul, li {
     font-size: 1.2em;
     font-family: XXII,Arial,Helvetica,sans-serif;
 }
+
+.ui-slider-horizontal {
+    height: 1.8em !important;
+}
+
+.ui-slider-horizontal .ui-slider-range {
+	background-color: cyan;	
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    top: -1.3em !important;
+}
+
+.ui-slider {
+	border-radius: 0 !important;
+}
