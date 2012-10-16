@@ -1,3 +1,4 @@
+<% unless items.blank? %>
 <% items.each do | item | %>
   <div class="resultsholder">
     <div class="price">
@@ -34,3 +35,6 @@
 <div class="resultsholder">
   <%= will_paginate(items, :renderer => PaginationListLinkRenderer) %>
 </div>
+<% else %>
+  <%= t(:no_item_listed) %>
+<% end %>
