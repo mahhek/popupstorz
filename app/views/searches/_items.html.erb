@@ -1,6 +1,6 @@
 <% items.each do | item | %>
-	<div class="listx" 	style="border-bottom: 1px solid gray;">
-		<div class="row" style="float:left; width: 706px;padding: 5px;" onclick="window.location='<%= "/item/#{item.id}" %>'">
+	<div class="listx" style="border-bottom: 1px solid gray;">
+		<div class="row" style="float:left; width: 732px;padding: 5px;" onclick="window.location='<%= "/item/#{item.id}" %>'">
         <div class="imgx">
 			 <%#=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
           <% if item.avatars.size > 0 %>

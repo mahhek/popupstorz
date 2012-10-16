@@ -22,6 +22,7 @@
 			<div class="twocol">		   
 		   	<div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
 		   </div>
+		   <div style="float: right; font-size: 0.8em;">max</div><div style="float: left; font-size: 0.8em;">min</div>
 	   </div>
 	   
 	   <div class="pannelright">
@@ -32,6 +33,7 @@
         <div class="twocol">
           <div id="sizes-slider-range" style="width: 90%;margin-left: 8px;"></div>
         </div>
+        <div style="float: right; font-size: 0.8em;">max</div><div style="float: left; font-size: 0.8em;">min</div>
       </div>
 
       <div class="pannelright">
@@ -63,7 +65,7 @@
 	 <div class="refinesearchresults shadowCont">
 	 	<h2 style="font-size: 21px;margin-bottom: 10px;">Spaces search</h2>
 	 	<div>
-		   <div style="width:37%;float:left;">
+		   <div style="width:40%;float:left;">
 		     <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
 		   </div>
 		   

@@ -293,12 +293,13 @@ body {
 
 .logo {
     float: left;
+    position: absolute;
 }
 
 .menubar {
     float: left;
     font-size: 12px;
-    padding-left: 47px;
+    padding-left: 210px;
     width: 810px;
 }
 
@@ -438,15 +439,15 @@ body {
     float: right;
     padding: 0 17px;
     position: relative;
-    right: 12px;
+    /*right: 12px;*/
     top: 20px;
     width: 207px;
 }
 
 .leftcontent {
     float: left;
-    margin-left: 10px;
-    width: 716px;
+    /*margin-left: 10px;*/
+    width: 742px;
 }
 
 .refinesearchresults {
@@ -574,7 +575,7 @@ body {
 
 .pannelright .heading_right {
     float: left;
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 0px;
     text-align: left;
     text-transform: uppercase;
