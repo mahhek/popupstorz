@@ -1,5 +1,10 @@
 @charset "utf-8";
 
+@font-face {
+    font-family: Proxima;
+    src: url(font/ProximaNova-Regular.otf);
+}
+
 * {
     margin: 0pt;
     padding: 0pt;
@@ -88,18 +93,21 @@ input[type="text"], input[type="email"], input[type="password"], input[type="fil
 
 body {
     background: none repeat scroll 0 0 #FFFFFF;
-    font-family: Arial,Helvetica,sans-serif;
+    font-family: Proxima,Arial,Helvetica,sans-serif;
 }
 
 .notice {
-	
-	text-align: center; 	
+	margin-bottom: 10px;
+	text-align: center; 
+	border: 2px solid black; 
 }
 
 .notice p {
 	padding: 5px;
 	margin: 0 auto;
-	width: 812px;
+	color: white;
+	font-weight: bold;
+
 }
 
 .shadowCont h1 {
@@ -119,7 +127,6 @@ body {
 
 .layout-center {
    text-align: center;
-   margin-top: 86px;
 }
 
 .menu-sub-layout {
@@ -132,6 +139,7 @@ body {
 .menu-sub {
 	border: 1px solid black;
    margin: 0 100px;	
+   padding: 2px 0;
 }
 
 .menu-sub a {
@@ -141,7 +149,6 @@ body {
 
 .home {
 	text-align: center;
-	margin-top: 86px;
 }
 
 .home .paris_hold input[type="text"] {
@@ -401,6 +408,7 @@ body {
     padding-bottom: 20px;
     width: 100%;
     min-height: 425px;
+    padding-top: 86px;
 }
 
 .header .contentholder {
@@ -415,12 +423,12 @@ body {
 	padding: 2px 13px;
 }
 
-.rightcontent {
-    box-shadow: 2px 2px 2px;
+.rightcontent { 
     float: right;
-    padding: 0pt 17px;
+    padding: 0 17px;
     position: relative;
-    right: 29px;
+    right: 12px;
+    top: 20px;
     width: 207px;
 }
 
@@ -432,8 +440,9 @@ body {
 
 .refinesearchresults {
     background-color: #FFFFFF;
-    box-shadow: 2px 2px 2px;
-    height: 60px;
+    height: 62px;
+    margin-top: 20px;
+    padding-top: 3px !important;
 }
 
 .refinesearchresults .area {
@@ -448,50 +457,49 @@ body {
 }
 
 .refinesearchresults input[type="text"] {
-    border: 1px solid #000000;
     float: left;
     font-size: 18px;
-    height: 32px;
-    margin-right: 22px;
-    margin-top: 14px;
+    height: 22px;
+    margin: 0 10px 0 0;
     width: 121px;
 }
 
 .refinesearchresults input[type="image"] {
-    margin: 16px;
+    margin: 1px;
 }
 
 .refinesearchresults span {
     float: left;
     font-size: 14px;
-    line-height: 62px;
+    line-height: 37px;
     margin-right: 7px;
 }
+
+
+
 
 .sortby {
     float: right;
     font-size: 12px;
     font-weight: bold;
-    margin-top: 12px;
+    margin-top: 5px;
     width: 100%;
 }
 
 .sortby span {
-    float: right;
     line-height: 28px;
     margin-right: 8px;
 }
 
 .sortby select {
-    float: right;
-    padding: 3px;
+    padding: 0px;
 }
 
 .resultsholderlist {
-    box-shadow: 2px 2px 2px;
     float: left;
     margin-top: 10px;
     width: 100%;
+    padding: 0px !important;
 }
 
 .resultsholder {
@@ -614,7 +622,7 @@ h2 {
 .fltR{float:right;}
 .leftArrow, .rightArrow{background:url(../assets/left_arrow.png) no-repeat;float:left; width:19px;height:29px;margin:64px 30px 0 30px;}
 .rightArrow{background:url(../assets/right_arrow.png) no-repeat !important;margin:64px 0 0 10px;}
-.gellaryHold{margin: 0 auto; width: 877px}
+.gellaryHold{margin: 0 auto;}
 .g_hold {
     background-color: #FFFFFF;
     box-shadow: 2px 2px 6px #333333;
@@ -683,7 +691,6 @@ h2 {
     position: absolute;
 }
 .searchDropdown ul li {
-    background-color: #CC33CC;
     float: left;
     width: 100%;
     line-height: 21px;
@@ -694,10 +701,11 @@ h2 {
 }
 .searchDropdown ul li a {
     padding: 5px 9px;
-    color: #fff;
+    color: #000;
 }
 .searchDropdown ul li:hover {
 	background-color: #000000;
+	color: white;
 }
 .searchDropdown:target ul {
     display: block;
