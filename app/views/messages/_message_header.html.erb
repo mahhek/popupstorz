@@ -5,7 +5,7 @@
   <%= link_to "Received", inbox_messages_path, 
   :style => "padding-right: 0;",
   :class => "#{params[:action] == 'inbox' ? 'selected' : 'unselected'}" %>
-  <span style="padding-right: 20px;">(<%= current_user.messages.are_to(current_user).unread.size %>)</span><span class="separator"></span>
+  <span style="padding-right: 20px;" class="<%= "#{params[:action] == 'inbox' ? 'selected' : 'unselected'}" %>" >(<%= current_user.messages.are_to(current_user).unread.size %>)</span><span class="separator"></span>
   
   <%= link_to "Sent" , sent_items_messages_path, 
   :class => "#{params[:action] == 'sent_items' ? 'selected' : 'unselected'}" %><span class="separator"></span>

@@ -5,6 +5,13 @@
     src: url(font/ProximaNova-Regular.otf);
 }
 
+@font-face {
+    font-family: XXII;
+    src: url(font/XXII-MARKER_Regular.otf);
+}
+
+
+
 * {
     margin: 0pt;
     padding: 0pt;
@@ -173,11 +180,11 @@ body {
 	margin: 0 auto;	
 }
 
-.submenu a.unselected:hover {
+.submenu .unselected:hover {
    color: #999999;
 }
 
-.submenu a.unselected {
+.submenu .unselected {
 	color: #BBBBBB;
 }
 
@@ -1075,4 +1082,9 @@ ul, li {
 	padding:10px;
 	font-weight:bold;
 	color: #F00880;
+}
+
+.XXII {
+    font-size: 1.2em;
+    font-family: XXII,Arial,Helvetica,sans-serif;
 }
