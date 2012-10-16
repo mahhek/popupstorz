@@ -50,25 +50,25 @@
 
       <%= link_to t(:all_listings), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:create_listings), new_admin_item_path %>&nbsp;|&nbsp;
-      <%= link_to t(:manage_listings), admin_items_path %>&nbsp;|&nbsp;
-
+      
       <%= link_to t(:all_bookings), admin_offers_path %>&nbsp;|&nbsp;
       <%= link_to t(:gatherings), "/admin_gatherings" %>&nbsp;|&nbsp;
 
-      <%= link_to t(:ownership), admin_items_path %>&nbsp;|&nbsp;
-      <%= link_to t(:commision), admin_items_path %>&nbsp;|&nbsp;
-      <%= link_to t(:specific_listing), admin_items_path %>&nbsp;|&nbsp;
+      
       <%= link_to t(:edit_listing), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:delete_users) , admin_users_path %>&nbsp;|&nbsp;
-      <%= link_to t(:delete_booking), admin_items_path %>&nbsp;|&nbsp;
+      
+      
       <%= link_to t(:delete_listing), "/delete_listings" %>&nbsp;|&nbsp;
-      <%= link_to t(:validate_guest), admin_items_path %>
-<%#= link_to t(:offers), admin_offers_path %>&nbsp;|&nbsp;
+      <%#= link_to t(:validate_guest), admin_items_path %>
+      
       <%= link_to t(:change_all_commission_rates), change_rate_admin_items_path %>&nbsp;|&nbsp;
       <%=  link_to t(:all_messages), all_messages_admin_users_path%>&nbsp;|&nbsp;
       <%=  link_to t(:all_ratings), all_ratings_admin_users_path%>&nbsp;|&nbsp;
       <%= link_to t(:send_message_to_all_users), send_to_all_admin_messages_path %>&nbsp;|&nbsp;
-      <%= link_to t(:send_invitation_to_users), send_invitation_admin_users_path %>
+      
+      <%= link_to t(:send_invitation_to_users), invitations_admin_users_path %>&nbsp;|&nbsp;
+      
       <%= link_to t(:all_payments), all_payments_admin_users_path %>
 
     </div>

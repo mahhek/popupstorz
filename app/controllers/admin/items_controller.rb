@@ -1,7 +1,6 @@
 # -*- encoding : utf-8 -*-
 class Admin::ItemsController < ApplicationController
-  before_filter :authenticate_admin
-  
+  before_filter :authenticate_admin  
   layout "admin"
   
   def index
@@ -26,6 +25,8 @@ class Admin::ItemsController < ApplicationController
       order_by = "size DESC"
     when "10"
       order_by = "maximum_members ASC"
+    when "11"
+      order_by = "title ASC"
     else
       order_by = "created_at DESC"
     end
@@ -129,7 +130,7 @@ class Admin::ItemsController < ApplicationController
       @item.owner_commission_rate = params[:owner_commission_rate]
     end
     @item.save
-    redirect_to admin_items_path
+    redirect_to admin_item_path(@item)
   end
 
   def change_rate

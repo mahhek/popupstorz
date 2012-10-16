@@ -4,7 +4,7 @@
 <div style="float:left;width: 100%;margin-bottom: 20px;margin-top: 20px;margin-left: 10px;">
   <%= form_for :search, :url => "/admin_items", :remote => true do|f| %>
     <span><%= t(:sort_by) %></span>  
-    <%= select_tag "sort_option", options_for_select([[t(:newest) ,"1"],[t(:oldest) ,"2"],[t(:increasing_price), "3"],[t(:decreasing_price), "4"],[t(:city_add), "5"],[t(:country_add), "6"],[t(:space_type), "7"],[t(:increasing_size), "8"],[t(:decreasing_size), "9"],[t(:search_shareable), "10"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).submit()" %>
+    <%= select_tag "sort_option", options_for_select([[t(:by_name) ,"11"],[t(:newest) ,"1"],[t(:oldest) ,"2"],[t(:increasing_price), "3"],[t(:decreasing_price), "4"],[t(:city_add), "5"],[t(:country_add), "6"],[t(:space_type), "7"],[t(:increasing_size), "8"],[t(:decreasing_size), "9"],[t(:search_shareable), "10"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).submit()" %>
   <% end %>
 </div>
 <div class="listx-bg" id="admin_items_list">
