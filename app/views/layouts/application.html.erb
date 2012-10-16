@@ -26,7 +26,7 @@
     <%= stylesheet_link_tag "jquery-ui" %>
     <%= stylesheet_link_tag "ui.theme" %>
 
- 	 <%#= javascript_include_tag "application" %>
+<%#= javascript_include_tag "application" %>
     <%= javascript_include_tag "jquery-ui" %>
     <%= javascript_include_tag "maps" %>
     <%= javascript_include_tag "all" %>
@@ -54,7 +54,7 @@
     <%= stylesheet_link_tag "jquery-ui" %>
     <%= stylesheet_link_tag "jquery.chosen" %> 
 
-    <%#= javascript_include_tag "dg" %>
+<%#= javascript_include_tag "dg" %>
     <%= yield(:head) %>
     <noscript>
       <style>
@@ -146,8 +146,8 @@
 
               <span id="bar-search" class="menubar-left" style="margin-left: 100px;">
                 <% if params[:controller] == "searches" %>
-                    <%#= link_to 'Members', members_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "members" or params[:action] == "search_members" )) ? "m_act" : "") %>
-                    <%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
+    <%#= link_to 'Members', members_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "members" or params[:action] == "search_members" )) ? "m_act" : "") %>
+    <%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
                 <% end %>
               </span>
 
@@ -163,21 +163,24 @@
                       <%= text_field_tag 'user[email]' %>
                       <%= password_field_tag 'user[password]' %>
                       <input type="submit" value="Login" />
-                      <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || (params[:action] == "listings_home" && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" )||(params[:controller] == "accounts") || (params[:controller] == "items" && params[:action] == "new") %>
-                        <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || ((params[:action] == "listings_home" or params[:action] == "new") && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" ) || (params[:controller] == "items" && params[:action] == "new") %>
-                          <span style="float: left;">
-                            <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" or (params[:controller] == "email_settings") %>
-                              <%= link_to t(:messages), inbox_messages_path %>
-                              <%= link_to t(:my_listings), overview_items_path %>
-                              <%= link_to t(:my_bookings), "/items/created_coming_gatherings"%>
-                              <%= link_to t(:my_favorites), favorites_items_path %>
-                              <%= link_to t(:my_profile), profile_path(current_user.id) %>
-                              <%= link_to t(:account),"/invitation" %>
-                            <% end %>
-                          </span>
-                        <% end %>
+                    <% end %>
+                  <% else %>
+                    <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || (params[:action] == "listings_home" && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" )||(params[:controller] == "accounts") || (params[:controller] == "items" && params[:action] == "new") %>
+                      <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || ((params[:action] == "listings_home" or params[:action] == "new") && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" ) || (params[:controller] == "items" && params[:action] == "new") %>
+                        <span style="float: left;">
+                          <% if params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" or (params[:controller] == "email_settings") %>
+                            <%= link_to t(:messages), inbox_messages_path %>
+                            <%= link_to t(:my_listings), overview_items_path %>
+                            <%= link_to t(:my_bookings), "/items/created_coming_gatherings"%>
+                            <%= link_to t(:my_favorites), favorites_items_path %>
+                            <%= link_to t(:my_profile), profile_path(current_user.id) %>
+                            <%= link_to t(:account),"/invitation" %>
+                          <% end %>
+                        </span>
                       <% end %>
                     <% end %>
+
+
                   <% end %>
                 </div>
               </span>
@@ -219,24 +222,26 @@
                 params[:controller] == "users"		|| 
                 params[:controller] == "email_settings" 
             ) %>
-            <span class="menu-sub" style="background-color: <%= (params[:controller] == 'messages' ) ? 'cyan' : '' %>">
-              <%= link_to t(:messages), inbox_messages_path %>
-            </span>
-            <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
-              <%= link_to t(:my_listings), overview_items_path %>
-            </span>
-            <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
-              <%= link_to t(:my_bookings), "/items/created_coming_gatherings"%>
-            </span>
-            <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
-              <%= link_to t(:my_favorites), favorites_items_path %>
-            </span>
-            <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
-              <%= link_to(t(:my_profile), profile_path(current_user.id)) %>  
-            </span>
-            <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
-              <%= link_to t(:account),"/invitation" %>
-            </span>
+            <% unless current_user.blank? %>
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'messages' ) ? 'cyan' : '' %>">
+                <%= link_to t(:messages), inbox_messages_path %>
+              </span>
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
+                <%= link_to t(:my_listings), overview_items_path %>
+              </span>
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
+                <%= link_to t(:my_bookings), "/items/created_coming_gatherings"%>
+              </span>
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
+                <%= link_to t(:my_favorites), favorites_items_path %>
+              </span>
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
+                <%= link_to(t(:my_profile), profile_path(current_user.id)) %>  
+              </span>
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
+                <%= link_to t(:account),"/invitation" %>
+              </span>
+            <% end %> <!-- End Test C -->
           <% end %> <!-- End Test C -->
         </div>
       <% end %> <!-- End Test B -->          
