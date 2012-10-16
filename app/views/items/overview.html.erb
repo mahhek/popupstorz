@@ -32,7 +32,7 @@
 			          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
 			        </div>
 			         
-			        <div style="margin-top: 22px; color: grey;">
+			        <div style="margin-top: 17px; color: grey;">
 				        <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
 				          Gathering : </b><%= offer.gathering_description %> 
 						  <%else%>	          

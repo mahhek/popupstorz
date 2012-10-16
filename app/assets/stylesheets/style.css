@@ -242,6 +242,10 @@ body {
 	cursor: pointer;
 }
 
+.row h4 {
+	font-size: 1.2em;	
+}
+
 .message .action {
 	border: 1px dashed transparent;	
 	background: none repeat scroll 0 0 #EEEEEE;
