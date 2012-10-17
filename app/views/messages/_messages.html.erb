@@ -1,7 +1,7 @@
 <% unless @messages.blank? %>
   <%= form_tag manage_messages_path, :name => "message_form" do %>
 
-    <div style="float: right;line-height: 20px; margin-bottom: 20px;" >
+    <div style="float: right;line-height: 20px; margin-bottom: 20px; font-size: 1.2em;" >
       <% if  params[:action] == "trash" %>
         <%= link_to "Move back to messages",  "#", :style =>  "background: none repeat scroll 0 0 #00DAFF;", :class => "action", :onclick => "checkListOfCheckBox('move_to_inbox');return false;" %>
         <%= link_to "Empty Trash", empty_trash_messages_path ,:class => "action", :confirm => "Are you sure you want to delete all messages?" %>

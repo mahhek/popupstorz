@@ -66,11 +66,11 @@ a.info:hover span {
 
    background: white;
 
-   color: green;
+   color: #666666;
    padding: 3px;
 
-   border: 1px solid grey;
-   border-left: 4px solid grey;
+   border: 1px solid #666666;
+   border-left: 4px solid #666666;
 }
 
 input[type="text"], input[type="email"], input[type="password"], input[type="file"], input[type="tel"], textarea {
@@ -196,7 +196,7 @@ body {
 }
 
 .submenu .unselected:hover {
-   color: #999999;
+   color: #666666;
 }
 
 .submenu .unselected {
@@ -206,7 +206,7 @@ body {
 .submenu {
 	text-align: center;
 	float: left;
-	font-weight: bold;
+	font-size: 1.3em;
 	line-height: 20px;
 }
 
@@ -223,8 +223,8 @@ body {
 }
 
 .menubar a {
-    /*float: left;*/
-    font-weight: bold;
+    /*float: left;
+    font-weight: bold;*/
     padding: 0 24px;
     /*text-transform: uppercase;*/
 }
@@ -237,7 +237,7 @@ body {
 }
 
 .message .body {
-	color: grey;
+	color: #666666;
 	margin: 10px;
 }
 
@@ -248,7 +248,7 @@ body {
    padding: 5px 10px;
    width: auto;	
    overflow: auto;
-   border: 1px solid #999999;
+   border: 1px solid #666666;
    font-size: 1em;
 }
 
@@ -258,13 +258,14 @@ body {
 }
 
 .row h4 {
-	font-size: 1.2em;	
+	font-size: 1.4em;
+	font-weight: normal;
+	color: #333333;
 }
 
 .message .action {
 	border: 1px dashed transparent;	
 	background: none repeat scroll 0 0 #EEEEEE;
-   font-weight: bold;
    padding: 2px 20px;	
 }
 
@@ -298,7 +299,7 @@ body {
 .sub-link {
 	font-size: 0.9em;
    font-weight: bold;
-   color: grey;	
+   color: #666666;	
 }
 
 .maincontainer {
@@ -448,6 +449,7 @@ body {
 
 #bar-useraction .menu-sub a {
 	padding: 2px 13px;
+	font-size: 1.4em;
 }
 
 .rightcontent { 
@@ -822,8 +824,8 @@ h2 {
 }
 
 .s_head{font-size:22px;font-weight:bold;}
-.reqInfo{color:#999999;margin:40px 0 5px 133px; font-weight: bold; font-size: 1.2em;}
-.info { font-size: 0.9em; color: grey; line-height: 29px;}
+.reqInfo{color:#666666;margin:40px 0 5px 133px; font-weight: bold; font-size: 1.2em;}
+.info { font-size: 0.9em; color: #666666; line-height: 29px;}
 .sign_up_input{}
 .sign_up_input label{float:left;width:120px; margin-right:10px;text-align:right;color:#000;font-weight:bold;line-height:29px;}
 .sign_up_input input{width:192px;margin-left: 3px; /*border:1px solid #666666;*/}
@@ -840,7 +842,7 @@ h2 {
 .back{font-size:14px;font-weight:bold;color:#333333;margin-top:10px;margin-bottom:10px;display:block;}
 .charming{font-size:20px;color:#333;font-weight:bold;}
 .charming_text{font-size:12px;color:#666;font-weight:bold;margin-top:2px;}
-.graytext{color:#999999 !important;}
+.graytext{color:#666666 !important;}
 .gallery{margin-top:10px;margin-left:-20px;float:left;}
 .size{font-size:14px;color:#333333;font-weight:bold;float:left;margin-right:10px;}
 .size_text{font-size:14px;color:#333333;float:left;}
