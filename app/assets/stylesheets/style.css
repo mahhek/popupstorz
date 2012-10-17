@@ -6,11 +6,24 @@
 }
 
 @font-face {
+    font-family: Proxima-bold;
+    src: url(font/ProximaNova-Bold.otf);
+}
+
+@font-face {
+    font-family: Proxima-light;
+    src: url(font/ProximaNova-Light.otf);
+}
+
+@font-face {
+    font-family: Proxima-semibold;
+    src: url(font/ProximaNova-Semibold.otf);
+}
+
+@font-face {
     font-family: XXII;
     src: url(font/XXII-MARKER_Regular.otf);
 }
-
-
 
 * {
     margin: 0pt;
@@ -101,6 +114,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="fil
 body {
     background: none repeat scroll 0 0 #FFFFFF;
     font-family: Proxima,Arial,Helvetica,sans-serif;
+    font-size: 14px;
 }
 
 .notice {
@@ -120,9 +134,10 @@ body {
 .shadowCont h1 {
 	font-size: 22px;
    margin-bottom: 20px;
+   font-family: Proxima;
 }
 .shadowCont p {
-	font-size: 0.9em;
+	font-size: 1em;
    margin-bottom: 10px;
 }
 
@@ -211,7 +226,7 @@ body {
     /*float: left;*/
     font-weight: bold;
     padding: 0 24px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
 }
 
 .message {
@@ -298,7 +313,7 @@ body {
 
 .menubar {
     float: left;
-    font-size: 12px;
+    /*font-size: 12px;*/
     padding-left: 210px;
     width: 810px;
 }
@@ -319,7 +334,7 @@ body {
     position: absolute;
     width: 100%;
     z-index: -10;
-    box-shadow: 0 -3px 7px #000000;
+    /*box-shadow: 0 -3px 7px #000000;*/
 }
 
 
@@ -798,7 +813,7 @@ h2 {
 .right .facebook{background:url(../assets/icon_sprit.png) no-repeat scroll 0 -45px transparent;}
 .right .google{background:url(../assets/icon_sprit.png) no-repeat scroll 0 -90px transparent;}
 .right .mail{background:url(../assets/icon_sprit.png) no-repeat scroll 0 -134px transparent;}
-.m_act{background:#fff; padding-bottom: 5px !important;}
+.m_act{background:#fff; /*padding-bottom: 5px !important;*/}
 .shadowCont {
     background-color: #FFFFFF;
     -webkit-box-shadow: 2px 2px 6px #333333;
@@ -807,10 +822,10 @@ h2 {
 }
 
 .s_head{font-size:22px;font-weight:bold;}
-.reqInfo{color:#999999;margin:40px 0 5px 133px; font-weight: bold; font-size: 1.1em;}
-.info { font-size: 0.8em; color: grey; line-height: 29px;}
+.reqInfo{color:#999999;margin:40px 0 5px 133px; font-weight: bold; font-size: 1.2em;}
+.info { font-size: 0.9em; color: grey; line-height: 29px;}
 .sign_up_input{}
-.sign_up_input label{float:left;width:120px; margin-right:10px;text-align:right;font-size:12px;color:#000;font-weight:bold;line-height:29px;}
+.sign_up_input label{float:left;width:120px; margin-right:10px;text-align:right;color:#000;font-weight:bold;line-height:29px;}
 .sign_up_input input{width:192px;margin-left: 3px; /*border:1px solid #666666;*/}
 .sign_up_input textarea{width:534px;float:left; /*border:1px solid #666666;*/ padding:2px 3px;}
 .day, .month, .year{float:left;margin-right:5px;border:1px solid #666;padding:3px;width:60px;}
@@ -851,7 +866,7 @@ h2 {
     margin: 0 auto;
     font-size: 20px;
     font-weight: bold;
-    
+    font-family: Proxima-semibold;
     padding: 5px 25px;}
 
 .pagination {
