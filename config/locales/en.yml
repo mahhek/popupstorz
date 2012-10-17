@@ -2,8 +2,8 @@ en:
    admin_panel: "Admin Panel" 
    logout: "Logout"
    hi: Hi
-   my_favorites: "My Favorites"
-   my_profile: "My Profile"
+   my_favorites: "Favorites"
+   my_profile: "Profile"
    account: "Account"
    search: "Search"
    deactivate: "Deactivate"
@@ -14,7 +14,7 @@ en:
    gender_search: "Gender"
    fb_connected: "FB Connected"
    all_bookings: "Bookings"
-   my_bookings: "My Bookings"
+   my_bookings: "Bookings"
    display_on_home: "Display on Home"
    done: "Done"
    increasing_price: "Increasing Price"
@@ -175,7 +175,7 @@ en:
    show_details: "Show Details"
    gatherings_you_have: "The Pop'unions you have"
    fav_listings: "Favorite Listings"
-   my_listings: "My Listings"
+   my_listings: "Listings"
    
    location_show: "Location:"
    val: "Value:"
