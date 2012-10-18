@@ -78,7 +78,25 @@ class Admin::UsersController < ApplicationController
 
 
   def all_messages
-    @messages = ActsAsMessageable::Message.all
+    case params[:sort_option]
+    when "1"      
+      order_by = "created_at DESC"
+    when "2"
+      order_by = "received_messageable_id ASC"
+    when "3"
+      order_by = "received_messageable_type ASC"
+    else
+      order_by = "created_at ASC"
+    end    
+    @messages = ActsAsMessageable::Message.all(:order => order_by)
+    respond_to do |format|
+      format.js do
+        foo = render_to_string(:partial => 'messages', :locals => {:messages => @messages }).to_json
+        render :js => "$('#admin_messages_list').html(#{foo});"
+      end
+      format.html
+    end
+    
   end
 
   def delete_message
@@ -98,25 +116,25 @@ class Admin::UsersController < ApplicationController
     redirect_to all_ratings_admin_users_path
   end
 
-#  def send_invitation
-#    @users = User.all
-#  end
+  #  def send_invitation
+  #    @users = User.all
+  #  end
 
-#  def send_invitation_to_users
-#    unless params[:user].blank?
-#      params[:user][0].split(',').each do |val|
-#        unless val.blank?
-#          @invitation = Invitation.new
-#          @invitation.user = current_user
-#          @invitation.email = val
-#          @invitation.token = (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
-#          @invitation.save
-#          UserMailer.send_invitation_email(@invitation).deliver
-#        end
-#      end
-#    end    
-#    redirect_to admin_items_path
-#  end
+  #  def send_invitation_to_users
+  #    unless params[:user].blank?
+  #      params[:user][0].split(',').each do |val|
+  #        unless val.blank?
+  #          @invitation = Invitation.new
+  #          @invitation.user = current_user
+  #          @invitation.email = val
+  #          @invitation.token = (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
+  #          @invitation.save
+  #          UserMailer.send_invitation_email(@invitation).deliver
+  #        end
+  #      end
+  #    end    
+  #    redirect_to admin_items_path
+  #  end
 
   def all_payments
     @payments = Payment.all
