@@ -1,11 +1,10 @@
-<% unless @item.blank? %>
   <div id="get-list-header">
     <h2><%= t(:all_ratings)%></h2>
   </div>
   <div class="listx-bg">
     <% unless @ratings.blank? %>
       <% @ratings.each do |rating| %>
-        <% @user=User.find_by_id(rating.user_id)%>
+        <% @user = User.find_by_id(rating.user_id)%>
         <% @item= Item.find_by_id(rating.rateable_id)%>
         <%= t(:rated_by) %>: <%= @user.first_name%> <%=@user.last_name%><br/>
         <%= t(:title_of_listing) %> : <%= @item.title %><br/>
@@ -32,11 +31,9 @@
           jQuery('#'+mode+'_ajax_loader').show();
         },
         success: function (response) {
-          jQuery("div #rating_of_item_<%= @item.id %>").html(response);
           jQuery('#'+mode+'_ajax_loader').hide();
 
         }
       });
     }
   </script>
-<% end %>
