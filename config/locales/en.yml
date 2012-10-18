@@ -26,6 +26,10 @@ en:
    by_name: "By Name"
    new_item: "New Item"
    update: "Update"
+   by_sender: "By Sender"
+   by_receiver: "By Receiver"
+   by_date: "By Date"
+   
    
    welcome_to_popup_storz: "Welcome to Popup Storz"
    popup: "PopUpStorz"

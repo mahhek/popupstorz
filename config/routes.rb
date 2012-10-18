@@ -139,6 +139,7 @@ PopupStorz::Application.routes.draw do
       collection do
         get :delete_message
         get :all_messages
+        post :all_messages
         get :all_ratings
         get :delete_rating
         get :send_invitation
