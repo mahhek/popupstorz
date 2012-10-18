@@ -5,35 +5,35 @@
 
 	<div style="overflow: auto;" id="invitation_div">
 		<%= form_for @email_setting,:url => "/email_settings/update/#{@email_setting.id}" do|f| %>
-			<div class="xfields"><b><%= t(:email_setting_update) %></b></div>
+			<div class="xfields"><%= t(:email_setting_update) %></div>
 	
 	
-		  <div class="xfields" style="line-height: 22px;">
+		  <div class="xfields" style="line-height: 22px;color: #666666;">
 			  <%= f.check_box :receive_person_message %>
 			  <span><%= t(:received_msg_from_other) %></span>
 		  </div>
 		  
-		  <div class="xfields" style="line-height: 22px;">
+		  <div class="xfields" style="line-height: 22px;color: #666666;">
 			  <%= f.check_box :booking_request_update %>
 			  <span><%= t(:outstanding_booking_request) %></span>
 		  </div>
 		  
-		  <div class="xfields" style="line-height: 22px;">
+		  <div class="xfields" style="line-height: 22px;color: #666666;">
 			  <%= f.check_box :receive_booking_request %>
 			  <span><%= t(:received_booking_request) %></span>
 		  </div>
 		  
-		  <div class="xfields" style="line-height: 22px;">
+		  <div class="xfields" style="line-height: 22px;color: #666666;">
 			  <%= f.check_box :upcoming_booking %>
 			  <span><%= t(:upcoming_bookings) %></span>
 		  </div>
 		  
-		  <div class="xfields" style="line-height: 22px;">
+		  <div class="xfields" style="line-height: 22px;color: #666666;">
 			  <%= f.check_box :new_review %>
 			  <span><%= t(:received_review) %></span>
 		  </div>
 		  
-		  <div class="xfields" style="line-height: 22px">
+		  <div class="xfields" style="line-height: 22px; color: #666666;">
 			  <%= f.check_box :review_required %>
 			  <span><%= t(:leave_review) %> </span>
 		  </div>

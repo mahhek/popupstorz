@@ -7,7 +7,7 @@
 	  <%= form_tag "send_invitation", :url => "/send_invitation" , :onsubmit => "return check_email();" do %>
 		 <%= hidden_field_tag :user_id, current_user.id %>
 		 
-		   <div class="xfields"><b><%= t(:send_invite) %></b></div>
+		   <div class="xfields"><%= t(:send_invite) %></div>
 		   <div class="xfields">
 		   	<%= text_field_tag "fname1", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
 		   	<%= text_field_tag "lname1", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>

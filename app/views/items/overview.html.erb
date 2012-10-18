@@ -20,7 +20,7 @@
 		
 					  <div style="color: #666666; float: right; font-size: 26px;text-align: right; font-family: Proxima-semibold;
     font-size: 2em;"><%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><br>
-		<span style="font-family: Proxima; font-size: 0.6em;">TODO by day</span></div>
+		<%if offer.is_gathering %><span style="font-family: Proxima; font-size: 0.6em;">per person</span><%end%></div>
 			        <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
 			        
 			        <div class="name-list XXII" style="margin-bottom: 5px;"><%= item.address %></div>
@@ -35,9 +35,9 @@
 			         
 			        <div style="margin-top: 17px; color: grey;">
 				        <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
-				          Gathering : </b><%= offer.gathering_description %> 
+				          Gathering : <%= offer.gathering_description %> 
 						  <%else%>	          
-				          Standard Gathering
+				          Standard Booking
 				        <%end%>
 			        </div>
 			        <a class="info"><%= offer.rental_start_date.strftime("%b. %d, %Y") %> - <%= offer.rental_end_date.strftime("%b. %d, %Y") %>

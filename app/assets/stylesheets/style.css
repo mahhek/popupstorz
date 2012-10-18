@@ -78,7 +78,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="fil
     border: 1px solid #DDDDDD;
     border-radius: 0.2em 0.2em 0.2em 0.2em;
     box-shadow: 0 1px 1px #FFFFFF, 0 1px 0 #BBBBBB inset;
-    font-size: 0.8em;
+    /*font-size: 0.8em;*/
     margin: 0.3em;
     outline: medium none;
     padding: 0.4em 0.5em 0.2em;
@@ -397,16 +397,14 @@ body {
    line-height: 32px;
    padding: 0 5px;
    width: 900px;
-   font-size: 0.9em;
 }
 
 .xfields label {
 	float: left;
-   font-weight: bold;
    text-align: right;
    width: 150px;
    margin-right: 10px;
-   color: gray;
+   color: black;
 }
 
 .xfields .input {
@@ -418,14 +416,13 @@ body {
 }
 
 .offer h2 {
-	font-size: 16px;
+	color: #333333;
+	font-size: 1.2em;
    margin: 23px 0 0;	
 } 
 
 .offer .policy {
-	color: gray;
-   font-size: 0.8em;
-   font-weight: bold;
+	color: #666666;
    line-height: 15px;
    margin-left: 5px;
    width: 96%;
@@ -592,7 +589,6 @@ body {
 
 .pannelright .heading_right {
     float: left;
-    font-size: 16px;
     margin-bottom: 0px;
     text-align: left;
     text-transform: uppercase;
@@ -606,7 +602,7 @@ h2 {
 
 .twocol {
     float: left;
-    font-size: 10px;
+    font-size: 0.9em;
     text-align: left;
     width: 100%;
 }
@@ -867,8 +863,7 @@ h2 {
     */
     margin: 0 auto;
     font-size: 20px;
-    font-weight: bold;
-    font-family: Proxima-semibold;
+    font-family: Proxima-bold;
     padding: 5px 25px;}
 
 .pagination {

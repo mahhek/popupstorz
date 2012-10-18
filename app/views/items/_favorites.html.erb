@@ -12,7 +12,7 @@
 			        </div>
 		
 					  <div style="color: grey; float: right; font-size: 26px;text-align: right;"><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><%=  item.time_for_unit_price %><br>
-		<span style="font-size: 0.7em;">TODO by day</span></div>
+		<span style="font-size: 0.7em;">by day</span></div>
 			        <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
 			        
 			        <div class="name-list XXII" style="margin-bottom: 5px;"><%= item.address %></div>
@@ -24,15 +24,16 @@
 			          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
 			        </div>
 			         
-			        <div style="margin-top: 17px; color: grey;">
-				        
+			        <div style="margin-top: 41px; color: grey;">
+				        <%= link_to t(:remove_favorite), remove_from_favorite_on_item_path(item), :remote => true, :style => "float: right; color: #CC33CC;" %>
 			        </div>
 					</div>
 					<div style="float: left;text-align: center; width: 15.7%;">
 							<div style="margin-top: 55px;">
 				          
 				          </div>
-				      	<%= link_to (:remove_favorite), remove_from_favorite_on_item_path(item), :remote => true %>
+				         TODO <br />
+				         <%= link_to "Book it", nil, :remote => true, :class => "search" %>
 					</div>
 					<div class="clear"></div>
 				</div>

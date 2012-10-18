@@ -67,7 +67,7 @@
 <div class="xfields"><label><%= t(:size) %></label>
   <%= f.text_field :size, :style => "width:80px;", :onchange => "update_units()", :class => "input" %>
   <%= select_tag "item[size_unit]", options_for_select([["SQMT","SQMT"],["SQFT","SQFT"]], @item.size_unit),:onchange => "update_units()" , :style => "width:100px; margin: 6px;", :class => "input"%>
-  <div id="other_unit" class="input" style="display: bloc-inline;"> = <%= t(:sqft) %></div>
+  <div id="other_unit" class="input" style="display: bloc-inline; color: #666666;"> = <%= t(:sqft) %></div>
 </div>
 
 <div class="xfields"><label><%= t(:type) %></label>
@@ -99,8 +99,8 @@
 
 <div class="xfields"><label>&nbsp;</label>
   <div class="input" >
-  		<span>Gatherings are allowed in this place</span><span>What is a gathering?</span><br /> 
-    	<%= select_tag "item[is_shareable]", options_for_select([["Yes",true],["No",false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)", :class => "input" %>
+  		<span>Gatherings are allowed in this place</span> <a style="color: #666666;"> TODO What is a gathering?</a><br /> 
+    	TODO radio_button_tag  <%= select_tag "item[is_shareable]", options_for_select([["Yes",true],["No",false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)", :class => "input" %>
     	&nbsp;Maximum number of members per gathering: &nbsp;
     	<%= f.text_field :maximum_members, :size => "5" %> persons
   </div>
@@ -114,15 +114,15 @@
   </span>
 </div>
   
-<div class="xfields" style="margin: 20px 0;"><label>Rental Price</label>
+<div class="xfields" style="margin: 20px 0;"><label>Rental price</label>
   <span>
     <%= f.text_field :price,  :class => "price", :size =>""%> <span class="unit">$</span> per day
     <%= f.text_field :price_per_week,  :class => "price",:size =>""  %> <span class="unit">$</span> per week
     <%= f.text_field :price_per_month,  :class => "price",:size =>"" %> <span class="unit">$</span> per month
-  </span>
+  </span><br /><span style="color: #666666; margin-left: 362px; margin-top: -12px; position: absolute;">If you wish, you can apply a lower rate for weekly or monthly rentals</span>
 </div>
 
-<div class="xfields"><label>Cleaning Fee</label>
+<div class="xfields"><label>Cleaning fee</label>
   <span>
     <%= f.text_field :cleaning_fee, :class => "input" %> <span class="unit"> $</span>
 <!--    <%= select_tag "item[cleaning_fee]", options_for_select([["$","$"],["€","€"]], @item.cleaning_fee) %>&nbsp;&nbsp; -->
@@ -141,7 +141,7 @@
 <div class="xfields"><label>&nbsp;</label>
 	<div class="input" style="width: 80%;"><span>The cancellation policy for this place is:</span><span>TODO check out our full cancellation policies</span><br/>
 	<%=f.radio_button :cancellation_policy_flexible, true, :class => "input" %><div class="input policy">
-		<span style="color: black; font-size: 1.2em; margin: 5px 0;">Flexible</span><br/><br/>
+		<span style="color: black; margin: 5px 0;">Flexible</span><br/><br/>
 		If renter cancels more than 7 days before booking start date: full refund<br/>
 		If renter cancels less than 7 days before booking start date: no refund<br/><br/>
 		
@@ -152,7 +152,7 @@
 		If renter has done a booking for an amount of 110 € and cancels more than 7 days before booking start date, the amount of the refund will be 100 €.<br/><br/>
 		</div>
 	<%=f.radio_button :cancellation_policy_flexible, false, :class => "input" %> <div class="input policy">
-		<span style="color: black; font-size: 1.2em; margin: 5px 0;">SemiFlexible</span><br/><br/>
+		<span style="color: black; margin: 5px 0;">SemiFlexible</span><br/><br/>
 		If renter cancels more than 3 days before booking start date: partial refund (50%)<br/>
 		If renter cancels less than 3 days before booking start date: no refund<br/><br/>
 		
