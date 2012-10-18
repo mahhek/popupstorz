@@ -35,15 +35,16 @@
     <%= javascript_include_tag "elastislide" %>
     <%= javascript_include_tag "gallery" %>
 
-    <%= csrf_meta_tags %>
-    <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
-
     <!-- CSS TACTfactory -->    
     <%= stylesheet_link_tag "jquery.chosen" %> 
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->
     <link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->
 
     <%= yield(:head) %>
+    
+    <%= csrf_meta_tags %>
+    <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
+    
     <noscript>
       <style>
         .es-carousel ul{
@@ -102,15 +103,23 @@
             <% if user_signed_in? %>
               <span id="bar-navigate" class="menubar-left">
                 <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
-
-                <%= link_to t(:dashboard), inbox_messages_path, :class => ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : ""), :style => "float: left; padding-bottom: 5px;" %>                
-                <% messages_size = current_user.messages.are_to(current_user).unread.size %>
-                <% if messages_size > 0 %>
-                  <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
-                <% end %>
-                <% if current_user && current_user.admin? %>
-                  <%= link_to t(:admin_panel), admin_items_path %>
-                <% end %>
+					 <span class="<%= ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : "") %>" style="float: left; padding-bottom: 5px;">
+	                <%= link_to t(:dashboard), inbox_messages_path, :style => "padding-right: 0;" %>
+	                
+	                <% messages_size = current_user.messages.are_to(current_user).unread.size %>
+		             <% if messages_size > 0 %>
+		             	<%= link_to messages_size.to_s, inbox_messages_path, :style=>["border: 1px solid; margin-right: 22px; min-width: 18px; padding: 0px 3px; text-align: center;"] %>
+		             <% end %>       
+                </span>
+                <span style="float: right;">
+						 <%= link_to "#{t(:hi)} #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
+	
+	                <%= link_to t(:logout), destroy_user_session_path, :method => :delete %>                
+	                
+	                <% if current_user && current_user.admin? %>
+			          	<%= link_to t(:admin_panel), admin_items_path %>
+			          <% end %>     
+                </span>
                 <div style="float:left;" class='<%= (((params[:controller] == "items" and params[:action] == "search_keyword")  or params[:controller] == "searches" or (params[:controller] == "items" and params[:action] == "show")) ? "m_act" : "") %>'>
                   <div class="searchDropdown searchMenu" onclick="search_menu()">
                     <span class="searchMenu" >
@@ -122,12 +131,6 @@
                       </ul>
                     </span>
                   </div>
-                  <%= link_to "#{t(:hi)} #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
-                  <% messages_size = current_user.messages.are_to(current_user).unread.size %>
-                  <% if messages_size > 0 %>
-                    <%= link_to "("+ messages_size.to_s+")", inbox_messages_path, :style=>["padding-left: 2px;text-align: left !important;"] %>
-                  <% end %>
-                  <%= link_to(t(:logout), destroy_user_session_path, :method => :delete) %>
                 </div>
               </span>
               <div divclass="clear"></div>
@@ -254,11 +257,11 @@
     </div>
     <%= render :partial => "/layouts/social_medias" %>
     <script type="text/javascript">    
-      $(document).ready(function() {
+      /*$(document).ready(function() {
         $("input[hint]").hint();
         $("textarea[hint]").hint();
         $('#loginpannel').hide();
-      });
+      });*/
 	
       $(window).load(function() {
         $("input[hint]").hint();
@@ -299,11 +302,11 @@
       }
 	
       function search_menu(){
-        $('#search_options').toggle();
+        $('#search_options').toggle("slow");
       }
 	  
       function login_menu(){
-        $('#loginpannel').toggle();
+        $('#loginpannel').toggle("slow");
       }
 	
       $(document).click(function(event) {  
@@ -320,6 +323,7 @@
       function mini_drop(){
         $('#mini_drop_options').toggle();
       }
+      
       $(document).click(function(event) {
         if($(event.target).hasClass("searchMenu") == true){
           $('#search_options').show();

@@ -1,7 +1,6 @@
 <%= render :partial => "search_header" %>
 <div class="clear"></div>
 
-
 <div class="rightcontent shadowCont" style="padding: 5px 20px 20px;">
   <h2 style="font-size: 1.4em; font-weight: normal;"><%= t(:refine_search) %></h2>
   		<%= form_tag "/search_spaces", {:remote => true, :method => :get } do %>
@@ -95,10 +94,7 @@
   </div>
 </div>
 
-
 <%= javascript_include_tag "items.js" %>
-
-
 <script type="text/javascript">
   $(document).ready(function() {
     $('.pagination a').attr('data-remote', 'true');
