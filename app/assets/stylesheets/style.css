@@ -85,6 +85,18 @@ input[type="text"], input[type="email"], input[type="password"], input[type="fil
     width: 10em;
 }
 
+#logo {
+	display: block;
+	width: 94px;
+	height: 33px;
+	background: url('../assets/listaspace.png') top;
+	text-indent: -99999px;
+}
+	
+#logo:hover {
+	background-position: 0 bottom;
+}
+
 .ui-widget {
 	font-size: 0.7em !important;	
 }
@@ -289,7 +301,7 @@ body {
 
 .menubar-left {
 	float: left;
-	line-height: 37px;	
+	line-height: 32px;	
 }
 
 #bar-unauth a {
@@ -441,10 +453,17 @@ body {
 }
 
 #bar-useraction .menu-sub {
-    margin: 0 20px;
+    display: inline-block;
+    line-height: 20px;
+    margin: 15px 20px;
 }
 
-#bar-useraction .menu-sub a {
+#bar-searchaction .menu-sub {
+    display: inline-block;
+    line-height: 20px;
+}
+
+#bar-useraction .menu-sub a, #bar-searchaction .menu-sub a {
 	padding: 2px 13px;
 	font-size: 1.4em;
 }

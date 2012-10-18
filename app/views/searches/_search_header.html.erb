@@ -1,4 +1,4 @@
-<div class="menu-sub-layout" >
+<div id="bar-searchaction" class="menu-sub-layout" >
     <span class="menu-sub" style="background-color: <%= ((params[:action] == "search_keyword") or params[:action] == 'spaces' or params[:action] == 'search_spaces') ? 'cyan' : '' %>">      
       <%= link_to 'Spaces', spaces_searches_path #, :class => ( ( (params[:action] == "search_keyword") ||  (params[:controller] == "searches" &&  (params[:action] == "spaces" || params[:action] == "search_spaces" )) ) ? "m_act" : "")
       %>
