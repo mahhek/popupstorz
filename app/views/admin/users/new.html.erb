@@ -1,7 +1,7 @@
 <div class="leftcontent">
   <div class="shadowCont" style="float: left;">
     <div class="s_head">Create User</div>
-    <%= form_for [:admin,@user], :multipart => true do |f| %>
+    <%= form_for [:admin,@user],:url => "/admin/users/create", :multipart => true do |f| %>
 
       <div class="reqInfo"><%= t(:required_info) %></div>
       <div class="newPaperclipFiles" style="margin-left: 128px;">

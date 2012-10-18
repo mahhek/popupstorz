@@ -1,0 +1,21 @@
+<div id="get-list-header">
+  <h2><%= t(:all_feedbacks)%></h2>
+</div>
+<div class="listx-bg">
+  <% unless @comments.blank? %>
+    <% @comments.each do |comment| %>
+      <% if comment.commentable_type == "Offer" %>
+        <% @offer = Offer.find_by_id(comment.commentable_type) %>
+        <%= t(:title) %>: <%= comment.title %><br />
+        <%= t(:comment) %>: <%= raw comment.comment %><br />
+        <%= t(:commented_by) %>: <%= comment.user.first_name %> <%= comment.user.last_name %><br/>
+        
+        <%=link_to t(:delete_comment), delete_comment_admin_users_path(:id => comment.id), :confirm => "Are you sure!" %><br/>
+
+      <% end %>
+      <br/><br/><br/>
+    <%end%>
+  <%else%>
+    <%= t(:no_comments) %>
+  <%end%>
+</div>

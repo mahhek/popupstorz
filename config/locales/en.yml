@@ -29,7 +29,7 @@ en:
    by_sender: "By Sender"
    by_receiver: "By Receiver"
    by_date: "By Date"
-   
+   all_feedbacks: "All Feedbacks"
    
    welcome_to_popup_storz: "Welcome to Popup Storz"
    popup: "PopUpStorz"

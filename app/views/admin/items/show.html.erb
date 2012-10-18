@@ -36,7 +36,7 @@
       <%=form_tag transfer_ownership_admin_items_path do |f|%>
         <%=hidden_field_tag "item_id", @item.id%>
         <%= select_tag( "user_id", options_from_collection_for_select( @users, :id, :first_name), :prompt => "select owner", :class => "paris") %>
-        <%=submit_tag "done"%>
+        <%= submit_tag t(:done) %>
       <%end%>
     </div>
   </div>

@@ -38,13 +38,15 @@ class Admin::UsersController < ApplicationController
     @user = User.new
   end
 
-  def create    
+  def create
     @user = User.new(params[:user])
     @user.skip_confirmation!
     if @user.save
       UserMailer.send_user_information(@user).deliver
-    end
-    redirect_to admin_items_path
+      redirect_to admin_users_path
+    else
+      render :new
+    end    
   end
 
   def show
@@ -64,10 +66,11 @@ class Admin::UsersController < ApplicationController
     end
     if @user.update_attributes(params[:user])
       flash[:notice] = "User updated successfully!"
+      redirect_to admin_users_path
     else
-      flash[:notice] = "User can't be updated. Please try again or later!"
-    end
-    redirect_to admin_users_path
+      flash[:error] = "User can't be updated. Please try again or later!"
+      render :edit
+    end    
   end
 
   def destroy_user
@@ -95,8 +98,7 @@ class Admin::UsersController < ApplicationController
         render :js => "$('#admin_messages_list').html(#{foo});"
       end
       format.html
-    end
-    
+    end    
   end
 
   def delete_message
@@ -106,6 +108,10 @@ class Admin::UsersController < ApplicationController
     redirect_to all_messages_admin_users_path
   end
 
+  def all_feedbacks
+    @comments = Comment.all
+  end
+  
   def all_ratings
     @ratings = Rating.all
   end
@@ -114,6 +120,12 @@ class Admin::UsersController < ApplicationController
     @rating = Rating.find_by_id(params[:id])
     @rating.destroy
     redirect_to all_ratings_admin_users_path
+  end
+  
+  def delete_rating
+    @comment = Comment.find_by_id(params[:id])
+    @comment.destroy
+    redirect_to all_comments_admin_users_path
   end
 
   #  def send_invitation
