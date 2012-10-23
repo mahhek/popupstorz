@@ -17,7 +17,7 @@
       </span>
     </div>
     <div>
-      <%=form_tag display_on_home_admin_items_path do |f|%>
+      <%= form_tag display_on_home_admin_items_path do |f|%>
         <%= hidden_field_tag "new_item_id", @item.id%>
         <%= check_box_tag "item_id", @item.id, @item.display_on_home%>
         <%= t(:display_on_home) %>
@@ -32,10 +32,10 @@
       <br/>
     </div>
     <button id="owner"><%= t(:ownership) %></button>
-    <div id="change_owner" style="display:none">
+    <div id="change_owner" style="display:none;width:120px !important;">
       <%=form_tag transfer_ownership_admin_items_path do |f|%>
-        <%=hidden_field_tag "item_id", @item.id%>
-        <%= select_tag( "user_id", options_from_collection_for_select( @users, :id, :first_name), :prompt => "select owner", :class => "paris") %>
+        <%= hidden_field_tag "item_id", @item.id%>
+        <%= select_tag( "user_id", options_from_collection_for_select( @users, :id, :first_name), :prompt => "select owner", :class => "paris", :style => "120px !important") %>
         <%= submit_tag t(:done) %>
       <%end%>
     </div>
@@ -120,11 +120,27 @@
   </div>
 </div>
 <script type="text/javascript">
+  $("#user_id").chosen();
+  
   $('#fff').click(function() {
-  $('#rate_form').toggle();
+    $('#rate_form').toggle();
   });
-
+  
   $('#owner').click(function() {
-  $('#change_owner').toggle();
+    $('#change_owner').toggle();
   });
 </script>
+<style>  
+  #user_id_chzn {
+    width: 200px !important;
+  }
+  
+  .chzn-drop{
+    width: 198px !important;
+  }
+  
+  .chzn-search{
+    width: 190px !important;
+  }
+  
+</style>
