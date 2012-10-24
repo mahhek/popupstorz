@@ -104,7 +104,7 @@ class Admin::ItemsController < ApplicationController
   def transfer_ownership
     @item = Item.find_by_id(params[:item_id])
     @item.update_attribute(:user_id,params[:user_id])
-    redirect_to :back   
+    redirect_to :back
   end
 
   def display_on_home

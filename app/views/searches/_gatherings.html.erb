@@ -12,7 +12,7 @@
         </div>
 
 		  <div style="color: grey; float: right; font-size: 26px;text-align: right;"><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %><br>
-				<span class="perweek" style="font-size: 0.7em;">TODO by <%= item.time_for_unit_price %></span></div>
+                    <span class="perweek" style="font-size: 0.7em;"><%= t(:by) %> <%= item.time_for_unit_price %></span></div>
         
         <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
         

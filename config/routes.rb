@@ -220,7 +220,7 @@ PopupStorz::Application.routes.draw do
       end
     end
   end
-
+  
   match '/users/:id/profile' => 'users#show', :as => :profile
   root :to => "home#index"
 end

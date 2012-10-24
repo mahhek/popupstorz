@@ -80,25 +80,25 @@
   <%= f.text_area :description, :size => "50x12", :class => "input", :style => "font-size: 1em; width: 715px;" %>
 </div>
 
-<h2>AVAILABILITIES</h2>
+<h2><%= t(:availablilities) %></h2>
 
 <div class="xfields"><label>&nbsp;</label>
   <div class="input">
-    <span>This place is TODO</span><br /> 
+    <%#*<span>This place is TODO</span><br />%>
     <span><%= t(:available_from) %></span>    
     <%= f.text_field :availability_from %>
     <span><%= t(:available_to) %></span>
     <%= f.text_field :availability_to %>
     <br />
-    <%=f.check_box :availablities_daytime %><span>Daytime</span>
-    <%=f.check_box :availablities_evenings %><span>Evenings</span><br/>
-    <%=f.check_box :availablities_monday %><span>Mondays</span>
-    <%=f.check_box :availablities_tuesday %><span>Tuesdays</span>
-    <%=f.check_box :availablities_wednesday %><span>Wednesdays</span>
-    <%=f.check_box :availablities_thursday %><span>Thursdays</span>
-    <%=f.check_box :availablities_friday %><span>Fridays</span>
-    <%=f.check_box :availablities_saturday %><span>Saturdays</span>
-    <%=f.check_box :availablities_sunday %><span>Sundays</span>
+    <%=f.check_box :availablities_daytime %><span><%= t(:daytime) %></span>
+    <%=f.check_box :availablities_evenings %><span><%= t(:evenings) %></span><br/>
+    <%=f.check_box :availablities_monday %><span><%= t(:mondays) %></span>
+    <%=f.check_box :availablities_tuesday %><span><%= t(:tuesdays) %></span>
+    <%=f.check_box :availablities_wednesday %><span><%= t(:wednesdays) %></span>
+    <%=f.check_box :availablities_thursday %><span><%= t(:thursdays) %></span>
+    <%=f.check_box :availablities_friday %><span><%= t(:fridays) %></span>
+    <%=f.check_box :availablities_saturday %><span><%= t(:saturdays) %></span>
+    <%=f.check_box :availablities_sunday %><span><%= t(:sundays) %></span>
   </div>
 </div>
 
@@ -106,19 +106,21 @@
 
 <div class="xfields"><label>&nbsp;</label>
   <div class="input" >
-    <span>Gatherings are allowed in this place</span> <a style="color: #666666;"> TODO What is a gathering?</a><br /> 
-    TODO <%= select_tag "item[is_shareable]", options_for_select([["Yes",true],["No",false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)", :class => "input" %>
+    <span><%= t(:gathering_allowed_at_place) %></span>
+    <a style="color: #666666;"><%= t(:what_is_gathering) %></a>
+    <br /> 
+    <%= select_tag "item[is_shareable]", options_for_select([[t("Yes"),true],[t("No"),false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)", :class => "input" %>
     &nbsp;
-    Maximum number of members per gathering: &nbsp;
-    <%= f.text_field :maximum_members, :size => "5" %> persons
+    <%= t(:maximum_allowed_persons) %>: &nbsp;
+    <%= f.text_field :maximum_members, :size => "5" %> <%= t(:persons) %>
   </div>
 </div>
 
-<h2>PRINCING</h2>
+<h2><%= t(:pricing) %></h2>
 
-<div class="xfields"><label>Currency</label>
+<div class="xfields"><label><%= t(:currency) %></label>
   <span>
-    <%= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EUR","EUR"]], @item.price_unit), :onchange => "$('.unit').html($(this).val() == 'USD' ? '$' : '€');", :style => "width:100px;" %>
+    <%= select_tag "item[price_unit]", options_for_select([[t("USD"),"USD"],[t("EUR"),"EUR"]], @item.price_unit), :onchange => "$('.unit').html($(this).val() == 'USD' ? '$' : '€');", :style => "width:100px;" %>
   </span>
 </div>
 

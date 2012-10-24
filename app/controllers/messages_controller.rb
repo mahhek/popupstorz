@@ -121,6 +121,7 @@ class MessagesController < ApplicationController
 
   def sent_items
     @messages = current_user.sent_messages
+    @messages = @messages.paginate(:page => params[:page], :per_page => 6, :order => "created_at DESC" )
   end
 
   def reply_to_conversation
