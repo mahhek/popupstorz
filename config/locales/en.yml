@@ -29,6 +29,7 @@ en:
    by_sender: "By Sender"
    by_receiver: "By Receiver"
    by_date: "By Date"
+   by_day: "By Day"
    all_feedbacks: "All Feedbacks"
    
    welcome_to_popup_storz: "Welcome to Popup Storz"
@@ -681,3 +682,4 @@ en:
    maximum_allowed_persons: "Maximum number of members per gathering"
    EUR: "EUR"
    USD: "USD"
+   place_cancellation_policy: "The cancellation policy for this place is"
