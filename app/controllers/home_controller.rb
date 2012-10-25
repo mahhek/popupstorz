@@ -16,7 +16,7 @@ class HomeController < ApplicationController
     session[:start_date] = nil
     session[:end_date] = nil
     @items_with_uniq_cities = Item.select("distinct(city)")
-    @items = Item.order("RAND()").all(:limit => 30)
+    @items = Item.order("RANDOM()").all(:limit => 30)
     active_items = []
     @items.each do|item|
       if item.user.is_active == true && item.display_on_home == true && item.is_active == true && item.avatars.size > 0
