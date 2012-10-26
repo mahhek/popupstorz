@@ -72,7 +72,11 @@
 
   <div id="right-widgets">
     <div class="blue-box">
-      <div id="price-x"><span class="font-24"><%= @item.price %></span>&nbsp;<%= t(:euro_per_day) %> </div>
+      <div id="price-x">
+        <span class="font-24"><%= @item.price %></span>
+        &nbsp;
+        <%= t(:euro_per_day) %>
+      </div>
     </div>
   </div>
 
@@ -102,8 +106,12 @@
       <h3> <%= t(:bookings_on_this_item) %></h3>
       <%unless @item.offers.blank?%>
         <%@item.offers.each do |offer|%>
-          <%= t(:start_date) %> <%= offer.rental_start_date%><br/>
-          <%= t(:end_date) %>  <%= offer.rental_end_date%><br/>
+          <%= t(:start_date) %> <%= offer.rental_start_date.blank? ? "" : offer.rental_start_date.strftime("%m-%d-%Y") %><br/>
+          <%= t(:end_date) %>  <%= offer.rental_end_date.blank? ? "" : offer.rental_end_date.strftime("%m-%d-%Y") %><br/>
+          <% if offer.is_gathering == true  %>
+            <%= t(:total_req_person) %><%= offer.persons_in_gathering %><br />
+            <%= t(:join_deadline) %><%= offer.gathering_deadline.strftime("%m-%d-%Y") %>
+          <% end %>
           <div style="float:left;width:100%;margin:10px;">
             <%if offer.is_active%>
               <%= link_to t(:deactivate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => t(:sure_delete) %>
@@ -134,13 +142,13 @@
   #user_id_chzn {
     width: 200px !important;
   }
-  
+
   .chzn-drop{
     width: 198px !important;
   }
-  
+
   .chzn-search{
     width: 190px !important;
   }
-  
+
 </style>

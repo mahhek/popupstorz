@@ -14,6 +14,14 @@ class UserMailer < ActionMailer::Base
     mail(:to => invitation.email, :subject => "You are being requested by #{invitation.user.email} to join PopUpStorz")
   end
   
+  def send_admin_invitation_email(invitation,fname,lname,msg)
+    @invitation = invitation
+    @fname = fname
+    @lname = lname
+    @msg = msg
+    mail(:to => invitation.email, :subject => "You are being requested by #{invitation.user.email} to join PopUpStorz")
+  end
+  
   def send_feedback(params)    
     @suggestion = params[:suggestion]
     @description = params[:description]

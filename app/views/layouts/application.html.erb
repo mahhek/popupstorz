@@ -41,10 +41,10 @@
     <link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->
 
     <%= yield(:head) %>
-    
+
     <%= csrf_meta_tags %>
     <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
-    
+
     <noscript>
       <style>
         .es-carousel ul{
@@ -103,22 +103,22 @@
             <% if user_signed_in? %>
               <span id="bar-navigate" class="menubar-left">
                 <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
-					 <span class="<%= ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : "") %>" style="float: left; padding-bottom: 5px;">
-	                <%= link_to t(:dashboard), inbox_messages_path, :style => "padding-right: 0;" %>
-	                
-	                <% messages_size = current_user.messages.are_to(current_user).unread.size %>
-		             <% if messages_size > 0 %>
-		             	<%= link_to messages_size.to_s, inbox_messages_path, :style=>["border: 1px solid; margin-right: 22px; min-width: 18px; padding: 0px 3px; text-align: center;"] %>
-		             <% end %>       
+                <span class="<%= ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : "") %>" style="float: left; padding-bottom: 5px;">
+                  <%= link_to t(:dashboard), inbox_messages_path, :style => "padding-right: 0;" %>
+
+                  <% messages_size = current_user.messages.are_to(current_user).unread.size %>
+                  <% if messages_size > 0 %>
+                    <%= link_to messages_size.to_s, inbox_messages_path, :style=>["border: 1px solid; margin-right: 22px; min-width: 18px; padding: 0px 3px; text-align: center;"] %>
+                  <% end %>       
                 </span>
                 <span style="float: right;">
-						 <%= link_to "#{t(:hi)} #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
-	
-	                <%= link_to t(:logout), destroy_user_session_path, :method => :delete %>                
-	                
-	                <% if current_user && current_user.admin? %>
-			          	<%= link_to t(:admin_panel), admin_items_path %>
-			          <% end %>     
+                  <%= link_to "#{t(:hi)} #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
+
+                  <%= link_to t(:logout), destroy_user_session_path, :method => :delete %>                
+
+                  <% if current_user && current_user.admin? %>
+                    <%= link_to t(:admin_panel), admin_items_path %>
+                  <% end %>     
                 </span>
                 <div style="float:left;" class='<%= (((params[:controller] == "items" and params[:action] == "search_keyword")  or params[:controller] == "searches" or (params[:controller] == "items" and params[:action] == "show")) ? "m_act" : "") %>'>
                   <div class="searchDropdown searchMenu" onclick="search_menu()">
@@ -179,77 +179,77 @@
           </div>
         </div>
       </div>
-      
-		<div class="contentholder"> 
-			<% if notice %>
-         	<div class="notice"><p style="background-color: #00cccc;"><%= notice %></p></div>
-        	<% end %>
-        	<% if alert %>
-         	<div class="notice"><p style="background-color:red;"><%= alert %></p></div>
-        	<% end %>
-        	<% if flash[:error] %>
-         	<p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= flash[:error] %></p>
-        	<% end %>
-		
-		   <!-- Test B  TACT=This is a joke ??? -->
-		   <% if 
-		     (params[:action] == "dashboard")  || 
-		       (params[:controller] == "messages") ||		# TACT= allway true (params[:action] == "inbox" && params[:controller] == "messages") ||
-		     (params[:controller] == "email_settings") ||
-		       (params[:controller] == "users" && (
-		         params[:action] == "show"	||
-		           params[:action] == "invitations")
-		     )  ||              		
-		       (params[:controller] == "items" && (
-		         params[:action] == "listings_home"						||
-		           params[:action] == "new" 									|| 
-		           params[:action] == "my_pop_ups"							|| 
-		           params[:action] == "gatherings"							|| 
-		           params[:action] == "favorites"							|| 
-		           params[:action] == "overview"								|| 
-		           params[:action] == "index"									|| 
-		           params[:action] == "gatherings_at_my_place"			|| 
-		           params[:action] == "created_prev_gatherings"			|| 
-		           params[:action] == "created_coming_gatherings"		|| 
-		           params[:action] == "pending_gathering_acceptance"	|| 
-		           params[:action] == "past_transactions" )
-		     ) %>
-			
-		     <div id="bar-useraction" class="menu-sub-layout" style="">
-		       <!-- Test C  TACT=This is a joke ??? why check Test B ?-->
-		       <% if (
-		           params[:controller] == "accounts"	|| 
-		             params[:controller] == "messages"	|| 
-		             params[:controller] == "items"		|| 
-		             params[:controller] == "users"		|| 
-		             params[:controller] == "email_settings" 
-		         ) %>
-		         <span class="menu-sub" style="background-color: <%= (params[:controller] == 'messages' ) ? 'cyan' : '' %>">
-		           <%= link_to t(:messages), inbox_messages_path %>
-		         </span>
-		         <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
-		           <%= link_to t(:my_listings), overview_items_path %>
-		         </span>
-		         <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
-		           <%= link_to t(:my_bookings), "/items/created_coming_gatherings" %>
-		         </span>
-		         <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
-		           <%= link_to t(:my_favorites), favorites_items_path %>
-		         </span>
-		         <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
-		           <%= link_to t(:my_profile), profile_path(current_user.id) %>  
-		         </span>
-		         <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
-		           <%= link_to t(:account),"/invitation" %>
-		         </span>
-		       <% end %> <!-- End Test C -->
-		     </div>
-		   <% end %> <!-- End Test B -->          
+
+      <div class="contentholder"> 
+        <% if notice %>
+          <div class="notice"><p style="background-color: #00cccc;"><%= notice %></p></div>
+        <% end %>
+        <% if alert %>
+          <div class="notice"><p style="background-color:red;"><%= alert %></p></div>
+        <% end %>
+        <% if flash[:error] %>
+          <p class="notice" style="padding: 5px;width :95%;background-color:red;"><%= flash[:error] %></p>
+        <% end %>
+
+        <!-- Test B  TACT=This is a joke ??? -->
+        <% if 
+          (params[:action] == "dashboard")  || 
+            (params[:controller] == "messages") ||		# TACT= allway true (params[:action] == "inbox" && params[:controller] == "messages") ||
+          (params[:controller] == "email_settings") ||
+            (params[:controller] == "users" && (
+              params[:action] == "show"	||
+                params[:action] == "invitations")
+          )  ||              		
+            (params[:controller] == "items" && (
+              params[:action] == "listings_home"						||
+                params[:action] == "new" 									|| 
+                params[:action] == "my_pop_ups"							|| 
+                params[:action] == "gatherings"							|| 
+                params[:action] == "favorites"							|| 
+                params[:action] == "overview"								|| 
+                params[:action] == "index"									|| 
+                params[:action] == "gatherings_at_my_place"			|| 
+                params[:action] == "created_prev_gatherings"			|| 
+                params[:action] == "created_coming_gatherings"		|| 
+                params[:action] == "pending_gathering_acceptance"	|| 
+                params[:action] == "past_transactions" )
+          ) %>
+
+          <div id="bar-useraction" class="menu-sub-layout" style="">
+            <!-- Test C  TACT=This is a joke ??? why check Test B ?-->
+            <% if (
+                params[:controller] == "accounts"	|| 
+                  params[:controller] == "messages"	|| 
+                  params[:controller] == "items"		|| 
+                  params[:controller] == "users"		|| 
+                  params[:controller] == "email_settings" 
+              ) %>
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'messages' ) ? 'cyan' : '' %>">
+                <%= link_to t(:messages), inbox_messages_path %>
+              </span>
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
+                <%= link_to t(:my_listings), overview_items_path %>
+              </span>
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
+                <%= link_to t(:my_bookings), "/items/created_coming_gatherings" %>
+              </span>
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
+                <%= link_to t(:my_favorites), favorites_items_path %>
+              </span>
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
+                <%= link_to t(:my_profile), profile_path(current_user.id) %>  
+              </span>
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
+                <%= link_to t(:account),"/invitation" %>
+              </span>
+            <% end %> <!-- End Test C -->
+          </div>
+        <% end %> <!-- End Test B -->          
         <%= yield %>
         <div class="clear"></div>
       </div>
       <div class="fltR footer mt30 mr100">
-      	<span><%= "ctrl: " + params[:controller] + " action: " + params[:action] %></span>
+        <span><%= "ctrl: " + params[:controller] + " action: " + params[:action] %></span>
         <a href="/home/feedback"><%= t(:popup_12) %></a>
         <a href="/home/terms"><%= t(:terms) %></a>
         <a href="/home/contact"><%= t(:contact) %></a>        
@@ -335,7 +335,7 @@
         }
       });
     </script>
-        
+
     <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;&amp;v=2&amp;key=AIzaSyAPEeqlhndG4KU6-bRWegIBrs-v-kFcdgY"></script>
     <script type="text/javascript" src="http://www.facebook.com/assets.php/en_US/all.js" ></script>
     <script type="text/javascript" src="https://www.paypalobjects.com/js/external/dg.js"></script>

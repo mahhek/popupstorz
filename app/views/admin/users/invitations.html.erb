@@ -1,11 +1,6 @@
 <script type="text/javascript">
   function check_email() {
     
-    if(email1 == "" && email2 == "" && email3 == "" && email4 == "" && email5 == "" && email6 == "" && email7 == "" && email8 == ""&& email9 == "" && email10 == ""){
-      alert("Please insert some email addresses first");
-      return false;
-    }
-    
     email1 = $("#email1").val();
     email2 = $("#email2").val();
     email3 = $("#email3").val();
@@ -16,7 +11,11 @@
     email8 = $("#email8").val();
     email9 = $("#email9").val();
     email10 = $("#email10").val();
-
+    
+    if(email1 == "" && email2 == "" && email3 == "" && email4 == "" && email5 == "" && email6 == "" && email7 == "" && email8 == ""&& email9 == "" && email10 == ""){
+      alert("Please insert some email addresses first");
+      return false;
+    }
     var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     
     
@@ -28,58 +27,107 @@
           return false;
         }
       }
-      return false;
     }
-    
     return true;
   }
 </script>
 <br/>
-<div style="float: left;width: 100%;border: 1px solid black;padding: 5px;">
-  <h2>
-    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'send_invitation' or params[:action] == 'invitations') ? 'silver' : '' %>">
-      <%= link_to 'Send Inivtations', invitation_path, :class => ((params[:controller] == "users" and ( params[:action] == "send_invitations" or params[:action] == "invitations" )) ? "m_act" : "") %>
-    </span>
-    <span style="float: left;padding: 5px">
-      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-    </span>
-    <span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'index' or params[:action] == 'new') ? 'silver' : '' %>">
-      <%= link_to 'Email Settings', email_settings_path, :class => ((params[:controller] == "email_settings" and ( params[:action] == "index" or params[:action] == "new" )) ? "m_act" : "") %>
-    </span>
-    <span style="float: left;padding: 5px">
-      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-    </span>
-    <span style="float: left;padding: 5px">
-      <%= link_to t(:delete_my_account),"/users/delete_account", :confirm => t(:delete_permanently) %>
-    </span>
-    <span style="float: left;padding: 5px">
-      &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-    </span>
-    <span style="float: left;padding: 5px">
-      <%= link_to "send invitation to contacts in your email account","/users/send_invitation_to_contacts", :class => (params[:controller] == "users" and params[:action] == "send_invitation_to_contacts"  ? "m_act" : "") %>
-    </span>
-  </h2>
-</div>
 
+<%#*<div style="float: left;width: 100%;border: 1px solid black;padding: 5px;">%>
+  <%#*<h2>%>
+    <%#*<span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'send_invitation' or params[:action] == 'invitations') ? 'silver' : '' %>
+      <%#= link_to 'Send Inivtations', invitation_path, :class => ((params[:controller] == "users" and ( params[:action] == "send_invitations" or params[:action] == "invitations" )) ? "m_act" : "") %>
+    <%#*</span>%>
+    <%#*<span style="float: left;padding: 5px">%>
+      <%#*&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;%>
+    <%#*</span>%>
+    <%#*<span style="float: left;padding: 5px;background-color: <%= (params[:action] == 'index' or params[:action] == 'new') ? 'silver' : '' %>
+      <%#= link_to 'Email Settings', email_settings_path, :class => ((params[:controller] == "email_settings" and ( params[:action] == "index" or params[:action] == "new" )) ? "m_act" : "") %>
+    <%#*</span>%>
+    <%#*<span style="float: left;padding: 5px">%>
+      <%#*&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;%>
+    <%#*</span>%>
+    <%#*<span style="float: left;padding: 5px">%>
+      <%#= link_to t(:delete_my_account),"/users/delete_account", :confirm => t(:delete_permanently) %>
+    <%#*</span>%>
+    <%#*<span style="float: left;padding: 5px">%>
+      <%#*&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;%>
+    <%#*</span>%>
+    <%#*<span style="float: left;padding: 5px">%>
+      <%#= link_to "send invitation to contacts in your email account","/users/send_invitation_to_contacts", :class => (params[:controller] == "users" and params[:action] == "send_invitation_to_contacts"  ? "m_act" : "") %>
+    <%#*</span>%>
+  <%#*</h2>%>
+<%#*</div>%>
 
 <div style="float: left;width: 100%;margin-top: 10px;" id="invitation_div">
-  <%= form_tag "send_invitation", :url => "/send_invitation" , :onsubmit => "return check_email();" do %>
+  <%= form_tag "send_invitation", :url => "/admin_send_invitations" , :onsubmit => "return check_email();" do %>
     <%= hidden_field_tag :user_id, current_user.id %>
     <span style="width: auto;float: left;">
-      <b><%= t(:send_invite) %></b><br />
-      <%= text_field_tag  "email1" %><br />
-      <%= text_field_tag  "email2" %><br />
-      <%= text_field_tag  "email3" %><br />
-      <%= text_field_tag  "email4" %><br />
-      <%= text_field_tag  "email5" %><br />
-      <%= text_field_tag  "email6" %><br />
-      <%= text_field_tag  "email7" %><br />
-      <%= text_field_tag  "email8" %><br />
-      <%= text_field_tag  "email9" %><br />
-      <%= text_field_tag  "email10" %><br />
+
+      <div class="xfields"><%= t(:send_invite) %></div>
+      <div class="xfields">
+        <%= text_field_tag "fname1", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname1", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email1", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname2", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname2", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email2", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname3", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname3", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email3", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname4", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname4", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email4", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname5", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname5", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email5", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname6", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname6", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email6", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname7", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname7", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email7", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname8", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname8", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email8", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname9", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname9", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email9", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname10", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname10", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email10", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields" style="margin-top: 10px;">
+        <%= text_area_tag "message", nil, "hint" => "You can add a message telling your friends how Pop Up Storz is great for finding or renting spaces...", :class => "input", :size => "250x6", :style => "width:63%; font-size: 1em;" %>
+      </div>
+
+      <div class="xfields" style="margin-top: 20px;">
+        <div style="float: left;margin-top: 5px;clear:both;">
+          <%= submit_tag "Send Invitation", :class=> "search", :style => "font-size: 16px; padding: 3px 10px;" %>
+        </div>
+      </div>
+
     </span>
-    <div style="float: left;margin-top: 5px;clear:both;">
-      <%= submit_tag "Send Invitation" %>&nbsp;&nbsp;&nbsp;
-    </div>
+    <%#*<div style="float: left;margin-top: 5px;clear:both;">%>
+      <%#= submit_tag "Send Invitation" %>&nbsp;&nbsp;&nbsp;
+    <%#*</div>%>
   <% end %>
 </div>

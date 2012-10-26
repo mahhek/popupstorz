@@ -12,6 +12,7 @@ PopupStorz::Application.routes.draw do
   match '/admin_items' => "admin/items#index"
   match '/admin_gatherings' => "admin/offers#gatherings"
   match '/admin/users/create' => "admin/users#create"
+  match '/admin_send_invitations' => "admin/users#send_invitations"
   #  match '/search_members' => 'users#search_members'
   match '/search_gatherings' => 'searches#search_gatherings'
   match '/search_spaces' => 'searches#search_spaces'
@@ -144,10 +145,11 @@ PopupStorz::Application.routes.draw do
         get :all_ratings
         get :delete_rating
         get :delete_comment
-        get :send_invitation
+#        get :send_invitation
         get :invitations
         post :send_invitation_to_users
         post :send_invitations
+        post :send_invitation
         get :all_payments
         get :cancel_payment
         get :all_feedbacks

@@ -45,7 +45,7 @@ class UsersController < ApplicationController
     (1..5).each do |i|
       unless params["email"+"#{i}"].blank?
         @invitation = Invitation.new
-        @invitation.user = current_user      
+        @invitation.user = current_user
         @invitation.email = params["email"+"#{i}"]
         @invitation.token = (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
         @invitation.save

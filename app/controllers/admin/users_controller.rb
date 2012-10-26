@@ -46,7 +46,7 @@ class Admin::UsersController < ApplicationController
       redirect_to admin_users_path
     else
       render :new
-    end    
+    end
   end
 
   def show
@@ -128,9 +128,20 @@ class Admin::UsersController < ApplicationController
     redirect_to all_comments_admin_users_path
   end
 
-  #  def send_invitation
-  #    @users = User.all
-  #  end
+  def send_invitation
+    (1..10).each do |i|
+      unless params["email"+"#{i}"].blank?
+        @invitation = Invitation.new
+        @invitation.user = current_user
+        @invitation.email = params["email"+"#{i}"]
+        @invitation.token = (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
+        @invitation.save
+        UserMailer.send_admin_invitation_email(@invitation,params["fname"+"#{i}"],params["lname"+"#{i}"],params[:message]).deliver
+      end
+    end
+    flash[:notice] = t(:invitation_sent)
+    redirect_to admin_users_path
+  end
 
   #  def send_invitation_to_users
   #    unless params[:user].blank?
@@ -159,19 +170,19 @@ class Admin::UsersController < ApplicationController
     redirect_to all_payments_admin_users_path
   end
   
-  def send_invitations
-    (1..10).each do |i|
-      unless params["email"+"#{i}"].blank?
-        @invitation = Invitation.new
-        @invitation.user = current_user      
-        @invitation.email = params["email"+"#{i}"]
-        @invitation.token = (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
-        @invitation.save
-        UserMailer.send_invitation_email(@invitation).deliver
-      end
-    end
-    flash[:notice] = t(:invitation_sent)
-    redirect_to admin_users_path
-  end
+  #  def send_invitations
+  #    (1..10).each do |i|
+  #      unless params["email"+"#{i}"].blank?
+  #        @invitation = Invitation.new
+  #        @invitation.user = current_user      
+  #        @invitation.email = params["email"+"#{i}"]
+  #        @invitation.token = (Digest::MD5.hexdigest "#{ActiveSupport::SecureRandom.hex(10)}-#{DateTime.now.to_s}")
+  #        @invitation.save
+  #        UserMailer.send_admin_invitation_email(@invitation,params[:additional_message]).deliver
+  #      end
+  #    end
+  #    flash[:notice] = t(:invitation_sent)
+  #    redirect_to admin_users_path
+  #  end
   
 end

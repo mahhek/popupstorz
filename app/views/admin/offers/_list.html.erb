@@ -18,23 +18,24 @@
         <%if offer.item.cancellation_policy_flexible%>
           <%= t(:flexible) %>
         <% else%>
-        <%= t(:semifelxible) %>
+          <%= t(:semifelxible) %>
         <%end%>
         <br/> 
         <%= t(:owner_rules) %>
         <%= offer.item.owner_rules %><br/><br/>
       </div>
 
-      <div class="btns">
-        <button id="fff"> <%= t(:change_commision_rate) %> </button>|&nbsp;
-      </div>
-      <div id="rate_form" style="display: none;">
-        <%= form_tag change_commission_rate_admin_offers_path do |f| %>
-          <%= hidden_field_tag "offer_id", offer.id %>
-      <%#= text_field_tag "commision_rate", offer.commission_rate %>
-          <%= submit_tag t(:done) %>
-        <% end %>
-      </div>
+    <%#*<div class="btns">%>
+    <%#*<button id="fff"> <%= t(:change_commision_rate) %> 
+    <%#*</button>|&nbsp;%>
+    <%#*</div>%>
+    <%#*<div id="rate_form" style="display: none;">%>
+    <%#= form_tag change_commission_rate_admin_offers_path do |f| %>
+    <%#= hidden_field_tag "offer_id", offer.id %>
+    <%#= text_field_tag "commision_rate", offer.commission_rate %>
+    <%#= submit_tag t(:done) %>
+    <%# end %>
+    <%#*</div>%>
     <% end %>
   <% else %>
     <%= t(:no_item_listed) %>
