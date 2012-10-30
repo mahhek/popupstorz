@@ -102,7 +102,7 @@ class Admin::UsersController < ApplicationController
         @messages << ActsAsMessageable::Message.all(:conditions => ["received_messageable_id = ?",u.id])
       end
       #      @messages << ActsAsMessageable::Message.all(:conditions => ["received_messageable_id  IN(?)",u_arr])
-      #      @messages = @messages.first
+      @messages = @messages.first
     when "3"
       searched_users = ActsAsMessageable::Message.select("sent_messageable_id")
       unless searched_users.blank?
@@ -116,9 +116,8 @@ class Admin::UsersController < ApplicationController
       users.each do|u| 
         #        u_arr << u.id
         @messages << ActsAsMessageable::Message.all(:conditions => ["sent_messageable_id = ?",u.id])
-      end
-      
-      #      @messages = @messages.first
+      end      
+      @messages = @messages.first
     else
       order_by = "created_at ASC"
       @messages = ActsAsMessageable::Message.all(:order => order_by)
