@@ -79,19 +79,47 @@ class Admin::UsersController < ApplicationController
     redirect_to admin_users_path
   end
 
-
   def all_messages
+    searched_users = []
+    users_arr = []
+    @messages = []
     case params[:sort_option]
     when "1"      
       order_by = "created_at DESC"
+      @messages = ActsAsMessageable::Message.all(:order => order_by)
     when "2"
-      order_by = "received_messageable_id ASC"
+      searched_users = ActsAsMessageable::Message.select("DISTINCT(received_messageable_id)")
+      unless searched_users.blank?
+        searched_users.each do|r|
+          users_arr << r.received_messageable_id
+        end
+      end
+      users = User.find(:all, :conditions => ["users.id IN (?)",users_arr], :order => "first_name ASC")
+      u_arr = []
+      users.each do|u| 
+        u_arr << u.id
+      end
+      @messages << ActsAsMessageable::Message.all(:conditions => ["received_messageable_id  IN(?)",u_arr])
+      @messages = @messages.first
     when "3"
-      order_by = "received_messageable_type ASC"
+      searched_users = ActsAsMessageable::Message.select("DISTINCT(sent_messageable_id)")
+      unless searched_users.blank?
+        searched_users.each do|r|
+          users_arr << r.sent_messageable_id
+        end
+      end
+      users = User.find(:all, :conditions => ["users.id IN (?)",users_arr], :order => "first_name ASC")
+      u_arr = []
+      users.each do|u| 
+        u_arr << u.id
+      end
+      @messages << ActsAsMessageable::Message.all(:conditions => ["sent_messageable_id  IN(?)",u_arr])
+      @messages = @messages.first
     else
       order_by = "created_at ASC"
-    end    
-    @messages = ActsAsMessageable::Message.all(:order => order_by)
+      @messages = ActsAsMessageable::Message.all(:order => order_by)
+    end
+    
     respond_to do |format|
       format.js do
         foo = render_to_string(:partial => 'messages', :locals => {:messages => @messages }).to_json

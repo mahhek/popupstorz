@@ -1,0 +1,15 @@
+<%= t(:dear) %>
+<%= @fname %> <%= @lname %>
+<br/>
+<br/>
+<%= t(:invited_by) %><%= @invitation.user.email %> <%= t(:to_join) %>
+<br/>
+<%= raw(@msg) %>
+<%= t(:click_confirm) %>
+<br/>
+<br/>
+<a href="<%= root_url(:only_path => false) %>users/sign_up?locale=el&token=<%= @invitation.token %>"><%= t(:confirm_now) %></a>
+<br/>
+<br/>
+<%= t(:regards) %>
+<%= t(:admin) %>

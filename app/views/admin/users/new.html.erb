@@ -80,7 +80,7 @@
 
       <div class="sign_up_input">
         <label><%= t(:password) %></label>
-        <%= f.password_field :password , :autocomplete=> "off", :id => "password_field", :onclick => "$(this).val('')" %>
+        <%= f.password_field :password , :autocomplete=> "off", :id => "password_field" %>
   <%#= @user.errors.messages[:password].blank? ? "" : " Password "+@user.errors.messages[:password][0] %>
   <%#*<div class="clear"></div>%>
       </div>
@@ -93,20 +93,20 @@
 
       <div class="sign_up_input">
         <label><%= t(:security_question) %></label>
-        <%= f.text_field :security_question, :autocomplete=> "off", :id => "security_question_field", :onclick => "$(this).val('')" %>
+        <%= f.text_field :security_question, :autocomplete=> "off", :id => "security_question_field" %>
   <%#= @user.errors.messages[:security_question].blank? ? "" : " Security Question "+@user.errors.messages[:security_question][0] %>
   <%#*<div class="clear"></div>%>
       </div>
       <div class="sign_up_input">
         <label><%= t(:security_answer) %></label>
-        <%= f.text_field :security_answer, :autocomplete=> "off", :id => "security_answer_field", :onclick => "$(this).val('')" %>
+        <%= f.text_field :security_answer, :autocomplete=> "off", :id => "security_answer_field" %>
   <%#= @user.errors.messages[:security_answer].blank? ? "" : " Security Answer "+@user.errors.messages[:security_answer][0] %>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
       <div class="sign_up_input">
         <label><%= t(:mobile_num) %></label>
-        <%= f.text_field :mobile_phone , :value => @pre_user.blank? ? "" : @pre_user.mobile_phone,:autocomplete=> "off", :id => "mobile_phone_field", :onclick => "$(this).val('')"%><br />
+        <%= f.text_field :mobile_phone , :value => @pre_user.blank? ? "" : @pre_user.mobile_phone,:autocomplete=> "off", :id => "mobile_phone_field" %><br />
         <div style="float:left;clear:both;margin-left: 130px;margin-top: 10px;"><%= t(:ph_format) %></div>
   <%#= @user.errors.messages[:mobile_phone].blank? ? "" : " Mobile Phone "+@user.errors.messages[:mobile_phone][0] %>
         <div class="clear"></div>

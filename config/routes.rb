@@ -224,5 +224,6 @@ PopupStorz::Application.routes.draw do
   end
   
   match '/users/:id/profile' => 'users#show', :as => :profile
+  match 'admin/users/:id/profile' => 'admin/users#show', :as => :admin_profile
   root :to => "home#index"
 end

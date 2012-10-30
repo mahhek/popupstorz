@@ -113,17 +113,17 @@
             <%= t(:join_deadline) %><%= offer.gathering_deadline.strftime("%m-%d-%Y") %>
           <% end %>
           <div style="float:left;width:100%;margin:10px;">
-            <%if offer.is_active%>
-              <%= link_to t(:deactivate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => t(:sure_delete) %>
-            <%else%>
-              <%= link_to t(:activate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => t(:sure_delete) %>
-            <%end%>
+            <% if offer.is_active %>
+            <b><%= link_to t(:deactivate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => t(:sure_delete) %></b>
+            <% else %>
+            <b><%= link_to t(:activate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => t(:sure_delete) %></b>
+            <% end %>
           </div>
-        <%end%>
+        <% end %>
 
-      <%else%>
+      <% else %>
         <%= t(:no_bookings) %>
-      <%end%>
+      <% end %>
     </div>
   </div>
 </div>

@@ -1,5 +1,5 @@
 <div class="listx-bg">
-  <%unless messages.blank?%>
+  <%unless messages.blank? %>  
     <% messages.each do |msg|%>
       <% @sender = User.find_by_id(msg.sent_messageable_id) %>
       <% @receiver = User.find_by_id(msg.received_messageable_id) %>
