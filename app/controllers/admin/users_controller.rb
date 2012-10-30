@@ -98,25 +98,27 @@ class Admin::UsersController < ApplicationController
       users = User.find(:all, :conditions => ["users.id IN (?)",users_arr], :order => "first_name ASC")
       u_arr = []
       users.each do|u| 
-        u_arr << u.id
+        #        u_arr << u.id
+        @messages << ActsAsMessageable::Message.all(:conditions => ["received_messageable_id = ?",u.id])
       end
-      @messages << ActsAsMessageable::Message.all(:conditions => ["received_messageable_id  IN(?)",u_arr])
-      @messages = @messages.first
+      #      @messages << ActsAsMessageable::Message.all(:conditions => ["received_messageable_id  IN(?)",u_arr])
+      #      @messages = @messages.first
     when "3"
-      searched_users = ActsAsMessageable::Message.select("DISTINCT(sent_messageable_id)")
+      searched_users = ActsAsMessageable::Message.select("sent_messageable_id")
       unless searched_users.blank?
         searched_users.each do|r|
           users_arr << r.sent_messageable_id
         end
-        users_arr=  users_arr.uniq
+        users_arr = users_arr.uniq
       end
       users = User.find(:all, :conditions => ["users.id IN (?)",users_arr], :order => "first_name ASC")
       u_arr = []
       users.each do|u| 
-        u_arr << u.id
+        #        u_arr << u.id
+        @messages << ActsAsMessageable::Message.all(:conditions => ["sent_messageable_id = ?",u.id])
       end
-      @messages << ActsAsMessageable::Message.all(:conditions => ["sent_messageable_id  IN(?)",u_arr])
-      @messages = @messages.first
+      
+      #      @messages = @messages.first
     else
       order_by = "created_at ASC"
       @messages = ActsAsMessageable::Message.all(:order => order_by)
