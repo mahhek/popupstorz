@@ -88,11 +88,12 @@ class Admin::UsersController < ApplicationController
       order_by = "created_at DESC"
       @messages = ActsAsMessageable::Message.all(:order => order_by)
     when "2"
-      searched_users = ActsAsMessageable::Message.select("DISTINCT(received_messageable_id)")
-      unless searched_users.blank?
+      searched_users = ActsAsMessageable::Message.select("received_messageable_id")
+      unless searched_users.blank?        
         searched_users.each do|r|
           users_arr << r.received_messageable_id
         end
+        users_arr = users_arr.uniq
       end
       users = User.find(:all, :conditions => ["users.id IN (?)",users_arr], :order => "first_name ASC")
       u_arr = []
@@ -107,6 +108,7 @@ class Admin::UsersController < ApplicationController
         searched_users.each do|r|
           users_arr << r.sent_messageable_id
         end
+        users_arr=  users_arr.uniq
       end
       users = User.find(:all, :conditions => ["users.id IN (?)",users_arr], :order => "first_name ASC")
       u_arr = []
