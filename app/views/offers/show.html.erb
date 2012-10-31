@@ -4,28 +4,32 @@
   <h2><%= t(:stand_booking) %></h2>
 <% end %>
 
-<% if current_user.id == @offer.owner_id %>
-  <% if @offer.status == "joinings approved" %>
-    <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}" %> |
-    <%= link_to t(:decline), "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}" %>
+<% unless current_user.blank? %>
+  <% if current_user.id == @offer.owner_id %>
+    <% if @offer.status == "joinings approved" %>
+      <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}" %> |
+      <%= link_to t(:decline), "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}" %>
+    <% end %>
+
+    <% if @offer.status == "confirmed" && @offer.persons_in_gathering.blank? %>
+      <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}" %> |
+      <%= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}" %>
+    <% end %>
+    <br />
+    <% if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
+      <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}" %>
+    <% end %>
   <% end %>
 
-  <% if @offer.status == "confirmed" && @offer.persons_in_gathering.blank? %>
-    <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}" %> |
-    <%= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}" %>
+
+  <br/>
+  <% if @offer.status == "all joinings approved" && current_user.id == @offer.user_id %>
+    <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{@offer.id}" %>
   <% end %>
-  <br />
-  <% if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
+  <% if (@offer.status == "Confirmed" ) && current_user.id == @offer.user_id && @offer.rental_start_date >= Date.parse("#{Date.today}","%Y-%d-%m") %>
     <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}" %>
   <% end %>
-<% end %>
 
-<br/>
-<% if @offer.status == "all joinings approved" && current_user.id == @offer.user_id %>
-  <%= link_to "Send Offer to Owner", "/send_gathering_deadline/#{@offer.id}" %>
-<% end %>
-<% if (@offer.status == "Confirmed" ) && current_user.id == @offer.user_id && @offer.rental_start_date >= Date.parse("#{Date.today}","%Y-%d-%m") %>
-  <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}" %>
 <% end %>
 
 <% @item = @offer.item %>
@@ -99,25 +103,25 @@
               <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div').toggle()"><%= t(:show_details) %></div><br />
               <p class="size_text" id="policy_div" style="display:none;">
                 <% unless @item.cancellation_policy_flexible.blank? %>
-     <%= t(:flexible) %><br/>
-          <%= t(:cancel_ln1) %><br/>
-          <%= t(:cancel_ln2) %><br/><br/>
+                  <%= t(:flexible) %><br/>
+                  <%= t(:cancel_ln1) %><br/>
+                  <%= t(:cancel_ln2) %><br/><br/>
 
-          <%= t(:cancel_ln3) %><br/><br/>
+                  <%= t(:cancel_ln3) %><br/><br/>
 
-          <%= t(:cancel_ln4)%><br/><br/>
-          <%= t(:cancel_ln5)%><br/><br/>
-     <% else %>
-        <%= t(:semi_flexible) %><br/>
-        <%= t(:semi_cancel_ln1) %><br/>
-        <%= t(:semi_cancel_ln2) %><br/><br/>
+                  <%= t(:cancel_ln4)%><br/><br/>
+                  <%= t(:cancel_ln5)%><br/><br/>
+                <% else %>
+                  <%= t(:semi_flexible) %><br/>
+                  <%= t(:semi_cancel_ln1) %><br/>
+                  <%= t(:semi_cancel_ln2) %><br/><br/>
 
-        <%= t(:semi_cancel_ln3) %><br/><br/>
+                  <%= t(:semi_cancel_ln3) %><br/><br/>
 
-        <%= t(:semi_cancel_ln4) %><br/><br/>
-        <%= t(:semi_cancel_ln5) %><div/>
+                  <%= t(:semi_cancel_ln4) %><br/><br/>
+                <%= t(:semi_cancel_ln5) %><div/>
 
-    <% end %>
+              <% end %>
               </p>
               <div class="clear"></div>
               <br />
@@ -126,10 +130,12 @@
 
             <b><%= t(:create_by) %></b><br />
             <%= @offer.user.popup_storz_display_name %>  <br />
-            <% if current_user != @offer.user %>
-              <div id="store-btn">
-                <%= link_to_function "Send Message", "$('#contact_me_div_#{@offer.user.id}').toggle('slow');", :class => "send"  %>
-              </div>
+            <% unless current_user.blank? %>
+              <% if current_user != @offer.user %>
+                <div id="store-btn">
+                  <%= link_to_function "Send Message", "$('#contact_me_div_#{@offer.user.id}').toggle('slow');", :class => "send"  %>
+                </div>
+              <% end %>
             <% end %>
             <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= @offer.user.id %>">
               <%= form_tag contact_me_messages_path(:div_id => @offer.user.id) , :html => {:id => "contact_me_form"}, :remote  => true do %>
@@ -220,10 +226,12 @@
                         <%= req.country? ? ', '+req.country : '' %>
                       </div>
                     </div>
-                    <% if current_user != req %>
-                      <div id="store-btn">
-                        <%= link_to_function "Send Message", "$('#contact_me_div_#{req.id}').toggle('slow');", :class => "send"  %>
-                      </div>
+                    <% unless current_user.blank? %>
+                      <% if current_user != req %>
+                        <div id="store-btn">
+                          <%= link_to_function "Send Message", "$('#contact_me_div_#{req.id}').toggle('slow');", :class => "send"  %>
+                        </div>
+                      <% end %>
                     <% end %>
                     <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= req.id %>">
                       <%= form_tag contact_me_messages_path(:div_id => req.id) , :html => {:id => "contact_me_form"}, :remote  => true do %>
@@ -309,8 +317,8 @@
                     <% request = GatheringMember.where("user_id = #{req.id} and offer_id = #{@offer.id}").first %>
                     <% if request.status == "confirmed" && current_user.id == @offer.user_id %>
                       <% if approved_requests.size <  @offer.persons_in_gathering.to_i %>
-                       <%= link_to t(:approve), "/approve_gathering_request/#{@offer.id}?mem=#{req.id}" %> |
-                       <%= link_to t(:decline), "/decline_gathering_request/#{@offer.id}?mem=#{req.id}" %>
+                        <%= link_to t(:approve), "/approve_gathering_request/#{@offer.id}?mem=#{req.id}" %> |
+                        <%= link_to t(:decline), "/decline_gathering_request/#{@offer.id}?mem=#{req.id}" %>
                         <br /><br />
                       <% end %>
                     <% end %>
