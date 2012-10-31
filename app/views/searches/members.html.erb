@@ -22,7 +22,7 @@
   <h2><%= t(:refine_search)%></h2>
   <div class="pannelright">
     <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
-    <%= form_tag "/searches/search_members", {:remote => true, :id => "price_range_form", :pars => params } do %>
+    <%= form_tag "/searches/search_members", {:remote => true, :id => "price_range_form", :pars => params } do%>
      <%= hidden_field_tag "location",  '', :id => "searched_member_location" %>
       <%= hidden_field_tag "user", '', :id => "searched_member_name" %>
       <div class="pannelright">
@@ -30,10 +30,11 @@
         <div class="heading_right"><%= t(:active3)%></div>
         <div class="twocol">
           <% @users_with_uniq_activites.each do |type| %>
-            <%= check_box_tag 'types[]', type.activity, params["types"].blank? ? false : params["types"].include?(type.activity.to_s), :onclick => "$(this.form).trigger('submit.rails')" %>
+            <%= check_box_tag 'types[]', type.activity, params["types"].blank? ? false : params["types"].include?(type.activity.to_s), :onclick => "$('#search_submit').trigger('click')" %>
             <b><%= type.activity.capitalize %></b><br />
           <% end %>
         </div>
+        <%= submit_tag "Subnmit", :hidden => true, :id => "search_submit" %>
       </div>
 
     <% end %>
