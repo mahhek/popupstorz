@@ -137,7 +137,41 @@ class Admin::UsersController < ApplicationController
   end
 
   def all_feedbacks
-    @comments = Comment.all
+    users_arr = []
+    @comments = []
+    case params[:sort_option]
+    when "1"      
+      order_by = "created_at DESC"
+      @comments = Comment.all(:order => order_by)
+    when "2"
+      users = Comment.select("user_id")
+      unless users.blank?        
+        users.each do|u|
+          users_arr << u.user_id
+        end
+        users_arr = users_arr.uniq
+      end
+      users = User.find(:all, :conditions => ["users.id IN (?)",users_arr], :order => "first_name ASC")      
+      users.each do|u|
+        cmnts = Comment.all(:conditions => ["user_id = ?",u.id])
+        unless cmnts.blank?
+          cmnts.each do|c|
+            @comments << c
+          end
+        end
+      end
+    else
+      order_by = "created_at ASC"
+      @comments = Comment.all(:order => order_by)
+    end
+    
+    respond_to do |format|
+      format.js do
+        foo = render_to_string(:partial => 'feedbacks', :locals => { :comments => @comments }).to_json
+        render :js => "$('#admin_feedbacks_list').html(#{foo});"
+      end
+      format.html
+    end
   end
   
   def all_ratings

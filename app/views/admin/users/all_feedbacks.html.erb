@@ -1,21 +1,12 @@
 <div id="get-list-header">
   <h2><%= t(:all_feedbacks)%></h2>
 </div>
-<div class="listx-bg">
-  <% unless @comments.blank? %>
-    <% @comments.each do |comment| %>
-      <% if comment.commentable_type == "Offer" %>
-        <% @offer = Offer.find_by_id(comment.commentable_type) %>
-        <%= t(:title) %>: <%= comment.title %><br />
-        <%= t(:comment) %>: <%= raw comment.comment %><br />
-        <%= t(:commented_by) %>: <%= comment.user.first_name %> <%= comment.user.last_name %><br/>
-        
-        <%=link_to t(:delete_comment), delete_comment_admin_users_path(:id => comment.id), :confirm => "Are you sure!" %><br/>
-
-      <% end %>
-      <br/><br/><br/>
-    <%end%>
-  <%else%>
-    <%= t(:no_comments) %>
-  <%end%>
+<div style="float:left;width: 100%;margin-bottom: 20px;margin-top: 20px;margin-left: 10px;">
+  <%= form_for :search, :url => all_feedbacks_admin_users_path, :remote => true do |f| %>
+    <span><%= t(:sort_by) %></span>  
+    <%= select_tag "sort_option", options_for_select([[t(:by_date) ,"1"],[t(:by_name) ,"2"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).submit()" %>
+  <% end %>
+</div>
+<div class="listx-bg" id="admin_feedbacks_list">
+  <%= render :partial => "feedbacks", :locals => {:comments => @comments} %>
 </div>

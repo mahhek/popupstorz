@@ -48,6 +48,13 @@ class User < ActiveRecord::Base
     return"#{self.first_name[0..6]} #{self.last_name[0..0].capitalize} ." if self.last_name
     self.first_name
   end
+  
+  def full_name
+    return"#{self.first_name} #{self.last_name} ." if self.last_name
+    self.first_name
+  end
+  
+  
 
   def update_with_password(params={})
     current_password = params.delete(:current_password)

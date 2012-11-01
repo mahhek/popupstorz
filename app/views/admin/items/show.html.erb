@@ -4,10 +4,10 @@
   <div id="get-list-header">
     <div id="lisit-txt"><%= @item.title %>
       <div style="float:left;width:100%;margin:10px;">
-        <%if @item.is_active%>
-          <%= link_to t(:deactivate), active_inactive_admin_items_path(:item_id => @item.id), :confirm => "Are you sure"%>
+        <%if @item.is_active%>          
+          <%= link_to t(:deactivate), active_inactive_admin_items_path(:item_id => @item.id), :confirm => "Are you sure", :class => "btn" %>
         <%else%>
-          <%= link_to t(:activate), active_inactive_admin_items_path(:item_id => @item.id), :confirm => "Are you sure"%>
+          <%= link_to t(:activate), active_inactive_admin_items_path(:item_id => @item.id), :confirm => "Are you sure", :class => "btn"  %>
         <%end%>
       </div>
 
@@ -35,7 +35,7 @@
     <div id="change_owner" style="display:none;width:120px !important;">
       <%=form_tag transfer_ownership_admin_items_path do |f|%>
         <%= hidden_field_tag "item_id", @item.id%>
-        <%= select_tag( "user_id", options_from_collection_for_select( @users, :id, :first_name), :prompt => "select owner", :class => "paris", :style => "120px !important") %>
+        <%= select_tag( "user_id", options_from_collection_for_select( @users, :id, :full_name), :prompt => "select owner", :class => "paris", :style => "120px !important") %>
         <%= submit_tag t(:done) %>
       <%end%>
     </div>

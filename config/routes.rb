@@ -142,18 +142,19 @@ PopupStorz::Application.routes.draw do
         get :delete_message
         get :all_messages
         post :all_messages
+        get :all_feedbacks
+        post :all_feedbacks
         get :all_ratings
         get :delete_rating
         get :delete_comment
-#        get :send_invitation
+        #        get :send_invitation
         get :invitations
         post :send_invitation_to_users
         post :send_invitations
         post :send_invitation
         get :all_payments
         get :cancel_payment
-        get :all_feedbacks
-        
+#        get :all_feedbacks        
       end
     end
     resources :offers do
