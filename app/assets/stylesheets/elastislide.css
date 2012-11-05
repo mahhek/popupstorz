@@ -1,20 +1,20 @@
 /* Elastislide Style */
 .es-carousel-wrapper{
-	background: #101010;
+	/*background: #101010;*/
 	padding:10px 27px;
-	-moz-border-radius: 10px;
+	/*-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
-	border-radius: 10px;
+	border-radius: 10px; */
 	position:relative;
-	-moz-box-shadow:0px 1px 3px rgba(0, 0, 0, 0.9);
+	/*-moz-box-shadow:0px 1px 3px rgba(0, 0, 0, 0.9);
 	-webkit-box-shadow:0px 1px 3px rgba(0, 0, 0, 0.9);
-	box-shadow:0px 1px 3px rgba(0, 0, 0, 0.9);
+	box-shadow:0px 1px 3px rgba(0, 0, 0, 0.9);*/
 	position:relative;
-	margin-bottom:20px;
+	/*margin-bottom:20px;*/
 }
 .es-carousel{
 	overflow:hidden;
-	background:#000;
+	/*background:#000;*/
 }
 .es-carousel ul{
 	display:none;

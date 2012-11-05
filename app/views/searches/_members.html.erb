@@ -1,51 +1,30 @@
+ <% members.each do | member | %>
+   <div class="listx" style="border-bottom: 1px solid gray;">
+   	<div class="row" style="float:left; width: 732px;padding: 5px;" onclick="window.location='<%= profile_path(member.id) %>'">
+			<div class="imgx">
+				<% if member.avatars.size > 0 %>
+					<%= image_tag(member.avatars.first.photo.url(:thumb), :width => "113", :height => "149", :alt => "Member-Photo")  %>
+				<% else %>
+					<%= image_tag("empty.png", :width => "113", :height => "147", :alt => "Member-Photo")  %>
+				<% end %>
+			</div>  
+			
+			<div class="name-list" style="margin-bottom: 5px;"><h4><%= member.first_name + " " + member.last_name %></h4>TODO rating</div>
+			
+			<div class="name-list" style="margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;"><%= member.activity %></div>
+	        
+	      <div class="name-list XXII" style="margin-bottom: 5px;"><%= member.city + " " + member.country %></div>
+	      
+	      <div style="margin-top: 64px; color: grey;">
+		   	<%= link_to "Send Message", "/#", :remote => true, :style => "float: right; color: #CC33CC;" %>
+	      </div>
+		</div>
+		<div class="clear"></div>
+   </div>
+ <%end%>
+
 <script>
   $(document).ready(function() {
     $('.pagination a').attr('data-remote', 'true');
   });
 </script>
-<div id="get-list-header">
-  <h2><%= t(:mem)%></h2>
-</div>
-<div class="listx-bg">
-  <% unless members.blank? %>
-    <% members.each do | member | %>
-      <div class="listx" style="margin-bottom: 10px;border-bottom: 1px solid gray;padding: 10px;">
-        <div class="imgx">
-          <% if member.avatars.size > 0 %>
-            <%= link_to image_tag(member.avatars.first.photo.url(:thumb), :width => "105", :height => "105", :alt => "Space-Photo"), profile_path(member.id) %>
-          <% else %>
-          <%= t(:no_image_provided) %>
-          <% end %>
-        </div>
-
-        <div class="name-list">
-          <b><%= t(:owner_name) %></b>
-          <%=link_to "#{member.first_name + " " + member.last_name}", profile_path(member.id) %>
-        </div>
-
-        <div class="name-list">
-          <b><%= t(:active2) %></b>
-          <%= member.activity %>
-        </div>
-
-        <div class="name-list">
-          <b><%= t(:city2) %></b>
-          <%= member.city %>
-        </div>
-
-        <div class="name-list">
-          <b><%= t(:country2) %></b>
-          <%= member.country %>
-        </div>
-        <div class="manage-bg">
-        </div>
-      </div>
-    <%end%>
-  <%else%>
-   <%= t(:no_member_given) %>
-  <%end%>
-</div>
-
-<div class="btn-bar">
-
-</div>

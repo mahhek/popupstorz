@@ -1,20 +1,17 @@
 <div class="shadowCont offer">
 	<div class="clear"></div>
 	
-	<h2><%= t(:forgot_password) %></h2>
-
+	<h2 style="margin-top: 0">Password forgotten ?</h2>
+	
+	<div style="margin: 30px 0 10px;">If you forgot your password, enter your e-mail below to receive password resetting instructions :</div>	
+	
 	<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
 	  <%= devise_error_messages! %>
-
-		<div class="xfields"><label><%= f.label :email %></label>
-			<%= f.email_field :email, :style => "width:315px;", :class => "input" %>
-		</div>
-		
-		<div id="iteme-type" style="text-align: center; margin: 30px 0;">
-			<%= f.submit "Send me reset password instructions", :class => "search"  %>
-		</div>
-		
+	
+		<div><%= f.email_field :email, :style => "width:315px;", :class => "input", :hint => "Email" %></div>
+		<div style="margin-top: 20px;"><%= f.submit "Send", :class => "search" %></div>
+	
 	<% end %>
-
+	
 	<%= render :partial => "devise/shared/links" %>
 </div>

@@ -273,6 +273,7 @@ body {
 	font-size: 1.4em;
 	font-weight: normal;
 	color: #333333;
+	display: inline-block;
 }
 
 .message .action {
@@ -701,7 +702,7 @@ h2 {
     line-height: 78px;
 }
 
-.mt10{margin-top:10px;}
+.mt10{margin-top:10px !important;}
 .mt30{margin-top:30px !important;}
 .paris {
     font-size: 1em;
@@ -838,6 +839,7 @@ h2 {
     -webkit-box-shadow: 2px 2px 6px #333333;
     box-shadow: 2px 2px 6px #333333;
     padding: 20px;
+    overflow: auto;
 }
 
 .s_head{font-size:22px;font-weight:bold;}
@@ -865,14 +867,14 @@ h2 {
 .size_text{font-size:14px;color:#333333;float:left;}
 .w200{width:200px;}
 .mt100{margin-top:100px;}
-.line{background:none scroll 0 0 #666666;height:1px;margin:30px 0;}
+.line{background:none scroll 0 0 #DDDDDD;height:1px;margin:7px 0;}
 .name{font-size:12px;font-weight:bold;color:#000;}
 .name_text{font-size:12px;;color:#000;font-style:italic;}
 .send{font-size:12px;font-weight:bold;color:#cc33cc;margin-top:20px;display:block;}
-.w107{width:107px;}
+.w107{width: 160px;}
 .available{font-size:18px;color:#000;}
 .daytime{background: url("../assets/plus.png") no-repeat scroll left center transparent;color: #000000; float: left; font-size: 12px; margin-right: 37px; margin-top: 6px; padding-left: 20px; text-align: center;}
-.w212{width:212px;}
+.w212{padding: 5px; width: 257px;}
 .ml70{margin-left:45px !important;}
 .search {
     background: none repeat scroll 0 0 #CC33CC;
@@ -981,11 +983,6 @@ h2 {
 
 .rg-image-wrapper{
     position:relative;
-    padding:20px 30px;
-    background:transparent url(../assets/black.png) repeat top left;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
     min-height:20px;
 }
 .rg-image{
@@ -1008,17 +1005,17 @@ h2 {
     cursor:pointer;
     opacity:0.3;
     outline:none;
-    -moz-border-radius: 10px 0px 0px 10px;
+    /*-moz-border-radius: 10px 0px 0px 10px;
     -webkit-border-radius: 10px 0px 0px 10px;
-    border-radius: 10px 0px 0px 10px;
+    border-radius: 10px 0px 0px 10px;*/
 }
 .rg-image-nav a.rg-image-nav-next{
     right:0px;
     left:auto;
     background-position:115% 50%;
-    -moz-border-radius: 0px 10px 10px 0px;
+    /*-moz-border-radius: 0px 10px 10px 0px;
     -webkit-border-radius: 0px 10px 10px 0px;
-    border-radius: 0px 10px 10px 0px;
+    border-radius: 0px 10px 10px 0px;*/
 }
 .rg-image-nav a:hover{
     opacity:0.8;
@@ -1027,6 +1024,7 @@ h2 {
     text-align:center;
     margin-top:15px;
     position:relative;
+    display: none !important;
 }
 .rg-caption p{
     font-size:11px;
@@ -1044,6 +1042,7 @@ h2 {
 }
 .rg-view{
     height:30px;
+    display: none !important;
 }
 .rg-view a{
     display:block;
@@ -1132,7 +1131,7 @@ ul, li {
 }
 
 .ui-slider-horizontal .ui-slider-range {
-	background-color: cyan;	
+	background: none repeat scroll 0 0 cyan !important;
 }
 
 .ui-slider-horizontal .ui-slider-handle {
@@ -1141,4 +1140,10 @@ ul, li {
 
 .ui-slider {
 	border-radius: 0 !important;
+}
+
+.avail_item {
+	display: inline-block;
+	width: 100px;
+	margin-bottom: 10px;
 }

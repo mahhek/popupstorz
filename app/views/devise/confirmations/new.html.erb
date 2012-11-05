@@ -1,12 +1,15 @@
-<h2><%= t(:resend_instructions) %></h2>
-
-<%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
-
-  <div><%= f.submit "Resend confirmation instructions" %></div>
-<% end %>
-
-<%= render :partial => "devise/shared/links" %>
+<div class="shadowCont offer">
+	<div class="clear"></div>
+	
+	<h2 style="margin-top: 0">Did not receive confirmation instructions ?</h2>
+	
+	<div style="margin: 30px 0 10px;">If you did not receive account confirmation instructions, please enter your e-mail below to send them again :</div>	
+	
+	<%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f| %>
+	  <%= devise_error_messages! %>
+	
+		<div><%= f.email_field :email, :style => "width:315px;", :class => "input", :hint => "Email" %></div>
+		<div style="margin-top: 20px;"><%= f.submit "Send", :class => "search" %></div>
+	
+	<% end %>
+</div>
