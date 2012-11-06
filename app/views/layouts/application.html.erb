@@ -55,12 +55,6 @@
 
     <script id="img-wrapper-tmpl" type="text/x-jquery-tmpl">
       <div class="rg-image-wrapper">
-        {{if itemsCount > 1}}
-        <div class="rg-image-nav">
-          <a href="#" class="rg-image-nav-prev"><%= t(:prev_image) %></a>
-          <a href="#" class="rg-image-nav-next"><%= t(:next_image) %></a>
-        </div>
-        {{/if}}
         <div class="rg-image"></div>
         <div class="rg-loading"></div>
         <div class="rg-caption-wrapper">
@@ -68,6 +62,12 @@
             <p></p>
           </div>
         </div>
+        {{if itemsCount > 1}}
+        <div class="rg-image-nav">
+          <a href="#" class="rg-image-nav-prev"><%= t(:prev_image) %></a>
+          <a href="#" class="rg-image-nav-next"><%= t(:next_image) %></a>
+        </div>
+        {{/if}}
       </div>
     </script> 
   </head>
@@ -267,11 +267,13 @@
         $("input[hint]").hint();
         $("textarea[hint]").hint();
         $('#loginpannel').hide();
+        
         $('.notice').delay(3500).fadeTo("slow", 0.00, function(){
           $(this).slideUp("slow", function() {
             $(this).remove();
           });
         });
+        
       });
 
       function addParamToUrl(param, value)  {
