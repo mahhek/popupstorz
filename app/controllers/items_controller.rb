@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class ItemsController < ApplicationController
   include ActionView::Helpers::NumberHelper
-  before_filter :authenticate_user!, :except => [:set_dates, :exchange_price, :new, :create, :show, :search_via_price_range, :search_keyword, :search_category, :autocomplete_item_city, :autocomplete_item_title]
+  before_filter :authenticate_user!, :except => [:set_dates, :exchange_price, :new, :show, :create, :search_via_price_range, :search_keyword, :search_category, :autocomplete_item_city, :autocomplete_item_title]
   autocomplete :item, :title
   autocomplete :item, :city
 

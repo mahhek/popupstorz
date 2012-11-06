@@ -29,7 +29,8 @@ en:
    by_sender: "By Sender"
    by_receiver: "By Receiver"
    by_date: "By Date"
-   
+   by_day: "By Day"
+   all_feedbacks: "All Feedbacks"
    
    welcome_to_popup_storz: "Welcome to Popup Storz"
    popup: "PopUpStorz"
@@ -382,6 +383,7 @@ en:
    avail_from: "Available from:"
    avail_to: "Available to:"
    avail_dur: "Available During:"
+   
    gather_found: "No pop'union with given criteria found!"
    no: "NO"
    gathering_available: "Pop'union Available:"
@@ -663,3 +665,21 @@ en:
    no_payments: "There are no payments to show!"
    seller: "Seller"
    renter: "Renter"
+   
+   
+   availablilities: "Availablilities"
+   daytime: "Daytime"
+   evenings: "Evenings"
+   mondays: "Mondays"
+   tuesdays: "Tuesdays"
+   wednesdays: "Wednesdays"
+   thursdays: "Thursdays"
+   fridays: "Fridays"
+   saturdays: "Saturdays"
+   sundays: "Sundays"
+   gathering_allowed_at_place: "Gatherings are allowed in this place"
+   what_is_gathering: "What is a gathering?"
+   maximum_allowed_persons: "Maximum number of members per gathering"
+   EUR: "EUR"
+   USD: "USD"
+   place_cancellation_policy: "The cancellation policy for this place is"

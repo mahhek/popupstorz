@@ -8,7 +8,7 @@
 	<div style="border: 1px solid #999999; padding: 20px;">
 		<%= @message.topic %>
 	  <%= @message.from.popup_storz_display_name %><span style="float: right;" ><%=  @message.created_at.strftime("%d %b %Y") %></span>
-	  Body: <%=  raw (nl2br(@message.body).html_safe) %>
+	  Body: <%=  raw (nl2br(@message.body)) %>
 	  <br/>
 	  <br/>
 	  Date: 

@@ -1,49 +1,49 @@
 <div class="shadowCont offer">
-	<!-- sub-Header -->
-	<%= render :partial => "account_header" %>
-	<div class="clear"></div>
+  <!-- sub-Header -->
+  <%= render :partial => "account_header" %>
+  <div class="clear"></div>
 
-	<div style="overflow: auto;" id="invitation_div">
-	  <%= form_tag "send_invitation", :url => "/send_invitation" , :onsubmit => "return check_email();" do %>
-		 <%= hidden_field_tag :user_id, current_user.id %>
-		 
-		   <div class="xfields"><%= t(:send_invite) %></div>
-		   <div class="xfields">
-		   	<%= text_field_tag "fname1", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
-		   	<%= text_field_tag "lname1", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
-		   	<%= text_field_tag "email1", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
-		   </div>
-		   <div class="xfields">
-		   	<%= text_field_tag "fname2", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
-		   	<%= text_field_tag "lname2", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
-		   	<%= text_field_tag "email2", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
-		   </div>
-		   <div class="xfields">
-		   	<%= text_field_tag "fname3", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
-		   	<%= text_field_tag "lname3", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
-		   	<%= text_field_tag "email3", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
-		   </div>
-		   <div class="xfields">
-		   	<%= text_field_tag "fname4", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
-		   	<%= text_field_tag "lname4", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
-		   	<%= text_field_tag "email4", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
-		   </div>
-		   <div class="xfields">
-		   	<%= text_field_tag "fname5", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
-		   	<%= text_field_tag "lname5", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
-		   	<%= text_field_tag "email5", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
-		   </div>
-		    <div class="xfields" style="margin-top: 10px;">
-		   	<%= text_area_tag "message", nil, "hint" => "You can add a message telling your friends how Pop Up Storz is great for finding or renting spaces...", :class => "input", :size => "250x6", :style => "width:63%; font-size: 1em;" %>
-		   </div>
+  <div style="overflow: auto;" id="invitation_div">
+    <%= form_tag "send_invitation", :url => "/send_invitation" , :onsubmit => "return check_email();" do %>
+      <%= hidden_field_tag :user_id, current_user.id %>
 
-			<div class="xfields" style="margin-top: 20px;">
-				<div style="float: left;margin-top: 5px;clear:both;">
-					<%= submit_tag "Send Invitation", :class=> "search", :style => "font-size: 16px; padding: 3px 10px;" %>
-				</div>
-			</div>
-	  <% end %>
-	</div>
+      <div class="xfields"><%= t(:send_invite) %></div>
+      <div class="xfields">
+        <%= text_field_tag "fname1", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname1", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email1", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname2", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname2", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email2", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname3", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname3", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email3", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname4", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname4", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email4", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields">
+        <%= text_field_tag "fname5", nil, "hint" => "First name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "lname5", nil, "hint" => "Last name", :class => "input", :style => "width: 175px;" %>
+        <%= text_field_tag "email5", nil, "hint" => "E-mail address", :class => "input", :style => "width: 175px;" %>
+      </div>
+      <div class="xfields" style="margin-top: 10px;">
+        <%= text_area_tag "message", nil, "hint" => "You can add a message telling your friends how Pop Up Storz is great for finding or renting spaces...", :class => "input", :size => "250x6", :style => "width:63%; font-size: 1em;" %>
+      </div>
+
+      <div class="xfields" style="margin-top: 20px;">
+        <div style="float: left;margin-top: 5px;clear:both;">
+          <%= submit_tag "Send Invitation", :class=> "search", :style => "font-size: 16px; padding: 3px 10px;" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
 
 <script type="text/javascript">

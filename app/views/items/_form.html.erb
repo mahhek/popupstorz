@@ -3,7 +3,9 @@
     $(document).ready(function(){
       var min = new Date();
       min = '<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%Y") %>';
-      
+      if(min == ""){
+        min = new Date();
+      }
       $("#item_availability_from").val('<%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%Y") %>');
       $("#item_availability_from").datepicker({
         minDate: min,
@@ -37,21 +39,21 @@
 </div>
 
 <div class="xfields"><label><%= t(:title) %></label>
-	<%= f.text_field :title, :style => "width:315px;", :class => "input" %>
+  <%= f.text_field :title, :style => "width:315px;", :class => "input" %>
 </div>
 
 <div class="xfields" id="where-iteme"><label><%= t(:location) %></label>
- <%= f.text_field :address, :class => "field-l input", :style => "width:315px;" %>
- <div id="item_advanced_container" style="display:none;">
-   <div id="item_advanced" style="display:none;">
-     <%= f.label(:longitude, "Coordinates") %>
-     <%= f.text_field :longitude, :class => 'required two-side-by-side' %>
-     <%= f.text_field :latitude , :class => 'required two-side-by-side second'%><br />
-   </div>
-   <div class="small">
-     <a href="javascript:void(0);" id="item_advanced_link"><%= "Advance Settings" %></a>
-   </div>
- </div>
+  <%= f.text_field :address, :class => "field-l input", :style => "width:315px;" %>
+  <div id="item_advanced_container" style="display:none;">
+    <div id="item_advanced" style="display:none;">
+      <%= f.label(:longitude, "Coordinates") %>
+      <%= f.text_field :longitude, :class => 'required two-side-by-side' %>
+      <%= f.text_field :latitude , :class => 'required two-side-by-side second'%><br />
+    </div>
+    <div class="small">
+      <a href="javascript:void(0);" id="item_advanced_link"><%= "Advance Settings" %></a>
+    </div>
+  </div>
 </div>
 
 <div class="xfields"><label><%= t(:neighbourhood) %></label>
@@ -78,42 +80,50 @@
   <%= f.text_area :description, :size => "50x12", :class => "input", :style => "font-size: 1em; width: 715px;" %>
 </div>
 
-<h2>AVAILABILITIES</h2>
+<h2><%= t(:availablilities) %></h2>
 
 <div class="xfields"><label>&nbsp;</label>
-	<div class="input">
-	<span>This place is TODO</span><br /> 
-	<%=f.check_box :availablities_daytime %><span>Daytime</span>
-	<%=f.check_box :availablities_evenings %><span>Evenings</span><br/>
-	<%=f.check_box :availablities_monday %><span>Mondays</span>
-	<%=f.check_box :availablities_tuesday %><span>Tuesdays</span>
-	<%=f.check_box :availablities_wednesday %><span>Wednesdays</span>
-	<%=f.check_box :availablities_thursday %><span>Thursdays</span>
-	<%=f.check_box :availablities_friday %><span>Fridays</span>
-	<%=f.check_box :availablities_saturday %><span>Saturdays</span>
-	<%=f.check_box :availablities_sunday %><span>Sundays</span>
-	</div>
+  <div class="input">
+<%#*<span>This place is TODO</span><br />%>
+    <span><%= t(:available_from) %></span>    
+    <%= f.text_field :availability_from %>
+    <span><%= t(:available_to) %></span>
+    <%= f.text_field :availability_to %>
+    <br />
+    <%=f.check_box :availablities_daytime %><span><%= t(:daytime) %></span>
+    <%=f.check_box :availablities_evenings %><span><%= t(:evenings) %></span><br/>
+    <%=f.check_box :availablities_monday %><span><%= t(:mondays) %></span>
+    <%=f.check_box :availablities_tuesday %><span><%= t(:tuesdays) %></span>
+    <%=f.check_box :availablities_wednesday %><span><%= t(:wednesdays) %></span>
+    <%=f.check_box :availablities_thursday %><span><%= t(:thursdays) %></span>
+    <%=f.check_box :availablities_friday %><span><%= t(:fridays) %></span>
+    <%=f.check_box :availablities_saturday %><span><%= t(:saturdays) %></span>
+    <%=f.check_box :availablities_sunday %><span><%= t(:sundays) %></span>
+  </div>
 </div>
 
 <h2>SHAREABILITY</h2>
 
 <div class="xfields"><label>&nbsp;</label>
   <div class="input" >
-  		<span>Gatherings are allowed in this place</span> <a style="color: #666666;"> TODO What is a gathering?</a><br /> 
-    	TODO radio_button_tag  <%= select_tag "item[is_shareable]", options_for_select([["Yes",true],["No",false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)", :class => "input" %>
-    	&nbsp;Maximum number of members per gathering: &nbsp;
-    	<%= f.text_field :maximum_members, :size => "5" %> persons
+    <span><%= t(:gathering_allowed_at_place) %></span>
+    <a style="color: #666666;"><%= t(:what_is_gathering) %></a>
+    <br /> 
+    <%= select_tag "item[is_shareable]", options_for_select([[t("Yes"),true],[t("No"),false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)", :class => "input" %>
+    &nbsp;
+    <%= t(:maximum_allowed_persons) %>: &nbsp;
+    <%= f.text_field :maximum_members, :size => "5" %> <%= t(:persons) %>
   </div>
 </div>
 
-<h2>PRINCING</h2>
+<h2><%= t(:pricing) %></h2>
 
-<div class="xfields"><label>Currency</label>
+<div class="xfields"><label><%= t(:currency) %></label>
   <span>
-    <%= select_tag "item[price_unit]", options_for_select([["USD","USD"],["EUR","EUR"]], @item.price_unit), :onchange => "$('.unit').html($(this).val() == 'USD' ? '$' : '€');", :style => "width:100px;" %>
+    <%= select_tag "item[price_unit]", options_for_select([[t("USD"),"USD"],[t("EUR"),"EUR"]], @item.price_unit), :onchange => "$('.unit').html($(this).val() == 'USD' ? '$' : '€');", :style => "width:100px;" %>
   </span>
 </div>
-  
+
 <div class="xfields" style="margin: 20px 0;"><label>Rental price</label>
   <span>
     <%= f.text_field :price,  :class => "price", :size =>""%> <span class="unit">$</span> per day
@@ -136,207 +146,209 @@
   </span>
 </div>
 
-<h2>CANCELLATION POLICY</h2>
+<h2><%= t(:cancellation_policies) %></h2>
 
 <div class="xfields"><label>&nbsp;</label>
-	<div class="input" style="width: 80%;"><span>The cancellation policy for this place is:</span><span>TODO check out our full cancellation policies</span><br/>
-	<%=f.radio_button :cancellation_policy_flexible, true, :class => "input" %><div class="input policy">
-		<span style="color: black; margin: 5px 0;">Flexible</span><br/><br/>
-		If renter cancels more than 7 days before booking start date: full refund<br/>
-		If renter cancels less than 7 days before booking start date: no refund<br/><br/>
-		
-		Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the Thursday of the prior week at 23:59 (local time of the booked space).<br/><br/>
-		
-		Please be informed that the 10% Pop Up Storz service fee is not refundable.<br/><br/>
-		Exemple
-		If renter has done a booking for an amount of 110 € and cancels more than 7 days before booking start date, the amount of the refund will be 100 €.<br/><br/>
-		</div>
-	<%=f.radio_button :cancellation_policy_flexible, false, :class => "input" %> <div class="input policy">
-		<span style="color: black; margin: 5px 0;">SemiFlexible</span><br/><br/>
-		If renter cancels more than 3 days before booking start date: partial refund (50%)<br/>
-		If renter cancels less than 3 days before booking start date: no refund<br/><br/>
-		
-		Exemple : If renter wishes to cancel a reservation that starts on a Friday, cancellation will have to be done before the prior Monday at 23:59 (local time of the booked space).<br/><br/>
-		
-		Please be informed that the 10% Pop Up Storz service fee is not refundable. <br/><br/>
-		Exemple
-		If renter has done a booking for an amount of 110 € and cancels more than 3 days before booking start date, the amount of the refund will be 50 €.
-		</div>
-	</div>
+  <div class="input" style="width: 80%;">
+    <span><%= t(:place_cancellation_policy) %>:</span>
+    <span>TODO check out our full cancellation policies</span><br/>
+    <%= f.radio_button :cancellation_policy_flexible, true, :class => "input" %>
+    <div class="input policy">
+      <span style="color: black; margin: 5px 0;"><%= t(:flexible) %></span><br/><br/>
+      <%= t(:cancel_ln1) %><br/>
+      <%= t(:cancel_ln2) %><br/><br/>
+
+      <%= t(:cancel_ln3) %><br/><br/>
+
+      <%= t(:cancel_ln4) %><br/><br/>
+      <%= t(:cancel_ln5) %><br/><br/>
+    </div>
+    <%=f.radio_button :cancellation_policy_flexible, false, :class => "input" %> 
+    <div class="input policy">
+      <span style="color: black; margin: 5px 0;"><%= t(:semi_flexible) %></span><br/><br/>
+      <%= t(:semi_cancel_ln1) %><br/>
+      <%= t(:semi_cancel_ln2) %><br/><br/>
+
+      <%= t(:semi_cancel_ln3) %><br/><br/>
+
+      <%= t(:semi_cancel_ln4) %><br/><br/>
+      <%= t(:semi_cancel_ln5) %>
+    </div>
+  </div>
 </div>
 
 <h2>OWNER RULES</h2>
 
 <div class="xfields"><label>&nbsp;</label>
-	<div class="input" >Write here all the rules that your guest will have to agree to in order to rent your place.<br />
-	<%= f.text_area :owner_rules, :size => "50x12", :style => "font-size: 1em; width: 715px;", :class => "input" %></div>
+  <div class="input" >Write here all the rules that your guest will have to agree to in order to rent your place.<br />
+    <%= f.text_area :owner_rules, :size => "50x12", :style => "font-size: 1em; width: 715px;", :class => "input" %></div>
 </div>
 
 <div id="iteme-type" style="text-align: center; margin: 30px 0;">
-	<%= f.submit @item.new_record? ? "Create Listing" : "Update Space", :class => "search" %>
+  <%= f.submit @item.new_record? ? "Create Listing" : "Update Space", :class => "search" %>
 </div>
 
-  <script>
-    var marker = null;
-    var get_location_name_timeout = null;
+<script>
+  var marker = null;
+  var get_location_name_timeout = null;
 
-    $(document).ready(function() {
-
-
-      $('#map').css("margin", "0 auto");
+  $(document).ready(function() {
 
 
-      var update_location_fun = function(resolveName) {
-        if(resolveName == null) {
-          resolveName = true;
-        }
-
-        var form = $('#new_item');
-        var latlng = new GLatLng(
-        $('#item_latitude').val(),
-        $('#item_longitude').val()
-      );
-
-        map.setCenter(latlng);
-        if(marker) {
-          map.removeOverlay(marker);
-        }
-
-        marker = new GMarker(latlng);
-        map.setZoom(15);
-        map.addOverlay(marker);
+    $('#map').css("margin", "0 auto");
 
 
-
-        if(resolveName) {
-
-
-          var get_location_name_fun = function() {
-            $.ajax({
-              url: "/xml/address_search.xml?lat=" + latlng.lat() + "&lon=" + latlng.lng(),
-              dataType: 'xml',
-              success: function(resp) {
-
-                $('#item_address').removeClass('ui-autocomplete-loading');
-                var name = $('address', resp).text();
-                if(name != '') {
-                  $('#item_address').val($('address', resp).text());
-                }
-              }
-            });
-          }
-
-          if(get_location_name_timeout) {
-            clearTimeout(get_location_name_timeout);
-          }
-          get_location_name_timeout = setTimeout(get_location_name_fun, 300);
-          $('#item_address').addClass('ui-autocomplete-loading');
-        }
+    var update_location_fun = function(resolveName) {
+      if(resolveName == null) {
+        resolveName = true;
       }
 
-      var register_map_event_fun = function() {
-        if(!map) {
-          setTimeout(register_map_event_fun, 100);
-          return;
-        }
-        GEvent.addListener(map, "click", function(overlay, latlng) {
-          if (latlng) {
-            $('#item_longitude').val(latlng.lng());
-            $('#item_latitude').val(latlng.lat());
-            update_location_fun();
-          }
-        });
-      }
-      setTimeout(register_map_event_fun, 100);
+      var form = $('#new_item');
+      var latlng = new GLatLng(
+      $('#item_latitude').val(),
+      $('#item_longitude').val()
+    );
 
-      $('#item_address').autocomplete({
-        focus: function(event, ui) {
-          return false;
-        },
-        select: function(event, ui) {
-          var position = ui.item.id.split(";");
-          $('#item_longitude').val(position[0]);
-          $('#item_latitude').val(position[1]);
-          update_location_fun(false);
-        },
-        source: function(request, cb) {
+      map.setCenter(latlng);
+      if(marker) {
+        map.removeOverlay(marker);
+      }
+
+      marker = new GMarker(latlng);
+      map.setZoom(15);
+      map.addOverlay(marker);
+
+
+
+      if(resolveName) {
+
+
+        var get_location_name_fun = function() {
           $.ajax({
-            url: "/xml/location_search.xml?q=" + request.term,
+            url: "/xml/address_search.xml?lat=" + latlng.lat() + "&lon=" + latlng.lng(),
             dataType: 'xml',
             success: function(resp) {
-              cb($("location", resp).map(function() {
-                return {label: $("address", this).text(), id: $("longitude", this).text() + ";" + $("latitude", this).text()
-                };
-              }).get());
+
+              $('#item_address').removeClass('ui-autocomplete-loading');
+              var name = $('address', resp).text();
+              if(name != '') {
+                $('#item_address').val($('address', resp).text());
+              }
             }
           });
-        },
-        minLength: 2,
-        change: function (event, ui) {
-          if (ui.item) {
-            $('#another_element').val(ui.item.source.label);
-          }
-          else {
-            if (!$(this).data('valid')) {
-              $(this).val('');
-              $('#another_element').val('');
-            }
-          }
-          $(this).data('valid', false);
         }
-      }).live('blur', function (e) {
-        if ($('.ui-autocomplete li:visible').length > 0) {
-          $(".ui-autocomplete li:visible:first").click();
-          item = $($(".ui-autocomplete li:visible:first").data()).attr('item.autocomplete');
-          var position = item.id.split(";");
-          $('#item_longitude').val(position[0]);
-          $('#item_latitude').val(position[1]);
-          update_location_fun(false);
-          $(this).val(item.label);
-          $('#another_element').val(item.label);
-          $(this).data('valid', true);
 
+        if(get_location_name_timeout) {
+          clearTimeout(get_location_name_timeout);
+        }
+        get_location_name_timeout = setTimeout(get_location_name_fun, 300);
+        $('#item_address').addClass('ui-autocomplete-loading');
+      }
+    }
+
+    var register_map_event_fun = function() {
+      if(!map) {
+        setTimeout(register_map_event_fun, 100);
+        return;
+      }
+      GEvent.addListener(map, "click", function(overlay, latlng) {
+        if (latlng) {
+          $('#item_longitude').val(latlng.lng());
+          $('#item_latitude').val(latlng.lat());
+          update_location_fun();
         }
       });
-      //$('#new_location').validate();
+    }
+    setTimeout(register_map_event_fun, 100);
+
+    $('#item_address').autocomplete({
+      focus: function(event, ui) {
+        return false;
+      },
+      select: function(event, ui) {
+        var position = ui.item.id.split(";");
+        $('#item_longitude').val(position[0]);
+        $('#item_latitude').val(position[1]);
+        update_location_fun(false);
+      },
+      source: function(request, cb) {
+        $.ajax({
+          url: "/xml/location_search.xml?q=" + request.term,
+          dataType: 'xml',
+          success: function(resp) {
+            cb($("location", resp).map(function() {
+              return {label: $("address", this).text(), id: $("longitude", this).text() + ";" + $("latitude", this).text()
+              };
+            }).get());
+          }
+        });
+      },
+      minLength: 2,
+      change: function (event, ui) {
+        if (ui.item) {
+          $('#another_element').val(ui.item.source.label);
+        }
+        else {
+          if (!$(this).data('valid')) {
+            $(this).val('');
+            $('#another_element').val('');
+          }
+        }
+        $(this).data('valid', false);
+      }
+    }).live('blur', function (e) {
+      if ($('.ui-autocomplete li:visible').length > 0) {
+        $(".ui-autocomplete li:visible:first").click();
+        item = $($(".ui-autocomplete li:visible:first").data()).attr('item.autocomplete');
+        var position = item.id.split(";");
+        $('#item_longitude').val(position[0]);
+        $('#item_latitude').val(position[1]);
+        update_location_fun(false);
+        $(this).val(item.label);
+        $('#another_element').val(item.label);
+        $(this).data('valid', true);
+
+      }
     });
+    //$('#new_location').validate();
+  });
 
-    function update_units(){
-      val = $("#item_size_unit").val();
-      if(val== "SQMT"){
-        if($("#item_size").val()){
-          fts = $("#item_size").val() * 10.76;
-        }
-        else{
-          fts = 0;
-        }
-        $("#other_unit").text("= " + Math.round(fts)+" SQFT");
+  function update_units(){
+    val = $("#item_size_unit").val();
+    if(val== "SQMT"){
+      if($("#item_size").val()){
+        fts = $("#item_size").val() * 10.76;
       }
       else{
-        if($("#item_size").val()){
-          mts = $("#item_size").val() / 10.76;
-        }
-        else{
-          mts = 0;
-        }
-        $("#other_unit").text("= " + Math.round(mts)+" SQMT");
+        fts = 0;
       }
+      $("#other_unit").text("= " + Math.round(fts)+" SQFT");
     }
-
-    function check_persons_limit(val){
-      if(val == 'false'){
-        $("#item_maximum_members").attr('disabled', true);
-        $("#person_count").hide();
+    else{
+      if($("#item_size").val()){
+        mts = $("#item_size").val() / 10.76;
       }
       else{
-        $("#item_maximum_members").attr('disabled', false);
-        $("#person_count").show();
+        mts = 0;
       }
+      $("#other_unit").text("= " + Math.round(mts)+" SQMT");
     }
-    
-    
-    function update_date_view(){
-      $("#date_range").toggle();
-    }
+  }
 
-  </script>
+  function check_persons_limit(val){
+    if(val == 'false'){
+      $("#item_maximum_members").attr('disabled', true);
+      $("#person_count").hide();
+    }
+    else{
+      $("#item_maximum_members").attr('disabled', false);
+      $("#person_count").show();
+    }
+  }
+    
+    
+  function update_date_view(){
+    $("#date_range").toggle();
+  }
+
+</script>

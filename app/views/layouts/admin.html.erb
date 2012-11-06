@@ -9,7 +9,9 @@
     <%= javascript_include_tag "application" %>
     <%= javascript_include_tag "jquery-ui" %>
     <%= javascript_include_tag "maps" %>
-    <%= javascript_include_tag "all" %>    
+    <%= javascript_include_tag "all" %>
+    <%= javascript_include_tag "jquery.fileinput" %>
+    <%= javascript_include_tag "jquery.hint" %>
 
     <%= javascript_include_tag "geoRssOverlay" %>
 
@@ -19,6 +21,7 @@
     <%= javascript_include_tag "tmpl" %>
     <%= javascript_include_tag "easing" %>
     <%= javascript_include_tag "elastislide" %>
+    <%= javascript_include_tag "chosen.jquery" %>
 <%#= javascript_include_tag "gallery" %>
 <%#= javascript_include_tag "jcarousel.min" %>
     <%= GMap.header(:with_vml => false, :host => request.host).html_safe %>
@@ -50,26 +53,27 @@
 
       <%= link_to t(:all_listings), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:create_listings), new_admin_item_path %>&nbsp;|&nbsp;
-      
+
       <%= link_to t(:all_bookings), admin_offers_path %>&nbsp;|&nbsp;
       <%= link_to t(:gatherings), "/admin_gatherings" %>&nbsp;|&nbsp;
 
-      
+
       <%= link_to t(:edit_listing), admin_items_path %>&nbsp;|&nbsp;
       <%= link_to t(:delete_users) , admin_users_path %>&nbsp;|&nbsp;
-      
-      
-      <%= link_to t(:delete_listing), "/delete_listings" %>&nbsp;|&nbsp;
+
+
+      <%#= link_to t(:delete_listing), "/delete_listings" %>&nbsp;|&nbsp;
       <%#= link_to t(:validate_guest), admin_items_path %>
-      
+
       <%= link_to t(:change_all_commission_rates), change_rate_admin_items_path %>&nbsp;|&nbsp;
       <%=  link_to t(:all_messages), all_messages_admin_users_path %>&nbsp;|&nbsp;
       <%=  link_to t(:all_ratings), all_ratings_admin_users_path%>&nbsp;|&nbsp;
       <%= link_to t(:send_message_to_all_users), send_to_all_admin_messages_path %>&nbsp;|&nbsp;
-      
+
       <%= link_to t(:send_invitation_to_users), invitations_admin_users_path %>&nbsp;|&nbsp;
-      
-      <%= link_to t(:all_payments), all_payments_admin_users_path %>
+
+      <%= link_to t(:all_payments), all_payments_admin_users_path %>&nbsp;|&nbsp;
+      <%= link_to t(:all_feedbacks), all_feedbacks_admin_users_path %>
 
     </div>
 
@@ -81,6 +85,84 @@
       <p class="notice" style="padding: 5px;width :95%;float:left; background-color:red;"><%= alert %></p>
     <% end %>
     <%= yield %>
+    <script type="text/javascript">    
+      /*$(document).ready(function() {
+        $("input[hint]").hint();
+        $("textarea[hint]").hint();
+        $('#loginpannel').hide();
+      });*/
+	
+      $(window).load(function() {
+        $("input[hint]").hint();
+        $("textarea[hint]").hint();
+        $('#loginpannel').hide();
+        $('.notice').delay(3500).fadeTo("slow", 0.00, function(){
+          $(this).slideUp("slow", function() {
+            $(this).remove();
+          });
+        });
+      });
 
+      function addParamToUrl(param, value)  {
+        //check if param exists
+        var result = new RegExp(param + "=([^&]*)", "i").exec(window.location.search);
+        result = result && result[1] || "";
+		
+        //added seperately to append ? before params
+        var loc = window.location;
+        var url = loc.protocol + '//' + loc.host + loc.pathname + loc.search;
+		
+        //param doesn't exist in url, add it
+        if (result == '') {
+          //doesn't have any params
+          if (loc.search == '') {
+            url += "?" + param + '=' + value;
+          } else {
+            url += "&" + param + '=' + value;
+          }
+        } else {
+          value_to = param == 'curr' ? value == 'USD' ? 'EUR' : 'USD' : value == 'fr' ? 'en' : 'fr';
+          value_from = param == 'curr' ? value == 'USD' ? 'USD' : 'EUR' : value == 'fr' ? 'fr' : 'en';
+          url = param == 'curr' ? url.replace("curr="+value_to,"curr="+value_from) : url.replace("locale="+value_to,"locale="+value_from);
+        }
+		
+        //return the finished url
+        window.location = url;
+      }
+	
+      function search_menu(){
+        $('#search_options').toggle("slow");
+      }
+	  
+      function login_menu(){
+        $('#loginpannel').toggle("slow");
+      }
+	
+      $(document).click(function(event) {  
+        if($(event.target).hasClass("searchMenu") == true){      
+          $('#search_options').show();
+        } else {
+          if($('#search_options').is(":hidden") == false){
+            $('#search_options').hide();
+          }
+        }
+	  		
+      });
+            
+      function mini_drop(){
+        $('#mini_drop_options').toggle();
+      }
+      
+      $(document).click(function(event) {
+        if($(event.target).hasClass("searchMenu") == true){
+          $('#search_options').show();
+        }
+        else{
+          if($('#search_options').is(":hidden") == false){
+            $('#search_options').hide();
+          }
+        }
+      });
+    </script>  
   </body>
 </html>

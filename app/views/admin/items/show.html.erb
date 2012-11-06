@@ -4,10 +4,10 @@
   <div id="get-list-header">
     <div id="lisit-txt"><%= @item.title %>
       <div style="float:left;width:100%;margin:10px;">
-        <%if @item.is_active%>
-          <%= link_to t(:deactivate), active_inactive_admin_items_path(:item_id => @item.id), :confirm => "Are you sure"%>
+        <%if @item.is_active%>          
+          <%= link_to t(:deactivate), active_inactive_admin_items_path(:item_id => @item.id), :confirm => "Are you sure", :class => "btn" %>
         <%else%>
-          <%= link_to t(:activate), active_inactive_admin_items_path(:item_id => @item.id), :confirm => "Are you sure"%>
+          <%= link_to t(:activate), active_inactive_admin_items_path(:item_id => @item.id), :confirm => "Are you sure", :class => "btn"  %>
         <%end%>
       </div>
 
@@ -17,7 +17,7 @@
       </span>
     </div>
     <div>
-      <%=form_tag display_on_home_admin_items_path do |f|%>
+      <%= form_tag display_on_home_admin_items_path do |f|%>
         <%= hidden_field_tag "new_item_id", @item.id%>
         <%= check_box_tag "item_id", @item.id, @item.display_on_home%>
         <%= t(:display_on_home) %>
@@ -32,11 +32,11 @@
       <br/>
     </div>
     <button id="owner"><%= t(:ownership) %></button>
-    <div id="change_owner" style="display:none">
+    <div id="change_owner" style="display:none;width:120px !important;">
       <%=form_tag transfer_ownership_admin_items_path do |f|%>
-        <%=hidden_field_tag "item_id", @item.id%>
-        <%= select_tag( "user_id", options_from_collection_for_select( @users, :id, :first_name), :prompt => "select owner", :class => "paris") %>
-        <%=submit_tag "done"%>
+        <%= hidden_field_tag "item_id", @item.id%>
+        <%= select_tag( "user_id", options_from_collection_for_select( @users, :id, :full_name), :prompt => "select owner", :class => "paris", :style => "120px !important") %>
+        <%= submit_tag t(:done) %>
       <%end%>
     </div>
   </div>
@@ -72,7 +72,11 @@
 
   <div id="right-widgets">
     <div class="blue-box">
-      <div id="price-x"><span class="font-24"><%= @item.price %></span>&nbsp;<%= t(:euro_per_day) %> </div>
+      <div id="price-x">
+        <span class="font-24"><%= @item.price %></span>
+        &nbsp;
+        <%= t(:euro_per_day) %>
+      </div>
     </div>
   </div>
 
@@ -102,29 +106,49 @@
       <h3> <%= t(:bookings_on_this_item) %></h3>
       <%unless @item.offers.blank?%>
         <%@item.offers.each do |offer|%>
-          <%= t(:start_date) %> <%= offer.rental_start_date%><br/>
-          <%= t(:end_date) %>  <%= offer.rental_end_date%><br/>
+          <%= t(:start_date) %> <%= offer.rental_start_date.blank? ? "" : offer.rental_start_date.strftime("%m-%d-%Y") %><br/>
+          <%= t(:end_date) %>  <%= offer.rental_end_date.blank? ? "" : offer.rental_end_date.strftime("%m-%d-%Y") %><br/>
+          <% if offer.is_gathering == true  %>
+            <%= t(:total_req_person) %><%= offer.persons_in_gathering %><br />
+            <%= t(:join_deadline) %><%= offer.gathering_deadline.strftime("%m-%d-%Y") %>
+          <% end %>
           <div style="float:left;width:100%;margin:10px;">
-            <%if offer.is_active%>
-              <%= link_to t(:deactivate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => t(:sure_delete) %>
-            <%else%>
-              <%= link_to t(:activate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => t(:sure_delete) %>
-            <%end%>
+            <% if offer.is_active %>
+            <b><%= link_to t(:deactivate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => t(:sure_delete) %></b>
+            <% else %>
+            <b><%= link_to t(:activate), offer_activation_admin_items_path(:offer_id => offer.id), :confirm => t(:sure_delete) %></b>
+            <% end %>
           </div>
-        <%end%>
+        <% end %>
 
-      <%else%>
+      <% else %>
         <%= t(:no_bookings) %>
-      <%end%>
+      <% end %>
     </div>
   </div>
 </div>
 <script type="text/javascript">
+  $("#user_id").chosen();
+  
   $('#fff').click(function() {
-  $('#rate_form').toggle();
+    $('#rate_form').toggle();
   });
-
+  
   $('#owner').click(function() {
-  $('#change_owner').toggle();
+    $('#change_owner').toggle();
   });
 </script>
+<style>  
+  #user_id_chzn {
+    width: 200px !important;
+  }
+
+  .chzn-drop{
+    width: 198px !important;
+  }
+
+  .chzn-search{
+    width: 190px !important;
+  }
+
+</style>

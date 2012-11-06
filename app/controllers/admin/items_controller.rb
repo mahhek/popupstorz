@@ -103,10 +103,8 @@ class Admin::ItemsController < ApplicationController
 
   def transfer_ownership
     @item = Item.find_by_id(params[:item_id])
-    @item.owner_id = params[:user_id]
-    @item.save
+    @item.update_attribute(:user_id,params[:user_id])
     redirect_to :back
-    
   end
 
   def display_on_home
@@ -121,7 +119,6 @@ class Admin::ItemsController < ApplicationController
   end
 
   def change_commission_rate
-
     @item = Item.find_by_id(params[:item_id])
     if params[:guest_commission_rate]
       @item.guest_commission_rate = params[:guest_commission_rate]
@@ -129,7 +126,8 @@ class Admin::ItemsController < ApplicationController
     if params[:owner_commission_rate]
       @item.owner_commission_rate = params[:owner_commission_rate]
     end
-    @item.save
+    @item.specific_commission_changed = true
+    @item.save    
     redirect_to admin_item_path(@item)
   end
 
@@ -137,8 +135,7 @@ class Admin::ItemsController < ApplicationController
     
   end
 
-  def change_all
-   
+  def change_all   
     @items = Item.all
     @items.each do |item|
       if params[:guest_commission_rate]
@@ -149,7 +146,9 @@ class Admin::ItemsController < ApplicationController
 
         item.owner_commission_rate=params[:owner_commission_rate]
       end
-      item.save
+      if item.specific_commission_changed == false
+        item.save
+      end
     end
     redirect_to admin_items_path
   end

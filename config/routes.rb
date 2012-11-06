@@ -11,6 +11,8 @@ PopupStorz::Application.routes.draw do
   match '/members' => 'users#members'
   match '/admin_items' => "admin/items#index"
   match '/admin_gatherings' => "admin/offers#gatherings"
+  match '/admin/users/create' => "admin/users#create"
+  match '/admin_send_invitations' => "admin/users#send_invitations"
   #  match '/search_members' => 'users#search_members'
   match '/search_gatherings' => 'searches#search_gatherings'
   match '/search_spaces' => 'searches#search_spaces'
@@ -140,14 +142,19 @@ PopupStorz::Application.routes.draw do
         get :delete_message
         get :all_messages
         post :all_messages
+        get :all_feedbacks
+        post :all_feedbacks
         get :all_ratings
         get :delete_rating
-        get :send_invitation
+        get :delete_comment
+        #        get :send_invitation
         get :invitations
         post :send_invitation_to_users
         post :send_invitations
+        post :send_invitation
         get :all_payments
         get :cancel_payment
+#        get :all_feedbacks        
       end
     end
     resources :offers do
@@ -216,7 +223,8 @@ PopupStorz::Application.routes.draw do
       end
     end
   end
-
+  
   match '/users/:id/profile' => 'users#show', :as => :profile
+  match 'admin/users/:id/profile' => 'admin/users#show', :as => :admin_profile
   root :to => "home#index"
 end

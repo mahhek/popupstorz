@@ -178,3 +178,13 @@ ul.hmenu li {
     text-indent: -9000px;
     z-index: 1;
 }
+
+.btn{
+    background: none repeat scroll 0 0 lightgray;
+    border: 1px solid gray;
+    border-radius: 4px 4px 4px 4px;
+    height: 150px !important;
+    padding: 5px;
+    text-align: center;
+    width: 150px !important;
+}
