@@ -158,9 +158,9 @@
 
       <p style="margin-top: 250px;">
         <% if (@item.is_shareable == true) then %>
-        		<%= t(:gathering_available) %> up to <%= @item.maximum_members %> people
+          <%= t(:gathering_available) %> up to <%= @item.maximum_members %> people
         <%else%>
-          <%#= t(:no) %>
+  <%#= t(:no) %>
         <%end%>  </p>
       <a class="send">Create Gathering</a>
       <div class="clear"></div>
@@ -177,7 +177,7 @@
           <img src="" alt="" ><span class="avail_item"><%= t(:evenings) %></span>
         <% end %>
         <br />
-        
+
         <% if !@item.availablities_monday.blank? and @item.availablities_monday == true %>
           <img src="" alt="" ><span class="avail_item"><%= t(:monday) %></span>
         <% end %>
@@ -201,135 +201,135 @@
         <% end %>
       </div>
 
-			 <div class="line"></div>
+      <div class="line"></div>
 
-    	 <p class="" style="font-size: 1.1em;text-align: justify;"><%= @item.description %></p>
+      <p class="" style="font-size: 1.1em;text-align: justify;"><%= @item.description %></p>
 
-    	 <div class="line"></div>
-    
-			 <h2><%= t(:what_other_people) %></h2>
-    	 <div class="">
-    	 	<%unless @item.comments.blank? %>
-        <%@item.comments.each do|f|%>
-        		<div>
-        			<div class="imgx">
-								<% if member.avatars.size > 0 %>
-									<%= image_tag(f.user.avatars.first.photo.url(:thumb), :width => "113", :height => "149", :alt => "Member-Photo")  %>
-								<% else %>
-									<%= image_tag("empty.png", :width => "113", :height => "147", :alt => "Member-Photo")  %>
-								<% end %>
-							</div>  
-	          <b><%=f.title  %></b><br/>
-	          <%= f.comment %><br/>
-	          <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
-          </div>
+      <div class="line"></div>
+
+      <h2><%= t(:what_other_people) %></h2>
+      <div class="">
+        <%unless @item.comments.blank? %>
+          <%@item.comments.each do|f|%>
+            <div>
+              <div class="imgx">
+                <% if f.user.avatars.size > 0 %>
+                  <%= image_tag(f.user.avatars.first.photo.url(:thumb), :width => "113", :height => "149", :alt => "Member-Photo")  %>
+                <% else %>
+                  <%= image_tag("empty.png", :width => "113", :height => "147", :alt => "Member-Photo")  %>
+                <% end %>
+              </div>  
+              <b><%= f.title  %></b><br/>
+              <%= f.comment %><br/>
+              <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+            </div>
+          <%end%>
         <%end%>
-       <%end%>
       </div>
-     </div>
-   </div>
+    </div>
+  </div>
 </div>
 
 
 <div class="fltR">
 
   <div class="shadowCont w212">
-      <% if @item.user.avatars.size > 0 %>
-        <%= link_to image_tag(@item.user.avatars.first.photo.url(:thumb), :height => "100", :width=> "94", :alt => "Seller-Image" ), profile_path(@item.user), :class => "fltL" %>
-      <% else %>
-        <%= link_to image_tag("empty.png", :height => "100", :width=> "94"), profile_path(@item.user), :class => "fltL" %>
-      <% end %>
-    
-					<div class="fltR w107">
-						<img src="../assets/rating.png" alt="" />
-						<h2 ><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %></h2>
-						<p style="font-family: XXII;"><%= @item.user.country %></p>
-						
-						<%# if (current_user != @item.user) %>
-							<%= link_to_function "Send Message", "$('#contact_me_div').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
-						<%# end %>
-						
-						<div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
-							<%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
-								<%= hidden_field_tag :topic, "Inquiry" %>
-								<%= hidden_field_tag :user_id, @item.user.id %>
-								
-								<span style="width: auto;float: left;">
-									<%= text_area_tag  :body, "", :style => "width:135px; height:100px;" %>
-								</span>
-								
-								<div style="margin-right: 10px; text-align: right;">
-								<%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
-								</div>
-							<% end %>
-						</div>
-					</div>
+    <% if @item.user.avatars.size > 0 %>
+      <%= link_to image_tag(@item.user.avatars.first.photo.url(:thumb), :height => "100", :width=> "94", :alt => "Seller-Image" ), profile_path(@item.user), :class => "fltL" %>
+    <% else %>
+      <%= link_to image_tag("empty.png", :height => "100", :width=> "94"), profile_path(@item.user), :class => "fltL" %>
+    <% end %>
+
+    <div class="fltR w107">
+      <img src="../assets/rating.png" alt="" />
+      <h2 ><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %></h2>
+      <p style="font-family: XXII;"><%= @item.user.country %></p>
+
+<%# if (current_user != @item.user) %>
+      <%= link_to_function "Send Message", "$('#contact_me_div').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
+<%# end %>
+
+      <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
+        <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
+          <%= hidden_field_tag :topic, "Inquiry" %>
+          <%= hidden_field_tag :user_id, @item.user.id %>
+
+          <span style="width: auto;float: left;">
+            <%= text_area_tag  :body, "", :style => "width:135px; height:100px;" %>
+          </span>
+
+          <div style="margin-right: 10px; text-align: right;">
+            <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
+          </div>
+        <% end %>
+      </div>
+    </div>
     <div class="clear"></div>
   </div>
 
   <div class="shadowCont w212 mt10">
-			<h2 class="available"><%= t(:availabilities) %></h2>
-			<div id="box-bookit">
-			<%= form_tag new_item_offer_path(@item.id), :method => :get  , :id => "book_it_form", :onsubmit => "return check_dates();" do  %>
-			
-				<div id="pricing" style="margin-top: 5px; line-height: 24px; display: inline-block;">
-					<span id="price"  style="float: left; text-align: right; width: 110px; margin-right: 5px; font-family: Proxima-semibold; font-size: 1.4em;">
-					  <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-					</span>
-					<span style="float: right; width: 131px;">		
-				  <select name="price_per_span" onchange="change_price_to_book($(this));" style="width: 133px;">
-				    <option value="<%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>"><%= t(:per_day) %></option>
-				    <option value="<%= number_to_currency(exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_week) %></option>
-				    <option value="<%= number_to_currency(exchange_currency(@item.price_per_month.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_month) %></option>
-				  </select>
-				  <%= hidden_field_tag :per_day_price, @item.price %>
-				  <%= hidden_field_tag :per_week_price, @item.price_per_week %>
-				  <%= hidden_field_tag :per_month_price, @item.price_per_month %>
-				</span><br />		
-					<span style="color: #666666; display: inline-block; font-size: 0.9em; line-height: 14px; text-align: center; width: 100%;">Excluding Pop Up Storz fee</span>			
-				</div>
-				
-				<div id="pickup" style="margin-top: 5px; line-height: 30px; display: inline-block;">
-					<span style="float: left; text-align: right; width: 110px; margin-right: 5px;">
-					  <label><%= t(:pick_up) %></label>
-					</span>
-					<span style="float: right; width: 135px;">
-					  <input type="text" hint="mm/dd/yyyy" name="pick_up" id="txtFromDate" onchange ="calculateTotalAmount();" size="15" style="width: auto;" />
-					</span>
-				</div>
-				
-				<div id="return" style="margin-top: 5px; line-height: 30px; display: inline-block;">
-					<span style="float: left; text-align: right; width: 110px; margin-right: 5px;">
-					  <label><%= t(:return) %></label>
-					</span>
-					<span style="float: right; width: 135px;">
-					  <input type="text" hint="mm/dd/yyyy"  name="return" id="txtToDate" onchange ="calculateTotalAmount();" size="15" style="width: auto;" />
-					</span>
-				</div>
-				<div class="clear"></div>
-	
-				<div id="pickup" style="margin-top: 5px; display: inline-block; border: 2px solid cyan; margin: 10px; line-height: 20px;">
-			   <span style="float: left; text-align: right; width: 100px; margin-right: 5px;">
-			     <label><%= t(:total_days) %></label>
-			   </span>
-			   <span style="float: right; width: 128px;">
-			     <div id="total_days" class="price_to_book" style=";">0 &nbsp;<%= t(:days) %></div>
-			     <div id="total_price" class="price_to_book" style="">0</div>
-			   </span>
-			 </div>
-	
-				<div style="margin: 10px 0; text-align: center; line-height: 20px;">
-	    <% unless (@item.user == current_user) %>
-	      <a href="#" onclick="$('#book_it_form').submit();" class="search"> <%= t(:book_it) %> </a>
-	    <% else %>
-	      <a href="#" onclick="alert('You are owner, You can not book it, Thanks.');return false;" class="search"><%= t(:book_it) %></a>
-	    <% end %>
-	    </div>
-	
-	   	<% end %>
-			</div>
-	   <div class="clear"></div>
-	</div>	
+    <h2 class="available"><%= t(:availabilities) %></h2>
+    <div id="box-bookit">
+      <%= form_tag new_item_offer_path(@item.id), :method => :get  , :id => "book_it_form", :onsubmit => "return check_dates();" do  %>
+
+        <div id="pricing" style="margin-top: 5px; line-height: 24px; display: inline-block;">
+          <span id="price"  style="float: left; text-align: right; width: 110px; margin-right: 5px; font-family: Proxima-semibold; font-size: 1.4em;">
+            <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+          </span>
+          <span style="float: right; width: 131px;">		
+            <select name="price_per_span" onchange="change_price_to_book($(this));" style="width: 133px;">
+              <option value="<%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>"><%= t(:per_day) %></option>
+              <option value="<%= number_to_currency(exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_week) %></option>
+              <option value="<%= number_to_currency(exchange_currency(@item.price_per_month.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_month) %></option>
+            </select>
+            <%= hidden_field_tag :per_day_price, @item.price %>
+            <%= hidden_field_tag :per_week_price, @item.price_per_week %>
+            <%= hidden_field_tag :per_month_price, @item.price_per_month %>
+          </span><br />		
+          <span style="color: #666666; display: inline-block; font-size: 0.9em; line-height: 14px; text-align: center; width: 100%;">Excluding Pop Up Storz fee</span>			
+        </div>
+
+        <div id="pickup" style="margin-top: 5px; line-height: 30px; display: inline-block;">
+          <span style="float: left; text-align: right; width: 110px; margin-right: 5px;">
+            <label><%= t(:pick_up) %></label>
+          </span>
+          <span style="float: right; width: 135px;">
+            <input type="text" hint="mm/dd/yyyy" name="pick_up" id="txtFromDate" onchange ="calculateTotalAmount();" size="15" style="width: auto;" />
+          </span>
+        </div>
+
+        <div id="return" style="margin-top: 5px; line-height: 30px; display: inline-block;">
+          <span style="float: left; text-align: right; width: 110px; margin-right: 5px;">
+            <label><%= t(:return) %></label>
+          </span>
+          <span style="float: right; width: 135px;">
+            <input type="text" hint="mm/dd/yyyy"  name="return" id="txtToDate" onchange ="calculateTotalAmount();" size="15" style="width: auto;" />
+          </span>
+        </div>
+        <div class="clear"></div>
+
+        <div id="pickup" style="margin-top: 5px; display: inline-block; border: 2px solid cyan; margin: 10px; line-height: 20px;">
+          <span style="float: left; text-align: right; width: 100px; margin-right: 5px;">
+            <label><%= t(:total_days) %></label>
+          </span>
+          <span style="float: right; width: 128px;">
+            <div id="total_days" class="price_to_book" style=";">0 &nbsp;<%= t(:days) %></div>
+            <div id="total_price" class="price_to_book" style="">0</div>
+          </span>
+        </div>
+
+        <div style="margin: 10px 0; text-align: center; line-height: 20px;">
+          <% unless (@item.user == current_user) %>
+            <a href="#" onclick="$('#book_it_form').submit();" class="search"> <%= t(:book_it) %> </a>
+          <% else %>
+            <a href="#" onclick="alert('You are owner, You can not book it, Thanks.');return false;" class="search"><%= t(:book_it) %></a>
+          <% end %>
+        </div>
+
+      <% end %>
+    </div>
+    <div class="clear"></div>
+  </div>	
 </div>
 
 <div class="clear"></div>
@@ -403,7 +403,7 @@
         }
       }
 
-					<%#*number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;%>
+<%#*number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;%>
       number_of_days = new_days;
       if(number_of_days == 0){
         number_of_days = 1;
@@ -438,7 +438,7 @@
 <%#=  @item.availability_to.strftime("%d-%m-%Y %I:%M%p") %>
 
 <div><%= link_to t(:edit_item), edit_item_path(@item) if (current_user && @item.user.email == current_user.email)%>
-      <%= link_to t(:delete_space), item_path(@item), :method => :delete, :confirm => t(:sure_delete) if (current_user && @item.user.email == current_user.email)%></div>
+<%= link_to t(:delete_space), item_path(@item), :method => :delete, :confirm => t(:sure_delete) if (current_user && @item.user.email == current_user.email)%></div>
 
 <h1 class="size"><%= t(:no_of_floors) %></h1>
       <p class="size_text"></p>
@@ -460,74 +460,74 @@
       <h1 class="size"><%= t(:owner_rules) %></h1><br />
       <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div_<%= @item.id %>').toggle()"><%= t(:show_details) %></div><br />
       <p class="size_text" id="rules_div_<%= @item.id %>" style="display:none;">
-        <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
+<%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
       </p>
       <div class="clear"></div>
       
             <h1 class="size"><%= t(:cancellation_policy) %></h1><br />
       <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div_<%= @item.id %>').toggle()"><%= t(:show_details) %></div><br />
       <p class="size_text" id="policy_div_<%= @item.id %>" style="display:none;">
-        <% unless @item.cancellation_policy_flexible.blank? %>
-          <%= t(:flexible) %><br/>
-          <%= t(:cancel_ln1) %><br/>
-          <%= t(:cancel_ln2) %><br/><br/>
+<% unless @item.cancellation_policy_flexible.blank? %>
+  <%= t(:flexible) %><br/>
+  <%= t(:cancel_ln1) %><br/>
+  <%= t(:cancel_ln2) %><br/><br/>
 
-          <%= t(:cancel_ln3) %><br/><br/>
+  <%= t(:cancel_ln3) %><br/><br/>
 
-          <%= t(:cancel_ln4)%><br/><br/>
-          <%= t(:cancel_ln5)%><br/><br/>
-        <% else %>
-          <%= t(:semi_flexible) %><br/>
-          <%= t(:semi_cancel_ln1) %><br/>
-          <%= t(:semi_cancel_ln2) %><br/><br/>
+  <%= t(:cancel_ln4)%><br/><br/>
+  <%= t(:cancel_ln5)%><br/><br/>
+<% else %>
+  <%= t(:semi_flexible) %><br/>
+  <%= t(:semi_cancel_ln1) %><br/>
+  <%= t(:semi_cancel_ln2) %><br/><br/>
 
-          <%= t(:semi_cancel_ln3) %><br/><br/>
+  <%= t(:semi_cancel_ln3) %><br/><br/>
 
-          <%= t(:semi_cancel_ln4) %><br/><br/>
-          <%= t(:semi_cancel_ln5) %>
-        <% end %>
-    	 </p>
-    	     
+  <%= t(:semi_cancel_ln4) %><br/><br/>
+  <%= t(:semi_cancel_ln5) %>
+<% end %>
+         </p>
+             
     <div class="clear"></div>
     <br />
 
 
     <div id="favorite_div_<%= @item.id %>">
-      <%= render :partial => "favorite", :locals => {:item => @item} %>
+<%= render :partial => "favorite", :locals => {:item => @item} %>
     </div>
     
        <h1 class="charming"><%= t(:gatherings2) %></h1>
     <p class="charming_text">
-      <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
+<% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
     <div style="width: 100%;clear: both;">
-      <% gatherings.each do|gathering| %>
-        <div style="border-bottom: 1px solid;">
-          <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
-          <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
-          <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
-          <%= t(:joined_person) %><%= gathering.members.size %><br/>
-          <%= t(:gathering_des) %><%= gathering.gathering_description %><br/>
-          <%= t(:rental_per_person) %><%= gathering.gathering_rental_price %><br />
+<% gatherings.each do|gathering| %>
+          <div style="border-bottom: 1px solid;">
+  <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
+  <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
+  <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
+  <%= t(:joined_person) %><%= gathering.members.size %><br/>
+  <%= t(:gathering_des) %><%= gathering.gathering_description %><br/>
+  <%= t(:rental_per_person) %><%= gathering.gathering_rental_price %><br />
 
-          <%= t(:deadline) %><%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
-          <% unless current_user.blank? %>
-            <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
-              <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
-                <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
-              <% end %>
-            <% end %><br/><b><%= t(:cancellation_policy) %><b/>
-              <%if @item.cancellation_policy_flexible %>
-                <%= t(:flexible) %>
-              <% else %>
-                <%= t(:semifelxible) %>
-              <% end %>
-              <br/>
-              <%= t(:owner_rules) %>
-              <%=@item.owner_rules%><br/><br/>
-              <%= link_to t(:details), "/offers/#{gathering.id}" %>
-            <% end %>
-        </div>
+  <%= t(:deadline) %><%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
+  <% unless current_user.blank? %>
+    <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
+      <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
+        <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
       <% end %>
+    <% end %><br/><b><%= t(:cancellation_policy) %><b/>
+    <%if @item.cancellation_policy_flexible %>
+      <%= t(:flexible) %>
+    <% else %>
+      <%= t(:semifelxible) %>
+    <% end %>
+                  <br/>
+    <%= t(:owner_rules) %>
+    <%=@item.owner_rules%><br/><br/>
+    <%= link_to t(:details), "/offers/#{gathering.id}" %>
+  <% end %>
+          </div>
+<% end %>
     </div>
     </p>
 
@@ -535,18 +535,18 @@
     <div class="line"></div>
     <div id="show_comments" style="display: none;" >
       <b><%= t(:prev_comments) %></b><br/>
-      <%unless @item.comments.blank? %>
-        <%@item.comments.each do|f|%>
-          <b><%=f.title  %></b><br/>
-          <%= f.comment %><br/>
-          <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
-          <br/>
-          <br/>
-        <%end%>
-      <%end%>
+<%unless @item.comments.blank? %>
+  <%@item.comments.each do|f|%>
+              <b><%=f.title  %></b><br/>
+    <%= f.comment %><br/>
+              <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+              <br/>
+              <br/>
+  <%end%>
+<%end%>
     </div>
     <div id="rating_of_item_<%= @item.id %>">
-      <%= render :partial => "/ratings/rating", :locals => { :asset => @item, :only_view => false } %>
+<%= render :partial => "/ratings/rating", :locals => { :asset => @item, :only_view => false } %>
     </div>
     
 -->
