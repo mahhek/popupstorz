@@ -1,102 +1,166 @@
-<h2><%= t(:edit_profile) %></h2>
-
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :multipart => true  }) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div class="newPaperclipFiles">
-    <b><%= t(:profile_pic_upload) %></b><br/>
-    <%(3 - resource.avatars.size).times { resource.avatars.build }%>
-
-    <%= f.fields_for :avatars do |avatar| %>
-      <% if avatar.object.new_record? %>
-        <%= avatar.file_field :photo %>
-      <% end %>
-
-    <% end %>
-
-  </div>
-
-  <div class="existingPaperclipFiles">
-    <%= f.fields_for :avatars do |avatar| %>
-      <% unless avatar.object.new_record? %>
-
-        <%= link_to( image_tag(avatar.object.photo.url(:thumb)), avatar.object.photo.url(:original) ) %>
-        <%= avatar.check_box :_destroy %>
-
-      <% end %>
-    <% end %>
-  </div>
-
-  <div>
-    <%= f.label :first_name %><br />
-    <%= f.text_field :first_name %>
-  </div>
-
-  <div>
-    <%= f.label :last_name %><br />
-    <%= f.text_field :last_name %>
-  </div>
-
-  <div>
-    <%= t(:gender) %>
-    <%= f.radio_button :gender, true %> <%= t(:male) %>
-    <%= f.radio_button :gender, false %> <%= t(:female) %>
-
-  </div>
-
-  <div><%= f.label :mobile_phone %><br />
-    <%= f.text_field :mobile_phone %><%= t(:required) %></div><br/>
-
- <div><%= f.label :Address1 %><br />
-    <%= f.text_field :address1 %><%= t(:required) %></div>
-
-  <div><%= f.label :Address2 %> <br />
-    <%= f.text_field :address2 %></div>
-
-  <div><%= f.label :city %> <br />
-    <%= f.text_field :city %></div><br/>
-
-  <div><%= f.label :country %> <br />
-    <%= f.text_field :country %></div><br/>
-
-
-
-    <div><%= f.label :description %><br />
-    <%= f.text_area :description, :size => "40x4" %></div><br/>
-
-  <div><%= f.label :activity %><br />
-    <%= f.text_field :activity %></div><br/>
-
-
-  <div>
-    <%= f.label :email %><br />
-    <%= f.email_field :email, :readonly => true %>
-  </div>
-
-  <div>
-    <%= f.label :password %> <i><%= t(:leave_blank) %></i><br />
-    <%= f.password_field :password %>
-  </div>
-
-  <div>
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation %>
-  </div>
+<div class="layout-center">
+  <div class="shadowCont layout-page">
+    <h1>Edit Profile</h1> <!-- TODO translate -->
     
-  <br /><div>
-    <%= f.label :show_fb_info %><br />
-    <%= f.check_box :show_fb_info %>
-  </div>  
- 
-  <br/>
+    <div class="clear"></div>
+    
+    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+      <%= devise_error_messages! %>
 
-  <div><%= f.submit "Update" %></div>
+		<div id="editProfileSummary" style="height: 200px;">
+			<div style="width: 150px; height: 100%; float:left;">			
+				<img src="" alt="UserPhoto" style="border: 1px solid black; width:100%; height:auto;">
+			</div>
+			<div style="float:left; margin-left: 1em; margin-bottom: 2em; width: 75%">
+				<label style="font-family: proxima-bold; font-size: 16px;"><%= "@item.name" %></label> <span style="margin-left: 1em;"><%= "@item.rating" %></span>
+				<br/>
+				<label style="font-family: proxima-semibold; "><%= "@item.activity" %></label>
+				<br/>
+				<br/>
+				<label style="font-family: XXII; "><%= "@item.city" %></label>
+				<br/>
+				<br/>
+				<div><%= "@item.description" %></div>
+			</div>
+		</div>
 
-<% end %>
+      <div class="reqInfo"><%= t(:required_info) %></div>
 
-<h3><%= t(:cancel_account) %></h3>
+      <div class="sign_up_input">
+        <label><%= t(:first_name) %></label>
+        <%= f.text_field :first_name, :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label><%= t(:last_name) %></label>
+        <%= f.text_field :last_name , :autocomplete=> "off"%> <span class="info">Only the first letter of your last name will be displayed</span>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label style="margin-right: 13px;"><%= t(:d_o_b) %></label>
+        <%= f.date_select :date_of_birth, {:order =>[:day, :month, :year], :start_year => 1900, :use_month_numbers => true}, {:style=>"margin: 3px 0;", :class=>"dateselect"} %><span class="info" style="margin-left: 27px;">will not be shown</span>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label><%= t(:gender) %></label>
+        <div class="fltL" style="margin: 5px 0;">
+          <div style="float: left; width: 218px; line-height: 15px; font-size: 0.9em;">
+            <span>
+              <%= f.radio_button :gender,   true, :style => "margin-top: 2px;" %>
+            </span>
+            <span style="margin-left: 5px;">male</span>
+          </div> <span class="info" style="float: right;">will not be shown</span>
+          <div style="line-height: 15px; font-size: 0.9em;">
+            <span>
+              <%= f.radio_button :gender, false , :style => "margin-top: 2px;" %>
+            </span>
+            <span style="margin-left: 5px;">female</span>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input fltL">
+        <label>Email</label>
+        <%= f.email_field :email, :autocomplete=> "off" %>
+  <%#*<div class="clear"></div>%>
+      </div>
+      <div class="sign_up_input">
+        <label>Verify Email</label>
+        <%= f.email_field :verify_email, :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
 
-<p><%= t(:unhappy) %>
-<%= link_to "Cancel my account", registration_path(resource_name), :confirm => t(:sure_delete), :method => :delete %>.</p>
+      <div class="sign_up_input fltL">
+        <label>Password</label>
+        <%= f.password_field :password , :autocomplete=> "off"%>
+  <%#*<div class="clear"></div>%>
+      </div>
+      <div class="sign_up_input">
+        <label>Verify Password</label>
+        <%= f.password_field :password_confirmation, :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
 
-<%= link_to "Back", :back %>
+      <div class="sign_up_input fltL">
+        <label>Security Question</label>
+        <%= f.text_field :security_question, :autocomplete=> "off" %>
+  <%#*<div class="clear"></div>%>
+      </div>
+      <div class="sign_up_input">
+        <label>Security Answer</label>
+        <%= f.text_field :security_answer, :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+      
+      <div class="sign_up_input">
+        <label>Mobile No</label>
+        <%= f.telephone_field :mobile_phone , :autocomplete=> "off"%><br />
+        <div style="color: black; font-size: 0.9em; line-height: 12px; margin-left: 136px; width: 189px;">Please use international format, i.e. +01234567890</div>
+        <div class="clear"></div>
+      </div>
+
+      <div class="reqInfo">Optional information</div>
+      <div class="sign_up_input">
+        <label>Address 1</label>
+        <%= f.text_field :address1, :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label>Address 2</label>
+        <%= f.text_field :address1, :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label>Zip code</label>
+        <%= f.text_field :zip_code, :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label>City of residence</label>
+        <%= f.text_field :city , :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label style="margin-right: 13px;">Select Country</label>
+        <%= f.select :country, options_from_collection_for_select( Country.all, :printable_name, :printable_name), {:prompt => "Select Country"}, {:style => "width: 207px;"} %>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label>Activity</label>
+        <%= f.text_field :activity , :autocomplete=> "off"%>
+        <div class="clear"></div>
+      </div>
+      <div class="sign_up_input">
+        <label>Description</label>
+        <%= f.text_area :description, :size => "40x4", :autocomplete=> "off" %>
+        <div class="clear"></div>
+      </div>
+		<div class="sign_up_input">
+        <label>Upload Photo</label> <!-- TODO change translation of <%= t(:profile_pic_upload) %> to "Upload Photo" -->
+		  <div style="margin-left: 130px;">        
+        	<%(3 - resource.avatars.size).times { resource.avatars.build }%>
+        	<%= f.fields_for :avatars do |avatar| %>
+          	<% if avatar.object.new_record? %>
+            	<%= avatar.file_field :photo %>
+            	<br/>
+          	<% end %>
+        	<% end %>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-bottom: 30px; margin-top: 42px;">
+      <%= f.submit "Save changes", :class => "search" %> <!-- TODO trnaslate" -->
+      </div>
+    <% end %>  
+
+    <script type='text/javascript'>
+      $("#user_country").chosen();
+      $(".dateselect").chosen({search_enabled: false, disable_search_threshold: 100});
+      $("#user_date_of_birth").datepicker();
+      //$('#user_avatars_attributes_0_photo').customFileInput();
+    </script>
+  </div>
+</div>
