@@ -32,7 +32,8 @@
   
   .blockParts, .blockParts2{
   	font-size: 16px; 
-  	font-weight: bold; 
+  	/*font-weight: bold; */
+  	font-family: proxima-bold;
   	padding-bottom: 1em;
   }
   
@@ -147,8 +148,8 @@
   			$("#SecondStepBooking").show(); 
   			
   			//change breadcrumb design
-  			$("#info_firstStep").css("font-weight","normal");
-  			$("#info_secondStep").css("font-weight","bold");
+  			$("#info_firstStep").css("font-family","proxima");
+  			$("#info_secondStep").css("font-family","proxima-bold");
   			
   			
   			return false; 			
@@ -174,7 +175,8 @@
 <div id="booking-content">
   <!--<div class="container_12" style="border: 1px solid black; padding: 5px; border-radius: 5px 5px 5px 5px; box-shadow: 1px 1px 5px black;">-->
   <div class="container_12 shadowCont" >
-  <div class="blockParts">Booking</div> <!-- TODO translate -->
+  <!--<div class="blockParts">Booking</div> <!-- TODO translate -->
+  <h1 >Booking</h1> <!-- TODO translate -->
     <%= form_for [@item, @offer], :html => {:name => "offer_form", :onsubmit => "return checkPrefferedAddress();"} do|f| %>
       <div style="padding: 20px;float: left;">
         <% if @offer.errors.any? %>
@@ -190,14 +192,20 @@
       </div>
       
 		<div style="width: 50%; margin-left: auto; margin-right: auto; padding-bottom: 2em;"> 
-      	<div style="border: 1px solid; padding: 0px 3px; text-align: center; float: left; width: 10px;">1</div>
-			<!-- use to draw a line very ugly-->      	
-      	<s>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</s>
-      	<div style="border: 1px solid; padding: 0px 3px; text-align: center; float: right; width: 10px;">2</div>
-     		<br/>
-      	<span id="info_firstStep" style="float: left; font-weight: bold;"><%= t(:make_booking) %></span>
+      	<div style="border: 1px solid; padding: 0px 3px; text-align: center; float: left; width: 10px;">1
+      		<span style="margin-top: 20px; font-family: proxima-semibold; position: absolute; margin-left: -48px;" id="info_firstStep"><%= t(:make_booking) %></span>
+			</div>
+ 			<s>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</s>
+      <div style="border: 1px solid; padding: 0px 3px; text-align: center; float: right; width: 10px;">2
+         <span style="margin-top: 20px; font-family: proxima-semibold; position: absolute; margin-left: -69px;" id="info_secondStep"><%= t(:confirm_contact) %></span></div>
+      </div>
+     		
+     		
+     		
+     		<!--
+      	<span id="info_firstStep" style="float: left; font-family: proxima-bold;"><%= t(:make_booking) %></span>
       	<span id="info_secondStep" style="float: right;"><%= t(:confirm_contact) %></span>
-      </div>      
+      </div>   -->   
       <div class="grid_12">
 
         <br class="clear" />
@@ -213,11 +221,11 @@
             <%= @item.title %>
           <% end %>
 
-          <%= raw @item.description %>
+          <%= link_to @item.title, item_path(@item) %>
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>
-          <span><%= "city, country" %></span> <!-- TODO show city, country with good font police-->
+          <span style="font-family: XXII;"><%= @item.address %></span>
           <!-- <%= t(:offer_owner) %><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/> -->          
         </div>
         
@@ -231,10 +239,10 @@
 			<div class="clear">&nbsp;</div>			
 			<div id="bookingOptions" style="margin-left: auto; margin-right: auto; width: 50%;">
       	<% if @item.is_shareable %>
-          		<div style="float: left;"><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> <%= t(:stand_booking) %></div>
-          		<div style="float: right;"><%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> <%= t(:create_gathering) %></div>
+          		<div style="float: left;"><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> <span style="border: 1px solid; background-color:cyan;"><%= t(:stand_booking) %></span></div>
+          		<div style="float: right;"><%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> <span style="border: 1px solid; background-color:cyan;"><%= t(:create_gathering) %></span></div>
       	<% else %>
-         	<div style="float: left;"><%= radio_button_tag 'plan', 'standard_booking', true %> <%= t(:stand_booking) %></div>
+         	<div style="float: left;"><%= radio_button_tag 'plan', 'standard_booking', true %> <span style="border: 1px solid; background-color:cyan;"><%= t(:stand_booking) %></span></div>
       	<% end %>
       	</div>
       </div>
@@ -261,10 +269,10 @@
             <%= @item.title %>
           <% end %>
                       
-         <div style="width: 100%;"> <!-- TODO resize text area to 80% of this div -->
+         <div style="width: 100%;">
           <%= f.fields_for :offer_messages do |offer_message| %>
             <% if offer_message.object.new_record? %>
-              <%= offer_message.text_area :message %>
+              <%= offer_message.text_area :message, :hint => "Ask questions, tell them a bit..." %> <!-- TODO translate hint -->
               <%= offer_message.hidden_field :user_id, :value => current_user.id %>
               <%= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
             <%end%>
@@ -321,13 +329,13 @@
 			<div class="clear">&nbsp;</div>
 			
 			<div>
-				<span><strong><%= "Number of persons in the gathering" %></strong></span> <!-- TODO translate -->
+				<span style="font-family: proxima-bold;"><%= "Number of persons in the gathering" %></span> <!-- TODO translate -->
 				<input type="text" value="6"/>	<!-- TODO replace by ruby input -->
 				<span><small><%= "Maximum allowed by owner: " %> <%= "nb allowed " %> <%= "persons" %></small></span>	<!-- TODO translate & Show real number allowed persons -->	
 			</div>
 			<br/>
 			<div>
-				<span><strong><%= "Application deadline" %></strong></span> <!-- TODO translate -->
+				<span style="font-family: proxima-bold;"><%= "Application deadline" %></span> <!-- TODO translate -->
 				<input type="text" value="31/07/2012"/>	<!-- TODO replace by ruby calendar -->
 				<span><small><%= "If required number of persons is not reached ..." %></small></span>	<!-- TODO translate -->	
 			</div>
@@ -353,7 +361,7 @@
 					<td ><%= "Service fee" %></td> <!-- TODO translate -->
 					<td ><%= "service fee" %></td> <!-- TODO show the real service fee -->				
 				</tr>
-				<tr id="tr_totalPrice" style="background-color: yellow;">
+				<tr id="tr_totalPrice" style="background-color: yellow; font-family: proxima-bold;">
 					<td ><%= "Total" %></td> <!-- TODO translate & change text to "Grand Total" if the gathering mode is selected -->
 					<td ><%= "total" %></td> <!-- TODO show the total -->				
 				</tr>
@@ -376,13 +384,13 @@
 			<div class="clear">&nbsp;</div>
 		
 			<div style="padding: 5px;">
-				<span><strong><%= "Cancellation" %></strong></span><br/> <!-- TODO translate -->
-				<span><strong><%= "Flexible: 100% refund 14 days..." %></strong></span><br/> <!-- TODO translate -->
+				<span style="font-family: proxima-bold;"><%= "Cancellation" %></span><br/> <!-- TODO translate -->
+				<span style="font-family: proxima-bold;"><%= "Flexible: 100% refund 14 days..." %></span><br/> <!-- TODO translate -->
 				<span>link to cancelation policies </span>
 
 				<br/><br/>
 			
-				<span><strong><%= "Owner rules" %></strong></span> <!-- TODO translate -->
+				<span style="font-family: proxima-bold;"><%= "Owner rules" %></span> <!-- TODO translate -->
 				<div>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas id est in sapien tempus condimentum. Vivamus euismod pretium arcu, ac consectetur erat elementum vitae. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec sodales sodales vestibulum. Pellentesque et suscipit ante. Etiam elit tellus, rhoncus et pharetra non, elementum eu elit. Cras non congue sem. Nam semper vehicula eros, id viverra sem blandit sed. Cras nec nisi et nisl viverra interdum. Donec at enim lorem, vel rhoncus mi. Praesent at dictum enim.
 
@@ -398,7 +406,7 @@
 		<br/><br/>
 		<div class="clear">&nbsp;</div>
 		<div id="BookingContinue">
-            <button class="btn_booking" id="btn_bookingContinue"> <%= "Continue" %></button> <!-- TODO translate -->
+            <button class="search" id="btn_bookingContinue"> <%= "Continue" %></button> <!-- TODO translate -->
       </div>
 	</div>	
 	
@@ -446,7 +454,7 @@
 		<br/><br/>
 		<div class="clear">&nbsp;</div>
 		<div id="BookingSubmit">
-            <button class="btn_booking"> <%= t(:confirm_book) %></button>
+            <button class="search"> <%= t(:confirm_book) %></button>
       </div>
 	</div>
       
