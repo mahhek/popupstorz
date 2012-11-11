@@ -1,0 +1,85 @@
+<style>
+	.ratingItems {
+		font-family:proxima-bold; 
+		color:grey; 
+		margin-right:5px; 
+		margin-left: 1em;
+	}
+
+</style>
+
+<div class="layout-center">
+  <div class="shadowCont layout-page">
+  
+  <h1>Review</h1> <!-- TODO translate -->
+  
+  <div class="clear"></div>
+  
+  	<div id="editProfileSummary" style="height: 200px; width:90%; margin-right:auto; margin-left:auto;">
+		<div style="width: 150px; height: 100%; float:left;">		
+			<label style="font-family: proxima-bold">OwnerName</label>		
+			<img src="" alt="UserPhoto" style=" width:100%; height:80%;">
+		</div>
+		<div class="clear"></div>
+		<div style="float:left; margin-left: 1em; margin-top:1em; width: 70%; border: 2px solid grey; padding:10px;">
+			<div style="float:left; margin-left: 1em; width: 150px; ">
+				<img src="" alt="SpacePhoto" style=" width:100%; height:60%; padding: 2px;">
+			</div>
+				<label style="font-family: proxima-bold; font-size: 16px;"><%= "@item.title" %></label>
+				<br/>
+				<label style="font-family: proxima-semibold; "><%= "@item.type" %></label>
+				<br/>
+				<label style="font-family: XXII; "><%= "@item.city" %></label>
+				<br/>
+				<br/>
+				<br/>
+				<label><%= "@item.typeOfBooking" %></label>
+				<br/>
+				<label><%= "@item.dateOfBooking" %></label>
+		</div>
+	</div>
+	<br/>  	
+	<br/>  	
+	
+	<div >
+		<form>
+			<label>How did your transaction go?</label>
+			<br/>
+			<br/>
+			<label style="font-family:proxima-bold; margin-right:1em; float:left; text-align:left;width:55px;">Host</label>
+			<label style="font-family:proxima-bold; color:grey; margin-right:5px;">Communication</label>
+			<span><%= "@item.ratingCommunication" %></span>
+			<label class="ratingItems">Seriousness</label>
+			<span><%= "@item.ratingSeriousness" %></span>
+			<br/>
+			<br/>
+			<label style="font-family:proxima-bold; margin-right:1em; float:left; text-align:left;width:55px;">Space</label>
+			<label style="font-family:proxima-bold; color:grey; margin-right:5px;">Accuracy</label>
+			<span><%= "@item.ratingAccuracy" %></span>
+			<label class="ratingItems">Commodities</label>
+			<span><%= "@item.ratingCommodities" %></span>
+			<label class="ratingItems">Location</label>
+			<span><%= "@item.ratingLocation" %></span>
+			<label class="ratingItems">Value</label>
+			<span><%= "@item.ratingValue" %></span>
+
+			<br/>
+			<br/>
+			<br/>
+			<label style="font-family:proxima-bold; font-size:15px; color:purple; margin-right:5px;">Overall Rating</label>
+			<span><%= "@item.ratingValue" %></span>
+			
+			<br/>
+			<br/>
+			<br/>
+			
+			<label>Detailed review</label>
+			<textarea style="width:100%; height:25%"></textarea>
+			<br/>
+			<br/>
+			<input type="button" value="Post review" style="float:right;" class="search" />
+		</form>		
+	</div>  	
+  	
+  </div>
+</div>  
