@@ -124,7 +124,8 @@
   </div>
 </div>
 <div id="booking-content">
-  <div class="container_12">
+  <div class="container_12" style="border: 1px solid black; padding: 5px; border-radius: 5px 5px 5px 5px; box-shadow: 1px 1px 5px black;">
+  <div style="font-size: 16px; font-weight: bold; padding-bottom: 1em;">Booking</div> <!-- TODO translate -->
     <%= form_for [@item, @offer], :html => {:name => "offer_form", :onsubmit => "return checkPrefferedAddress();"} do|f| %>
       <div style="padding: 20px;float: left;">
         <% if @offer.errors.any? %>
@@ -138,34 +139,216 @@
           </div>
         <% end %>
       </div>
+      
+		<div style="width: 50%; margin-left: auto; margin-right: auto; padding-bottom: 2em;"> 
+      	<div style="border: 1px solid; padding: 0px 3px; text-align: center; float: left;">1</div>
+      	<div style="border: 1px solid; padding: 0px 3px; text-align: center; float: right;">2</div>
+     		<br/>
+      	<span style="float: left;"><%= t(:make_booking) %></span>
+      	<span style="float: right;"><%= t(:confirm_contact) %></span>
+      </div>      
       <div class="grid_12">
-
-        <ul class="steps">
-          <li class="start"> <span>1</span> <%= t(:make_booking) %></li>
-          <li class="next"> <span> 2</span><%= t(:confirm_contact) %></li>
-
-        </ul>
 
         <br class="clear" />
 
         <div class="clear">&nbsp;</div>
 
-        <div id="details-panel">
+        <div id="details-panel" style="padding: 5px;">
+        	<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em;">Location</span> <!-- TODO translate -->
+        	<div class="clear">&nbsp;</div>
           <% if @item.avatars.size > 0 %>
             <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" ) %>
           <% else %>
             <%= @item.title %>
           <% end %>
+
+          <%= raw @item.description %>
           <h5>
             <%= link_to @item.title, item_path(@item) %>
           </h5>
-          <%= t(:offer_owner) %><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/>
-          <strong><%= t(:offer_descrip) %></strong><br/>
-          <%= raw @item.description %>
-          <div class="clear">&nbsp;</div>
+          <span><%= "city, country" %></span> <!-- TODO show city, country with good font police-->
+          <!-- <%= t(:offer_owner) %><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/> -->          
         </div>
+        
+      </div>
+      <div class="clear">&nbsp;</div>
 
-        <div style="float:left;width:100%;">
+		<div id="bookingType" style="padding: 5px;">
+			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Booking Type</span> <!-- TODO translate -->
+			<div class="clear">&nbsp;</div>			
+			<div id="bookingOptions" style="margin-left: auto; margin-right: auto; width: 50%;">
+      	<% if @item.is_shareable %>
+          		<div style="float: left;"><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> <%= t(:stand_booking) %></div>
+          		<div style="float: right;"><%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> <%= t(:create_gathering) %></div>
+      	<% else %>
+         	<div style="float: left;"><%= radio_button_tag 'plan', 'standard_booking', true %> <%= t(:stand_booking) %></div>
+      	<% end %>
+      	</div>
+      </div>
+		<div class="clear">&nbsp;</div>      
+      
+		<div id="AnsweringDate" style="padding: 5px;"> <!-- TODO hide this if gathering mode -->
+			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Answering Date</span> <!-- TODO translate -->
+			<div class="clear">&nbsp;</div>			
+			<div id="response_div">
+          <label style="line-height:18px;"><%= t(:owner_reply) %></label>
+          <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%> 
+        </div>
+		</div>
+		
+		<div id="MessageToOwner" style="padding: 5px;">
+			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Message to the Owner</span> <!-- TODO translate -->
+			<div class="clear">&nbsp;</div>
+			<label style="line-height:18px; float:left;"><strong> <%= @item.user.popup_storz_display_name%> </strong></label>
+			<br/>	<br/>			
+			<!-- TODO show the picture of the owner -->
+			<% if @item.avatars.size > 0 %>
+            <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" ) %>
+          <% else %>
+            <%= @item.title %>
+          <% end %>
+                      
+         <div style="width: 100%;"> <!-- TODO resize text area to 80% of this div -->
+          <%= f.fields_for :offer_messages do |offer_message| %>
+            <% if offer_message.object.new_record? %>
+              <%= offer_message.text_area :message %>
+              <%= offer_message.hidden_field :user_id, :value => current_user.id %>
+              <%= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
+            <%end%>
+            <%end%>
+         </div>
+         <!--<small><%= t(:why_need_space) %></small><br/><br/>-->
+		</div>
+		
+		<div id="BookingDates" style="padding: 5px;">
+			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Dates</span> <!-- TODO translate -->
+			<div class="clear">&nbsp;</div>	
+			
+			<table style="border-collapse: collapse; width: 250px;">
+				<tr>
+					<td style="border: 1px solid black; padding: 3px;"><%= "Start Date" %></td> <!-- TODO translate -->
+					<td style="border: 1px solid black; padding: 3px;"><%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %></td>				
+				</tr>
+				<tr>
+					<td style="border: 1px solid black; padding: 3px;"><%= "End Date" %></td> <!-- TODO translate -->
+					<td style="border: 1px solid black; padding: 3px;"><%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %></td>				
+				</tr>
+				<tr>
+					<td style="border: 1px solid black; padding: 3px;"><%= "Total days" %></td> <!-- TODO translate -->
+					<td style="border: 1px solid black; padding: 3px;"><%= "#{@number_of_days} days" %></td>				
+				</tr>
+			</table>		
+		</div>
+		
+		<div id="BookingAvailabilities" style="padding: 5px;"> <!-- TODO put this div at the right of BookinDates -->
+			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Availabilities</span> <!-- TODO translate -->
+			<div class="clear">&nbsp;</div>	
+			
+			<table summary="" >
+				<tr>
+					<td><%= "|IconCheck|" %> <%= "Daytime" %></td> <!-- TODO show icon check & translate -->
+					<td><%= "|IconCheck|" %> <%= "Evenings" %></td> <!-- TODO show icon check & translate -->		
+				</tr>	
+				<tr>
+					<td><%= "|IconCheck|" %> <%= "Mondays" %></td> <!-- TODO show icon check & translate -->
+					<td><%= "|IconCheck|" %> <%= "Tuesdays" %></td> <!-- TODO show icon check & translate -->
+					<td><%= "|IconCheck|" %> <%= "Wednesdays" %></td> <!-- TODO show icon check & translate -->
+					<td><%= "|IconCheck|" %> <%= "Thursdays" %></td> <!-- TODO show icon check & translate -->
+					<td><%= "|IconCheck|" %> <%= "Fridays" %></td> <!-- TODO show icon check & translate -->
+					<td><%= "|IconCheck|" %> <%= "Saturdays" %></td> <!-- TODO show icon check & translate -->
+					<td><%= "|IconCheck|" %> <%= "Sundays" %></td> <!-- TODO show icon check & translate -->				
+				</tr>		
+			</table>
+		</div>
+		
+		<div id="BookingGathering" style="padding: 5px;"> <!-- TODO hide/show this div in case of gathering radio button is selected -->
+			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Gathering</span> <!-- TODO translate -->
+			<div class="clear">&nbsp;</div>
+			
+			<div>
+				<span><strong><%= "Number of persons in the gathering" %></strong></span> <!-- TODO translate -->
+				<input type="text" value="6"/>	<!-- TODO replace by ruby input -->
+				<span><small><%= "Maximum allowed by owner: " %> <%= "nb allowed " %> <%= "persons" %></small></span>	<!-- TODO translate & Show real number allowed persons -->	
+			</div>
+			<br/>
+			<div>
+				<span><strong><%= "Application deadline" %></strong></span> <!-- TODO translate -->
+				<input type="text" value="31/07/2012"/>	<!-- TODO replace by ruby calendar -->
+				<span><small><%= "If required number of persons is not reached ..." %></small></span>	<!-- TODO translate -->	
+			</div>
+		</div>	
+		
+		<div id="BookingPrice" style="padding: 5px;">
+			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Price</span> <!-- TODO translate -->
+			<div class="clear">&nbsp;</div>
+		
+			<table style="border-collapse: collapse; width: 250px;">
+				<tr>
+					<td style="border: 1px solid black; padding: 3px;"><%= "Price per day" %></td> <!-- TODO translate -->
+					<td style="border: 1px solid black; padding: 3px;"><%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td>				
+				</tr>
+				<tr>
+					<td style="border: 1px solid black; padding: 3px;"><%= "Cleaning fee" %></td> <!-- TODO translate -->
+					<td style="border: 1px solid black; padding: 3px;"><%= "cleaning fee" %></td>	<!-- TODO show cleaning fee -->			
+				</tr>
+				<tr>
+					<td style="border: 1px solid black; padding: 3px;"><%= "Subtotal" %></td> <!-- TODO translate -->
+					<td style="border: 1px solid black; padding: 3px;"><%= "subtotal" %></td> <!-- TODO show the real subtotal -->				
+				</tr>
+				<tr>
+					<td style="border: 1px solid black; padding: 3px;"><%= "Service fee" %></td> <!-- TODO translate -->
+					<td style="border: 1px solid black; padding: 3px;"><%= "service fee" %></td> <!-- TODO show the real service fee -->				
+				</tr>
+				<tr style="background-color: yellow;"> <!-- TODO remove yellow if gathering mode -->
+					<td style="border: 1px solid black; padding: 3px;"><%= "Total" %></td> <!-- TODO translate & change text to "Grand Total" if the gathering mode is selected -->
+					<td style="border: 1px solid black; padding: 3px;"><%= "total" %></td> <!-- TODO show the total -->				
+				</tr>
+				<tr style="background-color: yellow;"> <!-- TODO hide this if not in gathering mode -->
+					<td style="border: 1px solid black; padding: 3px;"><%= "Price per person" %></td> <!-- TODO translate -->
+					<td style="border: 1px solid black; padding: 3px;"><%= "price per person" %></td> <!-- TODO show the price per person -->				
+				</tr>
+			</table>	
+			<br/>
+			<table style="border-collapse: collapse; width: 250px;">
+				<tr>
+					<td style="border: 1px solid black; padding: 3px;"><%= "Security deposit" %></td> <!-- TODO translate -->
+					<td style="border: 1px solid black; padding: 3px;"><%= "security deposit" %></td> <!-- TODO show the real security deposit -->				
+				</tr>
+			</table>
+		</div>
+		
+		<div id="BookingPolicies" style="padding: 5px;">
+			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Policies</span> <!-- TODO translate -->
+			<div class="clear">&nbsp;</div>
+		
+			<div style="padding: 5px;">
+				<span><strong><%= "Cancellation" %></strong></span><br/> <!-- TODO translate -->
+				<span><strong><%= "Flexible: 100% refund 14 days..." %></strong></span><br/> <!-- TODO translate -->
+				<span>link to cancelation policies </span>
+
+				<br/><br/>
+			
+				<span><strong><%= "Owner rules" %></strong></span> <!-- TODO translate -->
+				<div>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas id est in sapien tempus condimentum. Vivamus euismod pretium arcu, ac consectetur erat elementum vitae. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec sodales sodales vestibulum. Pellentesque et suscipit ante. Etiam elit tellus, rhoncus et pharetra non, elementum eu elit. Cras non congue sem. Nam semper vehicula eros, id viverra sem blandit sed. Cras nec nisi et nisl viverra interdum. Donec at enim lorem, vel rhoncus mi. Praesent at dictum enim.
+
+					Fusce porta leo eu justo rhoncus porttitor. Donec tempus egestas mi ac iaculis. Cras vitae aliquet ligula. Sed metus erat, luctus in ullamcorper a, laoreet ac felis. Sed accumsan tincidunt enim in auctor. Fusce et tortor id lorem accumsan tincidunt. Nulla est quam, sodales et accumsan eu, volutpat vel nibh. Integer condimentum pellentesque consectetur.
+
+					Proin vel magna et neque elementum bibendum sit amet non neque. Integer nec sem eu nisl convallis fermentum malesuada id massa. Aliquam sem sem, porttitor mollis semper ac, sodales quis magna. Aenean quis arcu nunc, at lacinia ante. In dapibus, felis at tincidunt commodo, urna massa accumsan nunc, at ultricies magna lacus eget massa. Maecenas a eleifend nisi. Quisque sodales eros et purus dictum egestas. Aenean molestie faucibus orci, vel eleifend risus euismod in. Aenean eget ligula mi, sed sollicitudin erat. Nam ligula tortor, rutrum sit amet faucibus ac, laoreet eu sapien. Integer eleifend, urna semper ultrices bibendum, felis tellus volutpat diam, eu sodales justo ante eu elit. Pellentesque ac cursus orci.
+
+					Nunc et erat id nunc egestas bibendum quis vel tellus. Integer adipiscing risus id odio egestas viverra. Donec non tempus est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec at velit odio, vulputate commodo neque. Integer ut mauris nisl. Etiam vitae varius quam. Phasellus porta ipsum eget justo consectetur non pellentesque urna pulvinar. Nunc congue, neque ut egestas interdum, nibh odio molestie mi, non facilisis elit tellus eget urna. Sed commodo mollis risus at consequat. Fusce tincidunt sodales orci. Cras pharetra sem id enim varius viverra. Nulla iaculis quam vitae lectus sagittis ultricies. Maecenas et nisl a quam ullamcorper consectetur eu nec ipsum. Vivamus vitae arcu quis massa dictum malesuada vitae sed lectus.
+				</div>
+			</div>
+		</div>	
+		
+		<br/><br/>
+		<div class="clear">&nbsp;</div>
+		<div id="BookingSubmit">
+            <button class="large-max button orange"> <%= t(:confirm_book) %></button>
+      </div>
+      
+      <!--
+      <div style="float:left;width:100%;">
           <h1 class="size"><%= t(:owner_rules) %></h1><br />
           <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div').toggle()"><%= t(:show_details) %></div><br />
           <p class="size_text" id="rules_div" style="display:none;">
@@ -200,17 +383,11 @@
           <div class="clear"></div>
           <br />
         </div>
-      </div>
-
-      <% if @item.is_shareable %>
-        <div style="width:100%; margin: 10px;">
-          <br><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> <%= t(:stand_booking) %>
-          <%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> <%= t(:create_gathering) %>
-        </div>
-      <% else %>
-        <br><%= radio_button_tag 'plan', 'standard_booking', true %> <%= t(:stand_booking) %>
-      <% end %>
-
+		
+		
+		
+		
+		
       <h3><%= t(:suggest_term) %></h3> <br/>
 
       <div id="booking-form">
@@ -250,12 +427,15 @@
         <strong><%= t(:need_this) %></strong>
 
         <label><%= t(:pick_up) %></label>
-        <%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %>
+<%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %>        
   <%#*<div class="clear"></div>%>
         <label><%= t(:return2) %></label>
         <%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %>
 
         <br/>
+        
+-->        
+        
   <%#*<div class="clear"></div>%>
   <%#*<br/>%>
   <%#*<label>Meeting Location:</label>%>
@@ -329,21 +509,7 @@
         </div>
 
         <br/>
-        <div id="response_div">
-          <label style="line-height:18px;"><%= t(:owner_reply) %></label>
-          <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%>             <label style="line-height:18px; "><strong><br/><%= t(:send) %> <%= @item.user.popup_storz_display_name%>  </strong> <%= t(:msg2) %>
-            <small><%= t(:why_need_space) %></small></label><br/><br/>
-          <%= f.fields_for :offer_messages do |offer_message| %>
-            <% if offer_message.object.new_record? %>
-              <%= offer_message.text_area :message %>
-              <%= offer_message.hidden_field :user_id, :value => current_user.id %>
-              <%= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
-            <%end%>
-            <%end%><br/><br/><br/>
-          <div style="padding-left:200px;">
-            <button class="large-max button orange"> <%= t(:confirm_book) %></button>
-          </div>
-        </div>
+        
         <br/><br/>
 
         <div class="clear"></div>
