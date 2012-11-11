@@ -29,6 +29,42 @@
     background: aquamarine !important;
     font-weight: bold !important;
   }
+  
+  .blockParts, .blockParts2{
+  	font-size: 16px; 
+  	font-weight: bold; 
+  	padding-bottom: 1em;
+  }
+  
+  .blockParts2{
+  	float: left;
+  	padding-top: 1em;
+  }
+  
+  table {
+		border-collapse: collapse; 
+		width: 300px;  
+  }
+
+	td{
+		border: 1px solid black; 
+		padding: 5px;	
+	}
+	
+	#tbl_availabilities td{
+		border: none;			
+	}
+	
+	.btn_booking{
+		background-color: purple;
+		color: white;
+	}
+	
+	textarea{
+		width: 75%;	
+		height: 200px;
+	}
+  
 </style>
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
@@ -136,8 +172,9 @@
   </div>
 </div>
 <div id="booking-content">
-  <div class="container_12" style="border: 1px solid black; padding: 5px; border-radius: 5px 5px 5px 5px; box-shadow: 1px 1px 5px black;">
-  <div style="font-size: 16px; font-weight: bold; padding-bottom: 1em;">Booking</div> <!-- TODO translate -->
+  <!--<div class="container_12" style="border: 1px solid black; padding: 5px; border-radius: 5px 5px 5px 5px; box-shadow: 1px 1px 5px black;">-->
+  <div class="container_12 shadowCont" >
+  <div class="blockParts">Booking</div> <!-- TODO translate -->
     <%= form_for [@item, @offer], :html => {:name => "offer_form", :onsubmit => "return checkPrefferedAddress();"} do|f| %>
       <div style="padding: 20px;float: left;">
         <% if @offer.errors.any? %>
@@ -153,8 +190,10 @@
       </div>
       
 		<div style="width: 50%; margin-left: auto; margin-right: auto; padding-bottom: 2em;"> 
-      	<div style="border: 1px solid; padding: 0px 3px; text-align: center; float: left;">1</div>
-      	<div style="border: 1px solid; padding: 0px 3px; text-align: center; float: right;">2</div>
+      	<div style="border: 1px solid; padding: 0px 3px; text-align: center; float: left; width: 10px;">1</div>
+			<!-- use to draw a line very ugly-->      	
+      	<s>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</s>
+      	<div style="border: 1px solid; padding: 0px 3px; text-align: center; float: right; width: 10px;">2</div>
      		<br/>
       	<span id="info_firstStep" style="float: left; font-weight: bold;"><%= t(:make_booking) %></span>
       	<span id="info_secondStep" style="float: right;"><%= t(:confirm_contact) %></span>
@@ -166,7 +205,7 @@
         <div class="clear">&nbsp;</div>
 
         <div id="details-panel" style="padding: 5px;">
-        	<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em;">Location</span> <!-- TODO translate -->
+        	<span class="blockParts2">Location</span> <!-- TODO translate -->
         	<div class="clear">&nbsp;</div>
           <% if @item.avatars.size > 0 %>
             <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" ) %>
@@ -188,10 +227,10 @@
 
 	<div id="FirstStepBooking">
 		<div id="bookingType" style="padding: 5px;">
-			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Booking Type</span> <!-- TODO translate -->
+			<span class ="blockParts2">Booking Type</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>			
 			<div id="bookingOptions" style="margin-left: auto; margin-right: auto; width: 50%;">
-      	<% if !@item.is_shareable %>
+      	<% if @item.is_shareable %>
           		<div style="float: left;"><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> <%= t(:stand_booking) %></div>
           		<div style="float: right;"><%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> <%= t(:create_gathering) %></div>
       	<% else %>
@@ -202,7 +241,7 @@
 		<div class="clear">&nbsp;</div>      
       
 		<div id="AnsweringDate" style="padding: 5px;">
-			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Answering Date</span> <!-- TODO translate -->
+			<span class ="blockParts2">Answering Date</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>			
 			<div id="response_div">
           <label style="line-height:18px;"><%= t(:owner_reply) %></label>
@@ -211,7 +250,7 @@
 		</div>
 		
 		<div id="MessageToOwner" style="padding: 5px;">
-			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Message to the Owner</span> <!-- TODO translate -->
+			<span class ="blockParts2">Message to the Owner</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>
 			<label style="line-height:18px; float:left;"><strong> <%= @item.user.popup_storz_display_name%> </strong></label>
 			<br/>	<br/>			
@@ -234,49 +273,51 @@
          
 		</div>
 		
-		<div id="BookingDates" style="padding: 5px;">
-			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Dates</span> <!-- TODO translate -->
+		<div id="BookingDates" style="padding: 5px; float:left">
+			<span class ="blockParts2">Dates</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>	
 			
-			<table style="border-collapse: collapse; width: 250px;">
+			<table>
 				<tr>
-					<td style="border: 1px solid black; padding: 3px;"><%= "Start Date" %></td> <!-- TODO translate -->
-					<td style="border: 1px solid black; padding: 3px;"><%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %></td>				
+					<td ><%= "Start Date" %></td> <!-- TODO translate -->
+					<td ><%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %></td>				
 				</tr>
 				<tr>
-					<td style="border: 1px solid black; padding: 3px;"><%= "End Date" %></td> <!-- TODO translate -->
-					<td style="border: 1px solid black; padding: 3px;"><%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %></td>				
+					<td ><%= "End Date" %></td> <!-- TODO translate -->
+					<td ><%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %></td>				
 				</tr>
 				<tr>
-					<td style="border: 1px solid black; padding: 3px;"><%= "Total days" %></td> <!-- TODO translate -->
-					<td style="border: 1px solid black; padding: 3px;"><%= "#{@number_of_days} days" %></td>				
+					<td ><%= "Total days" %></td> <!-- TODO translate -->
+					<td ><%= "#{@number_of_days} days" %></td>				
 				</tr>
 			</table>		
 		</div>
 		
-		<div id="BookingAvailabilities" style="padding: 5px;"> <!-- TODO put this div at the right of BookinDates -->
-			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Availabilities</span> <!-- TODO translate -->
+		<div id="BookingAvailabilities" style="padding: 5px; float: right"> <!-- TODO put this div at the right of BookinDates -->
+			<span class ="blockParts2">Availabilities</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>	
 			
-			<table summary="" >
+			<table id="tbl_availabilities">
 				<tr>
-					<td><%= "|IconCheck|" %> <%= "Daytime" %></td> <!-- TODO show icon check & translate -->
-					<td><%= "|IconCheck|" %> <%= "Evenings" %></td> <!-- TODO show icon check & translate -->		
+					<td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Daytime" %></span></td> <!-- TODO show icon check & translate -->
+					<td><span class="ui-icon ui-icon-closethick" style="display: inline-block;"></span><span ><%= "Evenings" %></span></td> <!-- TODO show icon check & translate -->		
 				</tr>	
 				<tr>
-					<td><%= "|IconCheck|" %> <%= "Mondays" %></td> <!-- TODO show icon check & translate -->
-					<td><%= "|IconCheck|" %> <%= "Tuesdays" %></td> <!-- TODO show icon check & translate -->
-					<td><%= "|IconCheck|" %> <%= "Wednesdays" %></td> <!-- TODO show icon check & translate -->
-					<td><%= "|IconCheck|" %> <%= "Thursdays" %></td> <!-- TODO show icon check & translate -->
-					<td><%= "|IconCheck|" %> <%= "Fridays" %></td> <!-- TODO show icon check & translate -->
-					<td><%= "|IconCheck|" %> <%= "Saturdays" %></td> <!-- TODO show icon check & translate -->
-					<td><%= "|IconCheck|" %> <%= "Sundays" %></td> <!-- TODO show icon check & translate -->				
+					<td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Mondays" %></span></td> <!-- TODO show icon check & translate -->
+					<td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Tuesdays" %></span></td> <!-- TODO show icon check & translate -->
+					<td><span class="ui-icon ui-icon-closethick" style="display: inline-block;"></span><span ><%= "Wednesdays" %></span></td> <!-- TODO show icon check & translate -->
+					<td><span class="ui-icon ui-icon-closethick" style="display: inline-block;"></span><span ><%= "Thursdays" %></span></td> <!-- TODO show icon check & translate -->
+					<td><span class="ui-icon ui-icon-closethick" style="display: inline-block;"></span><span ><%= "Fridays" %></span></td> <!-- TODO show icon check & translate -->
+					<td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Saturdays" %></span></td> <!-- TODO show icon check & translate -->
+					<td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Sundays" %></span></td> <!-- TODO show icon check & translate -->				
 				</tr>		
 			</table>
 		</div>
 		
+		<div class="clear">&nbsp;</div>
+		
 		<div id="BookingGathering" style="padding: 5px; display: none"> <!-- TODO hide/show this div in case of gathering radio button is selected -->
-			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Gathering</span> <!-- TODO translate -->
+			<span class ="blockParts2">Gathering</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>
 			
 			<div>
@@ -292,46 +333,46 @@
 			</div>
 		</div>		
 		<div id="BookingPrice" style="padding: 5px;">
-			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Price</span> <!-- TODO translate -->
+			<span class ="blockParts2">Price</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>
 		
-			<table style="border-collapse: collapse; width: 250px;">
+			<table>
 				<tr>
-					<td style="border: 1px solid black; padding: 3px;"><%= "Price per day" %></td> <!-- TODO translate -->
-					<td style="border: 1px solid black; padding: 3px;"><%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td>				
+					<td ><%= "Price per day" %></td> <!-- TODO translate -->
+					<td ><%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td>				
 				</tr>
 				<tr>
-					<td style="border: 1px solid black; padding: 3px;"><%= "Cleaning fee" %></td> <!-- TODO translate -->
-					<td style="border: 1px solid black; padding: 3px;"><%= "cleaning fee" %></td>	<!-- TODO show cleaning fee -->			
+					<td ><%= "Cleaning fee" %></td> <!-- TODO translate -->
+					<td ><%= "cleaning fee" %></td>	<!-- TODO show cleaning fee -->			
 				</tr>
 				<tr>
-					<td style="border: 1px solid black; padding: 3px;"><%= "Subtotal" %></td> <!-- TODO translate -->
-					<td style="border: 1px solid black; padding: 3px;"><%= "subtotal" %></td> <!-- TODO show the real subtotal -->				
+					<td ><%= "Subtotal" %></td> <!-- TODO translate -->
+					<td ><%= "subtotal" %></td> <!-- TODO show the real subtotal -->				
 				</tr>
 				<tr>
-					<td style="border: 1px solid black; padding: 3px;"><%= "Service fee" %></td> <!-- TODO translate -->
-					<td style="border: 1px solid black; padding: 3px;"><%= "service fee" %></td> <!-- TODO show the real service fee -->				
+					<td ><%= "Service fee" %></td> <!-- TODO translate -->
+					<td ><%= "service fee" %></td> <!-- TODO show the real service fee -->				
 				</tr>
 				<tr id="tr_totalPrice" style="background-color: yellow;">
-					<td style="border: 1px solid black; padding: 3px;"><%= "Total" %></td> <!-- TODO translate & change text to "Grand Total" if the gathering mode is selected -->
-					<td style="border: 1px solid black; padding: 3px;"><%= "total" %></td> <!-- TODO show the total -->				
+					<td ><%= "Total" %></td> <!-- TODO translate & change text to "Grand Total" if the gathering mode is selected -->
+					<td ><%= "total" %></td> <!-- TODO show the total -->				
 				</tr>
 				<tr id="tr_pricePerPerson" style="background-color: yellow; display: none">
-					<td style="border: 1px solid black; padding: 3px;"><%= "Price per person" %></td> <!-- TODO translate -->
-					<td style="border: 1px solid black; padding: 3px;"><%= "price per person" %></td> <!-- TODO show the price per person -->				
+					<td ><%= "Price per person" %></td> <!-- TODO translate -->
+					<td ><%= "price per person" %></td> <!-- TODO show the price per person -->				
 				</tr>
 			</table>	
 			<br/>
-			<table style="border-collapse: collapse; width: 250px;">
+			<table >
 				<tr>
-					<td style="border: 1px solid black; padding: 3px;"><%= "Security deposit" %></td> <!-- TODO translate -->
-					<td style="border: 1px solid black; padding: 3px;"><%= "security deposit" %></td> <!-- TODO show the real security deposit -->				
+					<td ><%= "Security deposit" %></td> <!-- TODO translate -->
+					<td ><%= "security deposit" %></td> <!-- TODO show the real security deposit -->				
 				</tr>
 			</table>
 		</div>
 		
 		<div id="BookingPolicies" style="padding: 5px;">
-			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Policies</span> <!-- TODO translate -->
+			<span class ="blockParts2">Policies</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>
 		
 			<div style="padding: 5px;">
@@ -357,13 +398,13 @@
 		<br/><br/>
 		<div class="clear">&nbsp;</div>
 		<div id="BookingContinue">
-            <button class="large-max button orange" id="btn_bookingContinue"> <%= "Continue" %></button> <!-- TODO translate -->
+            <button class="btn_booking" id="btn_bookingContinue"> <%= "Continue" %></button> <!-- TODO translate -->
       </div>
 	</div>	
 	
 	<div id="SecondStepBooking" style="display: none">
 		<div id="BookingPayment" style="padding: 5px;">
-			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Payment</span> <!-- TODO translate -->
+			<span class ="blockParts2">Payment</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>
 			
 			<span><strong><%= "Amount to be paid: " %> <%= "amount$" %></strong><small><%= "  You will be charged only..." %></small></span> <!-- TODO translate & show the amount -->
@@ -371,13 +412,15 @@
 			<br/>
 			<br/>
 			<br/>
-			<label><%= "Card type: " %></label> <!-- TODO translate -->
-			<select> <!-- TODO replace by ruby dropdown -->
-				<option><%= "American Express" %></option>			
-				<option><%= "Visa" %></option>			
-			</select>
+			<div style="width: 300px;">
+				<label><%= "Card type: " %></label> <!-- TODO translate -->
+				<select style="width: 233px;"> <!-- TODO replace by ruby dropdown -->
+					<option><%= "American Express" %></option>			
+					<option><%= "Visa" %></option>			
+				</select>
+			</div>
 			<br/>
-			<input type="text" value='<%= "card number" %>' /> <!-- TODO replace by ruby input -->
+			<input type="text" value='<%= "card number" %>' style="width: 279px;"/> <!-- TODO replace by ruby input -->
 			<br/>
 			<label><%= "Expires on:" %></label> <!-- TODO translate -->
 			<br/>
@@ -403,7 +446,7 @@
 		<br/><br/>
 		<div class="clear">&nbsp;</div>
 		<div id="BookingSubmit">
-            <button class="large-max button orange"> <%= t(:confirm_book) %></button>
+            <button class="btn_booking"> <%= t(:confirm_book) %></button>
       </div>
 	</div>
       
