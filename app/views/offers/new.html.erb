@@ -105,6 +105,18 @@
       $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
       $("#offer_gathering_deadline").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
 
+		//manage the switch between step one and step two of booking
+		$("#btn_bookingContinue").bind('click', function() {
+  			$("#FirstStepBooking").hide();  			
+  			$("#SecondStepBooking").show(); 
+  			
+  			//change breadcrumb design
+  			$("#info_firstStep").css("font-weight","normal");
+  			$("#info_secondStep").css("font-weight","bold");
+  			
+  			
+  			return false; 			
+		});
     });
 
 
@@ -144,8 +156,8 @@
       	<div style="border: 1px solid; padding: 0px 3px; text-align: center; float: left;">1</div>
       	<div style="border: 1px solid; padding: 0px 3px; text-align: center; float: right;">2</div>
      		<br/>
-      	<span style="float: left;"><%= t(:make_booking) %></span>
-      	<span style="float: right;"><%= t(:confirm_contact) %></span>
+      	<span id="info_firstStep" style="float: left; font-weight: bold;"><%= t(:make_booking) %></span>
+      	<span id="info_secondStep" style="float: right;"><%= t(:confirm_contact) %></span>
       </div>      
       <div class="grid_12">
 
@@ -173,11 +185,13 @@
       </div>
       <div class="clear">&nbsp;</div>
 
+
+	<div id="FirstStepBooking">
 		<div id="bookingType" style="padding: 5px;">
 			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Booking Type</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>			
 			<div id="bookingOptions" style="margin-left: auto; margin-right: auto; width: 50%;">
-      	<% if @item.is_shareable %>
+      	<% if !@item.is_shareable %>
           		<div style="float: left;"><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> <%= t(:stand_booking) %></div>
           		<div style="float: right;"><%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> <%= t(:create_gathering) %></div>
       	<% else %>
@@ -187,7 +201,7 @@
       </div>
 		<div class="clear">&nbsp;</div>      
       
-		<div id="AnsweringDate" style="padding: 5px;"> <!-- TODO hide this if gathering mode -->
+		<div id="AnsweringDate" style="padding: 5px;">
 			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Answering Date</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>			
 			<div id="response_div">
@@ -217,7 +231,7 @@
             <%end%>
             <%end%>
          </div>
-         <!--<small><%= t(:why_need_space) %></small><br/><br/>-->
+         
 		</div>
 		
 		<div id="BookingDates" style="padding: 5px;">
@@ -261,7 +275,7 @@
 			</table>
 		</div>
 		
-		<div id="BookingGathering" style="padding: 5px;"> <!-- TODO hide/show this div in case of gathering radio button is selected -->
+		<div id="BookingGathering" style="padding: 5px; display: none"> <!-- TODO hide/show this div in case of gathering radio button is selected -->
 			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Gathering</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>
 			
@@ -276,8 +290,7 @@
 				<input type="text" value="31/07/2012"/>	<!-- TODO replace by ruby calendar -->
 				<span><small><%= "If required number of persons is not reached ..." %></small></span>	<!-- TODO translate -->	
 			</div>
-		</div>	
-		
+		</div>		
 		<div id="BookingPrice" style="padding: 5px;">
 			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Price</span> <!-- TODO translate -->
 			<div class="clear">&nbsp;</div>
@@ -299,11 +312,11 @@
 					<td style="border: 1px solid black; padding: 3px;"><%= "Service fee" %></td> <!-- TODO translate -->
 					<td style="border: 1px solid black; padding: 3px;"><%= "service fee" %></td> <!-- TODO show the real service fee -->				
 				</tr>
-				<tr style="background-color: yellow;"> <!-- TODO remove yellow if gathering mode -->
+				<tr id="tr_totalPrice" style="background-color: yellow;">
 					<td style="border: 1px solid black; padding: 3px;"><%= "Total" %></td> <!-- TODO translate & change text to "Grand Total" if the gathering mode is selected -->
 					<td style="border: 1px solid black; padding: 3px;"><%= "total" %></td> <!-- TODO show the total -->				
 				</tr>
-				<tr style="background-color: yellow;"> <!-- TODO hide this if not in gathering mode -->
+				<tr id="tr_pricePerPerson" style="background-color: yellow; display: none">
 					<td style="border: 1px solid black; padding: 3px;"><%= "Price per person" %></td> <!-- TODO translate -->
 					<td style="border: 1px solid black; padding: 3px;"><%= "price per person" %></td> <!-- TODO show the price per person -->				
 				</tr>
@@ -339,13 +352,60 @@
 					Nunc et erat id nunc egestas bibendum quis vel tellus. Integer adipiscing risus id odio egestas viverra. Donec non tempus est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec at velit odio, vulputate commodo neque. Integer ut mauris nisl. Etiam vitae varius quam. Phasellus porta ipsum eget justo consectetur non pellentesque urna pulvinar. Nunc congue, neque ut egestas interdum, nibh odio molestie mi, non facilisis elit tellus eget urna. Sed commodo mollis risus at consequat. Fusce tincidunt sodales orci. Cras pharetra sem id enim varius viverra. Nulla iaculis quam vitae lectus sagittis ultricies. Maecenas et nisl a quam ullamcorper consectetur eu nec ipsum. Vivamus vitae arcu quis massa dictum malesuada vitae sed lectus.
 				</div>
 			</div>
-		</div>	
+		</div>
 		
+		<br/><br/>
+		<div class="clear">&nbsp;</div>
+		<div id="BookingContinue">
+            <button class="large-max button orange" id="btn_bookingContinue"> <%= "Continue" %></button> <!-- TODO translate -->
+      </div>
+	</div>	
+	
+	<div id="SecondStepBooking" style="display: none">
+		<div id="BookingPayment" style="padding: 5px;">
+			<span style="font-size: 16px; font-weight: bold; float: left; padding-bottom: 1em; padding-top: 1em;">Payment</span> <!-- TODO translate -->
+			<div class="clear">&nbsp;</div>
+			
+			<span><strong><%= "Amount to be paid: " %> <%= "amount$" %></strong><small><%= "  You will be charged only..." %></small></span> <!-- TODO translate & show the amount -->
+			
+			<br/>
+			<br/>
+			<br/>
+			<label><%= "Card type: " %></label> <!-- TODO translate -->
+			<select> <!-- TODO replace by ruby dropdown -->
+				<option><%= "American Express" %></option>			
+				<option><%= "Visa" %></option>			
+			</select>
+			<br/>
+			<input type="text" value='<%= "card number" %>' /> <!-- TODO replace by ruby input -->
+			<br/>
+			<label><%= "Expires on:" %></label> <!-- TODO translate -->
+			<br/>
+			<select> <!-- TODO replace by ruby dropdown -->
+				<option><%= "January" %></option>			
+				<option><%= "February" %></option>			
+			</select>
+			<select> <!-- TODO replace by ruby dropdown -->
+				<option><%= "01" %></option>			
+				<option><%= "02" %></option>			
+			</select>
+			<input type="text" value='<%= "Security code" %>' /> <!-- TODO replace by ruby input -->
+			
+			<div class="clear">&nbsp;</div>
+			<br/>
+		</div>
+		
+		<br/><br/>
+		
+		<input type="checkbox"/> <!-- TODO replace by ruby checkbox -->
+		<label><%= "I agree to the cancellation policy, ..." %></label> <!-- TODO translate -->
+	
 		<br/><br/>
 		<div class="clear">&nbsp;</div>
 		<div id="BookingSubmit">
             <button class="large-max button orange"> <%= t(:confirm_book) %></button>
       </div>
+	</div>
       
       <!--
       <div style="float:left;width:100%;">
@@ -529,7 +589,7 @@
         <!--<input name="" type="checkbox" value="" /> <font size="2">I agree to the <a href="#">terms of use.</a></font><br />
         -->
         <br/>
-
+<!--
         <div id="gathering_fields" style="display:none;">
           <b><%= t(:max_no) %></b><%= @item.maximum_members %><br /><br />
           <label><%= t(:gather_person) %></label>
@@ -546,7 +606,7 @@
           <div style="padding-left:200px;">
             <button class="large-max button orange"> <%= t(:create_gathering) %></button>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="clear">&nbsp;</div>
@@ -866,12 +926,24 @@
     $("#offer_is_gathering").val(true);
     $("#gathering_fields").show();
     $("#response_div").hide();
+    
+    $("#AnsweringDate").hide();
+    $("#BookingGathering").show();
+    
+    $("#tr_totalPrice").removeAttr("background-color");
+    $("#tr_pricePerPerson").show();
   }
 
   function hide_gathering(){
     $("#offer_is_gathering").val(false);
     $("#gathering_fields").hide();
     $("#response_div").show();
+    
+    $("#AnsweringDate").show();
+    $("#BookingGathering").hide();
+    
+    $("#tr_totalPrice").css("background-color","yellow");
+    $("#tr_pricePerPerson").hide();
   }
 
   function check_persons(obj,val){
