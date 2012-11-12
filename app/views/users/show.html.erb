@@ -1,4 +1,142 @@
-<div class="shadowCont offer">
+<style>
+	.blockParts, .blockParts2{
+  	font-size: 16px; 
+  	/*font-weight: bold; */
+  	font-family: proxima-bold;
+  	padding-bottom: 1em;
+  }
+  
+  .blockParts2{
+  	float: left;
+  	/*padding-top: 1em;*/
+  }
+</style>
+
+<div class="shadowCont" style="margin-top:1em;">
+	<div id="viewProfileSummary" style="height: 100px;">
+			<div style="width: 150px; height: 100%; float:left;">			
+				<img src="" alt="UserPhoto" style="border: 1px solid black; width:100%; height:auto;">
+			</div>
+			<div style="float:left; margin-left: 1em; margin-bottom: 2em; width: 75%">
+				<label style="font-family: proxima-bold; font-size: 16px;"><%= "@item.name" %></label> <span style="margin-left: 1em;"><%= "@item.rating" %></span>
+				<br/>
+				<label style="font-family: proxima-semibold; "><%= "@item.activity" %></label>
+				<br/>
+				<br/>
+				<label style="font-family: XXII; "><%= "@item.city" %></label>
+				<br/>
+				<br/>
+				<div><%= "@item.description" %></div>
+			</div>
+		</div>
+</div>
+
+<div style="height:1000px;">
+	<div class="shadowCont" style="float:left; width:30%; height: 1008px; margin-top:1em;">
+		<span class="blockParts2">Ratings and comments</span> <!-- TODO translate -->	
+		<br/>
+		<br/>
+		<div id="viewRatings" style="height:200px; border-top: 1px solid grey; border-bottom: 1px solid grey;">
+			<div class="clear">&nbsp;</div>			
+			<div style="width: 30%; height: 100px; margin-top:2px; border:1px solid black; float:left;">			
+				<img src="http://foo.jpg"/>
+			</div>
+			<div style="margin-left: 7em;">
+				<span ><%= "@item.rating" %></span>	
+				<br/>
+				<label style="font-family:proxima-semibold; color:purple;"><%= "@item.title" %></label>	
+				<br/>
+				<label><%= "@item.date" %></label>	
+				<br/>	
+				<br/>
+				<label style="font-family:proxima-bold;"><%= "@item.name" %></label>		
+				<br/>
+				<label style="font-family:proxima;"><%= "@item.activity" %></label>
+				<br/>
+				<label style="font-family: XXII; "><%= "@item.city" %></label>
+			</div>	
+			<br/>
+			<div style="width:100%;">
+				<p><%= "@item.comments" %></p>
+			</div>					
+		</div>
+	</div>
+
+	<div class="shadowCont" style="float:right;width:60%;height: 30%; margin-top:1em;">
+		<span class="blockParts2">Listings</span> <!-- TODO translate -->	
+		<br/>
+		<br/>		
+		<div id="viewListing" style="height:100px; border: 1px solid grey;">
+			<div class="clear">&nbsp;</div>			
+			<div style="width: 30%; height: 90px; margin-top:2px; margin-left:2px; border:1px solid black; float:left;">			
+				<img src="http://foo.jpg"/>
+			</div>
+			<div style="margin-left: 7em;">
+				<label style="font-family:proxima-semibold;padding-left:2px;"><%= "@item.title" %></label><span style="padding-left:2px;"><%= "@item.favorite" %></span>
+				<br/>
+				<label style="font-family: XXII; padding-left:2px;"><%= "@item.city" %></label>
+			</div>
+			<br/>
+			<div>
+				<label style="font-family:proxima-bold;color:grey; float:right; padding-right:2px;"><%= "@item.price" %></label>
+				<br/>			
+				<label style="font-size:12px;color:grey; float:right;padding-right:2px;"><%= "@item.perDay" %></label>
+				<br/>			
+				<label style="font-family:proxima-bold; color:purple; float:right;padding-right:2px;"><%= "@item.linkBookIt" %></label>
+			</div>
+		</div>
+	</div>
+
+	<div class="shadowCont" style="float:right; width:60%;height: 30%; margin-top:1em;" >
+		<span class="blockParts2">Upcoming bookings</span> <!-- TODO translate -->	
+		<br/>
+		<br/>			
+		<div id="viewUpcoming" style="height:100px; border: 1px solid grey;">
+			<div class="clear">&nbsp;</div>			
+			<div style="width: 30%; height: 90px; margin-top:2px; margin-left:2px; border:1px solid black; float:left;">			
+				<img src="http://foo.jpg"/>
+			</div>
+			<div style="margin-left: 7em;">
+				<label style="font-family:proxima-semibold;padding-left:2px;"><%= "@item.title" %></label>
+				<br/>
+				<label style="font-family: XXII; padding-left:2px;"><%= "@item.city" %></label>
+				<br/>
+				<br/>			
+				<br/>		
+				<label style="color:grey;  padding-left:2px;"><%= "@item.type" %></label>
+				<br/>				
+				<label style="color:grey; padding-left:2px;"><%= "@item.date" %></label>
+			</div>
+		</div>
+	</div>
+
+	<div class="shadowCont" style="float:right; width:60%;height: 30%; margin-top:1em;">
+		<span class="blockParts2">Favorites</span> <!-- TODO translate -->	
+		<br/>
+		<br/>		
+		<div id="viewFavorites" style="height:100px; border: 1px solid grey;">
+			<div class="clear">&nbsp;</div>			
+			<div style="width: 30%; height: 90px; margin-top:2px; margin-left:2px; border:1px solid black; float:left;">			
+				<img src="http://foo.jpg"/>
+			</div>
+			<div style="margin-left: 7em;">
+				<label style="font-family:proxima-semibold;padding-left:2px;"><%= "@item.title" %></label><span style="padding-left:2px;"><%= "@item.favorite" %></span>
+				<br/>
+				<label style="font-family: XXII; padding-left:2px;"><%= "@item.city" %></label>
+			</div>
+			<br/>
+			<br/>
+			<div>
+				<label style="font-family:proxima-bold;color:grey; float:right; padding-right:2px;"><%= "@item.price" %></label>
+				<br/>			
+				<label style="font-size:12px;color:grey; float:right;padding-right:2px;"><%= "@item.perDay" %></label>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Remove for design
+<div class="shadowCont offer" style="display:none;">
 
 	<h1><%= t(:pro2)%></h1>
 	<div style="float:left;width:100%;">
@@ -353,6 +491,7 @@
 	<%end%>
 	</div>
 </div>
+-->
 
 <script>
 
