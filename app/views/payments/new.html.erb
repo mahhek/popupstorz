@@ -156,8 +156,8 @@
 
         <%else%>
           <% rentareto_fee = @offer.total_amount.blank? ? 0 : (( @offer.total_amount * 10 ) / 100 ) %>
-          <% owner_amount = @offer.total_amount %>
-          <% total_amount = rentareto_fee + owner_amount %>
+          <% owner_amount = @offer.total_amount.to_f %>
+          <% total_amount = rentareto_fee.to_i + owner_amount %>
           <%= f.hidden_field :rentareto_fee, :value => rentareto_fee %>
           <%= f.hidden_field :seller_amount, :value => owner_amount %>
           <br/>
