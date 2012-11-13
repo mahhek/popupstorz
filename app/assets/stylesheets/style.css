@@ -139,7 +139,7 @@ body {
 	padding: 5px;
 	margin: 0 auto;
 	color: white;
-	font-weight: bold;
+	font-family: proxima-semibold;
 
 }
 
@@ -235,8 +235,6 @@ body {
 }
 
 .menubar a {
-    /*float: left;
-    font-weight: bold;*/
     padding: 0 24px;
     /*text-transform: uppercase;*/
 }
@@ -272,6 +270,7 @@ body {
 .row h4 {
 	font-size: 1.4em;
 	font-weight: normal;
+	font-family: Proxima;
 	color: #333333;
 	display: inline-block;
 }
@@ -287,7 +286,7 @@ body {
 }
 
 .unread {
-	font-weight: bold;
+	font-family: proxima-semibold;
 }
 
 .offer {
@@ -312,7 +311,7 @@ body {
 
 .sub-link {
 	font-size: 0.9em;
-   font-weight: bold;
+   font-family: proxima-semibold;
    color: #666666;	
 }
 
@@ -528,7 +527,6 @@ body {
 .sortby {
     float: right;
     font-size: 12px;
-    font-weight: bold;
     margin-top: 5px;
     width: 100%;
 }
@@ -564,14 +562,12 @@ body {
 .resultsholder .heading {
     float: left;
     font-size: 22px;
-    font-weight: bold;
     padding-top: 12px;
     width: 419px;
 }
 
 .resultsholder .subheading {
     font-size: 12px;
-    font-weight: bold;
     line-height: 8px;
 }
 
@@ -582,7 +578,6 @@ body {
 .resultsholder .price {
     float: right;
     font-size: 30px;
-    font-weight: bold;
     margin-top: 8px;
     text-align: center;
     width: 110px;
@@ -662,7 +657,7 @@ h2 {
     margin: 6px 0pt;
     width: 5px;
 }
-.cont_heading{font-size:17px;font-weight:bold;color:#333;padding-left: 83px;}
+.cont_heading{font-size:17px;color:#333;padding-left: 83px;}
 .clear{width:0;height:0;overflow:hidden;visibility:hidden;display:block;clear:both;}
 .fltL{float:left;}
 .fltR{float:right;}
@@ -683,10 +678,10 @@ h2 {
     height: 177px;
     width: 266px;
 }
-.g_hold h1{font-size: 16px;;font-weight:bold;color:#3f3f3f;text-align:center;margin-top:5px; width: 266px; height: 36px;}
-.g_hold p{font-size: 22px;font-weight:bold;color:#3f3f3f;text-align:center;margin-top:13px;}
-.g_hold h5{font-size:12px;font-weight:bold;float:left;margin-top:10px;color:#00cccc;background:url(../assets/man_icon.png) no-repeat;padding-left:8px;margin-left: 5px;}
-.g_hold h6{font-size:19px;font-weight:bold;color:#666666;float:right;margin-top:2px;}
+.g_hold h1{font-size: 16px;;color:#3f3f3f;text-align:center;margin-top:5px; width: 266px; height: 36px;}
+.g_hold p{font-size: 22px;color:#3f3f3f;text-align:center;margin-top:13px;}
+.g_hold h5{font-size:12px;float:left;margin-top:10px;color:#00cccc;background:url(../assets/man_icon.png) no-repeat;padding-left:8px;margin-left: 5px;}
+.g_hold h6{font-size:19px;color:#666666;float:right;margin-top:2px;}
 .img-heading{margin-top:20px;text-align:center;}
 .w370{width:370px;}
 .w390{width:390px;}
@@ -717,7 +712,7 @@ h2 {
     color: transparent;
     float: left;
     font-size: 0;
-    font-weight: bold;
+    font-family: Proxima-semibold;
     height: 34px;
     margin-left: 105px;
     margin-top: 20px;
@@ -818,7 +813,7 @@ h2 {
     -moz-box-shadow: 4px 5px 6px #333333;
     padding: 25px;
 }
-.play_hold h1{font-size:18px;color:#666666;font-weight:bold;margin-bottom:10px;text-align: center}
+.play_hold h1{font-size:18px;color:#666666;font-family: Proxima-semibold;margin-bottom:10px;text-align: center}
 .mr100{margin-right:100px;}
 .ml40{margin-left:40px;}
 .text_he{font-size:13px; color:#000;}
@@ -842,11 +837,11 @@ h2 {
     overflow: auto;
 }
 
-.s_head{font-size:22px;font-weight:bold;}
-.reqInfo{color:#666666;margin:40px 0 5px 133px; font-weight: bold; font-size: 1.2em;}
+.s_head{font-size:22px;font-family: Proxima-semibold;}
+.reqInfo{color:#666666;margin:40px 0 5px 133px; font-family: Proxima-semibold; font-size: 1.2em;}
 .info { font-size: 0.9em; color: #666666; line-height: 29px;}
 .sign_up_input{}
-.sign_up_input label{float:left;width:120px; margin-right:10px;text-align:right;color:#000;font-weight:bold;line-height:29px;}
+.sign_up_input label{float:left;width:120px; margin-right:10px;text-align:right;color:#000;font-family: Proxima-semibold;line-height:29px;}
 .sign_up_input input{width:192px;margin-left: 3px; /*border:1px solid #666666;*/}
 .sign_up_input textarea{width:534px;float:left; /*border:1px solid #666666;*/ padding:2px 3px;}
 .day, .month, .year{float:left;margin-right:5px;border:1px solid #666;padding:3px;width:60px;}
@@ -854,23 +849,23 @@ h2 {
 .year{width:87px;}
 .checkbox{margin-top:5px;}
 .checkbox input{float:left;margin-right:5px;width:auto;}
-.checkbox label{float:left;text-align:left;font-weight:normal;}
+.checkbox label{float:left;text-align:left;font-weight:normal; font-family: Proxima;}
 .w50{width:50px !important;}
 .mr10{margin-right:10px;}
 .w129{width:129px !important;}
-.back{font-size:14px;font-weight:bold;color:#333333;margin-top:10px;margin-bottom:10px;display:block;}
-.charming{font-size:20px;color:#333;font-weight:bold;}
-.charming_text{font-size:12px;color:#666;font-weight:bold;margin-top:2px;}
+.back{font-size:14px;font-family: Proxima-semibold;color:#333333;margin-top:10px;margin-bottom:10px;display:block;}
+.charming{font-size:20px;color:#333;font-family: Proxima-semibold;}
+.charming_text{font-size:12px;color:#666;font-family: Proxima-semibold;margin-top:2px;}
 .graytext{color:#666666 !important;}
 .gallery{margin-top:10px;margin-left:-20px;float:left;}
-.size{font-size:14px;color:#333333;font-weight:bold;float:left;margin-right:10px;}
+.size{font-size:14px;color:#333333;font-family: Proxima-semibold;float:left;margin-right:10px;}
 .size_text{font-size:14px;color:#333333;float:left;}
 .w200{width:200px;}
 .mt100{margin-top:100px;}
 .line{background:none scroll 0 0 #DDDDDD;height:1px;margin:7px 0;}
-.name{font-size:12px;font-weight:bold;color:#000;}
+.name{font-size:12px;font-family: Proxima-semibold;color:#000;}
 .name_text{font-size:12px;;color:#000;font-style:italic;}
-.send{font-size:12px;font-weight:bold;color:#cc33cc;margin-top:20px;display:block;}
+.send{font-size:12px;font-family: Proxima-semibold;color:#cc33cc;margin-top:20px;display:block;}
 .w107{width: 160px;}
 .available{font-size:18px;color:#000;}
 .daytime{background: url("../assets/plus.png") no-repeat scroll left center transparent;color: #000000; float: left; font-size: 12px; margin-right: 37px; margin-top: 6px; padding-left: 20px; text-align: center;}
@@ -1117,7 +1112,7 @@ ul, li {
 
 .the_menu li a:hover {
 	padding:10px;
-	font-weight:bold;
+	font-family: Proxima-semibold;
 	color: #F00880;
 }
 
