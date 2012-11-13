@@ -4,7 +4,7 @@
   <img src="../assets/img-heading.png" alt="" />
 </div>
 
-<h2 class="" style="color: #cc33cc; font-size: 21px; margin-bottom: 40px;">Find your next pop-up store and set it up on your own or with other people</h2>
+<h2 class="" style="color: #cc33cc; font-size: 21px; margin-bottom: 40px; font-family: proxima-bold; font-weight:normal;">Find your next pop-up store and set it up on your own or with other people</h2>
 
 <div class="paris_hold">
     <%= form_tag "/items/search_keyword", :method => :get  do %>
@@ -24,7 +24,7 @@
     <% @items.each do |item| %>
       <li>
         <div class="g_hold">
-          <div style="">
+          <div style="margin-bottom:2px;">
             <% if item.avatars.size > 0 %>
               <% avatar = item.avatars.first %>
               <%= link_to(image_tag(avatar.photo.url(:thumb, :style=>["width:125px;height:125px;"])), item_path(item), :class => "item_image", :width => "133px" ) %>
@@ -32,11 +32,14 @@
               <%= image_tag("PUS_Logo.jpg", :border => "0", :alt => "image", :class => "item_image" )  %>
             <%end%>
           </div>
-          <h1><%=item.city%>, <%=item.country_code%></h1>
-          <p><%= item.availability_from.blank? ? "" : item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.blank? ? "" :item.availability_to.strftime("%m/%y")%></p>
+          <label style="font-family: proxima-semibold;font-size: 16px;color: #666666;"><%=item.city%>, <%=item.country_code%></label>
+          <p style="font-family: XXII; color: black;"><%= item.availability_from.blank? ? "" : item.availability_from.strftime("%m/%y")%> - <%=item.availability_to.blank? ? "" :item.availability_to.strftime("%m/%y")%></p>
 
           <h5><%= t(:symbol2) %></h5>
-          <h6><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h6>
+          <h6><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h6>        
+		    <br/>			 
+		    <div class="clear"></div>
+			 <label style="float:right; color: #666666; font-family:proxima-semibold;">per day</label>          
           <div class="clear"></div>
         </div>
       </li>

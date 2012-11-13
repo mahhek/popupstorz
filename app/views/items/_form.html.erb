@@ -21,10 +21,22 @@
     });
   });
 </script>
+<style type="text/css">
+	h2 {
+		font-family: proxima-bold;
+		color: #333333;
+	}
+	
+	label {
+		font-family: proxima-bold;	
+	}
+</style>
+
+
 <%= f.hidden_field :user_id, :value => current_user.id if current_user %>
 
 <h2>DESCRIPTION</h2>
-
+<br/>
 <div style="padding-bottom: 20px;float: left;">
   <% if @item.errors.any? %>
     <div id="errorExplanation" class="erro_messages">
@@ -85,9 +97,9 @@
 <div class="xfields"><label>&nbsp;</label>
   <div class="input">
 <%#*<span>This place is TODO</span><br />%>
-    <span><%= t(:available_from) %></span>    
+    <span style="font-family: proxima-bold;"><%= t(:available_from) %></span>    
     <%= f.text_field :availability_from %>
-    <span><%= t(:available_to) %></span>
+    <span style="font-family: proxima-bold;"><%= t(:available_to) %></span>
     <%= f.text_field :availability_to %>
     <br />
     <%=f.check_box :availablities_daytime %><span><%= t(:daytime) %></span>
@@ -106,7 +118,7 @@
 
 <div class="xfields"><label>&nbsp;</label>
   <div class="input" >
-    <span><%= t(:gathering_allowed_at_place) %></span>
+    <span style="font-family: proxima-bold;"><%= t(:gathering_allowed_at_place) %></span>
     <a style="color: #666666;"><%= t(:what_is_gathering) %></a>
     <br /> 
     <%= select_tag "item[is_shareable]", options_for_select([[t("Yes"),true],[t("No"),false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)", :class => "input" %>
@@ -124,12 +136,13 @@
   </span>
 </div>
 
-<div class="xfields" style="margin: 20px 0;"><label>Rental price</label>
-  <span>
-    <%= f.text_field :price,  :class => "price", :size =>""%> <span class="unit">$</span> per day
-    <%= f.text_field :price_per_week,  :class => "price",:size =>""  %> <span class="unit">$</span> per week
-    <%= f.text_field :price_per_month,  :class => "price",:size =>"" %> <span class="unit">$</span> per month
-  </span><br /><span style="color: #666666; margin-left: 362px; margin-top: -12px; position: absolute;">If you wish, you can apply a lower rate for weekly or monthly rentals</span>
+<div class="xfields" style="margin: 20px 0; width:960px;"><label>Rental price</label>
+  <!--<span> -->
+    <div style="font-family: proxima-bold; float:left;"><%= f.text_field :price,  :class => "price", :size =>""%> <span class="unit">$</span> per day</div>
+    <div style="font-family: proxima-bold; float:left;"><%= f.text_field :price_per_week,  :class => "price",:size =>""  %> <span class="unit">$</span> per week</div>
+    <div style="font-family: proxima-bold; float:left;"><%= f.text_field :price_per_month,  :class => "price",:size =>"" %> <span class="unit">$</span> per month</div>
+  <!--</span>-->
+  <br /><span style="color: #666666; margin-left: 362px; margin-top: -12px; position: absolute;">If you wish, you can apply a lower rate for weekly or monthly rentals</span>
 </div>
 
 <div class="xfields"><label>Cleaning fee</label>

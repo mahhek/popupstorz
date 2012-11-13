@@ -1,23 +1,8 @@
 <%= render :partial => "search_header" %>
 <div class="clear"></div>
 
-<%= form_for :search, :url => search_members_searches_path, :remote => true do|f|%>
-  <div class="shadowCont" style="padding: 10px;">
-  	 <b><%= t(:mem_search)%></b>
-    <div class="refinesearchresults">
-      <div style="width:35%;float:left;">
-        <%= text_field_tag "user", "",:style=>["width:320px"] %>
-      </div>
-      <div style="width:55%;float:left;">
-        <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
-      </div>
-      <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
-    </div>
-  </div>
-<% end %>
-
 <div class="rightcontent shadowCont" style="padding: 5px 20px 20px;">
-  	<h2 style="font-size: 1.4em; font-weight: normal;"><%= t(:refine_search) %></h2>
+  	<h2 style="font-size: 1.4em; font-weight: normal; font-family:proxima-semibold;"><%= t(:refine_search) %></h2>
 	<%= form_tag "/searches/search_members", {:remote => true, :id => "price_range_form", :pars => params } do %>
 		<%= hidden_field_tag "location",  '', :id => "searched_member_location" %>
       <%= hidden_field_tag "user", '', :id => "searched_member_name" %>
@@ -41,7 +26,7 @@
 <div class="leftcontent">
 	<%= form_for :search, :url => search_members_searches_path, :remote => true do|f|%>
 	 <div class="refinesearchresults shadowCont">
-	 	<h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal;"><%= t(:mem_search)%></h2>
+	 	<h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family:proxima-semibold;"><%= t(:mem_search)%></h2>
 	 	<div>
 		   <div style="width:92%;float:left;">
 		   	<%= text_field_tag "user", "",:style=>["width:320px"], :hint => "Enter member name or email" %>

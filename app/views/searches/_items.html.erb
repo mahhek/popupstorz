@@ -13,7 +13,7 @@
 		  <div style="color: grey; float: right; font-size: 26px;text-align: right;"><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %><br>
 				<span class="perweek" style="font-size: 0.7em;"><%= t(:by) %> <%= item.time_for_unit_price %></span></div>
         
-        <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
+        <div class="name-list" style="margin-bottom: 5px;font-family: proxima-bold;color: #333333;"><h4><%= item.title %></h4></div>
         
         <div class="name-list XXII" style="margin-bottom: 5px;"><span style="font-size: 1.1em; "><%#= item.address.chars.first %></span><%= item.address %></div>
 

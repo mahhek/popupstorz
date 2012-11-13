@@ -2,7 +2,7 @@
 <div class="clear"></div>
 
 <div class="rightcontent shadowCont" style="padding: 5px 20px 20px;">
-  <h2 style="font-size: 1.4em; font-weight: normal;"><%= t(:refine_search) %></h2>
+  <h2 style="font-size: 1.4em; font-weight: normal; font-family: proxima-semibold;"><%= t(:refine_search) %></h2>
   <%= form_tag "/search_spaces", {:remote => true, :method => :get } do %>
     <%= hidden_field_tag "min_price", "" %>
     <%= hidden_field_tag "max_price", "" %>
@@ -62,7 +62,7 @@
 <div class="leftcontent">
   <%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
     <div class="refinesearchresults shadowCont">
-      <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal;">Spaces search</h2>
+      <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family: proxima-semibold;">Spaces search</h2>
       <div>
         <div style="width:40%;float:left;">
           <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
@@ -77,7 +77,7 @@
       </div>
     </div>
     <div class="sortby">
-      <span><%= t(:sort_by) %></span>
+      <span style="font-family:proxima-semibold;"><%= t(:sort_by) %></span>
       <%= select_tag "sort_option", options_for_select([["Newest" ,"1"],["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
 
       <span style="float:right;">

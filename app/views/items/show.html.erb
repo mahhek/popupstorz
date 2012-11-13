@@ -109,11 +109,11 @@
 
   <div class="shadowCont">
     <div class="fltL">
-      <h1 class="charming" style="margin-bottom: 0;"><%= @item.title %>!</h1>
-      <p class="charming_text" style="font-family: XXII;"><%= @item.address %>(<%= @item.zipcode %> - <%= @item.city %>, <%= @item.country_code   %>)</p>
+      <h1 class="charming" style="margin-bottom: 0; font-family: proxima-bold; color:#333333; font-size:1.7em;"><%= @item.title %>!</h1>
+      <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;"><%= @item.address %>(<%= @item.zipcode %> - <%= @item.city %>, <%= @item.country_code   %>)</p>
     </div>
     <div class="fltR">
-      <h1 class="charming graytext">
+      <h1 class="charming graytext" style="font-family: proxima-bold; color: #999999; font-size:30px;">
         <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h1>
       <p class="charming_text graytext"><%=  @item.time_for_unit_price %></p>
     </div>
@@ -152,23 +152,23 @@
 
 
     <div class="fltR w200 mt100" style="width: 195px;margin-top: 10px;">
-      <p style="margin-top: 10px;"><%= t(:size) %> <%= @item.size %> <%= @item.size_unit %></p>
-      <p><%= t(:type) %> <%= @item.listing_type.name %></p>
+      <p style="margin-top: 10px; font-family: proxima-bold; color: #333333;"><%= t(:size) %> <%= @item.size %> <%= @item.size_unit %></p>
+      <p style=" font-family: proxima-bold; color: #333333;"><%= t(:type) %> <%= @item.listing_type.name %></p>
       <div class="clear"></div>
 
-      <p style="margin-top: 250px;">
+      <p style="margin-top: 250px; font-family: proxima-semibold; color: #333333">
         <% if (@item.is_shareable == true) then %>
           <%= t(:gathering_available) %> up to <%= @item.maximum_members %> people
         <%else%>
   <%#= t(:no) %>
         <%end%>  </p>
-      <a class="send">Create Gathering</a>
+      <a class="send" style="font-family: proxima-bold; color: #cc33cc;">Create Gathering</a>
       <div class="clear"></div>
     </div>
     <div class="clear"></div>
 
     <div style="float:left;width:100%;margin: 10px 0;">
-      <h2><%= t(:availabilities) %></h2>
+      <h2 style="font-family:proxima-bold; color: #333333;"><%= t(:availabilities) %></h2>
       <div style="width:100%;padding-top: 10px;">
         <% if !@item.availablities_daytime.blank? and @item.availablities_daytime == true %>
           <img src="" alt="" ><span class="avail_item"><%= t(:daytime) %></span>
@@ -203,11 +203,11 @@
 
       <div class="line"></div>
 
-      <p class="" style="font-size: 1.1em;text-align: justify;"><%= @item.description %></p>
+      <p class="" style="font-size: 1.1em;text-align: justify; color: #333333;"><%= @item.description %></p>
 
       <div class="line"></div>
 
-      <h2><%= t(:what_other_people) %></h2>
+      <h2 style="font-size: 1.4em; color:#000000;"><%= t(:what_other_people) %></h2>
       <div class="">
         <%unless @item.comments.blank? %>
           <%@item.comments.each do|f|%>
@@ -220,8 +220,8 @@
                 <% end %>
               </div>  
               <b><%= f.title  %></b><br/>
-              <%= f.comment %><br/>
-              <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+              <p style="color:#333333;"><%= f.comment %></p><br/>
+              <i style="color:#000000"><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
             </div>
           <%end%>
         <%end%>
@@ -242,8 +242,8 @@
 
     <div class="fltR w107">
       <img src="../assets/rating.png" alt="" />
-      <h2 ><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %></h2>
-      <p style="font-family: XXII;"><%= @item.user.country %></p>
+      <h2 style="font-family: proxima-semibold; color: #333333"><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %></h2>
+      <p class="XXII" style="font-family: XXII;"><%= @item.user.country %></p>
 
 <%# if (current_user != @item.user) %>
       <%= link_to_function "Send Message", "$('#contact_me_div').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
