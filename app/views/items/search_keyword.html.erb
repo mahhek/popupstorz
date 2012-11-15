@@ -1,15 +1,99 @@
-<style type="text/css">
-  .ui-datepicker-today 
-  {
-    background: #83C948
-  }
-</style>
-<%= javascript_include_tag "items" %>
-<style type="text/css">
-  #demo-frame > div.demo { padding: 10px !important; };
-</style><br/><%= javascript_include_tag "items.js" %>
 <%= render :partial => "/searches/search_header" %>
+<div class="clear"></div>
 
+<div class="rightcontent shadowCont" style="padding: 5px 20px 20px;">
+  <h2 style="font-size: 1.4em; font-weight: normal; font-family: proxima-semibold;"><%= t(:refine_search) %></h2>
+  <%= form_tag "/search_spaces", {:remote => true, :method => :get } do %>
+    <%= hidden_field_tag "min_price", "" %>
+    <%= hidden_field_tag "max_price", "" %>
+    <%= hidden_field_tag "min_size", "" %>
+    <%= hidden_field_tag "max_size", "" %>
+    <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '', :id => "searched_location" %>
+    <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '', :id => "searched_from" %>
+    <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '', :id => "searched_to" %>
+    <%= hidden_field_tag "sizes", !params[:sizes].blank? ? params[:sizes] : '' %>
+
+    <div class="pannelright">
+      <img class="closepannel" src="../assets/-.png" />
+
+      <label class="heading_right" for="amount"><%= t(:price_range) %></label>
+      <input type="text" id="amount" style="border: 0 none !important; border-radius: 0 0 0 0; box-shadow: none; color: #666666; font-family: Proxima; font-size: 1em; font-weight: normal; text-align: center; width: 170px;" />
+      <div class="twocol">		   
+        <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
+      </div>
+      <div style="float: right; font-size: 0.8em;">max</div><div style="float: left; font-size: 0.8em;">min</div>
+    </div>
+
+    <div class="pannelright">
+      <img class="closepannel" src="../assets/-.png" />
+
+      <label class="heading_right" for="size"><%= t(:sizes) %><small><%= t(:sqmt) %></small>:</label>
+      <input type="text" id="size" style="border: 0 none !important; border-radius: 0 0 0 0; box-shadow: none; color: #666666; font-family: Proxima; font-size: 1em; font-weight: normal; text-align: center; width: 170px;" />
+      <div class="twocol">
+        <div id="sizes-slider-range" style="width: 90%;margin-left: 8px;"></div>
+      </div>
+      <div style="float: right; font-size: 0.8em;">max</div><div style="float: left; font-size: 0.8em;">min</div>
+    </div>
+
+    <div class="pannelright">
+      <img class="closepannel" src="../assets/-.png" />
+
+      <div class="heading_right"><%= t(:types) %></div>
+      <div class="twocol">
+        <% @types.each do |type| %>
+          <%= check_box_tag 'types[]', type.id, params["types"].blank? ? false : params["types"].include?(type.id.to_s), :onclick => "$(this.form).trigger('submit.rails')" %>
+          <span style="float: none;"><%= type.name.capitalize %></span><br />
+        <% end %>
+      </div>
+    </div>
+
+    <div class="pannelright">
+      <img class="closepannel" src="../assets/-.png" />
+
+      <div class="heading_right"><%= t(:shareable) %></div>
+      <div class="twocol">
+        <%= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
+      </div>
+    </div>
+
+  <% end %>
+</div>
+
+
+<div class="leftcontent">
+  <%= form_tag "/items/search_keyword", :method => :get, :id => "search_form"  do %>
+
+    <div class="refinesearchresults shadowCont">
+      <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family: proxima-semibold;">Spaces search</h2>
+      <div>
+        <div style="width:40%;float:left;">
+          <%= select_tag( "location", options_from_collection_for_select(@items_with_uniq_cities, :city, :city, params[:location]), :prompt => "World Wide", :class => "paris") %>
+        </div>
+        <span><%= t(:from2) %></span>
+        <%= text_field_tag :search_from, params[:search_from], :id => "search_from1", "hint" => "mm/dd/yyyy" %>
+        <span><%= t(:to) %></span>
+        <%= text_field_tag :search_to, params[:search_to], :id => "search_to2", "hint" => "mm/dd/yyyy" %>
+        <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
+      </div>
+    </div>
+    <div class="sortby">
+      <span style="font-family:proxima-semibold;"><%= t(:sort_by) %></span>
+      <%= select_tag "sort_option", options_for_select([["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#search_form').submit();" %>      
+    </div>
+
+  <%end%>
+
+  <div class="resultsholderlist shadowCont">
+    <% unless @items.blank? %>
+      <div id="searched-items-div">
+        <%= render :partial => "items", :locals => {:items => @items} %>
+      </div>
+    <% else %>
+      <%= t(:other_search) %>
+    <% end %>
+
+  </div>
+</div>
 
 <script type="text/javascript">
   
@@ -61,96 +145,9 @@
   });
   
 </script>
-
-
-<%= stylesheet_link_tag "search-list"%>
-
-<div class="rightcontent">
-
-  <h2><%= t(:refine_search) %></h2>
-
-  <div class="pannelright">
-    <p>
-      <label for="amount"><%= t(:price_range) %></label>
-      <input type="text" id="amount" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
-    <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
-
-    <%= form_tag "/items/search_keyword", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
-      <%= hidden_field_tag "min_price", "" %>
-      <%= hidden_field_tag "max_price", "" %>
-      <%= hidden_field_tag "min_size", "" %>
-      <%= hidden_field_tag "max_size", "" %>
-      <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '' %>
-      <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '' %>
-      <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '' %>
-      <%= hidden_field_tag "sizes", !params[:sizes].blank? ? params[:sizes] : '' %>
-  <%#= hidden_field_tag "types", !params[:types].blank? ? params[:types] : '' %>
-  <%#= hidden_field_tag "shareable", !params[:shareable].blank? ? params[:shareable] : '' %>
-
-      <div class="pannelright">
-        <img class="closepannel" src="../assets/-.png" />
-        <div class="heading_right"><%= t(:shareable) %></div>
-        <div class="twocol">
-          <%= check_box_tag t(:searchable) , params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "this.form.submit()" %>
-        </div>
-      </div>
-
-      <div class="pannelright">
-        <img class="closepannel" src="../assets/-.png" />
-
-        <label for="size"><%= t(:sizes) %><small><%= t(:sqmt) %></small>:</label>
-        <input type="text" id="size" style="border:0px !important; color:#f6931f; font-weight:bold;width: 170px;border-radius:0px;box-shadow:none;text-align: center;" />
-
-        <div class="twocol">
-          <div id="sizes-slider-range" style="width: 90%;margin-left: 8px;"></div>
-  <%#= select_tag( "sizes", options_from_collection_for_select( @sizes, :size, :size, params[:sizes]? params[:sizes] : ''), :prompt => "Select Sizes", :onchange => "this.form.submit()") %>
-        </div>
-      </div>
-
-      <div class="pannelright">
-        <img class="closepannel" src="../assets/-.png" />
-        <div class="heading_right"><%= t(:types) %></div>
-        <div class="twocol">
-          <% @types.each do |type| %>            
-            <%= check_box_tag 'types[]', type.id, params["types"].blank? ? false : params["types"].include?(type.id.to_s), :onclick => "this.form.submit()" %>
-            <b><%= type.name.capitalize %></b><br />
-          <% end %>
-  <%#= select_tag( "types", options_from_collection_for_select( @types, :id, :name, params[:types]? params[:types] : ''), :prompt => "Select Types", :onchange => "this.form.submit()") %>
-        </div>
-      </div>
-
-    <% end %>
-    </p>
-  </div>
-
-</div>
-<div class="leftcontent">
-  <%= form_tag "/items/search_keyword", :method => :get, :id => "search_form"  do %>
-
-    <div class="refinesearchresults">
-      <%= select_tag( "location", options_from_collection_for_select(@items_with_uniq_cities, :city, :city, params[:location]), :prompt => "Select City", :class => "search_dd") %>
-      <span><%= t(:from2) %></span>
-      <%= text_field_tag :search_from, params[:search_from], :id => "search_from1" %>
-      <span><%= t(:to) %></span>
-      <%= text_field_tag :search_to, params[:search_to], :id => "search_to2" %>
-      <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
-    </div>
-
-    <div class="sortby">
-      <%= select_tag "sort_option", options_for_select([["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#search_form').submit();" %>
-      <span><%= t(:sort) %></span>
-    </div>
-
-  <%end%>
-
-  <div class="resultsholderlist">
-    <% unless @items.blank? %>
-      <div id="searched-items-div">
-        <%= render :partial => "items", :locals => {:items => @items} %>
-      </div>
-    <% else %>
-      <%= t(:other_search) %>
-    <% end %>
-
-  </div>
-</div>
+<style type="text/css">
+  .ui-datepicker-today 
+  {
+    background: #83C948
+  }
+</style>
