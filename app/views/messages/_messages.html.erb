@@ -10,7 +10,7 @@
           <%= link_to "Delete",  "#",:class => "action",  :onclick => "checkListOfCheckBox('move_to_trash'); return false;" %>
         <% end %>
       <%end%>
-      <%= will_paginate(@messages, :params => params, :renderer => PaginationListLinkRenderer) %>
+      <%#= will_paginate(@messages, :params => params, :renderer => PaginationListLinkRenderer) %>
       <%#*TODO Paginate !!%>
     </div>
     
