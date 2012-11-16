@@ -65,9 +65,9 @@
             </a>
 
             <!-- messages-bloc-row -->
-            <% if current_user.id != member.id %>
+            <% if current_user.id != offer.item.id %>
               <div id="store-btn">
-                <%= link_to_function "Send Message", "$('#contact_me_div_#{member.id}_#{count}').toggle('slow');", :class => "send"  %>
+                <%= link_to_function "Send Message", "$('#contact_me_div_#{offer.item.id}_#{count}').toggle('slow');", :class => "send"  %>
               </div>
             <% end %>
 
