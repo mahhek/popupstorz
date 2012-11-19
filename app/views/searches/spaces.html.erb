@@ -78,7 +78,7 @@
     </div>
     <div class="sortby">
       <span style="font-family:proxima-semibold;"><%= t(:sort_by) %></span>
-      <%= select_tag "sort_option", options_for_select([["Newest" ,"1"],["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
+      <%= select_tag "sort_option", options_for_select([[t("newest_sort") ,"1"],[t("price_high_to_low") ,"2"],[t("price_low_to_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
 
       <span style="float:right;">
         <%= will_paginate(@items, :params => params, :renderer => PaginationListLinkRenderer) %>

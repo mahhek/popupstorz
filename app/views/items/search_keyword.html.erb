@@ -1,9 +1,69 @@
+<%= javascript_include_tag "gatherings.js" %>
+<script type="text/javascript">
+  
+  $(function() {
+    
+    $('#search_from1').datepicker(   
+    {
+      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
+      onSelect: function() {        
+        $('#search_to2').datepicker('option', {minDate: $(this).datepicker('getDate')});
+      }});
+    $('#search_to2').datepicker({
+      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
+      onSelect: function() {
+        $('#search_from1').datepicker('option', {maxDate: $(this).datepicker('getDate')});
+      }});
+
+    
+    $("#amount-slider-range" ).slider({
+      range: true,
+      min: <%= @min_price %>,
+      max: <%= @max_price %>,
+      values: [ <%= @min_price %>, <%= @max_price %> ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      },
+      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
+        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));$('#search_spaces').submit();}
+    });
+    $("#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
+  });
+  
+  
+  $(function() {
+    $("#sizes-slider-range" ).slider({
+      range: true,
+      min: <%= @sizes.blank? ? 0 : @sizes.first.size %>,
+      max: <%= @sizes.blank? ? 0 : @sizes.last.size %>,
+      values: [ <%= @sizes.first.size %>, <%= @sizes.last.size %> ],
+      slide: function( event, ui ) {
+        $("#size" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+      },
+      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
+        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));$('#search_spaces').submit();}
+    });
+    $("#size" ).val( $( "#sizes-slider-range" ).slider( "values", 0 ) +
+      " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
+  });
+  
+</script>
+<style type="text/css">
+  .ui-datepicker-today 
+  {
+    background: #83C948
+  }
+</style>
+
 <%= render :partial => "/searches/search_header" %>
 <div class="clear"></div>
 
 <div class="rightcontent shadowCont" style="padding: 5px 20px 20px;">
-  <h2 style="font-size: 1.4em; font-weight: normal; font-family: proxima-semibold;"><%= t(:refine_search) %></h2>
-  <%= form_tag "/search_spaces", {:remote => true, :method => :get } do %>
+  <h2 style="font-size: 1.4em; font-weight: normal; font-family: proxima-semibold;">
+    <%= t(:refine_search) %>
+  </h2>
+  <%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "search_spaces" } do %>
     <%= hidden_field_tag "min_price", "" %>
     <%= hidden_field_tag "max_price", "" %>
     <%= hidden_field_tag "min_size", "" %>
@@ -41,7 +101,7 @@
       <div class="heading_right"><%= t(:types) %></div>
       <div class="twocol">
         <% @types.each do |type| %>
-          <%= check_box_tag 'types[]', type.id, params["types"].blank? ? false : params["types"].include?(type.id.to_s), :onclick => "$(this.form).trigger('submit.rails')" %>
+          <%= check_box_tag 'types[]', type.id, params["types"].blank? ? false : params["types"].include?(type.id.to_s), :onclick => "$('#search_spaces_submit').trigger('click')" %>
           <span style="float: none;"><%= type.name.capitalize %></span><br />
         <% end %>
       </div>
@@ -52,10 +112,10 @@
 
       <div class="heading_right"><%= t(:shareable) %></div>
       <div class="twocol">
-        <%= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
+        <%= check_box_tag "shareable",params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
       </div>
     </div>
-
+    <%= submit_tag "Submit", :hidden => true, :id => "search_spaces_submit" %>
   <% end %>
 </div>
 
@@ -94,60 +154,3 @@
 
   </div>
 </div>
-
-<script type="text/javascript">
-  
-  $(function() {
-    
-    $('#search_from1').datepicker(   
-    {
-      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
-      onSelect: function() {        
-        $('#search_to2').datepicker('option', {minDate: $(this).datepicker('getDate')});
-      }});
-    $('#search_to2').datepicker({
-      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
-      onSelect: function() {
-        $('#search_from1').datepicker('option', {maxDate: $(this).datepicker('getDate')});
-      }});
-
-    
-    $( "#amount-slider-range" ).slider({
-      range: true,
-      min: <%= @min_price %>,
-      max: <%= @max_price %>,
-      values: [ <%= @min_price %>, <%= @max_price %> ],
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-      },
-      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
-        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));$('#price_range_form').submit();}
-    });
-    $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
-      " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
-  });
-  
-  
-  $(function() {
-    $( "#sizes-slider-range" ).slider({
-      range: true,
-      min: <%= @sizes.blank? ? 0 : @sizes.first.size %>,
-      max: <%= @sizes.blank? ? 0 : @sizes.last.size %>,
-      values: [ <%= @sizes.first.size %>, <%= @sizes.last.size %> ],
-      slide: function( event, ui ) {
-        $( "#size" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-      },
-      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
-        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));$('#price_range_form').submit();}
-    });
-    $( "#size" ).val( $( "#sizes-slider-range" ).slider( "values", 0 ) +
-      " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
-  });
-  
-</script>
-<style type="text/css">
-  .ui-datepicker-today 
-  {
-    background: #83C948
-  }
-</style>

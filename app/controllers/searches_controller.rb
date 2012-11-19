@@ -145,7 +145,6 @@ class SearchesController < ApplicationController
   def search_spaces
     session[:start_date] = nil
     session[:end_date] = nil
-  
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @shareable = Item.select("distinct(is_shareable)")    
@@ -239,7 +238,7 @@ class SearchesController < ApplicationController
  
     items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
     @items = items - booked_items    
-# Items whose owners are active users
+    # Items whose owners are active users
     active_items = []  
     @items.each do|item|
       if item.user.is_active == true && item.is_active == true
@@ -261,12 +260,17 @@ class SearchesController < ApplicationController
     session[:end_date] = params[:search_to]
     @vals = params
     @items = @items.paginate(:page => params[:page], :per_page => 6 )
-
+    
+    
     respond_to do |format|
       format.html
       format.js do
         foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
-        render :js => "$('#searched-items').html(#{foo});$.setAjaxPagination();update_form_values('#{params.to_json}');"
+        unless @items.blank?          
+          render :js => "$('#searched-items-div').html(#{foo});$.setAjaxPagination();update_form_values('#{params.to_json}');"
+        else
+          render :js => "$('#searched-items-div').html('#{t(:other_search)}');"
+        end
       end
     end    
   end

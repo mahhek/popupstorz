@@ -2,46 +2,46 @@
 <div class="clear"></div>
 
 <div class="rightcontent shadowCont" style="padding: 5px 20px 20px;">
-  	<h2 style="font-size: 1.4em; font-weight: normal; font-family:proxima-semibold;"><%= t(:refine_search) %></h2>
-	<%= form_tag "/searches/search_members", {:remote => true, :id => "price_range_form", :pars => params } do %>
-		<%= hidden_field_tag "location",  '', :id => "searched_member_location" %>
-      <%= hidden_field_tag "user", '', :id => "searched_member_name" %>
-		      
-      <div class="pannelright">
-        <img class="closepannel" src="../assets/-.png" />
-        
-        <div class="heading_right"><%= t(:active3)%></div>
-        <div class="twocol">
-          <% @users_with_uniq_activites.each do |type| %>
-            <%= check_box_tag 'types[]', type.activity, params["types"].blank? ? false : params["types"].include?(type.activity.to_s), :onclick => "$('#search_submit').trigger('click')" %>
-            <%= type.activity.capitalize %><br />
-          <% end %>
-        </div>
-        <%= submit_tag "Subnmit", :hidden => true, :id => "search_submit" %>
+  <h2 style="font-size: 1.4em; font-weight: normal; font-family:proxima-semibold;"><%= t(:refine_search) %></h2>
+  <%= form_tag "/searches/search_members", {:remote => true, :id => "price_range_form", :pars => params } do %>
+    <%= hidden_field_tag "location",  '', :id => "searched_member_location" %>
+    <%= hidden_field_tag "user", '', :id => "searched_member_name" %>
+
+    <div class="pannelright">
+      <img class="closepannel" src="../assets/-.png" />
+
+      <div class="heading_right"><%= t(:active3)%></div>
+      <div class="twocol">
+        <% @users_with_uniq_activites.each do |type| %>
+          <%= check_box_tag 'types[]', type.activity, params["types"].blank? ? false : params["types"].include?(type.activity.to_s), :onclick => "$('#search_submit').trigger('click')" %>
+          <%= type.activity.capitalize %><br />
+        <% end %>
       </div>
-      
-    <% end %>
+      <%= submit_tag "Submit", :hidden => true, :id => "search_submit" %>
+    </div>
+
+  <% end %>
 </div>
 
 <div class="leftcontent">
-	<%= form_for :search, :url => search_members_searches_path, :remote => true do|f|%>
-	 <div class="refinesearchresults shadowCont">
-	 	<h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family:proxima-semibold;"><%= t(:mem_search)%></h2>
-	 	<div>
-		   <div style="width:92%;float:left;">
-		   	<%= text_field_tag "user", "",:style=>["width:320px"], :hint => "Enter member name or email" %>
-		   	<span>Change City</span>
-		     	<%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
-		   </div>
-		   
-		   <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
-	   </div>
-	 </div>
-	 <div class="sortby">
-	  					
-			<span style="float:right;"><%#= will_paginate(items, :params => params, :renderer => PaginationListLinkRenderer) %>TODO Paginate</span>  
-	 </div>
-	<% end %>
+  <%= form_for :search, :url => search_members_searches_path, :remote => true do|f|%>
+    <div class="refinesearchresults shadowCont">
+      <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family:proxima-semibold;"><%= t(:mem_search)%></h2>
+      <div>
+        <div style="width:92%;float:left;">
+          <%= text_field_tag "user", "",:style=>["width:320px"], :hint => "Enter member name or email" %>
+          <span>Change City</span>
+          <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
+        </div>
+
+        <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
+      </div>
+    </div>
+    <div class="sortby">
+      <span style="float:right;">
+      <%#= will_paginate(items, :params => params, :renderer => PaginationListLinkRenderer) %>TODO Paginate</span>  
+    </div>
+  <% end %>
   <div class="resultsholderlist shadowCont">
     <div id="searched-members" class="listx-bg">
       <% unless @members.blank? %>

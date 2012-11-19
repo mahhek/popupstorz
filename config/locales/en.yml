@@ -11,6 +11,10 @@ en:
    change_all_commission_rates: "Change commision rate of all items"
    newest: "Newest to Oldest"
    oldest: "Oldest to Newest"   
+   newest_sort: "Newest"
+   price_high_to_low: Price from High to Low
+   price_low_to_high: Price from Low to High
+   
    gender_search: "Gender"
    fb_connected: "FB Connected"
    all_bookings: "Bookings"
