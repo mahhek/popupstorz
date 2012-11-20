@@ -2,7 +2,9 @@
 <div class="clear"></div>
 
 <div class="rightcontent shadowCont" style="padding: 5px 20px 20px;">
-  <h2 style="font-size: 1.4em; font-weight: normal; font-family: proxima-semibold;"><%= t(:refine_search) %></h2>
+  <h2 style="font-size: 1.4em; font-weight: normal; font-family: proxima-semibold;">
+    <%= t(:refine_search) %>
+  </h2>
   <%= form_tag "/search_spaces", {:remote => true, :method => :get } do %>
     <%= hidden_field_tag "min_price", "" %>
     <%= hidden_field_tag "max_price", "" %>
@@ -52,10 +54,12 @@
 
       <div class="heading_right"><%= t(:shareable) %></div>
       <div class="twocol">
-        <%= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
+        <%= radio_button_tag "spaces","shareable", true,:name => "shareable",:checked => params[:shareable]? true : false,  :value => true ,:class => "radio", :onclick => "$(this.form).trigger('submit.rails')" %>Yes
+        <%= radio_button_tag "spaces","shareable", false,:name => "shareable",:class => "radio", :value => false,:onclick => "$(this.form).trigger('submit.rails')" %>No
+  <%#= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
       </div>
     </div>
-
+    <%= submit_tag "Submit",:hidden => true, :id => "search_spaces_submit" %>
   <% end %>
 </div>
 
@@ -64,7 +68,7 @@
     <div class="refinesearchresults shadowCont">
       <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family: proxima-semibold;">Spaces search</h2>
       <div>
-        <div style="width:40%;float:left;">
+        <div style="width:35%;float:left;">
           <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
         </div>
 
@@ -145,4 +149,9 @@
     $( "#size" ).val( "" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
       " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
   });
+  
+  function abc(){
+    alert("aaa");
+  }
+  
 </script>

@@ -14,6 +14,7 @@ en:
    newest_sort: "Newest"
    price_high_to_low: Price from High to Low
    price_low_to_high: Price from Low to High
+     
    
    gender_search: "Gender"
    fb_connected: "FB Connected"
@@ -687,3 +688,5 @@ en:
    EUR: "EUR"
    USD: "USD"
    place_cancellation_policy: "The cancellation policy for this place is"
+   
+   create_pop_union: Create pop'union

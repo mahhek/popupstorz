@@ -219,8 +219,11 @@ class SearchesController < ApplicationController
       end
       item_conds += " AND (#{type_arr})"
     end
-    unless params[:shareable].blank?
+    
+    if params[:shareable] == "true"
       item_conds += " AND (is_shareable = true)"
+    elsif params[:shareable] == "false"
+      item_conds += " AND (is_shareable = false)"
     end
     
     case params[:sort_option]
@@ -265,11 +268,11 @@ class SearchesController < ApplicationController
       format.html
       format.js do
         foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
-#        unless @items.blank?
-          render :js => "update_form_values('#{params.to_json}');$('#searched-items').html(#{foo});$.setAjaxPagination();"
-#        else
-#          render :js => "update_form_values('#{params.to_json}');$('#searched-items-div').html('#{t(:other_search)}');"
-#        end
+        #        unless @items.blank?
+        render :js => "update_form_values('#{params.to_json}');$('#searched-items').html(#{foo});$.setAjaxPagination();"
+        #        else
+        #          render :js => "update_form_values('#{params.to_json}');$('#searched-items-div').html('#{t(:other_search)}');"
+        #        end
       end
     end    
   end

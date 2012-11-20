@@ -29,39 +29,39 @@
     background: aquamarine !important;
     font-weight: bold !important;
   }
-  
+
   table {
-		border-collapse: collapse; 
-		width: 300px;  
+    border-collapse: collapse; 
+    width: 300px;  
   }
 
-	td{
-		border: 1px solid black; 
-		padding: 5px;	
-	}
-	
-	#tbl_availabilities td{
-		border: none;			
-	}
-	
-	.btn_booking{
-		background-color: purple;
-		color: white;
-	}
-	
-	textarea{
-		width: 75%;	
-		height: 200px;
-	}
-	
-	.selectedBookingProcess{
-		color: #009999;	
-	}
-	
-	.notSelectedBookingProcess{
-		color: #999999;	
-	}
-  
+  td{
+    border: 1px solid black; 
+    padding: 5px;	
+  }
+
+  #tbl_availabilities td{
+    border: none;			
+  }
+
+  .btn_booking{
+    background-color: purple;
+    color: white;
+  }
+
+  textarea{
+    width: 75%;	
+    height: 200px;
+  }
+
+  .selectedBookingProcess{
+    color: #009999;	
+  }
+
+  .notSelectedBookingProcess{
+    color: #999999;	
+  }
+
 </style>
 <script type='text/javascript'>//<![CDATA[
   $(window).load(function(){
@@ -138,20 +138,20 @@
       $("#offer_cancellation_date").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
       $("#offer_gathering_deadline").datepicker({minDate: new Date(), maxDate: new Date($("#offer_rental_start_date").val()) });
 
-		//manage the switch between step one and step two of booking
-		$("#btn_bookingContinue").bind('click', function() {
-  			$("#FirstStepBooking").hide();  			
-  			$("#SecondStepBooking").show(); 
+      //manage the switch between step one and step two of booking
+      $("#btn_bookingContinue").bind('click', function() {
+        $("#FirstStepBooking").hide();  			
+        $("#SecondStepBooking").show(); 
   			
-  			//change breadcrumb design
-  			$("#breadCrumb_firstStep").removeClass("selectedBookingProcess");
-  			$("#breadCrumb_firstStep").addClass("notSelectedBookingProcess");
-			$("#breadCrumb_secondStep").removeClass("notSelectedBookingProcess");  			
-  			$("#breadCrumb_secondStep").addClass("selectedBookingProcess");
+        //change breadcrumb design
+        $("#breadCrumb_firstStep").removeClass("selectedBookingProcess");
+        $("#breadCrumb_firstStep").addClass("notSelectedBookingProcess");
+        $("#breadCrumb_secondStep").removeClass("notSelectedBookingProcess");  			
+        $("#breadCrumb_secondStep").addClass("selectedBookingProcess");
   			
   			
-  			return false; 			
-		});
+        return false; 			
+      });
     });
 
 
@@ -165,7 +165,7 @@
 
 <div id="hd-result">
   <div class="container_12">
-  <div id="r-nav" class="grid_9"> <a href="/"><%= t(:home) %></a> &nbsp;&gt;&nbsp; <%= t(:make_booking) %></div>
+    <div id="r-nav" class="grid_9"> <a href="/"><%= t(:home) %></a> &nbsp;&gt;&nbsp; <%= t(:make_booking) %></div>
     <div class="grid_3"> &nbsp; </div>
     <div class="clear">&nbsp;</div>
   </div>
@@ -173,8 +173,8 @@
 <div id="booking-content">
   <!--<div class="container_12" style="border: 1px solid black; padding: 5px; border-radius: 5px 5px 5px 5px; box-shadow: 1px 1px 5px black;">-->
   <div class="container_12 shadowCont" >
-  <!--<div class="blockParts">Booking</div> <!-- TODO translate -->
-  <h1 >Booking</h1> <!-- TODO translate -->
+    <!--<div class="blockParts">Booking</div> <!-- TODO translate -->
+    <h1 >Booking</h1> <!-- TODO translate -->
     <%= form_for [@item, @offer], :html => {:name => "offer_form", :onsubmit => "return checkPrefferedAddress();"} do|f| %>
       <div style="padding: 20px;float: left;">
         <% if @offer.errors.any? %>
@@ -188,23 +188,23 @@
           </div>
         <% end %>
       </div>
-      
-		<div style="width: 490px; margin-left: auto; margin-right: auto; padding-bottom: 2em;"> 
-      	<div id="breadCrumb_firstStep" class="selectedBookingProcess" style="border: 1px solid; padding: 0px 3px; text-align: center; float: left; width: 10px;">1
-      		<span style="margin-top: 20px; font-family: proxima-semibold; position: absolute; margin-left: -48px;" id="info_firstStep"><%= t(:make_booking) %></span>
-			</div>
-			<div style="margin-left:18px; width:455px; padding-top:8px;"><hr/></div>		 			
-      	<div id="breadCrumb_secondStep" class="notSelectedBookingProcess" style="border: 1px solid; padding: 0px 3px; text-align: center; float: right; width: 10px; margin-top: -10px;">2
-         	<span style="margin-top: 20px; font-family: proxima-semibold; position: absolute; margin-left: -69px;" id="info_secondStep"><%= t(:confirm_contact) %></span>
-         </div>
+
+      <div style="width: 490px; margin-left: auto; margin-right: auto; padding-bottom: 2em;"> 
+        <div id="breadCrumb_firstStep" class="selectedBookingProcess" style="border: 1px solid; padding: 0px 3px; text-align: center; float: left; width: 10px;">1
+          <span style="margin-top: 20px; font-family: proxima-semibold; position: absolute; margin-left: -48px;" id="info_firstStep"><%= t(:make_booking) %></span>
+        </div>
+        <div style="margin-left:18px; width:455px; padding-top:8px;"><hr/></div>		 			
+        <div id="breadCrumb_secondStep" class="notSelectedBookingProcess" style="border: 1px solid; padding: 0px 3px; text-align: center; float: right; width: 10px; margin-top: -10px;">2
+          <span style="margin-top: 20px; font-family: proxima-semibold; position: absolute; margin-left: -69px;" id="info_secondStep"><%= t(:confirm_contact) %></span>
+        </div>
       </div>
-     		
-     		
-     		
-     		<!--
-      	<span id="info_firstStep" style="float: left; font-family: proxima-bold;"><%= t(:make_booking) %></span>
-      	<span id="info_secondStep" style="float: right;"><%= t(:confirm_contact) %></span>
-      </div>   -->   
+
+
+
+      <!--
+  <span id="info_firstStep" style="float: left; font-family: proxima-bold;"><%= t(:make_booking) %></span>
+  <span id="info_secondStep" style="float: right;"><%= t(:confirm_contact) %></span>
+  </div>   -->   
       <div class="grid_12">
 
         <br class="clear" />
@@ -212,8 +212,8 @@
         <div class="clear">&nbsp;</div>
 
         <div id="details-panel" style="padding: 5px;">
-        	<span class="blockParts2">LOCATION</span> <!-- TODO translate -->
-        	<div class="clear">&nbsp;</div>
+          <span class="blockParts2">LOCATION</span> <!-- TODO translate -->
+          <div class="clear">&nbsp;</div>
           <% if @item.avatars.size > 0 %>
             <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" ) %>
           <% else %>
@@ -227,257 +227,257 @@
           <span style="font-family: XXII;"><%= @item.address %></span>
           <!-- <%= t(:offer_owner) %><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %><br/><br/> -->          
         </div>
-        
+
       </div>
       <div class="clear">&nbsp;</div>
 
 
-	<div id="FirstStepBooking">
-		<div id="bookingType" style="padding: 5px;">
-			<span class ="blockParts2">BOOKING TYPE</span> <!-- TODO translate -->
-			<div class="clear">&nbsp;</div>			
-			<div id="bookingOptions" style="margin-left: auto; margin-right: auto; width: 50%;">
-      	<% if @item.is_shareable %>
-          		<div style="float: left;"><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> <span style="border: 1px solid; background-color:cyan; font-size: 1.4em; padding: 5px;"><%= t(:stand_booking) %></span></div>
-          		<div style="float: right;"><%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> <span style="border: 1px solid; background-color:cyan; font-size: 1.4em; padding: 5px;"><%= t(:create_gathering) %></span></div>
-      	<% else %>
-         	<div style="float: left;"><%= radio_button_tag 'plan', 'standard_booking', true %> <span style="border: 1px solid; background-color:cyan;"><%= t(:stand_booking) %></span></div>
-      	<% end %>
-      	</div>
-      </div>
-		<div class="clear">&nbsp;</div>      
-      
-		<div id="AnsweringDate" style="padding: 5px;">
-			<span class ="blockParts2">ANSWERING DATE</span> <!-- TODO translate -->
-			<div class="clear">&nbsp;</div>			
-			<div id="response_div">
-          <label style="line-height:18px;"><%= t(:owner_reply) %></label>
-          <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%> 
+      <div id="FirstStepBooking">
+        <div id="bookingType" style="padding: 5px;">
+          <span class ="blockParts2">BOOKING TYPE</span> <!-- TODO translate -->
+          <div class="clear">&nbsp;</div>			
+          <div id="bookingOptions" style="margin-left: auto; margin-right: auto; width: 50%;">
+            <% if @item.is_shareable %>
+              <div style="float: left;"><%= radio_button_tag 'plan', 'standard_booking', true, :onclick => "hide_gathering()" %> <span style="border: 1px solid; background-color:cyan; font-size: 1.4em; padding: 5px;"><%= t(:stand_booking) %></span></div>
+              <div style="float: right;"><%= radio_button_tag 'plan', 'gathering', false,:onclick => "show_gathering()" %> <span style="border: 1px solid; background-color:cyan; font-size: 1.4em; padding: 5px;"><%= t(:create_gathering) %></span></div>
+            <% else %>
+              <div style="float: left;"><%= radio_button_tag 'plan', 'standard_booking', true %> <span style="border: 1px solid; background-color:cyan;"><%= t(:stand_booking) %></span></div>
+            <% end %>
+          </div>
         </div>
-		</div>
-		
-		<div id="MessageToOwner" style="padding: 5px;">
-			<span class ="blockParts2">MESSAGE TO THE OWNER</span> <!-- TODO translate -->
-			<div class="clear">&nbsp;</div>
-			<label style="line-height:18px; float:left;"><strong> <%= @item.user.popup_storz_display_name%> </strong></label>
-			<br/>	<br/>			
-			<!-- TODO show the picture of the owner -->
-			<% if @item.avatars.size > 0 %>
+        <div class="clear">&nbsp;</div>      
+
+        <div id="AnsweringDate" style="padding: 5px;">
+          <span class ="blockParts2">ANSWERING DATE</span> <!-- TODO translate -->
+          <div class="clear">&nbsp;</div>			
+          <div id="response_div">
+            <label style="line-height:18px;"><%= t(:owner_reply) %></label>
+            <%= f.text_field :cancellation_date, :class => "datex", :value => "mm/dd/yy"%> 
+          </div>
+        </div>
+
+        <div id="MessageToOwner" style="padding: 5px;">
+          <span class ="blockParts2">MESSAGE TO THE OWNER</span> <!-- TODO translate -->
+          <div class="clear">&nbsp;</div>
+          <label style="line-height:18px; float:left;"><strong> <%= @item.user.popup_storz_display_name%> </strong></label>
+          <br/>	<br/>			
+          <!-- TODO show the picture of the owner -->
+          <% if @item.avatars.size > 0 %>
             <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" ) %>
           <% else %>
             <%= @item.title %>
           <% end %>
-                      
-         <div style="width: 100%;">
-          <%= f.fields_for :offer_messages do |offer_message| %>
-            <% if offer_message.object.new_record? %>
-              <%= offer_message.text_area :message, :hint => "Ask questions, tell them a bit..." %> <!-- TODO translate hint -->
-              <%= offer_message.hidden_field :user_id, :value => current_user.id %>
-              <%= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
+
+          <div style="width: 100%;">
+            <%= f.fields_for :offer_messages do |offer_message| %>
+              <% if offer_message.object.new_record? %>
+                <%= offer_message.text_area :message, :hint => "Ask questions, tell them a bit..." %> <!-- TODO translate hint -->
+                <%= offer_message.hidden_field :user_id, :value => current_user.id %>
+                <%= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
+              <%end%>
             <%end%>
-            <%end%>
-         </div>
-         
-		</div>
-		
-		<div id="BookingDates" style="padding: 5px; float:left">
-			<span class ="blockParts2">DATES</span> <!-- TODO translate -->
-			<div class="clear">&nbsp;</div>	
-			
-			<table>
-				<tr>
-					<td ><%= "Start Date" %></td> <!-- TODO translate -->
-					<td ><%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %></td>				
-				</tr>
-				<tr>
-					<td ><%= "End Date" %></td> <!-- TODO translate -->
-					<td ><%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %></td>				
-				</tr>
-				<tr>
-					<td ><%= "Total days" %></td> <!-- TODO translate -->
-					<td ><%= "#{@number_of_days} days" %></td>				
-				</tr>
-			</table>		
-		</div>
-		
-		<div id="BookingAvailabilities" style="padding: 5px; float: right"> <!-- TODO put this div at the right of BookinDates -->
-			<span class ="blockParts2">AVAILABILITIES</span> <!-- TODO translate -->
-			<div class="clear">&nbsp;</div>	
-			
-			<table id="tbl_availabilities">
-				<tr>
-					<td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Daytime" %></span></td> <!-- TODO show icon check & translate -->
-					<td><span class="ui-icon ui-icon-closethick" style="display: inline-block;"></span><span ><%= "Evenings" %></span></td> <!-- TODO show icon check & translate -->		
-				</tr>	
-				<tr>
-					<td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Mondays" %></span></td> <!-- TODO show icon check & translate -->
-					<td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Tuesdays" %></span></td> <!-- TODO show icon check & translate -->
-					<td><span class="ui-icon ui-icon-closethick" style="display: inline-block;"></span><span ><%= "Wednesdays" %></span></td> <!-- TODO show icon check & translate -->
-					<td><span class="ui-icon ui-icon-closethick" style="display: inline-block;"></span><span ><%= "Thursdays" %></span></td> <!-- TODO show icon check & translate -->
-					<td><span class="ui-icon ui-icon-closethick" style="display: inline-block;"></span><span ><%= "Fridays" %></span></td> <!-- TODO show icon check & translate -->
-					<td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Saturdays" %></span></td> <!-- TODO show icon check & translate -->
-					<td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Sundays" %></span></td> <!-- TODO show icon check & translate -->				
-				</tr>		
-			</table>
-		</div>
-		
-		<div class="clear">&nbsp;</div>
-		
-		<div id="BookingGathering" style="padding: 5px; display: none"> <!-- TODO hide/show this div in case of gathering radio button is selected -->
-			<span class ="blockParts2">GATHERING</span> <!-- TODO translate -->
-			<div class="clear">&nbsp;</div>
-			
-			<div>
-				<span style="font-family: proxima-bold;"><%= "Number of persons in the gathering" %></span> <!-- TODO translate -->
-				<input type="text" value=""/>	<!-- TODO replace by ruby input -->
-				<span><small><%= "Maximum allowed by owner: " %> <%= "nb allowed " %> <%= "persons" %></small></span>	<!-- TODO translate & Show real number allowed persons -->	
-			</div>
-			<br/>
-			<div>
-				<span style="font-family: proxima-bold;"><%= "Application deadline" %></span> <!-- TODO translate -->
-				<input type="text" value="31/07/2012"/>	<!-- TODO replace by ruby calendar -->
-				<span><small><%= "If required number of persons is not reached ..." %></small></span>	<!-- TODO translate -->	
-			</div>
-		</div>		
-		<div id="BookingPrice" style="padding: 5px;">
-			<span class ="blockParts2">PRICE</span> <!-- TODO translate -->
-			<div class="clear">&nbsp;</div>
-		
-			<table>
-				<tr>
-					<td ><%= "Price per day" %></td> <!-- TODO translate -->
-					<td ><%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td>				
-				</tr>
-				<tr>
-					<td ><%= "Cleaning fee" %></td> <!-- TODO translate -->
-					<td ><%= "cleaning fee" %></td>	<!-- TODO show cleaning fee -->			
-				</tr>
-				<tr>
-					<td ><%= "Subtotal" %></td> <!-- TODO translate -->
-					<td ><%= "subtotal" %></td> <!-- TODO show the real subtotal -->				
-				</tr>
-				<tr>
-					<td ><%= "Service fee" %></td> <!-- TODO translate -->
-					<td ><%= "service fee" %></td> <!-- TODO show the real service fee -->				
-				</tr>
-				<tr id="tr_totalPrice" style="background-color: yellow; font-family: proxima-bold;">
-					<td ><%= "Total" %></td> <!-- TODO translate & change text to "Grand Total" if the gathering mode is selected -->
-					<td ><%= "total" %></td> <!-- TODO show the total -->				
-				</tr>
-				<tr id="tr_pricePerPerson" style="background-color: yellow; display: none">
-					<td ><%= "Price per person" %></td> <!-- TODO translate -->
-					<td ><%= "price per person" %></td> <!-- TODO show the price per person -->				
-				</tr>
-			</table>	
-			<br/>
-			<table >
-				<tr>
-					<td ><%= "Security deposit" %></td> <!-- TODO translate -->
-					<td ><%= "security deposit" %></td> <!-- TODO show the real security deposit -->				
-				</tr>
-			</table>
-		</div>
-		
-		<div id="BookingPolicies" style="padding: 5px;">
-			<span class ="blockParts2">POLICIES</span> <!-- TODO translate -->
-			<div class="clear">&nbsp;</div>
-		
-			<div style="padding: 5px;">
-				<span style="font-family: proxima-bold;"><%= "Cancellation" %></span><br/> <!-- TODO translate -->
-				<span style="font-family: proxima-bold;"><%= "Flexible: 100% refund 14 days..." %></span><br/> <!-- TODO translate -->
-				<span>link to cancelation policies </span>
+          </div>
 
-				<br/><br/>
-			
-				<span style="font-family: proxima-bold;"><%= "Owner rules" %></span> <!-- TODO translate -->
-				<div>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas id est in sapien tempus condimentum. Vivamus euismod pretium arcu, ac consectetur erat elementum vitae. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec sodales sodales vestibulum. Pellentesque et suscipit ante. Etiam elit tellus, rhoncus et pharetra non, elementum eu elit. Cras non congue sem. Nam semper vehicula eros, id viverra sem blandit sed. Cras nec nisi et nisl viverra interdum. Donec at enim lorem, vel rhoncus mi. Praesent at dictum enim.
+        </div>
 
-					Fusce porta leo eu justo rhoncus porttitor. Donec tempus egestas mi ac iaculis. Cras vitae aliquet ligula. Sed metus erat, luctus in ullamcorper a, laoreet ac felis. Sed accumsan tincidunt enim in auctor. Fusce et tortor id lorem accumsan tincidunt. Nulla est quam, sodales et accumsan eu, volutpat vel nibh. Integer condimentum pellentesque consectetur.
+        <div id="BookingDates" style="padding: 5px; float:left">
+          <span class ="blockParts2">DATES</span> <!-- TODO translate -->
+          <div class="clear">&nbsp;</div>	
 
-					Proin vel magna et neque elementum bibendum sit amet non neque. Integer nec sem eu nisl convallis fermentum malesuada id massa. Aliquam sem sem, porttitor mollis semper ac, sodales quis magna. Aenean quis arcu nunc, at lacinia ante. In dapibus, felis at tincidunt commodo, urna massa accumsan nunc, at ultricies magna lacus eget massa. Maecenas a eleifend nisi. Quisque sodales eros et purus dictum egestas. Aenean molestie faucibus orci, vel eleifend risus euismod in. Aenean eget ligula mi, sed sollicitudin erat. Nam ligula tortor, rutrum sit amet faucibus ac, laoreet eu sapien. Integer eleifend, urna semper ultrices bibendum, felis tellus volutpat diam, eu sodales justo ante eu elit. Pellentesque ac cursus orci.
+          <table>
+            <tr>
+              <td ><%= "Start Date" %></td> <!-- TODO translate -->
+              <td ><%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %></td>				
+            </tr>
+            <tr>
+              <td ><%= "End Date" %></td> <!-- TODO translate -->
+              <td ><%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %></td>				
+            </tr>
+            <tr>
+              <td ><%= "Total days" %></td> <!-- TODO translate -->
+              <td ><%= "#{@number_of_days} days" %></td>				
+            </tr>
+          </table>		
+        </div>
 
-					Nunc et erat id nunc egestas bibendum quis vel tellus. Integer adipiscing risus id odio egestas viverra. Donec non tempus est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec at velit odio, vulputate commodo neque. Integer ut mauris nisl. Etiam vitae varius quam. Phasellus porta ipsum eget justo consectetur non pellentesque urna pulvinar. Nunc congue, neque ut egestas interdum, nibh odio molestie mi, non facilisis elit tellus eget urna. Sed commodo mollis risus at consequat. Fusce tincidunt sodales orci. Cras pharetra sem id enim varius viverra. Nulla iaculis quam vitae lectus sagittis ultricies. Maecenas et nisl a quam ullamcorper consectetur eu nec ipsum. Vivamus vitae arcu quis massa dictum malesuada vitae sed lectus.
-				</div>
-			</div>
-		</div>
-		
-		<br/><br/>
-		<div class="clear">&nbsp;</div>
-		<div id="BookingContinue">
-            <button class="search" id="btn_bookingContinue"> <%= "Continue" %></button> <!-- TODO translate -->
+        <div id="BookingAvailabilities" style="padding: 5px; float: right"> <!-- TODO put this div at the right of BookinDates -->
+          <span class ="blockParts2">AVAILABILITIES</span> <!-- TODO translate -->
+          <div class="clear">&nbsp;</div>	
+
+          <table id="tbl_availabilities">
+            <tr>
+              <td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Daytime" %></span></td> <!-- TODO show icon check & translate -->
+              <td><span class="ui-icon ui-icon-closethick" style="display: inline-block;"></span><span ><%= "Evenings" %></span></td> <!-- TODO show icon check & translate -->		
+            </tr>	
+            <tr>
+              <td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Mondays" %></span></td> <!-- TODO show icon check & translate -->
+              <td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Tuesdays" %></span></td> <!-- TODO show icon check & translate -->
+              <td><span class="ui-icon ui-icon-closethick" style="display: inline-block;"></span><span ><%= "Wednesdays" %></span></td> <!-- TODO show icon check & translate -->
+              <td><span class="ui-icon ui-icon-closethick" style="display: inline-block;"></span><span ><%= "Thursdays" %></span></td> <!-- TODO show icon check & translate -->
+              <td><span class="ui-icon ui-icon-closethick" style="display: inline-block;"></span><span ><%= "Fridays" %></span></td> <!-- TODO show icon check & translate -->
+              <td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Saturdays" %></span></td> <!-- TODO show icon check & translate -->
+              <td><span class="ui-icon ui-icon-check" style="display: inline-block;"></span><span ><%= "Sundays" %></span></td> <!-- TODO show icon check & translate -->				
+            </tr>		
+          </table>
+        </div>
+
+        <div class="clear">&nbsp;</div>
+
+        <div id="BookingGathering" style="padding: 5px; display: none"> <!-- TODO hide/show this div in case of gathering radio button is selected -->
+          <span class ="blockParts2">GATHERING</span> <!-- TODO translate -->
+          <div class="clear">&nbsp;</div>
+
+          <div>
+            <span style="font-family: proxima-bold;"><%= "Number of persons in the gathering" %></span> <!-- TODO translate -->
+            <input type="text" value=""/>	<!-- TODO replace by ruby input -->
+            <span><small><%= "Maximum allowed by owner: " %> <%= "nb allowed " %> <%= "persons" %></small></span>	<!-- TODO translate & Show real number allowed persons -->	
+          </div>
+          <br/>
+          <div>
+            <span style="font-family: proxima-bold;"><%= "Application deadline" %></span> <!-- TODO translate -->
+            <input type="text" value="31/07/2012"/>	<!-- TODO replace by ruby calendar -->
+            <span><small><%= "If required number of persons is not reached ..." %></small></span>	<!-- TODO translate -->	
+          </div>
+        </div>		
+        <div id="BookingPrice" style="padding: 5px;">
+          <span class ="blockParts2">PRICE</span> <!-- TODO translate -->
+          <div class="clear">&nbsp;</div>
+
+          <table>
+            <tr>
+              <td ><%= "Price per day" %></td> <!-- TODO translate -->
+              <td ><%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td>				
+            </tr>
+            <tr>
+              <td ><%= "Cleaning fee" %></td> <!-- TODO translate -->
+              <td ><%= "cleaning fee" %></td>	<!-- TODO show cleaning fee -->			
+            </tr>
+            <tr>
+              <td ><%= "Subtotal" %></td> <!-- TODO translate -->
+              <td ><%= "subtotal" %></td> <!-- TODO show the real subtotal -->				
+            </tr>
+            <tr>
+              <td ><%= "Service fee" %></td> <!-- TODO translate -->
+              <td ><%= "service fee" %></td> <!-- TODO show the real service fee -->				
+            </tr>
+            <tr id="tr_totalPrice" style="background-color: yellow; font-family: proxima-bold;">
+              <td ><%= "Total" %></td> <!-- TODO translate & change text to "Grand Total" if the gathering mode is selected -->
+              <td ><%= "total" %></td> <!-- TODO show the total -->				
+            </tr>
+            <tr id="tr_pricePerPerson" style="background-color: yellow; display: none">
+              <td ><%= "Price per person" %></td> <!-- TODO translate -->
+              <td ><%= "price per person" %></td> <!-- TODO show the price per person -->				
+            </tr>
+          </table>	
+          <br/>
+          <table >
+            <tr>
+              <td ><%= "Security deposit" %></td> <!-- TODO translate -->
+              <td ><%= "security deposit" %></td> <!-- TODO show the real security deposit -->				
+            </tr>
+          </table>
+        </div>
+
+        <div id="BookingPolicies" style="padding: 5px;">
+          <span class ="blockParts2">POLICIES</span> <!-- TODO translate -->
+          <div class="clear">&nbsp;</div>
+
+          <div style="padding: 5px;">
+            <span style="font-family: proxima-bold;"><%= "Cancellation" %></span><br/> <!-- TODO translate -->
+            <span style="font-family: proxima-bold;"><%= "Flexible: 100% refund 14 days..." %></span><br/> <!-- TODO translate -->
+            <span>link to cancelation policies </span>
+
+            <br/><br/>
+
+            <span style="font-family: proxima-bold;"><%= "Owner rules" %></span> <!-- TODO translate -->
+            <div>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas id est in sapien tempus condimentum. Vivamus euismod pretium arcu, ac consectetur erat elementum vitae. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec sodales sodales vestibulum. Pellentesque et suscipit ante. Etiam elit tellus, rhoncus et pharetra non, elementum eu elit. Cras non congue sem. Nam semper vehicula eros, id viverra sem blandit sed. Cras nec nisi et nisl viverra interdum. Donec at enim lorem, vel rhoncus mi. Praesent at dictum enim.
+
+              Fusce porta leo eu justo rhoncus porttitor. Donec tempus egestas mi ac iaculis. Cras vitae aliquet ligula. Sed metus erat, luctus in ullamcorper a, laoreet ac felis. Sed accumsan tincidunt enim in auctor. Fusce et tortor id lorem accumsan tincidunt. Nulla est quam, sodales et accumsan eu, volutpat vel nibh. Integer condimentum pellentesque consectetur.
+
+              Proin vel magna et neque elementum bibendum sit amet non neque. Integer nec sem eu nisl convallis fermentum malesuada id massa. Aliquam sem sem, porttitor mollis semper ac, sodales quis magna. Aenean quis arcu nunc, at lacinia ante. In dapibus, felis at tincidunt commodo, urna massa accumsan nunc, at ultricies magna lacus eget massa. Maecenas a eleifend nisi. Quisque sodales eros et purus dictum egestas. Aenean molestie faucibus orci, vel eleifend risus euismod in. Aenean eget ligula mi, sed sollicitudin erat. Nam ligula tortor, rutrum sit amet faucibus ac, laoreet eu sapien. Integer eleifend, urna semper ultrices bibendum, felis tellus volutpat diam, eu sodales justo ante eu elit. Pellentesque ac cursus orci.
+
+              Nunc et erat id nunc egestas bibendum quis vel tellus. Integer adipiscing risus id odio egestas viverra. Donec non tempus est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec at velit odio, vulputate commodo neque. Integer ut mauris nisl. Etiam vitae varius quam. Phasellus porta ipsum eget justo consectetur non pellentesque urna pulvinar. Nunc congue, neque ut egestas interdum, nibh odio molestie mi, non facilisis elit tellus eget urna. Sed commodo mollis risus at consequat. Fusce tincidunt sodales orci. Cras pharetra sem id enim varius viverra. Nulla iaculis quam vitae lectus sagittis ultricies. Maecenas et nisl a quam ullamcorper consectetur eu nec ipsum. Vivamus vitae arcu quis massa dictum malesuada vitae sed lectus.
+            </div>
+          </div>
+        </div>
+
+        <br/><br/>
+        <div class="clear">&nbsp;</div>
+        <div id="BookingContinue">
+          <button class="search" id="btn_bookingContinue"> <%= "Continue" %></button> <!-- TODO translate -->
+        </div>
+      </div>	
+
+      <div id="SecondStepBooking" style="display: none">
+        <div id="BookingPayment" style="padding: 5px;">
+          <span class ="blockParts2">Payment</span> <!-- TODO translate -->
+          <div class="clear">&nbsp;</div>
+
+          <span><strong><%= "Amount to be paid: " %> <%= "amount$" %></strong><small><%= "  You will be charged only..." %></small></span> <!-- TODO translate & show the amount -->
+
+          <br/>
+          <br/>
+          <br/>
+          <div style="width: 300px;">
+            <label><%= "Card type: " %></label> <!-- TODO translate -->
+            <select style="width: 233px;"> <!-- TODO replace by ruby dropdown -->
+              <option><%= "American Express" %></option>			
+              <option><%= "Visa" %></option>			
+            </select>
+          </div>
+          <br/>
+          <input type="text" value='<%= "card number" %>' style="width: 279px;"/> <!-- TODO replace by ruby input -->
+          <br/>
+          <label><%= "Expires on:" %></label> <!-- TODO translate -->
+          <br/>
+          <select> <!-- TODO replace by ruby dropdown -->
+            <option><%= "January" %></option>			
+            <option><%= "February" %></option>			
+          </select>
+          <select> <!-- TODO replace by ruby dropdown -->
+            <option><%= "01" %></option>			
+            <option><%= "02" %></option>			
+          </select>
+          <input type="text" value='<%= "Security code" %>' /> <!-- TODO replace by ruby input -->
+
+          <div class="clear">&nbsp;</div>
+          <br/>
+        </div>
+
+        <br/><br/>
+
+        <input type="checkbox"/> <!-- TODO replace by ruby checkbox -->
+        <label><%= "I agree to the cancellation policy, ..." %></label> <!-- TODO translate -->
+
+        <br/><br/>
+        <div class="clear">&nbsp;</div>
+        <div id="BookingSubmit">
+          <button class="search"> <%= t(:confirm_book) %></button>
+        </div>
       </div>
-	</div>	
-	
-	<div id="SecondStepBooking" style="display: none">
-		<div id="BookingPayment" style="padding: 5px;">
-			<span class ="blockParts2">Payment</span> <!-- TODO translate -->
-			<div class="clear">&nbsp;</div>
-			
-			<span><strong><%= "Amount to be paid: " %> <%= "amount$" %></strong><small><%= "  You will be charged only..." %></small></span> <!-- TODO translate & show the amount -->
-			
-			<br/>
-			<br/>
-			<br/>
-			<div style="width: 300px;">
-				<label><%= "Card type: " %></label> <!-- TODO translate -->
-				<select style="width: 233px;"> <!-- TODO replace by ruby dropdown -->
-					<option><%= "American Express" %></option>			
-					<option><%= "Visa" %></option>			
-				</select>
-			</div>
-			<br/>
-			<input type="text" value='<%= "card number" %>' style="width: 279px;"/> <!-- TODO replace by ruby input -->
-			<br/>
-			<label><%= "Expires on:" %></label> <!-- TODO translate -->
-			<br/>
-			<select> <!-- TODO replace by ruby dropdown -->
-				<option><%= "January" %></option>			
-				<option><%= "February" %></option>			
-			</select>
-			<select> <!-- TODO replace by ruby dropdown -->
-				<option><%= "01" %></option>			
-				<option><%= "02" %></option>			
-			</select>
-			<input type="text" value='<%= "Security code" %>' /> <!-- TODO replace by ruby input -->
-			
-			<div class="clear">&nbsp;</div>
-			<br/>
-		</div>
-		
-		<br/><br/>
-		
-		<input type="checkbox"/> <!-- TODO replace by ruby checkbox -->
-		<label><%= "I agree to the cancellation policy, ..." %></label> <!-- TODO translate -->
-	
-		<br/><br/>
-		<div class="clear">&nbsp;</div>
-		<div id="BookingSubmit">
-            <button class="search"> <%= t(:confirm_book) %></button>
-      </div>
-	</div>
-      
+
       <!--
       <div style="float:left;width:100%;">
           <h1 class="size"><%= t(:owner_rules) %></h1><br />
           <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div').toggle()"><%= t(:show_details) %></div><br />
           <p class="size_text" id="rules_div" style="display:none;">
-            <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
+      <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
           </p>
           <div class="clear"></div>
 
           <h1 class="size"><%= t(:cancellation_policy) %></h1><br />
           <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div').toggle()"><%= t(:show_details) %></div><br />
           <p class="size_text" id="policy_div" style="display:none;">
-            <% unless @item.cancellation_policy_flexible.blank? %>
-      <%= t(:flexible) %><br/>
-          <%= t(:cancel_ln1) %><br/>
-          <%= t(:cancel_ln2) %><br/><br/>
+      <% unless @item.cancellation_policy_flexible.blank? %>
+        <%= t(:flexible) %><br/>
+        <%= t(:cancel_ln1) %><br/>
+        <%= t(:cancel_ln2) %><br/><br/>
 
-          <%= t(:cancel_ln3) %><br/><br/>
+        <%= t(:cancel_ln3) %><br/><br/>
 
-          <%= t(:cancel_ln4)%><br/><br/>
-          <%= t(:cancel_ln5)%><br/><br/>
+        <%= t(:cancel_ln4)%><br/><br/>
+        <%= t(:cancel_ln5)%><br/><br/>
       <% else %>
         <%= t(:semi_flexible) %><br/>
         <%= t(:semi_cancel_ln1) %><br/>
@@ -488,16 +488,16 @@
         <%= t(:semi_cancel_ln4) %><br/><br/>
         <%= t(:semi_cancel_ln5) %><div/>
 
-    <% end %>
+      <% end %>
           </p>
           <div class="clear"></div>
           <br />
         </div>
-		
-		
-		
-		
-		
+              
+              
+              
+              
+              
       <h3><%= t(:suggest_term) %></h3> <br/>
 
       <div id="booking-form">
@@ -511,19 +511,19 @@
           </div>
           <br/>
           <div style="padding-top:4px; color:#f55c00;" class="xfields">
-            <%= hidden_field_tag :per_day_price, exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
-            <%= hidden_field_tag :per_week_price, exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
-            <%= hidden_field_tag :per_month_price, exchange_currency(@item.price_per_month, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
-            <%= f.hidden_field :total_amount, :value => exchange_currency(@calculated_price.to_i, @item.price_unit) %>
-            <%= hidden_field_tag "offer[is_gathering]", false %>
-            <%= hidden_field_tag "offer[total_days]", 0 %>
+      <%= hidden_field_tag :per_day_price, exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
+      <%= hidden_field_tag :per_week_price, exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
+      <%= hidden_field_tag :per_month_price, exchange_currency(@item.price_per_month, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
+      <%= f.hidden_field :total_amount, :value => exchange_currency(@calculated_price.to_i, @item.price_unit) %>
+      <%= hidden_field_tag "offer[is_gathering]", false %>
+      <%= hidden_field_tag "offer[total_days]", 0 %>
 
             <div style="float: left;width: 100px;" id="daily_price">
   <%#*€<%= @item.price %>
-              <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+      <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
             </div>
             <div style="float: left;width: 100px;" id="duration">
-              <%= "#{@number_of_days} days" %>
+      <%= "#{@number_of_days} days" %>
             </div>
             <div style="float: left;width: 100px;" id="total_price">
   <%#= session[:curr] == "USD" ? "$" : "€" %>
@@ -537,15 +537,15 @@
         <strong><%= t(:need_this) %></strong>
 
         <label><%= t(:pick_up) %></label>
-<%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %>        
+      <%= f.text_field :rental_start_date, :class => "datex", :value => params[:pick_up] , :onchange => "calculateTotalAmount();" %>        
   <%#*<div class="clear"></div>%>
         <label><%= t(:return2) %></label>
-        <%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %>
+      <%= f.text_field :rental_end_date, :class => "datex", :value => params[:return] , :onchange => "calculateTotalAmount();" %>
 
         <br/>
-        
--->        
-        
+      
+      -->        
+
   <%#*<div class="clear"></div>%>
   <%#*<br/>%>
   <%#*<label>Meeting Location:</label>%>
@@ -570,22 +570,22 @@
   <%#*</div>%>
   <%#*<br/>%>
 
-        <div class="clear"></div>
+      <div class="clear"></div>
 
-        <div id="preferred_address" style="display: none; font-size:13px; font-style:italic;">Please Enter Meeting <strong>Location</strong> :
-          <%= f.text_field :preferred_address %>
-          <div id="item_advanced_container" style="display:none;">
-            <div id="item_advanced" style="display:none;">
-              <%= label_tag(:longitude, "Coordinates") %>
-              <%= text_field_tag :longitude, :class => 'required two-side-by-side' %>
-              <%= text_field_tag :latitude , :class => 'required two-side-by-side second'%><br />
-            </div>
-            <div class="small">
-              <a href="javascript:void(0);" id="item_advanced_link"><%= "Advance Settings" %></a>
-            </div>
+      <div id="preferred_address" style="display: none; font-size:13px; font-style:italic;">Please Enter Meeting <strong>Location</strong> :
+        <%= f.text_field :preferred_address %>
+        <div id="item_advanced_container" style="display:none;">
+          <div id="item_advanced" style="display:none;">
+            <%= label_tag(:longitude, "Coordinates") %>
+            <%= text_field_tag :longitude, :class => 'required two-side-by-side' %>
+            <%= text_field_tag :latitude , :class => 'required two-side-by-side second'%><br />
+          </div>
+          <div class="small">
+            <a href="javascript:void(0);" id="item_advanced_link"><%= "Advance Settings" %></a>
           </div>
         </div>
-        <br/>
+      </div>
+      <br/>
 
   <%#*<div class="clear"></div>%>
 
@@ -611,18 +611,18 @@
   <%#*</span>%>
   <%#*</div>%>
   <%#*<br/>%>
-        <div class="clear"></div>
+      <div class="clear"></div>
 
-        <div id="bargain_div" style="display: none; font-size:13px; font-style:italic;"><%= t(:enter_meeting) %><strong><%= t(:location2) %></strong> :
-          <%= f.text_field :willingness_to_pay %>
-          <%= session[:curr] == "USD" ? "$" : "€" %> &nbsp;&nbsp;&nbsp;<font size="2"><em><%= t(:rental_period) %></em></font><br/>
-        </div>
+      <div id="bargain_div" style="display: none; font-size:13px; font-style:italic;"><%= t(:enter_meeting) %><strong><%= t(:location2) %></strong> :
+        <%= f.text_field :willingness_to_pay %>
+        <%= session[:curr] == "USD" ? "$" : "€" %> &nbsp;&nbsp;&nbsp;<font size="2"><em><%= t(:rental_period) %></em></font><br/>
+      </div>
 
-        <br/>
-        
-        <br/><br/>
+      <br/>
 
-        <div class="clear"></div>
+      <br/><br/>
+
+      <div class="clear"></div>
 
   <%#*<label style="line-height:18px; ">%>
   <%#*<strong>Send <%= @item.user.popup_storz_display_name%>
@@ -636,31 +636,31 @@
   <%#end%>
   <%#end%>
   <%#*<br/>%>
-        <!--<input name="" type="checkbox" value="" /> <font size="2">I agree to the <a href="#">terms of use.</a></font><br />
-        -->
-        <br/>
-<!--
-        <div id="gathering_fields" style="display:none;">
-          <b><%= t(:max_no) %></b><%= @item.maximum_members %><br /><br />
-          <label><%= t(:gather_person) %></label>
-          <%= f.text_field :persons_in_gathering, :onchange => "check_persons(this.value,#{@item.maximum_members.to_i})" %><br /><br />
-          <label><%= t(:gather_rent) %></label>
-          <%= f.text_field :gathering_rental_price, :readonly=>true %> <%= session[:curr] == "USD" ? "$" : "€" %><%= t(:per_person) %><br /><br />
-          <label><%= t(:gathering_description) %></label>
-          <%= f.text_area  :gathering_description %>    <br/><br/>
-          <label style="line-height:18px;"><%= t(:join_deadline) %></label>
-          <%= f.text_field :gathering_deadline, :class => "datex", :value => "mm/dd/yy"%>
-
-
-          <br/><br/>
-          <div style="padding-left:200px;">
-            <button class="large-max button orange"> <%= t(:create_gathering) %></button>
-          </div>
-        </div> -->
-      </div>
+      <!--<input name="" type="checkbox" value="" /> <font size="2">I agree to the <a href="#">terms of use.</a></font><br />
+      -->
+      <br/>
+      <!--
+              <div id="gathering_fields" style="display:none;">
+                <b><%= t(:max_no) %></b><%= @item.maximum_members %><br /><br />
+                <label><%= t(:gather_person) %></label>
+      <%= f.text_field :persons_in_gathering, :onchange => "check_persons(this.value,#{@item.maximum_members.to_i})" %><br /><br />
+                <label><%= t(:gather_rent) %></label>
+      <%= f.text_field :gathering_rental_price, :readonly=>true %> <%= session[:curr] == "USD" ? "$" : "€" %><%= t(:per_person) %><br /><br />
+                <label><%= t(:gathering_description) %></label>
+      <%= f.text_area  :gathering_description %>    <br/><br/>
+                <label style="line-height:18px;"><%= t(:join_deadline) %></label>
+      <%= f.text_field :gathering_deadline, :class => "datex", :value => "mm/dd/yy"%>
+    
+    
+                <br/><br/>
+                <div style="padding-left:200px;">
+                  <button class="large-max button orange"> <%= t(:create_gathering) %></button>
+                </div>
+              </div> -->
     </div>
-    <div class="clear">&nbsp;</div>
-  <% end %>
+  </div>
+  <div class="clear">&nbsp;</div>
+<% end %>
 </div>
 <div id="my_map_div" style="visibility:hidden;display: none;">
   <%= raw(@map.div(:width => 500, :height => 400)) %>

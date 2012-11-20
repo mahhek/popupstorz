@@ -110,12 +110,20 @@
   <div class="shadowCont">
     <div class="fltL">
       <h1 class="charming" style="margin-bottom: 0; font-family: proxima-bold; color:#333333; font-size:1.7em;"><%= @item.title %>!</h1>
-      <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;"><%= @item.address %>(<%= @item.zipcode %> - <%= @item.city %>, <%= @item.country_code   %>)</p>
+      <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;">
+        <%= @item.address %>
+        <%= @item.zipcode %> 
+<%#*(<%= @item.city %> 
+<%#= @item.country_code %>
+      </p>
     </div>
     <div class="fltR">
-      <h1 class="charming graytext" style="font-family: proxima-bold; color: #999999; font-size:30px;">
-        <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h1>
+      <h1 class="charming graytext" style="margin-bottom: 2px;font-family: proxima-bold; color: #999999; font-size:30px;">
+        <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>        
+      </h1>
+      <%= t(:per_day) %>
       <p class="charming_text graytext"><%=  @item.time_for_unit_price %></p>
+
     </div>
     <div class="clear"></div>
     <% unless @item.avatars.size > 0 %>
@@ -152,17 +160,21 @@
 
 
     <div class="fltR w200 mt100" style="width: 195px;margin-top: 10px;">
-      <p style="margin-top: 10px; font-family: proxima-bold; color: #333333;"><%= t(:size) %> <%= @item.size %> <%= @item.size_unit %></p>
-      <p style=" font-family: proxima-bold; color: #333333;"><%= t(:type) %> <%= @item.listing_type.name %></p>
+      <p style="margin-top: 10px; font-family: proxima-bold; color: #333333;">
+        <%= t(:size) %> <%= @item.size %> <%= @item.size_unit %></p>
+      <p style=" font-family: proxima-bold; color: #333333;">
+        <%= t(:type) %> 
+        <%= @item.listing_type.name %></p>
       <div class="clear"></div>
 
       <p style="margin-top: 250px; font-family: proxima-semibold; color: #333333">
         <% if (@item.is_shareable == true) then %>
           <%= t(:gathering_available) %> up to <%= @item.maximum_members %> people
+          <%= t(:create_pop_union)  %>
         <%else%>
   <%#= t(:no) %>
         <%end%>  </p>
-      <a class="send" style="font-family: proxima-bold; color: #cc33cc;">Create Gathering</a>
+      <a class="send" style="font-family: proxima-bold; color: #cc33cc;"><%= t(:create_gathering) %>Create Gathering</a>
       <div class="clear"></div>
     </div>
     <div class="clear"></div>
@@ -171,39 +183,76 @@
       <h2 style="font-family:proxima-bold; color: #333333;"><%= t(:availabilities) %></h2>
       <div style="width:100%;padding-top: 10px;">
         <% if !@item.availablities_daytime.blank? and @item.availablities_daytime == true %>
-          <img src="" alt="" ><span class="avail_item"><%= t(:daytime) %></span>
+          <img src="" alt="" >
+          <span class="avail_item">
+            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= t(:daytime) %>
+          </span>
         <% end %>
         <% if !@item.availablities_evenings.blank? and @item.availablities_evenings == true %>
-          <img src="" alt="" ><span class="avail_item"><%= t(:evenings) %></span>
+          <img src="" alt="" >
+          <span class="avail_item">
+            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= t(:evenings) %>
+          </span>
         <% end %>
         <br />
 
         <% if !@item.availablities_monday.blank? and @item.availablities_monday == true %>
-          <img src="" alt="" ><span class="avail_item"><%= t(:monday) %></span>
+          <img src="" alt="" >
+          <span class="avail_item">
+            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= t(:monday) %>
+          </span>
         <% end %>
-        <% if !@item.availablities_tuesday.blank? and @item.availablities_tuesday == true %>
-          <img src="" alt="" ><span class="avail_item"><%= t(:tuesday) %></span>
+        <% if !@item.availablities_tuesday.blank? and @item.availablities_tuesday == true %>          
+          <img src="" alt="" >
+          <span class="avail_item">
+            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= t(:tuesday) %>
+          </span>
         <% end %>
-        <% if !@item.availablities_wednesday.blank? and @item.availablities_wednesday == true %>
-          <img src="" alt="" ><span class="avail_item"><%= t(:wednesday) %></span>
+        <% if !@item.availablities_wednesday.blank? and @item.availablities_wednesday == true %>          
+          <img src="" alt="" >
+          <span class="avail_item">
+            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= t(:wednesday) %>
+          </span>
         <% end %>
-        <% if !@item.availablities_thursday.blank? and @item.availablities_thursday == true %>
-          <img src="" alt="" ><span class="avail_item"><%= t(:thursday) %></span>
+        <% if !@item.availablities_thursday.blank? and @item.availablities_thursday == true %>          
+          <img src="" alt="" >
+          <span class="avail_item">
+            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= t(:thursday) %>
+          </span>
         <% end %>
-        <% if !@item.availablities_friday.blank? || @item.availablities_friday == true %>
-          <img src="" alt="" ><span class="avail_item"><%= t(:friday) %></span>
+        <% if !@item.availablities_friday.blank? || @item.availablities_friday == true %>          
+          <img src="" alt="" >
+          <span class="avail_item">
+            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= t(:friday) %>
+          </span>
         <% end %>
-        <% if !@item.availablities_saturday.blank? || @item.availablities_saturday == true %>
-          <img src="" alt="" ><span class="avail_item"><%= t(:saturday) %></span>
+        <% if !@item.availablities_saturday.blank? || @item.availablities_saturday == true %>          
+          <img src="" alt="" >
+          <span class="avail_item">
+            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= t(:saturday) %>
+          </span>
         <% end %>
-        <% if !@item.availablities_sunday.blank? || @item.availablities_sunday == true %>
-          <img src="" alt="" ><span class="avail_item"><%= t(:sunday) %></span>
+        <% if !@item.availablities_sunday.blank? || @item.availablities_sunday == true %>          
+          <img src="" alt="" >
+          <span class="avail_item">
+            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= t(:sunday) %>
+          </span>
         <% end %>
       </div>
 
       <div class="line"></div>
-
-      <p class="" style="font-size: 1.1em;text-align: justify; color: #333333;"><%= @item.description %></p>
+      <p class="" style="font-size: 1.1em;text-align: justify; color: #333333;">
+        <%= @item.description %>
+      </p>
 
       <div class="line"></div>
 
@@ -501,7 +550,7 @@
 <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
     <div style="width: 100%;clear: both;">
 <% gatherings.each do|gathering| %>
-          <div style="border-bottom: 1px solid;">
+                                        <div style="border-bottom: 1px solid;">
   <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
   <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
   <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
@@ -521,12 +570,12 @@
     <% else %>
       <%= t(:semifelxible) %>
     <% end %>
-                  <br/>
+                                                                              <br/>
     <%= t(:owner_rules) %>
     <%=@item.owner_rules%><br/><br/>
     <%= link_to t(:details), "/offers/#{gathering.id}" %>
   <% end %>
-          </div>
+                                        </div>
 <% end %>
     </div>
     </p>
@@ -537,11 +586,11 @@
       <b><%= t(:prev_comments) %></b><br/>
 <%unless @item.comments.blank? %>
   <%@item.comments.each do|f|%>
-              <b><%=f.title  %></b><br/>
+                                                                          <b><%=f.title  %></b><br/>
     <%= f.comment %><br/>
-              <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
-              <br/>
-              <br/>
+                                                                          <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+                                                                          <br/>
+                                                                          <br/>
   <%end%>
 <%end%>
     </div>
