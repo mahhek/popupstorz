@@ -261,16 +261,15 @@ class SearchesController < ApplicationController
     @vals = params
     @items = @items.paginate(:page => params[:page], :per_page => 6 )
     
-    
     respond_to do |format|
       format.html
       format.js do
         foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
-        unless @items.blank?          
-          render :js => "$('#searched-items-div').html(#{foo});$.setAjaxPagination();update_form_values('#{params.to_json}');"
-        else
-          render :js => "$('#searched-items-div').html('#{t(:other_search)}');"
-        end
+#        unless @items.blank?
+          render :js => "update_form_values('#{params.to_json}');$('#searched-items').html(#{foo});$.setAjaxPagination();"
+#        else
+#          render :js => "update_form_values('#{params.to_json}');$('#searched-items-div').html('#{t(:other_search)}');"
+#        end
       end
     end    
   end
