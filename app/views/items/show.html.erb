@@ -109,7 +109,8 @@
 
   <div class="shadowCont">
     <div class="fltL">
-      <h1 class="charming" style="margin-bottom: 0; font-family: proxima-bold; color:#333333; font-size:1.7em;"><%= @item.title %>!</h1>
+      <h1 class="charming" style="margin-bottom: 0; font-family: proxima-bold; color:#333333; font-size:1.7em;">
+        <%= @item.title %>!</h1>
       <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;">
         <%= @item.address %>
         <%= @item.zipcode %> 
@@ -170,11 +171,16 @@
       <p style="margin-top: 250px; font-family: proxima-semibold; color: #333333">
         <% if (@item.is_shareable == true) then %>
           <%= t(:gathering_available) %> up to <%= @item.maximum_members %> people
-          <%= t(:create_pop_union)  %>
+
         <%else%>
   <%#= t(:no) %>
-        <%end%>  </p>
-      <a class="send" style="font-family: proxima-bold; color: #cc33cc;"><%= t(:create_gathering) %>Create Gathering</a>
+        <%end%> 
+      </p>
+      <% if (@item.is_shareable == true) then %>
+        <a class="send" style="font-family: proxima-bold; color: #cc33cc;">
+          <%= link_to t(:create_pop_union), new_item_offer_path(@item.id)  %>      
+        </a>
+      <% end %>
       <div class="clear"></div>
     </div>
     <div class="clear"></div>
@@ -550,7 +556,7 @@
 <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
     <div style="width: 100%;clear: both;">
 <% gatherings.each do|gathering| %>
-                                        <div style="border-bottom: 1px solid;">
+                                            <div style="border-bottom: 1px solid;">
   <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
   <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
   <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
@@ -570,12 +576,12 @@
     <% else %>
       <%= t(:semifelxible) %>
     <% end %>
-                                                                              <br/>
+                                                                                      <br/>
     <%= t(:owner_rules) %>
     <%=@item.owner_rules%><br/><br/>
     <%= link_to t(:details), "/offers/#{gathering.id}" %>
   <% end %>
-                                        </div>
+                                            </div>
 <% end %>
     </div>
     </p>
@@ -586,11 +592,11 @@
       <b><%= t(:prev_comments) %></b><br/>
 <%unless @item.comments.blank? %>
   <%@item.comments.each do|f|%>
-                                                                          <b><%=f.title  %></b><br/>
+                                                                                  <b><%=f.title  %></b><br/>
     <%= f.comment %><br/>
-                                                                          <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
-                                                                          <br/>
-                                                                          <br/>
+                                                                                  <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+                                                                                  <br/>
+                                                                                  <br/>
   <%end%>
 <%end%>
     </div>

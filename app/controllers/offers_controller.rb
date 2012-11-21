@@ -75,7 +75,13 @@ class OffersController < ApplicationController
       @offer = @item.offers.build
       @offer.offer_messages.build
     end
-    @number_of_days = (DateTime.strptime(params[:return], "%m/%d/%Y").to_datetime - DateTime.strptime(params[:pick_up], "%m/%d/%Y").to_datetime).to_i
+    if !params[:return].blank? || !params[:pickup].blank?
+      @book_without_dates = false
+      @number_of_days = (DateTime.strptime(params[:return], "%m/%d/%Y").to_datetime - DateTime.strptime(params[:pick_up], "%m/%d/%Y").to_datetime).to_i
+    else
+      @book_without_dates = true
+      @number_of_days = 0
+    end
     @number_of_days += 1
     @calculated_price = calculate_price(@number_of_days, @item)
   end

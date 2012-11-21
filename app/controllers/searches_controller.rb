@@ -205,7 +205,7 @@ class SearchesController < ApplicationController
     unless params[:max_size].blank?
       item_conds += " AND (size <= '#{params[:max_size].to_i}')"
     end
-    
+        
     unless params["types"].blank?
       count = 0
       type_arr = ""

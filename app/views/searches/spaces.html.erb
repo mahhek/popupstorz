@@ -1,3 +1,4 @@
+<%= javascript_include_tag "items.js" %>
 <%= render :partial => "search_header" %>
 <div class="clear"></div>
 
@@ -5,7 +6,7 @@
   <h2 style="font-size: 1.4em; font-weight: normal; font-family: proxima-semibold;">
     <%= t(:refine_search) %>
   </h2>
-  <%= form_tag "/search_spaces", {:remote => true, :method => :get } do %>
+  <%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "price_range_form" } do %>
     <%= hidden_field_tag "min_price", "" %>
     <%= hidden_field_tag "max_price", "" %>
     <%= hidden_field_tag "min_size", "" %>
@@ -20,10 +21,11 @@
 
       <label class="heading_right" for="amount"><%= t(:price_range) %></label>
       <input type="text" id="amount" style="border: 0 none !important; border-radius: 0 0 0 0; box-shadow: none; color: #666666; font-family: Proxima; font-size: 1em; font-weight: normal; text-align: center; width: 170px;" />
-      <div class="twocol">		   
+      <div class="twocol">
         <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
       </div>
-      <div style="float: right; font-size: 0.8em;">max</div><div style="float: left; font-size: 0.8em;">min</div>
+      <div style="float: right; font-size: 0.8em;">max</div>
+      <div style="float: left; font-size: 0.8em;">min</div>
     </div>
 
     <div class="pannelright">
@@ -64,7 +66,7 @@
 </div>
 
 <div class="leftcontent">
-  <%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
+  <%= form_tag "/search_spaces", {:remote => true, :method => :get, :pars => params } do %>
     <div class="refinesearchresults shadowCont">
       <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family: proxima-semibold;">Spaces search</h2>
       <div>
