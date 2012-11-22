@@ -39,9 +39,9 @@
               <%=item.city%>, <%=item.country_code%>
             </p>
             <% if item.is_shareable == true %>
-              <div class="shareableHome"> <%= t(:shareable) %> </div>
+            <div class="shareableHome" style="float: left;"> </div>
+              <div style="float: left;margin-left: 5px;"><%= t(:shareable) %></div>
             <% end %>
-            <%#*<h5><%= t(:symbol2) %></h5>%>
             <h6><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h6>        
             <br/>			 
             <div class="clear"></div>
