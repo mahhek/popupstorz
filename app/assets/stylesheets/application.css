@@ -190,11 +190,14 @@ ul.hmenu li {
 }
 
 .shareableHome{
-    background: url("../assets/Shareable.png") no-repeat scroll 0 0 transparent;
+   background: url("../assets/Shareable.png") no-repeat scroll 0 0 transparent;
     color: #00CCCC;
     float: left;
     font-size: 12px;
+    height: 32px;
     margin-left: 5px;
+    margin-top: -8px;
     margin-top: 10px;
-    padding-left: 8px;    
+    padding-left: 8px;
+    width: 32px   
 }
