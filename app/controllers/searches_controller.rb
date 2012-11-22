@@ -199,11 +199,11 @@ class SearchesController < ApplicationController
     end
         
     unless params[:min_size].blank?
-      item_conds += " AND (size >= '#{params[:min_size].to_i}')"
+      item_conds += " AND (items.size >= '#{params[:min_size].to_i}')"
     end
     
     unless params[:max_size].blank?
-      item_conds += " AND (size <= '#{params[:max_size].to_i}')"
+      item_conds += " AND (items.size <= '#{params[:max_size].to_i}')"
     end
         
     unless params["types"].blank?
@@ -238,8 +238,9 @@ class SearchesController < ApplicationController
     else
       order_by = "price ASC"
     end
- 
+    
     items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
+
     @items = items - booked_items    
     # Items whose owners are active users
     active_items = []  
@@ -274,7 +275,7 @@ class SearchesController < ApplicationController
         #          render :js => "update_form_values('#{params.to_json}');$('#searched-items-div').html('#{t(:other_search)}');"
         #        end
       end
-    end    
+    end
   end
 
   def search_members    

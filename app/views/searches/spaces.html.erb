@@ -126,14 +126,14 @@
       max: <%= @last_price %>,
       values: [ <%= @start_price %>, <%= @last_price %> ],
       slide: function( event, ui ) {
-        $( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
       },
       stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
         $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
         $('#price_range_form').submit();}
     });
-    $( "#amount" ).val( "" + $( "#amount-slider-range" ).slider( "values", 0 ) +
-      " - " + $( "#amount-slider-range" ).slider( "values", 1 ) );
+    $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
 
     $( "#sizes-slider-range" ).slider({
       range: true,

@@ -25,7 +25,7 @@
         $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
       },
       stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
-        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));$('#search_spaces').submit();}
+        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));$('#search_spaces_form').submit();}
     });
     $("#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
       " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
@@ -42,7 +42,7 @@
         $("#size" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
       },
       stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
-        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));$('#search_spaces').submit();}
+        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));$('#search_spaces_form').submit();}
     });
     $("#size" ).val( $( "#sizes-slider-range" ).slider( "values", 0 ) +
       " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
@@ -63,7 +63,7 @@
   <h2 style="font-size: 1.4em; font-weight: normal; font-family: proxima-semibold;">
     <%= t(:refine_search) %>
   </h2>
-  <%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "search_spaces" } do %>
+  <%= form_tag "/items/search_item_spaces", {:remote => true, :method => :get, :id => "search_spaces_form" } do %>
     <%= hidden_field_tag "min_price", "" %>
     <%= hidden_field_tag "max_price", "" %>
     <%= hidden_field_tag "min_size", "" %>
@@ -112,7 +112,9 @@
 
       <div class="heading_right"><%= t(:shareable) %></div>
       <div class="twocol">
-        <%= check_box_tag "shareable",params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
+        <%= radio_button_tag "spaces","shareable", true,:name => "shareable",:checked => params[:shareable]? true : false,  :value => true ,:class => "radio", :onclick => "$(this.form).trigger('submit.rails')" %>Yes
+        <%= radio_button_tag "spaces","shareable", false,:name => "shareable",:class => "radio", :value => false,:onclick => "$(this.form).trigger('submit.rails')" %>No
+        <%#= check_box_tag "shareable",params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
       </div>
     </div>
     <%= submit_tag "Submit", :hidden => true, :id => "search_spaces_submit" %>
