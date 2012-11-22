@@ -40,7 +40,7 @@
             </p>
             <% if item.is_shareable == true %>
             <div class="shareableHome" style="float: left;"> </div>
-              <div style="float: left;margin-left: 5px;margin-top: 10px;"><%= t(:shareable) %></div>
+              <div style="float: left;margin-left: 5px;margin-top: 10px;color: #00CCCC"><%= t(:shareable) %></div>
             <% end %>
             <h6><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h6>        
             <br/>			 
