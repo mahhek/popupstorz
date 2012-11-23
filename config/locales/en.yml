@@ -12,6 +12,7 @@ en:
    newest: "Newest to Oldest"
    oldest: "Oldest to Newest"   
    newest_sort: "Newest"
+   oldest_sort: "Oldest"
    price_high_to_low: Price from High to Low
    price_low_to_high: Price from Low to High
      
@@ -690,3 +691,5 @@ en:
    place_cancellation_policy: "The cancellation policy for this place is"
    
    create_pop_union: Create pop'union
+   popunion_search: Pop'uninions Search
+   

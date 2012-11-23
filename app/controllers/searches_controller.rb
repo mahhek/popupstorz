@@ -28,14 +28,17 @@ class SearchesController < ApplicationController
   def spaces
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @prices = Item.select("distinct(price)").where("price is not NULL").order("price ASC")
-    @start_price = @prices.first
-    @last_price = @prices.last
+#    @start_price = @prices.first
+#    @last_price = @prices.last
     
     @start_size = @sizes.first
     @last_size = @sizes.last
     
     @start_size = @start_size.blank? ? 0 : @start_size.size
-    @start_price = @start_price.blank? ? 0 : @start_price.price
+#    @start_price = @start_price.blank? ? 0 : @start_price.price
+    
+    @start_price = @items.blank? ? 0 : @items.first.price
+    @last_price = @items.blank? ? 0 : @items.last.price
     
     unless @last_size.blank?
       @last_size = @last_size.size.to_f > 10000 ? @last_size.size : 10000
@@ -43,11 +46,12 @@ class SearchesController < ApplicationController
       @last_size = 10000
     end
     
-    unless @last_price.blank?
-      @last_price = @last_price.price.to_f > 10000 ? @last_price.price : 10000
-    else
-      @last_price = 10000
-    end    
+#    unless @last_price.blank?
+#      @last_price = @last_price.price.to_f > 10000 ? @last_price.price : 10000
+#    else
+#      @last_price = 10000
+#    end    
+    @last_price = @last_price.to_f > 10000 ? @last_price : 10000
     
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
@@ -119,6 +123,8 @@ class SearchesController < ApplicationController
       order_by = "gathering_rental_price ASC"
     when "4"
       order_by = "created_at DESC"
+    when "5"
+      order_by = "created_at ASC"
     else
       order_by = "gathering_rental_price ASC"
     end

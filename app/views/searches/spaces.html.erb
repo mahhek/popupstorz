@@ -1,4 +1,55 @@
 <%= javascript_include_tag "items.js" %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.pagination a').attr('data-remote', 'true');
+  });
+
+  $(function() {
+    $('#search_from').datepicker(
+    {
+      onSelect: function() {
+        $('#search_to').datepicker('option', {minDate: $(this).datepicker('getDate')});
+      }});
+    $('#search_to').datepicker({
+      onSelect: function() {
+        $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
+      }});
+
+    $("#amount-slider-range").slider({
+      range: true,
+      min: <%= @start_price %>,
+      max: <%= @last_price %>,
+      values: [ <%= @start_price %>, <%= @last_price %> ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      },
+      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
+        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
+        $('#price_range_form').submit();}
+    });
+    $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
+
+    $( "#sizes-slider-range" ).slider({
+      range: true,
+      min: <%= @start_size %>,
+      max: <%= @last_size %>,
+      values: [ <%= @start_size %>, <%= @last_size %> ],
+      slide: function( event, ui ) {
+        $( "#size" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+      },
+      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
+        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));
+        $('#price_range_form').submit();
+      }
+    });
+    $( "#size" ).val( "" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
+      " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
+  });
+  
+</script>
+
+
 <%= render :partial => "search_header" %>
 <div class="clear"></div>
 
@@ -102,58 +153,3 @@
     </div>
   </div>
 </div>
-
-<%= javascript_include_tag "items.js" %>
-<script type="text/javascript">
-  $(document).ready(function() {
-    $('.pagination a').attr('data-remote', 'true');
-  });
-
-  $(function() {
-    $('#search_from').datepicker(
-    {
-      onSelect: function() {
-        $('#search_to').datepicker('option', {minDate: $(this).datepicker('getDate')});
-      }});
-    $('#search_to').datepicker({
-      onSelect: function() {
-        $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
-      }});
-
-    $("#amount-slider-range").slider({
-      range: true,
-      min: <%= @start_price %>,
-      max: <%= @last_price %>,
-      values: [ <%= @start_price %>, <%= @last_price %> ],
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-      },
-      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
-        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
-        $('#price_range_form').submit();}
-    });
-    $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
-      " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
-
-    $( "#sizes-slider-range" ).slider({
-      range: true,
-      min: <%= @start_size %>,
-      max: <%= @last_size %>,
-      values: [ <%= @start_size %>, <%= @last_size %> ],
-      slide: function( event, ui ) {
-        $( "#size" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-      },
-      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
-        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));
-        $('#price_range_form').submit();
-      }
-    });
-    $( "#size" ).val( "" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
-      " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
-  });
-  
-  function abc(){
-    alert("aaa");
-  }
-  
-</script>

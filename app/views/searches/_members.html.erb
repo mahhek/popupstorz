@@ -1,6 +1,6 @@
 <% members.each do | member | %>
-  <div class="listx" style="border-bottom: 1px solid gray;">
-    <div class="row" style="float:left; width: 732px;padding: 5px;" onclick="window.location='<%= profile_path(member.id) %>'">
+  <div class="listx" style="border-bottom: 1px solid gray;padding: 5px;float: left;">
+    <div class="row" style="float:left; width: 732px;" onclick="window.location='<%= profile_path(member.id) %>'">
       <div class="imgx">
         <% if member.avatars.size > 0 %>
           <%= image_tag(member.avatars.first.photo.url(:thumb), :width => "113", :height => "149", :alt => "Member-Photo")  %>
@@ -22,11 +22,30 @@
         <% end %>
       </div>
 
-      <div style="margin-top: 64px; color: grey;">
-        <%= link_to "Send Message", "/#", :remote => true, :style => "float: right; color: #CC33CC; font-family:proxima-bold" %>
-      </div>
     </div>
-    <div class="clear"></div>
+
+    <div style="margin-top: -30px; color: grey;float: right;">
+      <% if (current_user != member) %>
+        <%= link_to_function "Send Message", "$('#contact_me_div').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
+      <% end %>
+
+      <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
+        <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
+          <%= hidden_field_tag :topic, "Inquiry" %>
+          <%= hidden_field_tag :user_id, member.id %>
+
+          <span style="width: auto;float: left;">
+            <%= text_area_tag  :body, "", :style => "width:135px; height:100px;" %>
+          </span>
+
+          <div style="margin-right: 10px; text-align: right;">
+            <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;
+            <%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
+          </div>
+        <% end %>
+      </div>
+      <div class="clear"></div>
+    </div>
   </div>
 <%end%>
 
