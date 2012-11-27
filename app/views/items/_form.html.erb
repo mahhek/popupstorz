@@ -22,20 +22,20 @@
   });
 </script>
 <style type="text/css">
-	h2 {
-		font-family: proxima-bold;
-		color: #333333;
-	}
-	
-	label {
-		font-family: proxima-bold;	
-	}
+  h2 {
+    font-family: proxima-bold;
+    color: #333333;
+  }
+
+  label {
+    font-family: proxima-bold;	
+  }
 </style>
 
 
 <%= f.hidden_field :user_id, :value => current_user.id if current_user %>
 
-<h2>DESCRIPTION</h2>
+<h2><%= t(:description) %></h2>
 <br/>
 <div style="padding-bottom: 20px;float: left;">
   <% if @item.errors.any? %>
@@ -93,10 +93,16 @@
 </div>
 
 <h2><%= t(:availablilities) %></h2>
+<div class="xfields" style="margin-left: 160px;">
+  <div class="input">    
+    <%= f.check_box :available_forever, :onclick => "availability_check()" %>
+    <span><%= t(:available_forever) %></span>
+  </div>
+</div>
 
-<div class="xfields"><label>&nbsp;</label>
+<div class="xfields" id="availabilities_div">
+  <label>&nbsp;</label>
   <div class="input">
-<%#*<span>This place is TODO</span><br />%>
     <span style="font-family: proxima-bold;"><%= t(:available_from) %></span>    
     <%= f.text_field :availability_from %>
     <span style="font-family: proxima-bold;"><%= t(:available_to) %></span>
@@ -138,9 +144,9 @@
 
 <div class="xfields" style="margin: 20px 0; width:960px;"><label>Rental price</label>
   <!--<span> -->
-    <div style="font-family: proxima-bold; float:left;"><%= f.text_field :price,  :class => "price", :size =>""%> <span class="unit">$</span> per day</div>
-    <div style="font-family: proxima-bold; float:left;"><%= f.text_field :price_per_week,  :class => "price",:size =>""  %> <span class="unit">$</span> per week</div>
-    <div style="font-family: proxima-bold; float:left;"><%= f.text_field :price_per_month,  :class => "price",:size =>"" %> <span class="unit">$</span> per month</div>
+  <div style="font-family: proxima-bold; float:left;"><%= f.text_field :price,  :class => "price", :size =>""%> <span class="unit">$</span> per day</div>
+  <div style="font-family: proxima-bold; float:left;"><%= f.text_field :price_per_week,  :class => "price",:size =>""  %> <span class="unit">$</span> per week</div>
+  <div style="font-family: proxima-bold; float:left;"><%= f.text_field :price_per_month,  :class => "price",:size =>"" %> <span class="unit">$</span> per month</div>
   <!--</span>-->
   <br /><span style="color: #666666; margin-left: 362px; margin-top: -12px; position: absolute;">If you wish, you can apply a lower rate for weekly or monthly rentals</span>
 </div>
@@ -362,6 +368,16 @@
     
   function update_date_view(){
     $("#date_range").toggle();
+  }
+  
+  
+  function availability_check(){
+    if($("#item_available_forever").attr('checked') == "checked"){
+      $("#availabilities_div").hide();
+    }
+    else{
+      $("#availabilities_div").show();
+    }
   }
 
 </script>

@@ -120,7 +120,7 @@
     </div>
     <div class="fltR">
       <h1 class="charming graytext" style="margin-bottom: 2px;font-family: proxima-bold; color: #999999; font-size:30px;">
-        <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>        
+        <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
       </h1>
       <%= t(:per_day) %>
       <p class="charming_text graytext"><%=  @item.time_for_unit_price %></p>

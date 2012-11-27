@@ -183,7 +183,8 @@
             <h2><%= t(:include_following) %></h2>
             <ul>
               <li style="list-style: square;float: left;">
-                <%= t(:req_fields) %> <%= @offer.errors.full_messages.to_sentence  %>
+                <%= t(:req_fields) %> 
+                <%= @offer.errors.full_messages.to_sentence  %>
               </li>
             </ul>
           </div>
@@ -453,9 +454,9 @@
               <% end %>
             </span>
             <br/> <!-- TODO translate -->
-            <%#*<span>%>
-              <%#*link to cancelation policies%>
-            <%#*</span>%>
+  <%#*<span>%>
+  <%#*link to cancelation policies%>
+  <%#*</span>%>
 
             <br/><br/>
 
@@ -470,51 +471,54 @@
         <br/><br/>
         <div class="clear">&nbsp;</div>
         <div id="BookingContinue">
-          <button class="search" id="btn_bookingContinue"> <%= "Continue" %></button> <!-- TODO translate -->
+          <%= f.submit "Continue", :class => "search" %>
+          <%#*<button class="search" id="btn_bookingContinue">%> 
+            <%#= "Continue" %>
+          <%#*</button> <!-- TODO translate -->%>
         </div>
       </div>
 
-      <div id="SecondStepBooking" style="display: none">
-        <div id="BookingPayment" style="padding: 5px;">
-          <span class ="blockParts2">Payment</span> <!-- TODO translate -->
-          <div class="clear">&nbsp;</div>
+  <%#*<div id="SecondStepBooking" style="display: none">%>
+  <%#*<div id="BookingPayment" style="padding: 5px;">%>
+  <%#*<span class ="blockParts2">Payment</span> <!-- TODO translate -->%>
+  <%#*<div class="clear">&nbsp;</div>%>
 
-          <span>
-            <strong><%= "Amount to be paid: " %>
-              <%= "amount$" %>
-            </strong>
-            <small><%= "  You will be charged only..." %></small>
-          </span> <!-- TODO translate & show the amount -->
+  <%#*<span>%>
+  <%#*<strong><%= "Amount to be paid: " %>%>
+  <%#= "amount$" %>
+  <%#*</strong>%>
+  <%#*<small><%= "  You will be charged only..." %></small>%>
+  <%#*</span> <!-- TODO translate & show the amount -->%>
 
-          <br/>
-          <br/>
-          <br/>
-          <div style="width: 300px;">
-            <label><%= "Card type: " %></label> <!-- TODO translate -->
-            <select style="width: 233px;"> <!-- TODO replace by ruby dropdown -->
-              <option><%= "American Express" %></option>			
-              <option><%= "Visa" %></option>			
-            </select>
-          </div>
-          <br/>
-          <input type="text" value='<%= "card number" %>' style="width: 279px;"/> <!-- TODO replace by ruby input -->
-          <br/>
-          <label><%= "Expires on:" %></label> <!-- TODO translate -->
-          <br/>
-          <select> <!-- TODO replace by ruby dropdown -->
-            <option><%= "January" %></option>			
-            <option><%= "February" %></option>			
-          </select>
-          <select> <!-- TODO replace by ruby dropdown -->
-            <option><%= "01" %></option>			
-            <option><%= "02" %></option>			
-          </select>
-          <input type="text" value='<%= "Security code" %>' /> <!-- TODO replace by ruby input -->
+  <%#*<br/>%>
+  <%#*<br/>%>
+  <%#*<br/>%>
+  <%#*<div style="width: 300px;">%>
+  <%#*<label><%= "Card type: " %></label> <!-- TODO translate -->%>
+  <%#*<select style="width: 233px;"> <!-- TODO replace by ruby dropdown -->%>
+  <%#*<option><%= "American Express" %></option>%>			
+  <%#*<option><%= "Visa" %></option>%>			
+  <%#*</select>%>
+  <%#*</div>%>
+  <%#*<br/>%>
+  <%#*<input type="text" value='<%= "card number" %>' style="width: 279px;"/> <!-- TODO replace by ruby input -->%>
+  <%#*<br/>%>
+  <%#*<label><%= "Expires on:" %></label> <!-- TODO translate -->%>
+  <%#*<br/>%>
+  <%#*<select> <!-- TODO replace by ruby dropdown -->%>
+  <%#*<option><%= "January" %></option>%>			
+  <%#*<option><%= "February" %></option>%>			
+  <%#*</select>%>
+  <%#*<select> <!-- TODO replace by ruby dropdown -->%>
+  <%#*<option><%= "01" %></option>%>			
+  <%#*<option><%= "02" %></option>%>			
+  <%#*</select>%>
+  <%#*<input type="text" value='<%= "Security code" %>' /> <!-- TODO replace by ruby input -->%>
 
-          <div class="clear">&nbsp;</div>
-          <br/>
-        </div>
-      </div>
+  <%#*<div class="clear">&nbsp;</div>%>
+  <%#*<br/>%>
+  <%#*</div>%>
+  <%#*</div>%>
 
       <br/><br/>
 
@@ -580,6 +584,7 @@
 
   function checkPrefferedAddress(){
     if($("input[@name=offer[preferred_location]]:checked").val() == "true"){
+      alert("aa");
       if($("#offer_preferred_address").val() == "") {
         alert('Please enter some preferred location first!.');
         return false;
@@ -616,7 +621,10 @@
         }
       }
     }else{
+      alert($("#offer_gathering_deadline").val());
       if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
+        alert("aa");
+        return false;
         if($("#gathering_fields").is(":hidden") == true){
           if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy" ){
             alert('Please enter response deadline date.');
@@ -632,6 +640,8 @@
         }
       }
       else{
+        alert("bbb");
+        return false;
         if($("#gathering_fields").is(":hidden") == false){
           if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
             alert("Please enter persons in gathering");
@@ -653,6 +663,7 @@
         return true;
       }
     }
+    return false;
   }
 
 

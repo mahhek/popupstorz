@@ -267,7 +267,7 @@ en:
    didnt_receive_unlock: "Didn't receive unlock instructions?"
    send_invitation: "Send Invitations"
    email_setting: "Email Settings"
-   delete_my_account: "Delete My Account"
+   deactivate_my_account: "Deactivate My Account"
    delete_permanently: "Are you sure you want to delete your account permanently?"
    email_setting_update: "Update Email Settings:"
    received_msg_from_other: "I receive a message from another user"

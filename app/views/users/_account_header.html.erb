@@ -6,6 +6,6 @@
     <%= link_to t(:email_setting), "/email_settings/edit", :class => ((params[:controller] == "email_settings") ? 'selected' : 'unselected') %>
     <span class="separator"></span>
     
-    <%= link_to t(:delete_my_account),"/users/delete_account", :confirm => t(:delete_permanently), :class => 'unselected' %>
+    <%= link_to t(:deactivate_my_account),"/users/delete_account", :confirm => t(:delete_permanently), :class => 'unselected' %>
 
 </div>
