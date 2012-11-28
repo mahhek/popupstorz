@@ -2,7 +2,10 @@
 
 @font-face {
     font-family: Proxima;
-    src: url(font/ProximaNova-Regular.otf);
+    src: 
+    url(font/proximanovaregular.svg) format('svg'),
+    url(font/ProximaNova-Regular.otf),
+    url(font/proximanovaregular.ttf) format('truetype');
 }
 
 @font-face {
@@ -17,12 +20,18 @@
 
 @font-face {
     font-family: Proxima-semibold;
-    src: url(font/ProximaNova-Semibold.otf);
+    src: 
+    url(font/proximanovasemibold.svg) format('svg'),
+    url(font/ProximaNova-Semibold.otf),
+    url(font/proximanovasemibold.ttf) format('truetype');
 }
 
 @font-face {
     font-family: XXII;
-    src: url(font/XXII-MARKER_Regular.otf);
+    src: 
+    url(font/xxiimarker_regular.svg) format('svg'),
+    url(font/XXII-MARKER_Regular.otf),
+    url(font/xxiimarker_regular.ttf) format('truetype');
 }
 
 * {
