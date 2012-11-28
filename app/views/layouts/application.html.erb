@@ -5,27 +5,29 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><%=  t(:popup)%></title>
-
-    <%= stylesheet_link_tag "application" %>
-
     <!-- Script TACTfactory -->
-    <%= javascript_include_tag "application" %>
-    <%= javascript_include_tag "jquery.min" %>
-    <%= javascript_include_tag "jquery-ui.min" %>
-    <%= javascript_include_tag "jquery.hint" %>
-    <%= javascript_include_tag "jquery.jcarousel.min" %>
-    <%= javascript_include_tag "jquery.chosen.min" %>
-    <%= javascript_include_tag "jquery.fileinput" %>
-    <%= javascript_include_tag "jcarousel.min" %>
 
-    <%= stylesheet_link_tag "jquery-ui" %>
-    <%= stylesheet_link_tag "ui.theme" %>
+    <script src="/assets/jquery.js?body=1" type="text/javascript"></script>
+    <script src="/assets/jquery_ujs.js?body=1" type="text/javascript"></script>
+    <script src="/assets/autocomplete-rails.js?body=1" type="text/javascript"></script>
+    <script src="/assets/update.js?body=1" type="text/javascript"></script>
 
     <%= javascript_include_tag "jquery-ui" %>
-    <%= javascript_include_tag "maps" %>
-    <%= javascript_include_tag "all" %>
 
-    <!-- Script Old -->    
+    <%= javascript_include_tag "all" %>    
+
+    <%= javascript_include_tag "jquery.hint" %>
+    <%= javascript_include_tag "jquery.jcarousel.min" %>
+
+    <%= javascript_include_tag "jquery.chosen.min" %>
+    <%= javascript_include_tag "jquery.chosen" %>
+
+    <%= javascript_include_tag "jquery.fileinput" %>
+    <%= javascript_include_tag "jcarousel.min" %>    
+
+    <%= javascript_include_tag "maps" %>
+
+    <!-- Script Old -->
     <%= javascript_include_tag "geoRssOverlay" %>
     <%= javascript_include_tag "markerGroup" %>
     <%= javascript_include_tag "ym4r-gm" %>
@@ -35,7 +37,11 @@
     <%= javascript_include_tag "elastislide" %>
     <%= javascript_include_tag "gallery" %>
 
-    <!-- CSS TACTfactory -->    
+    <!-- CSS TACTfactory -->
+    <%= stylesheet_link_tag "application" %>
+    <%= stylesheet_link_tag "jquery-ui" %>
+    <%= stylesheet_link_tag "ui.theme" %>
+
     <%= stylesheet_link_tag "jquery.chosen" %> 
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css"/> <!-- jsFiddle -->
     <link rel="stylesheet" type="text/css" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css"/> <!-- jsFiddle -->

@@ -140,7 +140,6 @@ body {
 	margin: 0 auto;
 	color: white;
 	font-family: proxima-semibold;
-
 }
 
 .shadowCont h1 {
@@ -168,6 +167,7 @@ body {
 	box-shadow: 2px 2px 6px #333333;
    line-height: 45px;
    text-align: center;
+   font-family: proxima-semibold;
 }
 
 .menu-sub {
@@ -712,7 +712,6 @@ h2 {
     color: transparent;
     float: left;
     font-size: 0;
-    font-family: Proxima-semibold;
     height: 34px;
     margin-left: 105px;
     margin-top: 20px;
@@ -813,6 +812,7 @@ h2 {
     -moz-box-shadow: 4px 5px 6px #333333;
     padding: 25px;
 }
+
 .play_hold h1{font-size:18px;color:#666666;font-family: Proxima-semibold;margin-bottom:10px;text-align: center}
 .mr100{margin-right:100px;}
 .ml40{margin-left:40px;}
@@ -865,7 +865,13 @@ h2 {
 .line{background:none scroll 0 0 #DDDDDD;height:1px;margin:7px 0;}
 .name{font-size:12px;font-family: Proxima-semibold;color:#000;}
 .name_text{font-size:12px;;color:#000;font-style:italic;}
-.send{font-size:12px;font-family: Proxima-semibold;color:#cc33cc;margin-top:20px;display:block;}
+.send{
+	font-size:12px;
+	color:#cc33cc;
+	margin-top:20px;
+	display:block;
+	font-family: proxima-bold;
+	}
 .w107{width: 160px;}
 .available{font-size:18px;color:#000;}
 .daytime{background: url("../assets/plus.png") no-repeat scroll left center transparent;color: #000000; float: left; font-size: 12px; margin-right: 37px; margin-top: 6px; padding-left: 20px; text-align: center;}
@@ -1119,6 +1125,7 @@ ul, li {
 .XXII {
     font-size: 1.2em;
     font-family: XXII,Arial,Helvetica,sans-serif;
+    font-variant: small-caps;
 }
 
 .ui-slider-horizontal {
@@ -1142,3 +1149,23 @@ ul, li {
 	width: 100px;
 	margin-bottom: 10px;
 }
+
+.linkAddRmFavorite{
+	float:right;
+	font-family: proxima-bold;
+	color: #cc33cc;
+	padding-top: 1em;
+}
+
+.blockParts, .blockParts2{
+  	font-size: 16px; 
+  	/*font-weight: bold; */
+  	font-family: proxima-bold;
+  	padding-bottom: 1em;
+  }
+  
+  .blockParts2{
+  	float: left;
+  	padding-top: 1em;
+  	color: #333333;
+  }

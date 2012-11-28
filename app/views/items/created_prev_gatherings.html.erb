@@ -26,7 +26,7 @@
             <!-- price-bloc-row -->
             <div style="color: grey; float: right; font-size: 26px;text-align: right;">
               <%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><br>
-              <span style="font-size: 0.7em;"><%= t(:by_day) %></span></div>
+              <span style="font-size: 0.7em;"><%= t(:per_day) %></span></div>
             <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4>
               <%if offer.rental_end_date < Date.today %>
                 <div id="rating_of_item_<%= offer.item.id %>">
@@ -65,9 +65,9 @@
             </a>
 
             <!-- messages-bloc-row -->
-            <% if current_user.id != member.id %>
+            <% if current_user.id != offer.item.user_id %>
               <div id="store-btn">
-                <%= link_to_function "Send Message", "$('#contact_me_div_#{member.id}_#{count}').toggle('slow');", :class => "send"  %>
+                <%= link_to_function "Send Message", "$('#contact_me_div_#{offer.item.user_id}').toggle('slow');", :class => "send"  %>
               </div>
             <% end %>
 

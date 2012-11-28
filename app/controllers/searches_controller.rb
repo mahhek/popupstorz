@@ -28,14 +28,17 @@ class SearchesController < ApplicationController
   def spaces
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @prices = Item.select("distinct(price)").where("price is not NULL").order("price ASC")
-    @start_price = @prices.first
-    @last_price = @prices.last
+#    @start_price = @prices.first
+#    @last_price = @prices.last
     
     @start_size = @sizes.first
     @last_size = @sizes.last
     
     @start_size = @start_size.blank? ? 0 : @start_size.size
-    @start_price = @start_price.blank? ? 0 : @start_price.price
+#    @start_price = @start_price.blank? ? 0 : @start_price.price
+    
+    @start_price = @items.blank? ? 0 : @items.first.price
+    @last_price = @items.blank? ? 0 : @items.last.price
     
     unless @last_size.blank?
       @last_size = @last_size.size.to_f > 10000 ? @last_size.size : 10000
@@ -43,11 +46,12 @@ class SearchesController < ApplicationController
       @last_size = 10000
     end
     
-    unless @last_price.blank?
-      @last_price = @last_price.price.to_f > 10000 ? @last_price.price : 10000
-    else
-      @last_price = 10000
-    end    
+#    unless @last_price.blank?
+#      @last_price = @last_price.price.to_f > 10000 ? @last_price.price : 10000
+#    else
+#      @last_price = 10000
+#    end    
+    @last_price = @last_price.to_f > 10000 ? @last_price : 10000
     
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
@@ -119,6 +123,8 @@ class SearchesController < ApplicationController
       order_by = "gathering_rental_price ASC"
     when "4"
       order_by = "created_at DESC"
+    when "5"
+      order_by = "created_at ASC"
     else
       order_by = "gathering_rental_price ASC"
     end
@@ -145,7 +151,6 @@ class SearchesController < ApplicationController
   def search_spaces
     session[:start_date] = nil
     session[:end_date] = nil
-  
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @shareable = Item.select("distinct(is_shareable)")    
@@ -200,13 +205,13 @@ class SearchesController < ApplicationController
     end
         
     unless params[:min_size].blank?
-      item_conds += " AND (size >= '#{params[:min_size].to_i}')"
+      item_conds += " AND (items.size >= '#{params[:min_size].to_i}')"
     end
     
     unless params[:max_size].blank?
-      item_conds += " AND (size <= '#{params[:max_size].to_i}')"
+      item_conds += " AND (items.size <= '#{params[:max_size].to_i}')"
     end
-    
+        
     unless params["types"].blank?
       count = 0
       type_arr = ""
@@ -220,8 +225,11 @@ class SearchesController < ApplicationController
       end
       item_conds += " AND (#{type_arr})"
     end
-    unless params[:shareable].blank?
+    
+    if params[:shareable] == "true"
       item_conds += " AND (is_shareable = true)"
+    elsif params[:shareable] == "false"
+      item_conds += " AND (is_shareable = false)"
     end
     
     case params[:sort_option]
@@ -236,10 +244,11 @@ class SearchesController < ApplicationController
     else
       order_by = "price ASC"
     end
- 
+    
     items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
+
     @items = items - booked_items    
-# Items whose owners are active users
+    # Items whose owners are active users
     active_items = []  
     @items.each do|item|
       if item.user.is_active == true && item.is_active == true
@@ -261,14 +270,18 @@ class SearchesController < ApplicationController
     session[:end_date] = params[:search_to]
     @vals = params
     @items = @items.paginate(:page => params[:page], :per_page => 6 )
-
+    
     respond_to do |format|
       format.html
       format.js do
         foo = render_to_string(:partial => 'items', :locals => { :items => @items }).to_json
-        render :js => "$('#searched-items').html(#{foo});$.setAjaxPagination();update_form_values('#{params.to_json}');"
+        #        unless @items.blank?
+        render :js => "update_form_values('#{params.to_json}');$('#searched-items').html(#{foo});$.setAjaxPagination();"
+        #        else
+        #          render :js => "update_form_values('#{params.to_json}');$('#searched-items-div').html('#{t(:other_search)}');"
+        #        end
       end
-    end    
+    end
   end
 
   def search_members    

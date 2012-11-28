@@ -1,14 +1,14 @@
 <%if !current_user%>
-<%= link_to t(:add_favorite), "#", :onclick=> "return no_login()" %>
+  <%= link_to t(:add_favorite), "#", :onclick=> "return no_login()" %>
 <%elsif current_user.favorites.include?(item)%>
-<%= link_to t(:remove_favorite), remove_from_favorite_item_path(item), :remote => true %>
+  <%= link_to t(:remove_favorite), remove_from_favorite_item_path(item), :class => "linkAddRmFavorite", :remote => true %>
 <%else%>
-<%= link_to t(:add_favorite), add_to_favorite_item_path(item), :remote => true %>
+  <%= link_to t(:add_favorite), add_to_favorite_item_path(item), :class => "linkAddRmFavorite", :remote => true %>
 <%end%>
 <script>
   function no_login()
   {
-    alert(<%= t(:must_login) %>)
+    alert("You should login to use this feature");
     return false;
   }
 </script>

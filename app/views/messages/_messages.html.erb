@@ -7,94 +7,95 @@
         <%= link_to "Empty Trash", empty_trash_messages_path ,:class => "action", :confirm => "Are you sure you want to delete all messages?" %>
       <%else%>
         <% unless @messages.blank? %>
-          <%= link_to "Delete",  "#",:class => "action",  :onclick => "checkListOfCheckBox('move_to_trash'); return false;" %>
+          <%= link_to "Delete",  "#",:class => "action", :onclick => "checkListOfCheckBox('move_to_trash'); return false;" %>
+          <%= link_to "Mark As Unread",  "#",:class => "action", :onclick => "checkListOfCheckBox('mark_as_unread'); return false;" %>
         <% end %>
       <%end%>
-      <%= will_paginate(@messages, :params => params, :renderer => PaginationListLinkRenderer) %>
-      <%#*TODO Paginate !!%>
+    <%= will_paginate(@messages, :params => params, :renderer => PaginationListLinkRenderer) %>
+    <%#*TODO Paginate !!%>
     </div>
-    
+
     <div class="clear" ></div>
     <%= hidden_field_tag "action_to_perform" , "", :class => "action_to_perform"  %>
     <!-- div class="mail-table" style="width: auto;float: left;">
       <span style="float:left;width:20px;" >
-        <%= check_box_tag "check_all" , false  , false %>
+    <%= check_box_tag "check_all" , false  , false %>
       </span>
       <span style="width:130px;float:left;margin-left:5px;padding-top:2px;font-weight: bold;">
-        <%= t(:mail_from) %>
+    <%= t(:mail_from) %>
       </span>
       <span style="width:150px;float:left;padding-top:2px;font-weight: bold;">
-        <%= t(:subject) %>
+    <%= t(:subject) %>
       </span>
       <span style="width:320px;float:left;padding-top:2px;font-weight: bold;">
-        <%= t(:body) %>
+    <%= t(:body) %>
       </span>
       <span style="width:70px;float:left;padding-top:2px;font-weight: bold;">
-        <%= t(:date) %>
+    <%= t(:date) %>
       </span>
     </div-->
     <% @messages.each do |message| %>
       <% unless message.opened? %>
         <!--b-->
-        <%end%>
-        <div class="mail-list-hover row unread">
+      <%end%>
+      <div class="mail-list-hover row unread">
 
-          <span class="checkbox" style="float:left;width:20px;margin-top:9px;" >
-            <%=  check_box_tag "message[]", message.id, false, {:id => "messages_#{message.id}", :class => "checkBoxClass"} %>
+        <span class="checkbox" style="float:left;width:20px;margin-top:9px;" >
+          <%=  check_box_tag "message[]", message.id, false, {:id => "messages_#{message.id}", :class => "checkBoxClass"} %>
+        </span>
+        <div style="" onclick="window.location='<%= reply_messages_path(:id => message.id) %>'">
+          <span style="width:130px;float:left;margin-left:5px;padding-top:2px;">
+            <%=  message.from.popup_storz_display_name %>
           </span>
-          <div style="" onclick="window.location='<%= reply_messages_path(:id => message.id) %>'">
-            <span style="width:130px;float:left;margin-left:5px;padding-top:2px;">
-              <%=  message.from.popup_storz_display_name %>
-            </span>
-            <span style="float:left;padding-top:2px;">
-              <%=  message.topic %> - <span style="color:grey;"><%=  raw message.body[0...35] + '...'%></span>
-            </span>
-            <span style="width:125px;float:right;padding-top:2px;">
-              <%=  message.created_at.strftime("%b. %d, %Y") %>
-            </span>
-          </div>
+          <span style="float:left;padding-top:2px;">
+            <%=  message.topic %> - <span style="color:grey;"><%=  raw message.body[0...35] + '...'%></span>
+          </span>
+          <span style="width:125px;float:right;padding-top:2px;">
+            <%=  message.created_at.strftime("%b. %d, %Y") %>
+          </span>
         </div>
-        <% unless message.opened? %>
+      </div>
+      <% unless message.opened? %>
         </b>
       <%end%>
     <%end%>
   <%end%>
-  
+
   <script type="text/javascript">
-	  function checkListOfCheckBox(action){
-	    elementArray = document.getElementsByName('message[]')
-	    var check_boxes_length = elementArray.length;
-	    var breaked = false;
-	    for(var count = 0 ; count < check_boxes_length ; count++){
-	      if(elementArray[count].checked == true){
-	        breaked = true;
-	        break;
-	      }
-	    }
-	    if(breaked == true){
-	      $('#action_to_perform').val(action);
-	      document.message_form.submit();
-	      return true;
-	    }
-	    else{
-	      alert('No Mail selected.');
-	      return false;
-	    }
-	  }
+    function checkListOfCheckBox(action){
+      elementArray = document.getElementsByName('message[]')
+      var check_boxes_length = elementArray.length;
+      var breaked = false;
+      for(var count = 0 ; count < check_boxes_length ; count++){
+        if(elementArray[count].checked == true){
+          breaked = true;
+          break;
+        }
+      }
+      if(breaked == true){
+        $('#action_to_perform').val(action);
+        document.message_form.submit();
+        return true;
+      }
+      else{
+        alert('No Mail selected.');
+        return false;
+      }
+    }
 	  
-	  $(document).ready(function(){
-	    $("#check_all").click(function(){
-	      var checked_status = this.checked;
-	      $(".checkBoxClass").each(function(){
-	        this.checked = checked_status;
-	      });
-	    });
-	  });
-	</script>
-	
+    $(document).ready(function(){
+      $("#check_all").click(function(){
+        var checked_status = this.checked;
+        $(".checkBoxClass").each(function(){
+          this.checked = checked_status;
+        });
+      });
+    });
+  </script>
+
 <%else%>
-	<div class="clear" ></div>
-	<div class="row" style="cursor: not-allowed;"><%= t(:no_msg) %></div>
+  <div class="clear" ></div>
+  <div class="row" style="cursor: not-allowed;"><%= t(:no_msg) %></div>
 <%end%>
 
 

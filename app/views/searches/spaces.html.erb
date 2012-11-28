@@ -1,9 +1,63 @@
+<%= javascript_include_tag "items.js" %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.pagination a').attr('data-remote', 'true');
+  });
+
+  $(function() {
+    $('#search_from').datepicker(
+    {
+      onSelect: function() {
+        $('#search_to').datepicker('option', {minDate: $(this).datepicker('getDate')});
+      }});
+    $('#search_to').datepicker({
+      onSelect: function() {
+        $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
+      }});
+
+    $("#amount-slider-range").slider({
+      range: true,
+      min: <%= @start_price %>,
+      max: <%= @last_price %>,
+      values: [ <%= @start_price %>, <%= @last_price %> ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      },
+      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
+        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
+        $('#price_range_form').submit();}
+    });
+    $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
+
+    $( "#sizes-slider-range" ).slider({
+      range: true,
+      min: <%= @start_size %>,
+      max: <%= @last_size %>,
+      values: [ <%= @start_size %>, <%= @last_size %> ],
+      slide: function( event, ui ) {
+        $( "#size" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+      },
+      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
+        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));
+        $('#price_range_form').submit();
+      }
+    });
+    $( "#size" ).val( "" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
+      " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
+  });
+  
+</script>
+
+
 <%= render :partial => "search_header" %>
 <div class="clear"></div>
 
 <div class="rightcontent shadowCont" style="padding: 5px 20px 20px;">
-  <h2 style="font-size: 1.4em; font-weight: normal;"><%= t(:refine_search) %></h2>
-  <%= form_tag "/search_spaces", {:remote => true, :method => :get } do %>
+  <h2 style="font-size: 1.4em; font-weight: normal; font-family: proxima-semibold;">
+    <%= t(:refine_search) %>
+  </h2>
+  <%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "price_range_form" } do %>
     <%= hidden_field_tag "min_price", "" %>
     <%= hidden_field_tag "max_price", "" %>
     <%= hidden_field_tag "min_size", "" %>
@@ -18,10 +72,11 @@
 
       <label class="heading_right" for="amount"><%= t(:price_range) %></label>
       <input type="text" id="amount" style="border: 0 none !important; border-radius: 0 0 0 0; box-shadow: none; color: #666666; font-family: Proxima; font-size: 1em; font-weight: normal; text-align: center; width: 170px;" />
-      <div class="twocol">		   
+      <div class="twocol">
         <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
       </div>
-      <div style="float: right; font-size: 0.8em;">max</div><div style="float: left; font-size: 0.8em;">min</div>
+      <div style="float: right; font-size: 0.8em;">max</div>
+      <div style="float: left; font-size: 0.8em;">min</div>
     </div>
 
     <div class="pannelright">
@@ -52,19 +107,21 @@
 
       <div class="heading_right"><%= t(:shareable) %></div>
       <div class="twocol">
-        <%= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
+        <%= radio_button_tag "spaces","shareable", true,:name => "shareable",:checked => params[:shareable]? true : false,  :value => true ,:class => "radio", :onclick => "$(this.form).trigger('submit.rails')" %>Yes
+        <%= radio_button_tag "spaces","shareable", false,:name => "shareable",:class => "radio", :value => false,:onclick => "$(this.form).trigger('submit.rails')" %>No
+  <%#= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
       </div>
     </div>
-
+    <%= submit_tag "Submit",:hidden => true, :id => "search_spaces_submit" %>
   <% end %>
 </div>
 
 <div class="leftcontent">
-  <%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
+  <%= form_tag "/search_spaces", {:remote => true, :method => :get, :pars => params } do %>
     <div class="refinesearchresults shadowCont">
-      <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal;">Spaces search</h2>
+      <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family: proxima-semibold;">Spaces search</h2>
       <div>
-        <div style="width:40%;float:left;">
+        <div style="width:35%;float:left;">
           <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
         </div>
 
@@ -77,8 +134,8 @@
       </div>
     </div>
     <div class="sortby">
-      <span><%= t(:sort_by) %></span>
-      <%= select_tag "sort_option", options_for_select([["Newest" ,"1"],["High to Low" ,"2"],["Low to High", "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
+      <span style="font-family:proxima-semibold;"><%= t(:sort_by) %></span>
+      <%= select_tag "sort_option", options_for_select([[t("newest_sort") ,"1"],[t("price_high_to_low") ,"2"],[t("price_low_to_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
 
       <span style="float:right;">
         <%= will_paginate(@items, :params => params, :renderer => PaginationListLinkRenderer) %>
@@ -96,53 +153,3 @@
     </div>
   </div>
 </div>
-
-<%= javascript_include_tag "items.js" %>
-<script type="text/javascript">
-  $(document).ready(function() {
-    $('.pagination a').attr('data-remote', 'true');
-  });
-
-  $(function() {
-    $('#search_from').datepicker(
-    {
-      onSelect: function() {
-        $('#search_to').datepicker('option', {minDate: $(this).datepicker('getDate')});
-      }});
-    $('#search_to').datepicker({
-      onSelect: function() {
-        $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
-      }});
-
-    $("#amount-slider-range").slider({
-      range: true,
-      min: <%= @start_price %>,
-      max: <%= @last_price %>,
-      values: [ <%= @start_price %>, <%= @last_price %> ],
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-      },
-      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
-        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
-        $('#price_range_form').submit();}
-    });
-    $( "#amount" ).val( "" + $( "#amount-slider-range" ).slider( "values", 0 ) +
-      " - " + $( "#amount-slider-range" ).slider( "values", 1 ) );
-
-    $( "#sizes-slider-range" ).slider({
-      range: true,
-      min: <%= @start_size %>,
-      max: <%= @last_size %>,
-      values: [ <%= @start_size %>, <%= @last_size %> ],
-      slide: function( event, ui ) {
-        $( "#size" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-      },
-      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
-        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));
-        $('#price_range_form').submit();
-      }
-    });
-    $( "#size" ).val( "" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
-      " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
-  });
-</script>

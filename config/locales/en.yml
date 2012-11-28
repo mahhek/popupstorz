@@ -11,6 +11,12 @@ en:
    change_all_commission_rates: "Change commision rate of all items"
    newest: "Newest to Oldest"
    oldest: "Oldest to Newest"   
+   newest_sort: "Newest"
+   oldest_sort: "Oldest"
+   price_high_to_low: Price from High to Low
+   price_low_to_high: Price from Low to High
+     
+   
    gender_search: "Gender"
    fb_connected: "FB Connected"
    all_bookings: "Bookings"
@@ -261,7 +267,7 @@ en:
    didnt_receive_unlock: "Didn't receive unlock instructions?"
    send_invitation: "Send Invitations"
    email_setting: "Email Settings"
-   delete_my_account: "Delete My Account"
+   deactivate_my_account: "Deactivate My Account"
    delete_permanently: "Are you sure you want to delete your account permanently?"
    email_setting_update: "Update Email Settings:"
    received_msg_from_other: "I receive a message from another user"
@@ -683,3 +689,7 @@ en:
    EUR: "EUR"
    USD: "USD"
    place_cancellation_policy: "The cancellation policy for this place is"
+   
+   create_pop_union: Create pop'union
+   popunion_search: Pop'unions Search
+   

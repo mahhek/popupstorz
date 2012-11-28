@@ -1,33 +1,35 @@
 <% unless items.blank? %>
   <% items.each do |item| %>
-    <div class="resultsholder">
-      <div class="price">
-        <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %> <br />
-        <span class="perweek">
-          <%= item.time_for_unit_price %>
-        </span>
+    <div class="listx" style="border-bottom: 1px solid gray;">
+      <div class="row" style="float:left; width: 732px;padding: 5px;" onclick="window.location='<%= "/items/#{item.id}" %>'">
+        <div class="imgx">
+          <% if item.avatars.size > 0 %>
+            <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "178", :height => "119", :alt => "Space-Photo")  %>
+          <% else %>
+            <%= image_tag("empty.png", :width => "178", :height => "119", :alt => "Space-Photo")  %>
+          <% end %>
+        </div>
+
+        <div style="color: grey; float: right; font-size: 26px;text-align: right;"><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %><br>
+          <span class="perweek" style="font-size: 0.7em;"><%= t(:by) %> <%= item.time_for_unit_price %></span></div>
+
+        <div class="name-list" style="margin-bottom: 5px;font-family: proxima-bold;color: #333333;"><h4><%= item.title %></h4></div>
+
+        <div class="name-list XXII" style="margin-bottom: 5px;"><span style="font-size: 1.1em; "><%#= item.address.chars.first %></span><%= item.address %></div>
+
+        <div class="name-list" style="margin-bottom: 5px;">
+          <b>Price: </b>
+          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/day,
+          <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/week,
+          <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
+        </div>
+
+        <div id="favorite_div_<%= item.id %>" style="margin-top: 17px; color: grey;">
+          <%= render :partial => "favorite", :locals => {:item => item} %>
+        </div>
+        <a class="info"></a>
       </div>
-      <% if item.avatars.size > 0 %>
-        <% avatar = item.avatars.first %>
-        <%= link_to(image_tag(avatar.photo.url(:thumb)), item_path(item), :class => "item_image" ) %>
-      <% else %>
-        <%= image_tag("PUS_Logo.jpg", :border => "0", :alt => "image", :class => "item_image" )  %>
-      <%end%>
-      <span class="heading"><%= link_to item.title, item_path(item) %>!</span>
-      <br />
-      <br />
-      <span class="subheading"><%= item.address %></span><br /><br />
-      <span class="details">
-        <%= item.description %></span>
-      <div id="favorite_div_<%= item.id %>" style="margin-left: 172px"> <br/>
-        <%= render :partial => "favorite", :locals => {:item => item} %>
-      </div>
-    <%#*<p style="text-align:right; margin-right: 10px;">%>
-    <%#if item.item_status=="Available"%>
-    <%#= link_to "Book now", item_path(item.id), %></p>
-    <%#else%>
-    <%#*<a href="#" onclick="alert('Item is already Reserved and not Available, Thanks.');return false;"> Reserved </a>%>
-    <%#end%>
+      <div class="clear"></div>
     </div>
   <%end%>
 

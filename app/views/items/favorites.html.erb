@@ -1,9 +1,6 @@
 <div class="shadowCont offer">
-
-	<%#= render :partial => "favorites_header" %>
-	<div class="clear"></div>
-	
-	<div class="listx-bg">
-		<%= render :partial => "favorites", :locals => {:items => @items}  %>
-	</div>
+  <div class="clear"></div>
+  <div class="listx-bg" id="favorite_div">
+    <%= render :partial => "favorites", :locals => {:items => @items}  %>
+  </div>
 </div>
