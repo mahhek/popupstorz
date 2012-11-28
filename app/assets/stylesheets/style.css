@@ -498,6 +498,7 @@ body {
     height: 62px;
     margin-top: 20px;
     padding-top: 3px !important;
+    overflow: hidden !important;
 }
 
 .refinesearchresults .area {
@@ -630,12 +631,16 @@ h2 {
     font-size: 0.9em;
     text-align: left;
     width: 100%;
+    margin-top: 5px;
 }
 
 .twocol span {
+    display: inline-block;
     float: left;
+    height: 14px;
     line-height: 7px;
-    margin: 6px 0pt 6px 2px;
+    margin: 0 0 0 2px;
+    vertical-align: middle;
     width: 85px;
 }
 
@@ -901,7 +906,7 @@ h2 {
 
 .pagination {
     list-style: none outside none;
-    margin: 35px auto;
+    margin: 5px auto;
     max-width: 500px;
     padding: 0;
     text-align: center;
