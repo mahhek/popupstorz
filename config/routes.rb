@@ -53,7 +53,7 @@ PopupStorz::Application.routes.draw do
   match "/email_settings/create" => "email_settings#create"
   match "/email_settings/edit" => "email_settings#edit"
   match "/email_settings/update/:id" => "email_settings#update"
-  match "/users/delete_account" => "users#delete_account"
+  match "/users/deactivate_account" => "users#deactivate_account"
   match "/send_resposne_request" => "offers#send_resposne_request"
   match "/send_gathering_deadline/:id" => "offers#send_gathering_deadline"
   match "/update_gathering_deadline" => "offers#update_gathering_deadline"

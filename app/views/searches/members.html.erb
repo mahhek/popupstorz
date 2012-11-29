@@ -39,7 +39,7 @@
     </div>
     <div class="sortby">
       <span style="float:right;">
-        <%#= will_paginate(items, :params => params, :renderer => PaginationListLinkRenderer) %>
+        <%= will_paginate(@members, :params => params, :renderer => PaginationListLinkRenderer) %>
       </span>
     </div>
   <% end %>
@@ -55,10 +55,6 @@
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function() {
-    $('.pagination a').attr('data-remote', 'true');
-  });
-
   $(function() {
     $('#search_from').datepicker(
     {
@@ -72,8 +68,8 @@
 
     $("#amount-slider-range").slider({
       range: true,
-      min: <%= @start_price %>,
-      max: <%= @last_price %>,
+      min: <%= @start_price.blank? ? 0 : @start_price %>,
+      max: <%= @last_price.blank? ? 0 : @last_price %>,
       values: [ <%= @start_price %>, <%= @last_price %> ],
       slide: function( event, ui ) {
         $( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );

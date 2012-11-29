@@ -56,7 +56,7 @@ class UsersController < ApplicationController
     redirect_to "/invitation"
   end
   
-  def delete_account
+  def deactivate_account
     user = current_user
     user.update_attribute("is_active",false)
     flash[:notice] = t(:account_deleted)
@@ -64,10 +64,8 @@ class UsersController < ApplicationController
   end
 
   def callback
-    sdfS
   end
 
-  def send_invitation_to_contacts
-    
+  def send_invitation_to_contacts    
   end
 end

@@ -96,7 +96,17 @@ class ItemsController < ApplicationController
   def create
     @countries = Country.all
     set_values
-    
+    if params[:item][:available_forever] == "1"
+      params[:item][:availablities_daytime]= true
+      params[:item][:availablities_evenings] = true
+      params[:item][:availablities_monday] = true
+      params[:item][:availablities_tuesday] = true
+      params[:item][:availablities_wednesday] = true
+      params[:item][:availablities_thursday] = true
+      params[:item][:availablities_friday] = true
+      params[:item][:availablities_saturday] = true
+      params[:item][:availablities_sunday] = true    
+    end
     @item = Item.new(params[:item])
     @map = GMap.new("map")
     if params[:item][:latitude].blank?
@@ -113,6 +123,7 @@ class ItemsController < ApplicationController
         redirect_to new_user_session_path
       else
         @item.availability_option_ids = params[:availability_options]
+        
         if @item.save
           @item.update_attribute("item_status","Available")
           session[:items] = nil
@@ -166,7 +177,7 @@ class ItemsController < ApplicationController
     @item.availability_option_ids = params[:availability_options]
     if @item.update_attributes(params[:item])
       flash[:notice] = t(:updating_space)
-#      redirect_to edit_item_avatar_path(@item,@item.avatars.first)
+      #      redirect_to edit_item_avatar_path(@item,@item.avatars.first)
       redirect_to edit_item_avatar_path(@item.id)
     else
       @listing_types = ListingType.all :order =>"name asc"
