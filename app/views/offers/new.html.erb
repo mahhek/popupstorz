@@ -6,13 +6,11 @@
   .booked span{
     background: darkgray !important;
     color: red !important;
-    font-weight: bold !important;
   }
   .selected{
   }
   .selected a{
     background: aquamarine !important;
-    font-weight: bold !important;
   }
   .booked {
     border: 4px solid;
@@ -21,18 +19,21 @@
   .booked span{
     background: darkgray !important;
     color: red !important;
-    font-weight: bold !important;
   }
   .selected{
   }
   .selected a{
     background: aquamarine !important;
-    font-weight: bold !important;
+  }
+  .blockParts, .blockParts2{
+  	font-size: 16px; 
+  	font-family: proxima-bold;
+  	padding-bottom: 1em;
   }
 
   table {
     border-collapse: collapse; 
-    width: 300px;  
+    width: 300px;
   }
 
   td{
@@ -373,6 +374,11 @@
           <span class ="blockParts2">GATHERING</span> <!-- TODO translate -->
           <div class="clear">&nbsp;</div>
 
+          <!-- TODO Delete div class="xfields">
+            <div style="float: left;width: 100px;"><%= t(:daily_price) %></div>
+            <div style="float: left;width: 100px;"><%= t(:duration) %></div>
+            <div style="float: left;width: 100px;"><%= t(:t_price) %></div>
+			 </div-->
           <div>
             <span style="font-family: proxima-bold;"><%= "Number of persons in the gathering" %></span> <!-- TODO translate -->
             <input type="text" value=""/>	<!-- TODO replace by ruby input -->

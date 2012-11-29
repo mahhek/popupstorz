@@ -2,7 +2,10 @@
 
 @font-face {
     font-family: Proxima;
-    src: url(font/ProximaNova-Regular.otf);
+    src: 
+        url(font/proximanovaregular.svg) format('svg'),
+        url(font/ProximaNova-Regular.otf),
+        url(font/proximanovaregular.ttf) format('truetype');
 }
 
 @font-face {
@@ -17,12 +20,18 @@
 
 @font-face {
     font-family: Proxima-semibold;
-    src: url(font/ProximaNova-Semibold.otf);
+    src: 
+        url(font/proximanovasemibold.svg) format('svg'),
+        url(font/ProximaNova-Semibold.otf),
+        url(font/proximanovasemibold.ttf) format('truetype');
 }
 
 @font-face {
     font-family: XXII;
-    src: url(font/XXII-MARKER_Regular.otf);
+    src: 
+        url(font/xxiimarker_regular.svg) format('svg'),
+        url(font/XXII-MARKER_Regular.otf),
+        url(font/xxiimarker_regular.ttf) format('truetype');
 }
 
 * {
@@ -40,41 +49,41 @@ a {
 }
 
 a.info {
-   position: relative;
-   color: black;
-   text-decoration: none;
-   border-bottom: 1px gray dotted; /* On souligne le texte. */
-   line-height: inherit;
+    position: relative;
+    color: black;
+    text-decoration: none;
+    border-bottom: 1px gray dotted; /* On souligne le texte. */
+    line-height: inherit;
 }
 a.info span {
-   display: none; /* On masque l'infobulle. */
+    display: none; /* On masque l'infobulle. */
 }
 a.info:hover {
-   background: none; /* Correction d'un bug d'Internet Explorer. */
-   z-index: 500; /* On définit une valeur pour l'ordre d'affichage. */
+    background: none; /* Correction d'un bug d'Internet Explorer. */
+    z-index: 500; /* On définit une valeur pour l'ordre d'affichage. */
 
-   cursor: help; /* On change le curseur par défaut par un curseur d'aide. */
+    cursor: help; /* On change le curseur par défaut par un curseur d'aide. */
 }
 a.info:hover span {
-   display: inline; /* On affiche l'infobulle. */
-   position: absolute;
+    display: inline; /* On affiche l'infobulle. */
+    position: absolute;
 
-   white-space: nowrap; /* On change la valeur de la propriété white-space pour qu'il n'y ait pas de retour à la ligne non désiré. */
+    white-space: nowrap; /* On change la valeur de la propriété white-space pour qu'il n'y ait pas de retour à la ligne non désiré. */
 
-   top: 18px; /* On positionne notre infobulle. */
-   left: 20px;
+    top: 18px; /* On positionne notre infobulle. */
+    left: 20px;
 
-   background: white;
+    background: white;
 
-   color: #666666;
-   padding: 3px;
+    color: #666666;
+    padding: 3px;
 
-   border: 1px solid #666666;
-   border-left: 4px solid #666666;
+    border: 1px solid #666666;
+    border-left: 4px solid #666666;
 }
 
 input[type="text"], input[type="email"], input[type="password"], input[type="file"], input[type="tel"], textarea {
-	background: none repeat scroll 0 0 #F8F8F8;
+    background: none repeat scroll 0 0 #F8F8F8;
     border: 1px solid #DDDDDD;
     border-radius: 0.2em 0.2em 0.2em 0.2em;
     box-shadow: 0 1px 1px #FFFFFF, 0 1px 0 #BBBBBB inset;
@@ -86,33 +95,33 @@ input[type="text"], input[type="email"], input[type="password"], input[type="fil
 }
 
 #logo {
-	display: block;
-	width: 94px;
-	height: 33px;
-	background: url('../assets/listaspace.png') top;
-	text-indent: -99999px;
+    display: block;
+    width: 94px;
+    height: 33px;
+    background: url('../assets/listaspace.png') top;
+    text-indent: -99999px;
 }
-	
+
 #logo:hover {
-	background-position: 0 bottom;
+    background-position: 0 bottom;
 }
 
 .ui-widget {
-	font-size: 0.7em !important;	
+    font-size: 0.7em !important;	
 }
 
 
 .chzn-container-single .chzn-single span {
-	margin-right: 15px;
+    margin-right: 15px;
 }
 
 
 .chzn-container-single .chzn-single {
-	padding: 0 0 0 4px;
+    padding: 0 0 0 4px;
 }
 
 .chzn-container .chzn-results li {
-	padding: 5px 2px;
+    padding: 5px 2px;
 }
 
 .dropdowns select {
@@ -130,191 +139,190 @@ body {
 }
 
 .notice {
-	margin-bottom: 10px;
-	text-align: center; 
-	border: 2px solid black; 
+    margin-bottom: 10px;
+    text-align: center; 
+    border: 2px solid black; 
 }
 
 .notice p {
-	padding: 5px;
-	margin: 0 auto;
-	color: white;
-	
-
+    padding: 5px;
+    margin: 0 auto;
+    color: white;
+    font-family: proxima-semibold;
 }
 
 .shadowCont h1 {
-	font-size: 22px;
-   margin-bottom: 20px;
-   font-family: Proxima;
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-family: Proxima;
 }
 .shadowCont p {
-	font-size: 1em;
-   margin-bottom: 10px;
+    font-size: 1em;
+    margin-bottom: 10px;
 }
 
 .layout-page {
-	margin: 0 auto;
-   text-align: left;
-   width: 713px;
+    margin: 0 auto;
+    text-align: left;
+    width: 713px;
 }
 
 .layout-center {
-   text-align: center;
+    text-align: center;
 }
 
 .menu-sub-layout {
-	/*border: 1px solid black;*/
-	box-shadow: 2px 2px 6px #333333;
-   line-height: 45px;
-   text-align: center;
-   font-family: proxima-semibold;
+    /*border: 1px solid black;*/
+    box-shadow: 2px 2px 6px #333333;
+    line-height: 45px;
+    text-align: center;
+    font-family: proxima-semibold;
 }
 
 .menu-sub {
-	border: 1px solid black;
-   margin: 0 100px;	
-   padding: 2px 0;
+    border: 1px solid black;
+    margin: 0 100px;	
+    padding: 2px 0;
 }
 
 .menu-sub a {
-	text-transform: uppercase;	
-	padding: 2px 30px;
+    text-transform: uppercase;	
+    padding: 2px 30px;
 }
 
 .home {
-	text-align: center;
+    text-align: center;
 }
 
 .home .paris_hold input[type="text"] {
-	font-size: 1em;
+    font-size: 1em;
 }
 
 .home .chzn-container {
-	top: 10px;
-	font-size: 1em !important;
+    top: 10px;
+    font-size: 1em !important;
 }
 
 .home .chzn-container-single .chzn-single {
-	height: 31px !important;
+    height: 31px !important;
     line-height: 30px !important;
 }
 
 .home .chzn-container-single .chzn-single div {
-	top: 4px !important;	
+    top: 4px !important;	
 }
 
 .home .jcarousel-skin-tango .jcarousel-container-horizontal {
-	margin: 0 auto;	
+    margin: 0 auto;	
 }
 
 .submenu .unselected:hover {
-   color: #666666;
+    color: #666666;
 }
 
 .submenu .unselected {
-	color: #BBBBBB;
+    color: #BBBBBB;
 }
 
 .submenu {
-	text-align: center;
-	float: left;
-	font-size: 1.3em;
-	line-height: 20px;
+    text-align: center;
+    float: left;
+    font-size: 1.3em;
+    line-height: 20px;
 }
 
 .submenu .separator {
-	border-color: cyan;
-   border-image: none;
-   border-style: solid;
-   border-width: 0 1px 0 1px;
+    border-color: cyan;
+    border-image: none;
+    border-style: solid;
+    border-width: 0 1px 0 1px;
 }
 
 .submenu a {
-	padding: 0 20px 0 18px;
-	display: inline-block;
+    padding: 0 20px 0 18px;
+    display: inline-block;
 }
 
 .menubar a {
-    /*float: left;
-    */
     padding: 0 24px;
     /*text-transform: uppercase;*/
 }
 
 .message {
-	margin-top: 20px; 
-	float: left;
-	width: 96%;	
-	min-height: 400px;
+    margin-top: 20px; 
+    float: left;
+    width: 96%;	
+    min-height: 400px;
 }
 
 .message .body {
-	color: #666666;
-	margin: 10px;
+    color: #666666;
+    margin: 10px;
 }
 
 .message .row {
-   font-size: 12px;
-   line-height: 30px;
-   margin: 10px 0;
-   padding: 5px 10px;
-   width: auto;	
-   overflow: auto;
-   border: 1px solid #666666;
-   font-size: 1em;
+    font-size: 12px;
+    line-height: 30px;
+    margin: 10px 0;
+    padding: 5px 10px;
+    width: auto;	
+    overflow: auto;
+    border: 1px solid #666666;
+    font-size: 1em;
 }
 
 .row:hover {
-	background: none repeat scroll 0 0 #FF99FF;
-	cursor: pointer;
+    background: none repeat scroll 0 0 #FF99FF;
+    cursor: pointer;
 }
 
 .row h4 {
-	font-size: 1.4em;
-	font-weight: normal;
-	color: #333333;
-	display: inline-block;
+    font-size: 1.4em;
+    font-weight: normal;
+    font-family: Proxima;
+    color: #333333;
+    display: inline-block;
 }
 
 .message .action {
-	border: 1px dashed transparent;	
-	background: none repeat scroll 0 0 #EEEEEE;
-   padding: 2px 20px;	
+    border: 1px dashed transparent;	
+    background: none repeat scroll 0 0 #EEEEEE;
+    padding: 2px 20px;	
 }
 
 .message .action:hover {
-	border: 1px dashed black;	
+    border: 1px dashed black;	
 }
 
 .unread {
     font-weight: bolder;
+    font-family: proxima-semibold;
 }
 
 .offer {
-	min-height: 400px;
-	margin-top: 20px;	
+    min-height: 400px;
+    margin-top: 20px;	
 }
 
 .imgx {
-	float: left;
-	margin-right: 20px;	
+    float: left;
+    margin-right: 20px;	
 }
 
 .menubar-left {
-	float: left;
-	line-height: 32px;	
-	width: 82%;
+    float: left;
+    line-height: 32px;	
+    width: 82%;
 }
 
 #bar-unauth a {
-	float: left;
+    float: left;
 }
 
 .sub-link {
-	font-size: 0.9em;
-   
-   color: #666666;	
+    font-size: 0.9em;
+    font-family: proxima-semibold;
+    color: #666666;	
 }
 
 .maincontainer {
@@ -323,6 +331,11 @@ body {
 }
 
 .logo {
+    float: left;
+    position: absolute;
+}
+
+.menubar {
     float: left;
     position: absolute;
 }
@@ -345,7 +358,7 @@ body {
 }
 
 .header-background {
-	background: none repeat scroll 0 0 cyan; /* cyan; */
+    background: none repeat scroll 0 0 cyan; /* cyan; */
     height: 37px;
     position: absolute;
     width: 100%;
@@ -407,40 +420,40 @@ body {
 }
 
 .xfields {
-	clear: both;
-   display: inline-block;
-   line-height: 32px;
-   padding: 0 5px;
-   width: 900px;
+    clear: both;
+    display: inline-block;
+    line-height: 32px;
+    padding: 0 5px;
+    width: 900px;
 }
 
 .xfields label {
-	float: left;
-   text-align: right;
-   width: 150px;
-   margin-right: 10px;
-   color: black;
+    float: left;
+    text-align: right;
+    width: 150px;
+    margin-right: 10px;
+    color: black;
 }
 
 .xfields .input {
-	float: left;
+    float: left;
 }
 
 .xfields .input input[type="checkbox"] {
-		margin: 6px;
+    margin: 6px;
 }
 
 .offer h2 {
-	color: #333333;
-	font-size: 1.2em;
-   margin: 23px 0 0;	
+    color: #333333;
+    font-size: 1.2em;
+    margin: 23px 0 0;	
 } 
 
 .offer .policy {
-	color: #666666;
-   line-height: 15px;
-   margin-left: 5px;
-   width: 96%;
+    color: #666666;
+    line-height: 15px;
+    margin-left: 5px;
+    width: 96%;
 }
 
 .contentholder {
@@ -467,8 +480,8 @@ body {
 }
 
 #bar-useraction .menu-sub a, #bar-searchaction .menu-sub a {
-	padding: 2px 13px;
-	font-size: 1.4em;
+    padding: 2px 13px;
+    font-size: 1.4em;
 }
 
 .rightcontent { 
@@ -491,6 +504,7 @@ body {
     height: 62px;
     margin-top: 20px;
     padding-top: 3px !important;
+    overflow: hidden !important;
 }
 
 .refinesearchresults .area {
@@ -528,8 +542,8 @@ body {
 
 .sortby {
     float: right;
-    font-size: 12px;
-/*    font-family: proxima-semibold; */
+    font-size: 12px;    
+    /*    font-family: proxima-semibold; */    
     margin-top: 5px;
     width: 100%;
 }
@@ -565,14 +579,14 @@ body {
 .resultsholder .heading {
     float: left;
     font-size: 22px;
-    
+
     padding-top: 12px;
     width: 419px;
 }
 
 .resultsholder .subheading {
     font-size: 12px;
-    
+
     line-height: 8px;
 }
 
@@ -583,7 +597,7 @@ body {
 .resultsholder .price {
     float: right;
     font-size: 30px;
-    
+
     margin-top: 8px;
     text-align: center;
     width: 110px;
@@ -633,6 +647,94 @@ h2 {
     float: left;
     line-height: 7px;
     margin: 6px 0pt 6px 2px;
+    width: 100%;
+    padding: 0px !important;
+}
+
+.resultsholder {
+    border-bottom: 1px solid #000000;
+    float: left;
+    height: 141px;
+    width: 100%;
+}
+
+.resultsholder img {
+    float: left;
+    margin: 11px 16px 11px 30px;
+}
+
+.resultsholder .heading {
+    float: left;
+    font-size: 22px;
+    padding-top: 12px;
+    width: 419px;
+}
+
+.resultsholder .subheading {
+    font-size: 12px;
+    line-height: 8px;
+}
+
+.resultsholder .details {
+    font-size: 12px;
+}
+
+.resultsholder .price {
+    float: right;
+    font-size: 30px;
+    margin-top: 8px;
+    text-align: center;
+    width: 110px;
+    color: #666666;
+}
+
+.resultsholder .perweek {
+    font-size: 14px;
+    line-height: 2px;
+}
+
+.pannelright {
+    border: 1px solid #000000;
+    display: table;
+    margin-top: 10px;
+    min-height: 66px;
+    padding: 5px;
+    text-align: center;
+    width: 193px;
+}
+
+.closepannel {
+    float: right;
+}
+
+.pannelright .heading_right {
+    float: left;
+    margin-bottom: 0px;
+    text-align: left;
+    text-transform: uppercase;
+    width: 170px;
+}
+
+h2 {
+    font-size: 16px;
+    margin: 2px 0pt;
+}
+
+.twocol {
+    float: left;
+    font-size: 0.9em;
+    text-align: left;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.twocol span {
+    display: inline-block;
+    float: left;
+    height: 14px;
+    line-height: 7px;
+    margin: 0 0 0 2px;
+    vertical-align: middle;
     width: 85px;
 }
 
@@ -712,18 +814,17 @@ h2 {
 .start_time{margin-top:10px;}
 .start_time p{font-size:15px;color:#010100;}
 .start_time input{border: 1px solid #939393; margin-top: 5px; padding: 3px; width: 122px;}
-/*.search_home {
+.search_home {
     background: url(../assets/search_home.png) repeat scroll 0 0 transparent;
     border: 0 none;
     color: transparent;
     float: left;
     font-size: 0;
-    
     height: 34px;
     margin-left: 105px;
     margin-top: 20px;
     width: 128px;
-}*/
+}
 
 
 .searchDropdown {
@@ -753,7 +854,7 @@ h2 {
     color: #000;
 }
 .searchDropdown ul li a:hover {
-	color: #CC33CC;
+    color: #CC33CC;
 }
 .searchDropdown:target ul {
     display: block;
@@ -819,7 +920,8 @@ h2 {
     -moz-box-shadow: 4px 5px 6px #333333;
     padding: 25px;
 }
-.play_hold h1{font-size:18px;color:#666666;margin-bottom:10px;text-align: center}
+
+.play_hold h1{font-size:18px;color:#666666;font-family: Proxima-semibold;margin-bottom:10px;text-align: center}
 .mr100{margin-right:100px;}
 .ml40{margin-left:40px;}
 .text_he{font-size:13px; color:#000;}
@@ -843,11 +945,17 @@ h2 {
     overflow: auto;
 }
 
-.s_head{font-size:22px;}
+/*.s_head{font-size:22px;}
 .reqInfo{color:#666666;margin:40px 0 5px 133px;  font-size: 1.2em;}
 .info { font-size: 0.9em; color: #666666; line-height: 29px;}
 .sign_up_input{}
-.sign_up_input label{float:left;width:120px; margin-right:10px;text-align:right;color:#000;line-height:29px;}
+.sign_up_input label{float:left;width:120px; margin-right:10px;text-align:right;color:#000;line-height:29px;}*/
+
+.s_head{font-size:22px;font-family: Proxima-semibold;}
+.reqInfo{color:#666666;margin:40px 0 5px 133px; font-family: Proxima-semibold; font-size: 1.2em;}
+.info { font-size: 0.9em; color: #666666; line-height: 29px;}
+.sign_up_input{}
+.sign_up_input label{float:left;width:120px; margin-right:10px;text-align:right;color:#000;font-family: Proxima-semibold;line-height:29px;}
 .sign_up_input input{width:192px;margin-left: 3px; /*border:1px solid #666666;*/}
 .sign_up_input textarea{width:534px;float:left; /*border:1px solid #666666;*/ padding:2px 3px;}
 .day, .month, .year{float:left;margin-right:5px;border:1px solid #666;padding:3px;width:60px;}
@@ -855,29 +963,32 @@ h2 {
 .year{width:87px;}
 .checkbox{margin-top:5px;}
 .checkbox input{float:left;margin-right:5px;width:auto;}
-.checkbox label{float:left;text-align:left;font-weight:normal;}
+
+.checkbox label{float:left;text-align:left;font-weight:normal; font-family: Proxima;}
 .w50{width:50px !important;}
 .mr10{margin-right:10px;}
 .w129{width:129px !important;}
-.back{font-size:14px;color:#333333;margin-top:10px;margin-bottom:10px;display:block;}
-.charming{font-size:20px;color:#333;}
-.charming_text{font-size:12px;color:#666;margin-top:2px;}
+.back{font-size:14px;font-family: Proxima-semibold;color:#333333;margin-top:10px;margin-bottom:10px;display:block;}
+.charming{font-size:20px;color:#333;font-family: Proxima-semibold;}
+.charming_text{font-size:12px;color:#666;font-family: Proxima-semibold;margin-top:2px;}
 .graytext{color:#666666 !important;}
 .gallery{margin-top:10px;margin-left:-20px;float:left;}
-.size{font-size:14px;color:#333333;float:left;margin-right:10px;}
+.size{font-size:14px;color:#333333;font-family: Proxima-semibold;float:left;margin-right:10px;}
+
 .size_text{font-size:14px;color:#333333;float:left;}
 .w200{width:200px;}
 .mt100{margin-top:100px;}
 .line{background:none scroll 0 0 #DDDDDD;height:1px;margin:7px 0;}
-.name{font-size:12px;color:#000;}
+
+.name{font-size:12px;font-family: Proxima-semibold;color:#000;}
 .name_text{font-size:12px;;color:#000;font-style:italic;}
 .send{
-	font-size:12px;
-	color:#cc33cc;
-	margin-top:20px;
-	display:block;
-	font-family: proxima-bold;
-	}
+    font-size:12px;
+    color:#cc33cc;
+    margin-top:20px;
+    display:block;
+    font-family: proxima-bold;
+}
 .w107{width: 160px;}
 .available{font-size:18px;color:#000;}
 .daytime{background: url("../assets/plus.png") no-repeat scroll left center transparent;color: #000000; float: left; font-size: 12px; margin-right: 37px; margin-top: 6px; padding-left: 20px; text-align: center;}
@@ -888,7 +999,7 @@ h2 {
     border-radius: 5px 5px 5px 5px;
     color: #FFFFFF;
     /*float: left;
-	margin-left: 105px;
+        margin-left: 105px;
     margin-top: 10px;    
     */
     margin: 0 auto;
@@ -898,7 +1009,7 @@ h2 {
 
 .pagination {
     list-style: none outside none;
-    margin: 35px auto;
+    margin: 5px auto;
     max-width: 500px;
     padding: 0;
     text-align: center;
@@ -1090,42 +1201,42 @@ h2 {
 }
 
 #button {
-	height: 32px;
-	width: 184px;
-	margin: auto;
+    height: 32px;
+    width: 184px;
+    margin: auto;
 }
 
 ul, li {
-	margin:0; 
-	padding:0; 
-	list-style:none;
+    margin:0; 
+    padding:0; 
+    list-style:none;
 }
 
 .menu_class {
-	border:1px solid #1c1c1c;
+    border:1px solid #1c1c1c;
 }
 
 .the_menu {
-	display:none;
-	width:300px;
-	border: 1px solid #1c1c1c;
+    display:none;
+    width:300px;
+    border: 1px solid #1c1c1c;
 }
 
 .the_menu li {
-	background-color: #302f2f;
+    background-color: #302f2f;
 }
 
 .the_menu li a {
-	color:#FFFFFF; 
-	text-decoration:none; 
-	padding:10px; 
-	display:block;
+    color:#FFFFFF; 
+    text-decoration:none; 
+    padding:10px; 
+    display:block;
 }
 
 .the_menu li a:hover {
-	padding:10px;
-	
-	color: #F00880;
+    padding:10px;
+    font-family: Proxima-semibold;
+    color: #F00880;
 }
 
 .XXII {
@@ -1139,7 +1250,7 @@ ul, li {
 }
 
 .ui-slider-horizontal .ui-slider-range {
-	background: none repeat scroll 0 0 cyan !important;
+    background: none repeat scroll 0 0 cyan !important;
 }
 
 .ui-slider-horizontal .ui-slider-handle {
@@ -1147,31 +1258,31 @@ ul, li {
 }
 
 .ui-slider {
-	border-radius: 0 !important;
+    border-radius: 0 !important;
 }
 
 .avail_item {
-	display: inline-block;
-	width: 100px;
-	margin-bottom: 10px;
+    display: inline-block;
+    width: 100px;
+    margin-bottom: 10px;
 }
 
 .linkAddRmFavorite{
-	float:right;
-	font-family: proxima-bold;
-	color: #cc33cc;
-	padding-top: 1em;
+    float:right;
+    font-family: proxima-bold;
+    color: #cc33cc;
+    padding-top: 1em;
 }
 
 .blockParts, .blockParts2{
-  	font-size: 16px; 
-  	/*font-weight: bold; */
-  	font-family: proxima-bold;
-  	padding-bottom: 1em;
-  }
-  
-  .blockParts2{
-  	float: left;
-  	padding-top: 1em;
-  	color: #333333;
-  }
+    font-size: 16px; 
+    /*font-weight: bold; */
+    font-family: proxima-bold;
+    padding-bottom: 1em;
+}
+
+.blockParts2{
+    float: left;
+    padding-top: 1em;
+    color: #333333;
+}

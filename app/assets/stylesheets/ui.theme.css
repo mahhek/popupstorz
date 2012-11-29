@@ -24,7 +24,7 @@
 #demo-dialog.ui-widget button { font-family: Trebuchet MS,Verdana,Arial,sans-serif; font-size: 1em; }
 
 #widget-docs .ui-widget-header, 
-#demo-dialog .ui-widget-header { border: 1px solid #ffffff; background: #464646 url(images/464646_40x100_textures_01_flat_100.png) 50% 50% repeat-x; color: #ffffff; font-weight: bold; }
+#demo-dialog .ui-widget-header { border: 1px solid #ffffff; background: #464646 url(images/464646_40x100_textures_01_flat_100.png) 50% 50% repeat-x; color: #ffffff; font-family: Proxima-semibold; }
 
 #widget-docs .ui-widget-header a,
 #demo-dialog .ui-widget-header a { color: #ffffff; }
@@ -41,7 +41,7 @@
 #widget-docs .ui-state-default, 
 #widget-docs .ui-widget-content .ui-state-default,
 #demo-dialog .ui-state-default, 
-#demo-dialog .ui-widget-content .ui-state-default { border: 1px solid #666666; background: #555555 url(images/555555_40x100_textures_03_highlight_soft_75.png) 50% 50% repeat-x; font-weight: normal; color: #ffffff; outline: none; }
+#demo-dialog .ui-widget-content .ui-state-default { border: 1px solid #666666; background: #555555 url(images/555555_40x100_textures_03_highlight_soft_75.png) 50% 50% repeat-x; font-weight: normal; color: #ffffff; outline: none; font-family: Proxima; }
 
 #widget-docs .ui-state-default a, 
 #demo-dialog .ui-state-default a { color: #ffffff; text-decoration: none; outline: none; }
@@ -53,7 +53,7 @@
 #demo-dialog .ui-state-hover, 
 #demo-dialog .ui-widget-content .ui-state-hover, 
 #demo-dialog .ui-state-focus, 
-#demo-dialog .ui-widget-content .ui-state-focus { border: 1px solid #666666; background: #444444 url(images/444444_40x100_textures_03_highlight_soft_60.png) 50% 50% repeat-x; font-weight: normal; color: #ffffff; outline: none; }
+#demo-dialog .ui-widget-content .ui-state-focus { border: 1px solid #666666; background: #444444 url(images/444444_40x100_textures_03_highlight_soft_60.png) 50% 50% repeat-x; font-weight: normal; color: #ffffff; outline: none; font-family: Proxima; }
 
 #widget-docs .ui-state-hover a,
 #demo-dialog .ui-state-hover a { color: #ffffff; text-decoration: none; outline: none; }
@@ -61,7 +61,7 @@
 #widget-docs .ui-state-active, 
 #widget-docs .ui-widget-content .ui-state-active,
 #demo-dialog .ui-state-active, 
-#demo-dialog .ui-widget-content .ui-state-active { border: 1px solid #666666; background: #ffffff url(images/ffffff_40x100_textures_01_flat_65.png) 50% 50% repeat-x; font-weight: normal; color: #F6921E; outline: none; }
+#demo-dialog .ui-widget-content .ui-state-active { border: 1px solid #666666; background: #ffffff url(images/ffffff_40x100_textures_01_flat_65.png) 50% 50% repeat-x; font-weight: normal; color: #F6921E; outline: none; font-family: Proxima; }
 
 #widget-docs .ui-state-active a,
 #demo-dialog .ui-state-active a { color: #F6921E; outline: none; text-decoration: none; }
@@ -92,12 +92,12 @@
 #widget-docs .ui-priority-primary, 
 #widget-docs .ui-widget-content .ui-priority-primary,
 #demo-dialog .ui-priority-primary, 
-#demo-dialog .ui-widget-content .ui-priority-primary { font-weight: bold; }
+#demo-dialog .ui-widget-content .ui-priority-primary { font-family: Proxima-semibold; }
 
 #widget-docs .ui-priority-secondary, 
 #widget-docs .ui-widget-content .ui-priority-secondary,
 #demo-dialog .ui-priority-secondary, 
-#demo-dialog .ui-widget-content .ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
+#demo-dialog .ui-widget-content .ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; font-family: Proxima; }
 
 
 /* Icons
