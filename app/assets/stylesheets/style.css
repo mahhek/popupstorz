@@ -94,6 +94,13 @@ input[type="text"], input[type="email"], input[type="password"], input[type="fil
     width: 10em;
 }
 
+hr {
+	background-color: #999999;
+    border: 0 none;
+    color: #999999;
+    height: 1px;	
+	}
+
 #logo {
 	display: block;
 	width: 94px;
@@ -130,6 +137,24 @@ input[type="text"], input[type="email"], input[type="password"], input[type="fil
     float: left;
     margin: 2px 15px;
     padding: 2px 5px;
+}
+
+.dropdowns ul li {
+	display: inline-block;	
+	padding: 0 5px 0 0;
+}
+
+
+.dropdowns ul li:hover {
+	background-color: white;	
+}
+
+/*.dropdowns ul li ul li{
+	display: block;;	
+}*/
+
+.dropdowns span {
+	padding: 0 5px 0 6px;	
 }
 
 body {
@@ -199,7 +224,7 @@ body {
 }
 
 .home .chzn-container {
-	top: 10px;
+	display: -moz-stack;
 	font-size: 1em !important;
 }
 
@@ -303,6 +328,12 @@ body {
 	margin-top: 20px;	
 }
 
+.booking {
+	text-transform: uppercase;
+	font-size: 1.4em;
+	padding: 2px 5px;
+}
+
 .imgx {
 	float: left;
 	margin-right: 20px;	
@@ -310,8 +341,8 @@ body {
 
 .menubar-left {
 	float: left;
-	line-height: 32px;	
-	width: 82%;
+	line-height: 37px;	
+	width: 50%;
 }
 
 #bar-unauth a {
@@ -349,7 +380,9 @@ body {
     width: 100%;
     z-index: 999;
     background-color: white;
+    font-family: proxima-bold;
 }
+
 
 .header-background {
 	background: none repeat scroll 0 0 cyan; /* cyan; */
@@ -362,8 +395,25 @@ body {
 
 
 .loginpannel {
-    height: 22px;
-    padding-top: 10px;
+    background: none repeat scroll 0 0 white;
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    display: block;
+    margin-left: 179px;
+    position: absolute;
+    vertical-align: middle;
+    z-index: 10;
+    padding: 2px;
+    display: none;
+    width: 335px;
+}
+
+.loginpannel .info {
+    display: inline-block;
+    font-family: proxima;
+    line-height: 0.8em;
+    margin-left: 174px;	
 }
 
 .loginpannel input[type="button"] {
@@ -379,15 +429,16 @@ body {
 }
 
 .loginpannel input[type="submit"] {
-    background-color: #FFFF33;
-    border: 1px solid #000000;
-    font-size: 12px;
-    height: 19px;
+ 		 background-color: #CC33CC;
+    border: 0 solid #000000;
+    font-family: proxima-bold;
+    font-size: 1.1em;
+    height: 26px;
     margin-right: 5px;
     margin-top: 2px;
     padding-bottom: 2px;
-    text-transform: uppercase;
-    width: 44px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .loginpannel input[type="text"], .loginpannel input[type="password"] {
@@ -400,12 +451,12 @@ body {
 }
 
 .loginpannel input[type="text"] {
-    width: 103px;
+    width: 143px;
 }
 
 .dropdowns {
     float: right;
-    height: 26px;
+    height: 37px;
     line-height: 37px;
 }
 
@@ -426,7 +477,8 @@ body {
    text-align: right;
    width: 150px;
    margin-right: 10px;
-   color: black;
+   color: #333333;
+   text-transform: uppercase;
 }
 
 .xfields .input {
@@ -641,7 +693,7 @@ h2 {
     line-height: 7px;
     margin: 0 0 0 2px;
     vertical-align: middle;
-    width: 85px;
+    width: 70px;
 }
 
 .twocol .leftrow {
@@ -735,7 +787,7 @@ h2 {
 
 .searchDropdown {
     float: left;
-    margin: 0 6px 5px 0;
+    width: 100%;
 }
 .searchDropdown ul {
     background-color: white;
@@ -743,8 +795,9 @@ h2 {
     border-image: none;
     border-style: solid;
     border-width: 0 1px 1px;
-    margin-top: 5px;
     position: absolute;
+    font-family: proxima-bold;
+    color: #666666;
 }
 .searchDropdown ul li {
     float: left;
@@ -752,12 +805,16 @@ h2 {
     line-height: 15px;
 }
 
+.searchDropdown li {
+	display: inline-block;	
+}
+
 .searchDropdown span {
     padding: 8px;
 }
 .searchDropdown ul li a {
     padding: 0px 9px;
-    color: #000;
+    color: #666666;
 }
 .searchDropdown ul li a:hover {
 	color: #CC33CC;
@@ -773,7 +830,8 @@ h2 {
 }
 .searchDropdown span {
     background: url("../assets/v.png") no-repeat scroll right center transparent;
-    padding: 0 13px;
+    padding: 0 23px;
+    font-family: proxima-bold;
 }
 
 
@@ -792,7 +850,7 @@ h2 {
     background-color: #CC33CC;
     float: left;
     width: 100%;
-    line-height: 25px;
+    line-height: 22px;
 }
 .dropdown ul li:hover {
     background-color: #000;
@@ -804,9 +862,9 @@ h2 {
     padding: 5px 9px;
     color: #fff;
 }
-.dropdown:hover ul {
+/*.dropdown:hover ul {
     display: block;
-}
+}*/
 .dropdown:hover {
     cursor: pointer;
 }
@@ -815,7 +873,44 @@ h2 {
 }
 .dropdown span {
     background: url("../assets/v.png") no-repeat scroll right center transparent;
-    padding: 0 13px;
+    padding: 0 13px 0 8px;
+}
+
+.dropdown span a {
+	padding: 0;	
+}
+
+.light {
+	font-family: proxima;
+	color: #666;
+}
+
+.dropdown ul.profil li {
+	background-color: white;
+	padding: 0;
+	line-height: 15px;
+}	
+
+.dropdown ul.profil li a {
+	color: #666;	
+}
+
+.dropdown ul.profil li a:hover {
+	color: #CC33CC;
+}
+
+.dropdown ul.profil li:hover {
+	font-family: proxima-semibold;	
+}
+
+.profil {
+	background-color: white;
+    border-color: #BBBBBB;
+    border-image: none;
+    border-style: solid;
+    border-width: 0 1px 1px;
+    color: #666666;
+    font-family: proxima-bold;
 }
 
 .play_hold {
@@ -895,14 +990,15 @@ h2 {
     background: none repeat scroll 0 0 #CC33CC;
     border-radius: 5px 5px 5px 5px;
     color: #FFFFFF;
-    /*float: left;
-	margin-left: 105px;
-    margin-top: 10px;    
-    */
     margin: 0 auto;
     font-size: 20px;
     font-family: Proxima-bold;
-    padding: 5px 25px;}
+    padding: 6px 25px 2px;
+}
+
+.home .chzn-container-single .chzn-single span {
+	padding-top: 1px;	
+}
 
 .pagination {
     list-style: none outside none;

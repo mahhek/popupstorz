@@ -10,9 +10,9 @@
     <%= form_tag "/items/search_keyword", :method => :get  do %>
       <%= select_tag( "location", options_from_collection_for_select( @items_with_uniq_cities, :city, :city), :prompt => "Select City", :class => "paris") %>
       <span style="margin-left: 15px;">From</span>
-      <%= text_field_tag :search_from, nil, "hint" => "mm/dd/yyyy" %>
+      <%= text_field_tag :search_from, nil, :style => "height: 23px;", "hint" => "mm/dd/yyyy" %>
       <span style="margin-left: 15px;">To</span>
-      <%= text_field_tag :search_to, nil, "hint" => "mm/dd/yyyy" %>
+      <%= text_field_tag :search_to, nil, :style => "height: 23px;", "hint" => "mm/dd/yyyy" %>
       <%= submit_tag "Search", :class => "search", :style => ""  %>
     <% end %>
   </div>

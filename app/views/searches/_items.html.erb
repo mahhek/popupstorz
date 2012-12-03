@@ -11,7 +11,7 @@
           <% end %>
         </div>
 
-        <div style="color: grey; float: right; font-size: 26px;text-align: right;">
+        <div style="color: #666666; float: right; font-size: 26px;text-align: right;">
           <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %><br>
           <span class="perweek" style="font-size: 0.7em;">
             <%= t(:by) %> <%= item.time_for_unit_price %><%= t(:per_day) %>
@@ -21,14 +21,14 @@
         <div class="name-list" style="margin-bottom: 5px;font-family: proxima-bold;color: #333333;">
           <h4><%= item.title %></h4>
         </div>
-        <div class="name-list" style="margin-bottom: 5px;float:left;width:65%;color:#00cccc;">
+        <div class="name-list" style="margin-bottom: 5px;float:left;width:65%;color:#666666;">
           <%= item.listing_type.name %>
         </div>
 
         <div class="name-list XXII" style="margin-bottom: 5px;">
-          <span style="font-size: 1.1em; "></span>
-          <%= item.city %>,<%= item.country_code.capitalize %>
-          <%#= item.address %>
+          <span style="font-size: 1.1em; font-variant: small-caps; ">
+          	<%= item.city %></span>,<span style="font-size: 1.1em; text-transform: uppercase; "><%= item.country_code %>
+          </span>
         </div>
 
         <div class="name-list" style="margin-bottom: 5px;width: 70%;float: left;">

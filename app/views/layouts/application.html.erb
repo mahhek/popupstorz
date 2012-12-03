@@ -24,6 +24,9 @@
 
     <%= javascript_include_tag "jquery.fileinput" %>
     <%= javascript_include_tag "jcarousel.min" %>    
+    
+    <%= javascript_include_tag "jquery.hoverIntent.min" %> 
+    <%= javascript_include_tag "superfish" %>  
 
     <%= javascript_include_tag "maps" %>
 
@@ -89,62 +92,65 @@
 
           <div class="menubar">
             <div class="dropdowns">
-              <div class="dropdown">
-                <span><%= params[:locale]== 'fr' ? 'FR' : 'EN' %></span>
-                <ul>
-                  <li><%= link_to "FR", "#", :onclick => "addParamToUrl('locale', 'fr')" %></li>
-                  <li><%= link_to "EN", "#", :onclick => "addParamToUrl('locale', 'en')" %></li>
-                </ul>
-              </div>
-              <div class="dropdown">
-                <span> <%= session[:curr]== 'USD' ? '$' : '€' %> </span>
-                <ul>
-                  <li><%= link_to "$", "#", :onclick => "addParamToUrl('curr', 'USD')" %></li>
-                  <li><%= link_to "€", "#", :onclick => "addParamToUrl('curr', 'EUR')" %></li>
-                </ul>
-              </div>
-              <br/><%= link_to("", new_item_path, :style=>"display: block; margin-right: 0;", :id=>"logo" ) %>
+              <ul class="dropdown sf-menu">
+                <li class="light"><span><%= params[:locale]== 'fr' ? 'FR' : 'EN' %></span>
+	                <ul>
+	                  <li><%= link_to "FR", "#", :onclick => "addParamToUrl('locale', 'fr')" %></li>
+	                  <li><%= link_to "EN", "#", :onclick => "addParamToUrl('locale', 'en')" %></li>
+	                </ul></li>
+                <li class="light"><span><%= session[:curr]== 'USD' ? '$' : '€' %></span>
+	                <ul>
+	                  <li><%= link_to "$", "#", :onclick => "addParamToUrl('curr', 'USD')" %></li>
+	                  <li><%= link_to "€", "#", :onclick => "addParamToUrl('curr', 'EUR')" %></li>
+	                </ul></li>
+	                
+	              <% if user_signed_in? %>
+                <li><span><%= link_to "#{current_user.popup_storz_display_name}", dashboard_path(current_user.id), :class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %></span>
+												<ul class="profil" style="font-family: proxima; width: 150px;">
+													 <li><a href="#">Profil (todo)</a></li>
+													 <li><a href="#">Account (todo)</a></li>
+													 
+			                  <% if current_user && current_user.admin? %>
+			                    <li><%= link_to t(:admin_panel), admin_items_path, :style => "font-family: proxima-bold;" %></li>
+			                  <% end %>
+			                  
+			                  <li><%= link_to t(:logout), destroy_user_session_path, :method => :delete, :style => "font-family: proxima-bold;" %></li> 
+												</ul>                                    
+                </li>                
+                <% end %>
+              </ul>
+              <br />
+              <%= link_to("", new_item_path, :style=>"display: block; margin-right: 0;", :id=>"logo" ) %>
             </div>
 
             <% if user_signed_in? %>
-              <span id="bar-navigate" class="menubar-left">
+              <div id="bar-navigate" class="menubar-left">
                 <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
-                <span class="<%= ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : "") %>" style="float: left; padding-bottom: 5px;">
-                  <%= link_to t(:dashboard), inbox_messages_path, :style => "padding-right: 0;" %>
-
-                  <% messages_size = current_user.messages.are_to(current_user).unread.size %>
-                  <% if messages_size > 0 %>
-                    <%= link_to messages_size.to_s, inbox_messages_path, :style=>["border: 1px solid; margin-right: 22px; min-width: 18px; padding: 0px 3px; text-align: center;"] %>
-                  <% end %>       
-                </span>
-                <span style="float: right;">
-                  <%= link_to "#{t(:hi)} #{current_user.popup_storz_display_name}", dashboard_path(current_user.id),:class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
-
-                  <%= link_to t(:logout), destroy_user_session_path, :method => :delete %>                
-
-                  <% if current_user && current_user.admin? %>
-                    <%= link_to t(:admin_panel), admin_items_path %>
-                  <% end %>     
-                </span>
-                <div style="float:left;" class='<%= (((params[:controller] == "items" and params[:action] == "search_keyword")  or params[:controller] == "searches" or (params[:controller] == "items" and params[:action] == "show")) ? "m_act" : "") %>'>
-                  <div class="searchDropdown searchMenu" onclick="search_menu()">
-                    <span class="searchMenu" >
-                      <%= t(:search) %>
-                      <ul id="search_options" class="searchMenu">
+                
+                  <ul class="searchDropdown searchMenu sf-menu">
+                  		<li class="<%= ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : "") %>" style="font-family: proxima-bold; float: left;">
+			                  <%= link_to t(:dashboard), inbox_messages_path, :style => "padding-right: 0;" %>
+			
+			                  <% messages_size = current_user.messages.are_to(current_user).unread.size %>
+			                  <% if messages_size > 0 %>
+			                    <%= link_to messages_size.to_s, inbox_messages_path, :style=>["background: none repeat scroll 0 0 white; border: 1px solid; margin-right: 23px; min-width: 18px; padding: 0px 3px; text-align: center;"] %>
+			                  <% end %>       
+			                </li>
+                  		<li><span class="searchMenu <%= (((params[:controller] == "items" and params[:action] == "search_keyword")  or params[:controller] == "searches" or (params[:controller] == "items" and params[:action] == "show")) ? "m_act" : "") %>" ><%= t(:search) %></span>
+                      <ul id="search_options" class="searchMenu" style="display: none;">
                         <li class="searchMenu"><%= link_to t(:spaces3), "/searches/spaces" %></li>
                         <li class="searchMenu"><%= link_to t(:gatherings2),  "/searches/gatherings" %></li>
                         <li class="searchMenu"><%= link_to "Members",  "/searches/members" %></li>
                       </ul>
-                    </span>
-                  </div>
-                </div>
-              </span>
+                    </li>
+                  </ul>
+              </div>
               <div divclass="clear"></div>
 
               <span id="bar-search" class="menubar-left" style="margin-left: 100px;">
                 <% if params[:controller] == "searches" %>
-    <%#= link_to 'Members', members_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "members" or params[:action] == "search_members" )) ? "m_act" : "") %>
-    <%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
+											<%#= link_to 'Members', members_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "members" or params[:action] == "search_members" )) ? "m_act" : "") %>
+    									<%#= link_to 'Gatherings', gatherings_searches_path, :class => ((params[:controller] == "searches" and ( params[:action] == "gatherings" or params[:action] == "search_gatherings" )) ? "m_act" : "") %>
                 <% end %>
               </span>
 
@@ -154,13 +160,15 @@
                 <%= link_to t(:signup), new_user_registration_path, :class=>((( params[:controller] == "registrations" || params[:controller] == "devise/passwords" )&& params[:action] == "new") ? "m_act" : "")  %>
                 <a href="#" onclick="login_menu()"><%= t(:login)%></a>
                 <div class="clear"></div>
-                <div id="loginpannel" class="loginpannel" style="margin-left: 179px;">
+                
+                <div id="loginpannel" class="loginpannel">
                   <% unless user_signed_in? %>
                     <%= form_tag new_user_session_path do %>
                       <%= text_field_tag 'user[email]' %>
                       <%= password_field_tag 'user[password]' %>
                       <input type="submit" value="Login" />
                     <% end %>
+                    <span class="info">Password forgoten ?</span>
                   <% else %>
                     <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || (params[:action] == "listings_home" && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" )||(params[:controller] == "accounts") || (params[:controller] == "items" && params[:action] == "new") %>
                       <% if params[:action] == "dashboard"  || (params[:controller] == "email_settings") || (params[:action] == "inbox" && params[:controller] == "messages") || ((params[:action] == "listings_home" or params[:action] == "new") && params[:controller] == "items") || (params[:controller] == "messages") || (params[:action] == "my_pop_ups" && params[:controller] == "items") || (params[:action] == "gatherings" && params[:controller] == "items") || (params[:action] == "favorites" && params[:controller] == "items") || (params[:action] == "show" && params[:controller] == "users") || params[:action] == "dashboard" || (params[:action] == "invitations" && params[:controller] == "users") || (params[:action] == "gatherings" && params[:controller] == "items")  || (params[:action] == "overview" && params[:controller] == "items")  || (params[:action] == "index" && params[:controller] == "items") || (params[:action] == "gatherings_at_my_place" && params[:controller] == "items") || ((params[:action] == "created_prev_gatherings" || params[:action] == "created_coming_gatherings" || params[:action] == "pending_gathering_acceptance" || params[:action] == "past_transactions" ) && params[:controller] == "items" ) || (params[:controller] == "items" && params[:action] == "new") %>
@@ -274,6 +282,10 @@
         $("textarea[hint]").hint();
         $('#loginpannel').hide();
         
+        $("ul.sf-menu").superfish({
+									autoArrows:  false,        
+        });
+        
         $('.notice').delay(3500).fadeTo("slow", 0.00, function(){
           $(this).slideUp("slow", function() {
             $(this).remove();
@@ -308,40 +320,10 @@
         //return the finished url
         window.location = url;
       }
-	
-      function search_menu(){
-        $('#search_options').toggle("slow");
-      }
 	  
       function login_menu(){
         $('#loginpannel').toggle("slow");
       }
-	
-      $(document).click(function(event) {  
-        if($(event.target).hasClass("searchMenu") == true){      
-          $('#search_options').show();
-        } else {
-          if($('#search_options').is(":hidden") == false){
-            $('#search_options').hide();
-          }
-        }
-	  		
-      });
-            
-      function mini_drop(){
-        $('#mini_drop_options').toggle();
-      }
-      
-      $(document).click(function(event) {
-        if($(event.target).hasClass("searchMenu") == true){
-          $('#search_options').show();
-        }
-        else{
-          if($('#search_options').is(":hidden") == false){
-            $('#search_options').hide();
-          }
-        }
-      });
     </script>
 
     <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;&amp;v=2&amp;key=AIzaSyAPEeqlhndG4KU6-bRWegIBrs-v-kFcdgY"></script>
