@@ -9,7 +9,11 @@
         <% end %>
       </div>  
 
-      <div class="name-list" style="margin-bottom: 5px;"><h4 style="font-family:proxima-bold; color: #333333;"><%= member.first_name + " " + member.last_name %></h4>TODO rating</div>
+      <div class="name-list" style="margin-bottom: 5px;">
+        <h4 style="font-family:proxima-bold; color: #333333;">
+          <%= member.first_name + " " + member.last_name %>
+        </h4>TODO rating
+      </div>
 
       <div class="name-list" style="margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;"><%= member.activity %></div>
 
@@ -25,10 +29,10 @@
 
     <div style="margin-top: -30px; color: grey;float: right;">
       <% if (current_user != member) %>
-        <%= link_to_function "Send Message", "$('#contact_me_div').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
+        <%= link_to_function "Send Message", "$('#contact_me_div_#{member.id}').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
       <% end %>
 
-      <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
+      <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= member.id %>">
         <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
           <%= hidden_field_tag :topic, "Inquiry" %>
           <%= hidden_field_tag :user_id, member.id %>
@@ -38,8 +42,8 @@
           </span>
 
           <div style="margin-right: 10px; text-align: right;">
-            <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;
-            <%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
+            <%= submit_tag "Send", :onclick => "$('#contact_me_div_#{member.id}').hide();" %>&nbsp;&nbsp;&nbsp;
+            <%= link_to_function "Cancel", "$('#contact_me_div_#{member.id}').toggle('slow');"  %>
           </div>
         <% end %>
       </div>
@@ -48,8 +52,8 @@
   </div>
 <%end%>
 
-<script>
-  $(document).ready(function() {
-    $('.pagination a').attr('data-remote', 'true');
-  });
-</script>
+<%#*<script>%>
+<%#*$(document).ready(function() {%>
+<%#*$('.pagination a').attr('data-remote', 'true');%>
+<%#*});%>
+<%#*</script>%>

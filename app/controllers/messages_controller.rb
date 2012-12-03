@@ -2,7 +2,7 @@
 class MessagesController < ApplicationController  
 
   def inbox
-    @messages = current_user.received_messages
+    @messages = current_user.received_messages.all(:order => "created_at DESC")
     @messages = @messages.paginate(:page => params[:page], :per_page => 10)
   end
 
@@ -55,7 +55,8 @@ class MessagesController < ApplicationController
   end
 
   def reply
-    @message = ActsAsMessageable::Message.find_by_id(params[:id])    
+    @message = ActsAsMessageable::Message.find_by_id(params[:id])
+    @message.mark_as_read
   end
 
   def do_reply

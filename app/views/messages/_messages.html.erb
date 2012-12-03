@@ -11,8 +11,7 @@
           <%= link_to "Mark As Unread",  "#",:class => "action", :onclick => "checkListOfCheckBox('mark_as_unread'); return false;" %>
         <% end %>
       <%end%>
-    <%= will_paginate(@messages, :params => params, :renderer => PaginationListLinkRenderer) %>
-    <%#*TODO Paginate !!%>
+      <%= will_paginate(@messages, :params => params, :renderer => PaginationListLinkRenderer) %>    
     </div>
 
     <div class="clear" ></div>
@@ -38,7 +37,7 @@
       <% unless message.opened? %>
         <!--b-->
       <%end%>
-      <div class="mail-list-hover row unread">
+      <div class="<%= message.opened == true ? 'mail-list-hover row' : 'mail-list-hover row unread' %>">
 
         <span class="checkbox" style="float:left;width:20px;margin-top:9px;" >
           <%=  check_box_tag "message[]", message.id, false, {:id => "messages_#{message.id}", :class => "checkBoxClass"} %>
