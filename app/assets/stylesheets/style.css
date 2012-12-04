@@ -10,12 +10,18 @@
 
 @font-face {
     font-family: Proxima-bold;
-    src: url(font/ProximaNova-Bold.otf);
+    src: 
+        url(font/proximanovabold.svg) format('svg'),
+        url(font/ProximaNova-Bold.otf),
+        url(font/proximanovabold.ttf) format('truetype');
 }
 
 @font-face {
     font-family: Proxima-light;
-    src: url(font/ProximaNova-Light.otf);
+    src: 
+        url(font/proximanovalight.svg) format('svg'),
+        url(font/ProximaNova-Light.otf),
+        url(font/proximanovalight.ttf) format('truetype');
 }
 
 @font-face {
@@ -224,13 +230,14 @@ body {
 }
 
 .home .chzn-container {
-	display: -moz-stack;
+	display: -moz-inline-box;
 	font-size: 1em !important;
 }
 
 .home .chzn-container-single .chzn-single {
     height: 31px !important;
     line-height: 30px !important;
+    width: 110px;
 }
 
 .home .chzn-container-single .chzn-single div {
@@ -688,21 +695,6 @@ h2 {
     margin: 2px 0pt;
 }
 
-.twocol {
-    float: left;
-    font-size: 0.9em;
-    text-align: left;
-    width: 100%;
-}
-
-.twocol span {
-    float: left;
-    line-height: 7px;
-    margin: 6px 0pt 6px 2px;
-    width: 100%;
-    padding: 0px !important;
-}
-
 .resultsholder {
     border-bottom: 1px solid #000000;
     float: left;
@@ -772,6 +764,24 @@ h2 {
     margin: 2px 0pt;
 }
 
+.onecol {
+    float: left;
+    font-size: 0.9em;
+    text-align: left;
+    width: 100%;
+}
+
+.onecol span {
+    display: inline-block;
+    float: left;
+    height: 14px;
+    line-height: 7px;
+    margin: 6px 0pt 6px 2px;
+    vertical-align: middle;
+    width: 85%;
+    padding: 0px !important;
+}
+
 .twocol {
     float: left;
     font-size: 0.9em;
@@ -785,9 +795,10 @@ h2 {
     float: left;
     height: 14px;
     line-height: 7px;
-    margin: 0 0 0 2px;
+    margin: 6px 0pt 6px 2px;
     vertical-align: middle;
-    width: 70px;
+    width: 33%;
+    padding: 0px !important;
 }
 
 .twocol .leftrow {
@@ -1250,10 +1261,18 @@ h2 {
 }
 
 .rg-gallery{
+	position: relative;
     width: 485px;
     float: left;
     margin-top: 20px;
+    height: 370px;
 }
+
+.rg-thumbs {
+	position: absolute;
+    top: 305px;
+}
+
 .rg-view{
     height:30px;
     display: none !important;

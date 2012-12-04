@@ -111,12 +111,12 @@
     <div class="fltL">
       <h1 class="charming" style="margin-bottom: 0; font-family: proxima-bold; color:#333333; font-size:1.7em;">
         <%= @item.title %>!</h1>
-      <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;">
-        <%= @item.address %>
-        <%= @item.zipcode %> 
-<%#*(<%= @item.city %> 
-<%#= @item.country_code %>
-      </p>
+	      <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;color: black;">
+	      		<%= @item.address %>
+	      		<%= @item.zipcode %>
+						<span style="font-variant: small-caps; "><%= @item.city %></span>,
+						<span style="text-transform: uppercase; "><%= @item.country_code %></span>
+	      </p>
     </div>
     <div class="fltR">
       <h1 class="charming graytext" style="margin-bottom: 2px;font-family: proxima-bold; color: #999999; font-size:30px;">
@@ -189,67 +189,58 @@
       <h2 style="font-family:proxima-bold; color: #333333;"><%= t(:availabilities) %></h2>
       <div style="width:100%;padding-top: 10px;">
         <% if !@item.availablities_daytime.blank? and @item.availablities_daytime == true %>
-          <img src="" alt="" >
           <span class="avail_item">
-            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+          		<%= image_tag("available.png", :style => "width: 10px;") %>
             <%= t(:daytime) %>
           </span>
         <% end %>
         <% if !@item.availablities_evenings.blank? and @item.availablities_evenings == true %>
-          <img src="" alt="" >
           <span class="avail_item">
-            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= image_tag("available.png", :style => "width: 10px;") %>
             <%= t(:evenings) %>
           </span>
         <% end %>
         <br />
 
         <% if !@item.availablities_monday.blank? and @item.availablities_monday == true %>
-          <img src="" alt="" >
           <span class="avail_item">
-            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= image_tag("available.png", :style => "width: 10px;") %>
             <%= t(:monday) %>
           </span>
         <% end %>
         <% if !@item.availablities_tuesday.blank? and @item.availablities_tuesday == true %>          
-          <img src="" alt="" >
           <span class="avail_item">
-            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= image_tag("available.png", :style => "width: 10px;") %>
             <%= t(:tuesday) %>
           </span>
         <% end %>
         <% if !@item.availablities_wednesday.blank? and @item.availablities_wednesday == true %>          
-          <img src="" alt="" >
           <span class="avail_item">
-            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= image_tag("available.png", :style => "width: 10px;") %>
             <%= t(:wednesday) %>
           </span>
         <% end %>
         <% if !@item.availablities_thursday.blank? and @item.availablities_thursday == true %>          
-          <img src="" alt="" >
           <span class="avail_item">
-            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= image_tag("available.png", :style => "width: 10px;") %>
             <%= t(:thursday) %>
           </span>
         <% end %>
         <% if !@item.availablities_friday.blank? || @item.availablities_friday == true %>          
-          <img src="" alt="" >
           <span class="avail_item">
-            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= image_tag("available.png", :style => "width: 10px;") %>
             <%= t(:friday) %>
           </span>
         <% end %>
         <% if !@item.availablities_saturday.blank? || @item.availablities_saturday == true %>          
-          <img src="" alt="" >
           <span class="avail_item">
-            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= image_tag("available.png", :style => "width: 10px;") %>
             <%= t(:saturday) %>
           </span>
         <% end %>
         <% if !@item.availablities_sunday.blank? || @item.availablities_sunday == true %>          
-          <img src="" alt="" >
           <span class="avail_item">
-            <div style="float:left;width: 10px;height: 10px;color:#00CCCC;font-weight:bolder; ">+</div>
+            <%= image_tag("available.png", :style => "width: 10px;") %>
             <%= t(:sunday) %>
           </span>
         <% end %>
@@ -276,7 +267,7 @@
               </div>  
               <b><%= f.title  %></b><br/>
               <p style="color:#333333;"><%= f.comment %></p><br/>
-              <i style="color:#000000"><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+              <i style="color:#000000"><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %> - <span>@city, @country<span></i>
             </div>
           <%end%>
         <%end%>
@@ -296,9 +287,11 @@
     <% end %>
 
     <div class="fltR w107">
-      <img src="../assets/rating.png" alt="" />
+      <%= image_tag("rating.png") %>
       <h2 style="font-family: proxima-semibold; color: #333333"><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %></h2>
-      <p class="XXII" style="font-family: XXII;"><%= @item.user.country %></p>
+      <p class="XXII" style="font-family: XXII;"><span style="font-variant: small-caps; ">
+          	<%= @item.user.city %></span>,<span style="text-transform: uppercase; "><%= @item.user.country %>
+          </span></p>
 
       <% if (current_user != @item.user) %>
         <%= link_to_function "Send Message", "$('#contact_me_div').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>

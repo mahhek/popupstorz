@@ -10,7 +10,7 @@
         <div class="listx" style="margin-bottom: 20px;border: 1px solid gray;">
           <div class="row" style="float:left; width: 83%;padding: 5px;border-right: 1px solid;" onclick="window.location='<%= "/items/#{item.id}" %>'">
             <div class="imgx">
-    <%#=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
+  							<%#=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
               <% if item.avatars.size > 0 %>
                 <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "178", :height => "119", :alt => "Space-Photo")  %>
               <% else %>
@@ -37,11 +37,11 @@
             </div>
           </div>
           <div style="float: left;text-align: center; width: 15.7%;">
-            <div style="margin-top: 55px;">
+            <div style="margin-top: 55px; font-family: proxima-semibold; color: #333; text-transform: uppercase;">
               <%= link_to "Edit listing" , edit_item_path(item)%>
-    <%#= link_to "Preview Space" , item_path(item)%>
-    <%#= link_to "Create New Space" , new_item_path %>
-    <%#= link_to "Delete this Item", item_path(item), :method => :delete, :confirm => "Are you sure?" %>      
+						    <%#= link_to "Preview Space" , item_path(item)%>
+						    <%#= link_to "Create New Space" , new_item_path %>
+						    <%#= link_to "Delete this Item", item_path(item), :method => :delete, :confirm => "Are you sure?" %>      
             </div>
           </div>
           <div class="clear"></div>

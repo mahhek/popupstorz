@@ -94,7 +94,7 @@
       <img class="closepannel" src="../assets/-.png" />
 
       <div class="heading_right"><%= t(:types) %></div>
-      <div class="twocol">
+      <div class="onecol">
         <% @types.each do |type| %>
           <%= check_box_tag 'types[]', type.id, params["types"].blank? ? false : params["types"].include?(type.id.to_s), :onclick => "$(this.form).trigger('submit.rails')" %>
           <span style="float: none;"><%= type.name.capitalize %></span><br />

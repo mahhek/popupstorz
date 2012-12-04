@@ -86,8 +86,8 @@
       <div class="header">
         <div class="header-background"></div>
         <div class="maincontainer">
-          <div class="logo">
-            <%= link_to image_tag("Objet-dynamique-vectoriel.png"), root_path %>
+          <div class="logo" style="z-index: 10;">
+            <%= link_to image_tag("Objet-dynamique-vectoriel.png", :onmouseover => "this.src='/assets/Logo_anim.gif'", :onmouseout => "this.src='/assets/Objet-dynamique-vectoriel.png'"), root_path  %>
           </div>
 
           <div class="menubar">
