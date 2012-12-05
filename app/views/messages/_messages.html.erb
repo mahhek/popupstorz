@@ -16,27 +16,7 @@
 
     <div class="clear" ></div>
     <%= hidden_field_tag "action_to_perform" , "", :class => "action_to_perform"  %>
-    <!-- div class="mail-table" style="width: auto;float: left;">
-      <span style="float:left;width:20px;" >
-    <%= check_box_tag "check_all" , false  , false %>
-      </span>
-      <span style="width:130px;float:left;margin-left:5px;padding-top:2px;font-weight: bold;">
-    <%= t(:mail_from) %>
-      </span>
-      <span style="width:150px;float:left;padding-top:2px;font-weight: bold;">
-    <%= t(:subject) %>
-      </span>
-      <span style="width:320px;float:left;padding-top:2px;font-weight: bold;">
-    <%= t(:body) %>
-      </span>
-      <span style="width:70px;float:left;padding-top:2px;font-weight: bold;">
-    <%= t(:date) %>
-      </span>
-    </div-->
     <% @messages.each do |message| %>
-      <% unless message.opened? %>
-        <!--b-->
-      <%end%>
       <div class="<%= message.opened == true ? 'mail-list-hover row' : 'mail-list-hover row unread' %>">
 
         <span class="checkbox" style="float:left;width:20px;margin-top:9px;" >
@@ -47,16 +27,16 @@
             <%=  message.from.popup_storz_display_name %>
           </span>
           <span style="float:left;padding-top:2px;">
-            <%=  message.topic %> - <span style="color:grey;"><%=  raw message.body[0...35] + '...'%></span>
+            <%=  message.topic %> -
+            <span style="color:grey;">
+              <%=  raw message.body[0...35] + '...'%>
+            </span>
           </span>
           <span style="width:125px;float:right;padding-top:2px;">
             <%=  message.created_at.strftime("%b. %d, %Y") %>
           </span>
         </div>
       </div>
-      <% unless message.opened? %>
-        </b>
-      <%end%>
     <%end%>
   <%end%>
 
