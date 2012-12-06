@@ -29,7 +29,7 @@
           <span style="float:left;padding-top:2px;">
             <%=  message.topic %> -
             <span style="color:grey;">
-              <%=  raw message.body[0...35] + '...'%>
+              <%=  raw message.body[0...35].gsub("<a href=",'') + '...'%>
             </span>
           </span>
           <span style="width:125px;float:right;padding-top:2px;">

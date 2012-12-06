@@ -106,17 +106,16 @@
 
 <%# a href='#' class="back " onclick='history.go(-1);return false;'>&lt;&lt; Back to results</a %>
 <div class="leftcontent">
-
   <div class="shadowCont">
     <div class="fltL">
       <h1 class="charming" style="margin-bottom: 0; font-family: proxima-bold; color:#333333; font-size:1.7em;">
         <%= @item.title %>!</h1>
-	      <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;color: black;">
-	      		<%= @item.address %>
-	      		<%= @item.zipcode %>
-						<span style="font-variant: small-caps; "><%= @item.city %></span>,
-						<span style="text-transform: uppercase; "><%= @item.country_code %></span>
-	      </p>
+      <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;color: black;">
+        <%= @item.address %>
+        <%= @item.zipcode %>
+        <span style="font-variant: small-caps; "><%= @item.city %></span>,
+        <span style="text-transform: uppercase; "><%= @item.country_code %></span>
+      </p>
     </div>
     <div class="fltR">
       <h1 class="charming graytext" style="margin-bottom: 2px;font-family: proxima-bold; color: #999999; font-size:30px;">
@@ -190,7 +189,7 @@
       <div style="width:100%;padding-top: 10px;">
         <% if !@item.availablities_daytime.blank? and @item.availablities_daytime == true %>
           <span class="avail_item">
-          		<%= image_tag("available.png", :style => "width: 10px;") %>
+            <%= image_tag("available.png", :style => "width: 10px;") %>
             <%= t(:daytime) %>
           </span>
         <% end %>
@@ -268,188 +267,190 @@
               <b><%= f.title  %></b><br/>
               <p style="color:#333333;"><%= f.comment %></p><br/>
               <i style="color:#000000"><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %> - <span>@city, @country<span></i>
-            </div>
-          <%end%>
-        <%end%>
-      </div>
-    </div>
-  </div>
-</div>
+                    </div>
+                  <%end%>
+                <%end%>
+                </div>
+                </div>
+                </div>
+                </div>
 
 
-<div class="fltR">
+                <div class="fltR">
 
-  <div class="shadowCont w212">
-    <% if @item.user.avatars.size > 0 %>
-      <%= link_to image_tag(@item.user.avatars.first.photo.url(:thumb), :height => "100", :width=> "94", :alt => "Seller-Image" ), profile_path(@item.user), :class => "fltL" %>
-    <% else %>
-      <%= link_to image_tag("empty.png", :height => "100", :width=> "94"), profile_path(@item.user), :class => "fltL" %>
-    <% end %>
+                  <div class="shadowCont w212">
+                    <% if @item.user.avatars.size > 0 %>
+                      <%= link_to image_tag(@item.user.avatars.first.photo.url(:thumb), :height => "100", :width=> "94", :alt => "Seller-Image" ), profile_path(@item.user), :class => "fltL" %>
+                    <% else %>
+                      <%= link_to image_tag("empty.png", :height => "100", :width=> "94"), profile_path(@item.user), :class => "fltL" %>
+                    <% end %>
 
-    <div class="fltR w107">
-      <%= image_tag("rating.png") %>
-      <h2 style="font-family: proxima-semibold; color: #333333"><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %></h2>
-      <p class="XXII" style="font-family: XXII;"><span style="font-variant: small-caps; ">
-          	<%= @item.user.city %></span>,<span style="text-transform: uppercase; "><%= @item.user.country %>
-          </span></p>
+                    <div class="fltR w107">
+                      <%= image_tag("rating.png") %>
+                      <h2 style="font-family: proxima-semibold; color: #333333"><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %></h2>
+                      <p class="XXII" style="font-family: XXII;"><span style="font-variant: small-caps; ">
+                          <%= @item.user.city %></span>,<span style="text-transform: uppercase; "><%= @item.user.country %>
+                        </span></p>
 
-      <% if (current_user != @item.user) %>
-        <%= link_to_function "Send Message", "$('#contact_me_div').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
-      <% end %>
+                      <% if (current_user != @item.user) %>
+                        <%= link_to_function "Send Message", "$('#contact_me_div').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
+                      <% end %>
 
-      <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
-        <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
-          <%= hidden_field_tag :topic, "Inquiry" %>
-          <%= hidden_field_tag :user_id, @item.user.id %>
+                      <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
+                        <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
+                          <%= hidden_field_tag :topic, "Inquiry" %>
+                          <%= hidden_field_tag :user_id, @item.user.id %>
+                          <%= hidden_field_tag :item_id, @item.id %>
 
-          <span style="width: auto;float: left;">
-            <%= text_area_tag  :body, "", :style => "width:135px; height:100px;" %>
-          </span>
+                          <span style="width: auto;float: left;">
+                            <%= text_area_tag  :body, "", :style => "width:135px; height:100px;" %>
+                          </span>
 
-          <div style="margin-right: 10px; text-align: right;">
-            <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-    <div class="clear"></div>
-  </div>
+                          <div style="margin-right: 10px; text-align: right;">
+                            <%= submit_tag "Send", :onclick => "$('#contact_me_div').toggle('slow');" %>&nbsp;&nbsp;&nbsp;
+                            <%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
 
-  <div class="shadowCont w212 mt10">
-    <h2 class="available"><%= t(:availabilities) %></h2>
-    <div id="box-bookit">
-      <%= form_tag new_item_offer_path(@item.id), :method => :get  , :id => "book_it_form", :onsubmit => "return check_dates();" do  %>
+                  <div class="shadowCont w212 mt10">
+                    <h2 class="available"><%= t(:availabilities) %></h2>
+                    <div id="box-bookit">
+                      <%= form_tag new_item_offer_path(@item.id), :method => :get  , :id => "book_it_form", :onsubmit => "return check_dates();" do  %>
 
-        <div id="pricing" style="margin-top: 5px; line-height: 24px; display: inline-block;">
-          <span id="price"  style="float: left; text-align: right; width: 110px; margin-right: 5px; font-family: Proxima-semibold; font-size: 1.4em;">
-            <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-          </span>
-          <span style="float: right; width: 131px;">		
-            <select name="price_per_span" onchange="change_price_to_book($(this));" style="width: 133px;">
-              <option value="<%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>"><%= t(:per_day) %></option>
-              <option value="<%= number_to_currency(exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_week) %></option>
-              <option value="<%= number_to_currency(exchange_currency(@item.price_per_month.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_month) %></option>
-            </select>
-            <%= hidden_field_tag :per_day_price, @item.price %>
-            <%= hidden_field_tag :per_week_price, @item.price_per_week %>
-            <%= hidden_field_tag :per_month_price, @item.price_per_month %>
-          </span><br />		
-          <span style="color: #666666; display: inline-block; font-size: 0.9em; line-height: 14px; text-align: center; width: 100%;">Excluding Pop Up Storz fee</span>			
-        </div>
+                        <div id="pricing" style="margin-top: 5px; line-height: 24px; display: inline-block;">
+                          <span id="price"  style="float: left; text-align: right; width: 110px; margin-right: 5px; font-family: Proxima-semibold; font-size: 1.4em;">
+                            <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+                          </span>
+                          <span style="float: right; width: 131px;">		
+                            <select name="price_per_span" onchange="change_price_to_book($(this));" style="width: 133px;">
+                              <option value="<%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>"><%= t(:per_day) %></option>
+                              <option value="<%= number_to_currency(exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_week) %></option>
+                              <option value="<%= number_to_currency(exchange_currency(@item.price_per_month.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>"><%= t(:per_month) %></option>
+                            </select>
+                            <%= hidden_field_tag :per_day_price, @item.price %>
+                            <%= hidden_field_tag :per_week_price, @item.price_per_week %>
+                            <%= hidden_field_tag :per_month_price, @item.price_per_month %>
+                          </span><br />		
+                          <span style="color: #666666; display: inline-block; font-size: 0.9em; line-height: 14px; text-align: center; width: 100%;">Excluding Pop Up Storz fee</span>			
+                        </div>
 
-        <div id="pickup" style="margin-top: 5px; line-height: 30px; display: inline-block;">
-          <span style="float: left; text-align: right; width: 110px; margin-right: 5px;">
-            <label><%= t(:pick_up) %></label>
-          </span>
-          <span style="float: right; width: 135px;">
-            <input type="text" hint="mm/dd/yyyy" name="pick_up" id="txtFromDate" onchange ="calculateTotalAmount();" size="15" style="width: auto;" />
-          </span>
-        </div>
+                        <div id="pickup" style="margin-top: 5px; line-height: 30px; display: inline-block;">
+                          <span style="float: left; text-align: right; width: 110px; margin-right: 5px;">
+                            <label><%= t(:pick_up) %></label>
+                          </span>
+                          <span style="float: right; width: 135px;">
+                            <input type="text" hint="mm/dd/yyyy" name="pick_up" id="txtFromDate" onchange ="calculateTotalAmount();" size="15" style="width: auto;" />
+                          </span>
+                        </div>
 
-        <div id="return" style="margin-top: 5px; line-height: 30px; display: inline-block;">
-          <span style="float: left; text-align: right; width: 110px; margin-right: 5px;">
-            <label><%= t(:return) %></label>
-          </span>
-          <span style="float: right; width: 135px;">
-            <input type="text" hint="mm/dd/yyyy"  name="return" id="txtToDate" onchange ="calculateTotalAmount();" size="15" style="width: auto;" />
-          </span>
-        </div>
-        <div class="clear"></div>
+                        <div id="return" style="margin-top: 5px; line-height: 30px; display: inline-block;">
+                          <span style="float: left; text-align: right; width: 110px; margin-right: 5px;">
+                            <label><%= t(:return) %></label>
+                          </span>
+                          <span style="float: right; width: 135px;">
+                            <input type="text" hint="mm/dd/yyyy"  name="return" id="txtToDate" onchange ="calculateTotalAmount();" size="15" style="width: auto;" />
+                          </span>
+                        </div>
+                        <div class="clear"></div>
 
-        <div id="pickup" style="margin-top: 5px; display: inline-block; border: 2px solid cyan; margin: 10px; line-height: 20px;">
-          <span style="float: left; text-align: right; width: 100px; margin-right: 5px;">
-            <label><%= t(:total_days) %></label>
-          </span>
-          <span style="float: right; width: 128px;">
-            <div id="total_days" class="price_to_book" style=";">0 &nbsp;<%= t(:days) %></div>
-            <div id="total_price" class="price_to_book" style="">0</div>
-          </span>
-        </div>
+                        <div id="pickup" style="margin-top: 5px; display: inline-block; border: 2px solid cyan; margin: 10px; line-height: 20px;">
+                          <span style="float: left; text-align: right; width: 100px; margin-right: 5px;">
+                            <label><%= t(:total_days) %></label>
+                          </span>
+                          <span style="float: right; width: 128px;">
+                            <div id="total_days" class="price_to_book" style=";">0 &nbsp;<%= t(:days) %></div>
+                            <div id="total_price" class="price_to_book" style="">0</div>
+                          </span>
+                        </div>
 
-        <div style="margin: 10px 0; text-align: center; line-height: 20px;">
-          <% unless (@item.user == current_user) %>
-            <a href="#" onclick="$('#book_it_form').submit();" class="search"> <%= t(:book_it) %> </a>
-          <% else %>
-            <a href="#" onclick="alert('You are owner, You can not book it, Thanks.');return false;" class="search"><%= t(:book_it) %></a>
-          <% end %>
-        </div>
+                        <div style="margin: 10px 0; text-align: center; line-height: 20px;">
+                          <% unless (@item.user == current_user) %>
+                            <a href="#" onclick="$('#book_it_form').submit();" class="search"> <%= t(:book_it) %> </a>
+                          <% else %>
+                            <a href="#" onclick="alert('You are owner, You can not book it, Thanks.');return false;" class="search"><%= t(:book_it) %></a>
+                          <% end %>
+                        </div>
 
-      <% end %>
-    </div>
-    <div class="clear"></div>
-  </div>	
-</div>
+                      <% end %>
+                    </div>
+                    <div class="clear"></div>
+                  </div>	
+                </div>
 
-<div class="clear"></div>
+                <div class="clear"></div>
 <%#private static Calendar calendar = Calendar.getInstance()%>
 <%#*<div id="datepicker"></div>%>
 
-<script type="text/javascript">
-  $("#datepicker").datepicker({
-    onSelect: function(dateText, inst) {
-      $("#datepicker_value").val(dateText);
-    }
+                <script type="text/javascript">
+                  $("#datepicker").datepicker({
+                    onSelect: function(dateText, inst) {
+                      $("#datepicker_value").val(dateText);
+                    }
 
-  });
+                  });
   
-  function send_rating(rating_url, mode){
-    jQuery.ajax({
-      type:"GET",
-      url: rating_url,
-      data: ({'rate': true }),
-      beforeSend: function (response) {
-        jQuery('#'+mode+'_ajax_loader').show();
-      },
-      success: function (response) {
-        jQuery("div #rating_<%= @item.id %>").html(response);
-        jQuery('#'+mode+'_ajax_loader').hide();
+                  function send_rating(rating_url, mode){
+                    jQuery.ajax({
+                      type:"GET",
+                      url: rating_url,
+                      data: ({'rate': true }),
+                      beforeSend: function (response) {
+                        jQuery('#'+mode+'_ajax_loader').show();
+                      },
+                      success: function (response) {
+                        jQuery("div #rating_<%= @item.id %>").html(response);
+                        jQuery('#'+mode+'_ajax_loader').hide();
 
-      }
-    });
-  }
+                      }
+                    });
+                  }
   
-  function change_price_to_book(elem){
-    $('#price').html(elem.val());
-  }
+                  function change_price_to_book(elem){
+                    $('#price').html(elem.val());
+                  }
   
-  function check_dates(){
-    if($('#txtFromDate').val() == "" || $('#txtFromDate').val() == "mm/dd/yy" || $('#txtToDate').val() == "" || $('#txtToDate').val() == "mm/dd/yy" ){
-      alert('Please select right date');
-      $('#txtFromDate').focus();
-      return false;
-    }else{
-      return true;
-    }
-  }
+                  function check_dates(){
+                    if($('#txtFromDate').val() == "" || $('#txtFromDate').val() == "mm/dd/yy" || $('#txtToDate').val() == "" || $('#txtToDate').val() == "mm/dd/yy" ){
+                      alert('Please select right date');
+                      $('#txtFromDate').focus();
+                      return false;
+                    }else{
+                      return true;
+                    }
+                  }
   
-  function calculateTotalAmount(){
-    $("#txtToDate").datepicker('option', 'minDate', new Date($("#txtFromDate").val()));
+                  function calculateTotalAmount(){
+                    $("#txtToDate").datepicker('option', 'minDate', new Date($("#txtFromDate").val()));
 
-    if($("#txtFromDate").val()=="mm/dd/yy"){
-      alert('Please select pickup date first, thanks.');
-      $("#txtToDate").val("mm/dd/yy");
-    } else {
-      if($("#txtToDate").val()=="") {
-        $("#txtToDate").val($("#txtFromDate").val());
-      }
-    }
+                    if($("#txtFromDate").val()=="mm/dd/yy"){
+                      alert('Please select pickup date first, thanks.');
+                      $("#txtToDate").val("mm/dd/yy");
+                    } else {
+                      if($("#txtToDate").val()=="") {
+                        $("#txtToDate").val($("#txtFromDate").val());
+                      }
+                    }
 
-    if($('#txtFromDate').val() != 'mm/dd/yy' && $('#txtToDate').val() != 'mm/dd/yy'){
-      start = $('#txtFromDate').val();
-      start_date = new Date(start);
-      end = $('#txtToDate').val();
-      end_date = new Date(end);
+                    if($('#txtFromDate').val() != 'mm/dd/yy' && $('#txtToDate').val() != 'mm/dd/yy'){
+                      start = $('#txtFromDate').val();
+                      start_date = new Date(start);
+                      end = $('#txtToDate').val();
+                      end_date = new Date(end);
 
-      startTime = start_date.getTime();
-      endTime = end_date.getTime();
-      var new_days= 0;
-      var days_arr = <%= @available_days %>;
+                      startTime = start_date.getTime();
+                      endTime = end_date.getTime();
+                      var new_days= 0;
+                      var days_arr = <%= @available_days %>;
 
-      for (loopTime = startTime; loopTime <= endTime; loopTime += 86400000) {
-        if($.inArray(new Date(loopTime).getDay(), days_arr) > -1){
-          new_days += 1;
-        }
-      }
+                      for (loopTime = startTime; loopTime <= endTime; loopTime += 86400000) {
+                        if($.inArray(new Date(loopTime).getDay(), days_arr) > -1){
+                          new_days += 1;
+                        }
+                      }
 
 <%#*number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;%>
       number_of_days = new_days;
@@ -479,122 +480,122 @@
     days = (number_of_days - (30 * months)) - (weeks * 7);
     return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
   }
-</script>
+                </script>
 
-<!--
+                <!--
 <%#=  @item.availability_from.strftime("%d-%m-%Y %I:%M%p") %>
 <%#=  @item.availability_to.strftime("%d-%m-%Y %I:%M%p") %>
+                
+                <div><%= link_to t(:edit_item), edit_item_path(@item) if (current_user && @item.user.email == current_user.email)%>
+                <%= link_to t(:delete_space), item_path(@item), :method => :delete, :confirm => t(:sure_delete) if (current_user && @item.user.email == current_user.email)%></div>
+                
+                <h1 class="size"><%= t(:no_of_floors) %></h1>
+                      <p class="size_text"></p>
+                      <div class="clear"></div>
+                      <h1 class="size"><%= t(:cleaning_fee) %></h1>
+                      <p class="size_text"><%= number_to_currency(exchange_currency(@item.cleaning_fee.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+                      </p>
+                      <div class="clear"></div>
+                      <h1 class="size"><%= t(:deposit_fee) %></h1>
+                      <p class="size_text"><%= number_to_currency(exchange_currency(@item.deposit.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></p>
+                      <div class="clear"></div>
+                      <h1 class="size"><%= t(:avail_from) %></h1>
+                      <p class="size_text"><%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%></p>
+                      <div class="clear"></div>
+                      <h1 class="size"><%= t(:avail_to) %></h1>
+                      <p class="size_text"><%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%></p>
+                      <div class="clear"></div>
+                      
+                      <h1 class="size"><%= t(:owner_rules) %></h1><br />
+                      <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div_<%= @item.id %>').toggle()"><%= t(:show_details) %></div><br />
+                      <p class="size_text" id="rules_div_<%= @item.id %>" style="display:none;">
+                <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
+                      </p>
+                      <div class="clear"></div>
+                      
+                            <h1 class="size"><%= t(:cancellation_policy) %></h1><br />
+                      <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div_<%= @item.id %>').toggle()"><%= t(:show_details) %></div><br />
+                      <p class="size_text" id="policy_div_<%= @item.id %>" style="display:none;">
+                <% unless @item.cancellation_policy_flexible.blank? %>
+                  <%= t(:flexible) %><br/>
+                  <%= t(:cancel_ln1) %><br/>
+                  <%= t(:cancel_ln2) %><br/><br/>
 
-<div><%= link_to t(:edit_item), edit_item_path(@item) if (current_user && @item.user.email == current_user.email)%>
-<%= link_to t(:delete_space), item_path(@item), :method => :delete, :confirm => t(:sure_delete) if (current_user && @item.user.email == current_user.email)%></div>
+                  <%= t(:cancel_ln3) %><br/><br/>
 
-<h1 class="size"><%= t(:no_of_floors) %></h1>
-      <p class="size_text"></p>
-      <div class="clear"></div>
-      <h1 class="size"><%= t(:cleaning_fee) %></h1>
-      <p class="size_text"><%= number_to_currency(exchange_currency(@item.cleaning_fee.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-      </p>
-      <div class="clear"></div>
-      <h1 class="size"><%= t(:deposit_fee) %></h1>
-      <p class="size_text"><%= number_to_currency(exchange_currency(@item.deposit.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></p>
-      <div class="clear"></div>
-      <h1 class="size"><%= t(:avail_from) %></h1>
-      <p class="size_text"><%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%></p>
-      <div class="clear"></div>
-      <h1 class="size"><%= t(:avail_to) %></h1>
-      <p class="size_text"><%= @item.availability_from.blank? ? "" : @item.availability_from.strftime("%m/%d/%y")%> - <%=@item.availability_to.blank? ? "" :@item.availability_to.strftime("%m/%d/%y")%></p>
-      <div class="clear"></div>
-      
-      <h1 class="size"><%= t(:owner_rules) %></h1><br />
-      <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#rules_div_<%= @item.id %>').toggle()"><%= t(:show_details) %></div><br />
-      <p class="size_text" id="rules_div_<%= @item.id %>" style="display:none;">
-<%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
-      </p>
-      <div class="clear"></div>
-      
-            <h1 class="size"><%= t(:cancellation_policy) %></h1><br />
-      <div style="float:left;cursor: pointer;font-size: 12px;" onclick="$('#policy_div_<%= @item.id %>').toggle()"><%= t(:show_details) %></div><br />
-      <p class="size_text" id="policy_div_<%= @item.id %>" style="display:none;">
-<% unless @item.cancellation_policy_flexible.blank? %>
-  <%= t(:flexible) %><br/>
-  <%= t(:cancel_ln1) %><br/>
-  <%= t(:cancel_ln2) %><br/><br/>
+                  <%= t(:cancel_ln4)%><br/><br/>
+                  <%= t(:cancel_ln5)%><br/><br/>
+                <% else %>
+                  <%= t(:semi_flexible) %><br/>
+                  <%= t(:semi_cancel_ln1) %><br/>
+                  <%= t(:semi_cancel_ln2) %><br/><br/>
 
-  <%= t(:cancel_ln3) %><br/><br/>
+                  <%= t(:semi_cancel_ln3) %><br/><br/>
 
-  <%= t(:cancel_ln4)%><br/><br/>
-  <%= t(:cancel_ln5)%><br/><br/>
-<% else %>
-  <%= t(:semi_flexible) %><br/>
-  <%= t(:semi_cancel_ln1) %><br/>
-  <%= t(:semi_cancel_ln2) %><br/><br/>
+                  <%= t(:semi_cancel_ln4) %><br/><br/>
+                  <%= t(:semi_cancel_ln5) %>
+                <% end %>
+                         </p>
+                             
+                    <div class="clear"></div>
+                    <br />
+                
+                
+                    <div id="favorite_div_<%= @item.id %>">
+                <%= render :partial => "favorite", :locals => {:item => @item} %>
+                    </div>
+                    
+                       <h1 class="charming"><%= t(:gatherings2) %></h1>
+                    <p class="charming_text">
+                <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
+                    <div style="width: 100%;clear: both;">
+                <% gatherings.each do|gathering| %>
+                                                                  <div style="border-bottom: 1px solid;">
+                  <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
+                  <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
+                  <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
+                  <%= t(:joined_person) %><%= gathering.members.size %><br/>
+                  <%= t(:gathering_des) %><%= gathering.gathering_description %><br/>
+                  <%= t(:rental_per_person) %><%= gathering.gathering_rental_price %><br />
 
-  <%= t(:semi_cancel_ln3) %><br/><br/>
-
-  <%= t(:semi_cancel_ln4) %><br/><br/>
-  <%= t(:semi_cancel_ln5) %>
-<% end %>
-         </p>
-             
-    <div class="clear"></div>
-    <br />
-
-
-    <div id="favorite_div_<%= @item.id %>">
-<%= render :partial => "favorite", :locals => {:item => @item} %>
-    </div>
-    
-       <h1 class="charming"><%= t(:gatherings2) %></h1>
-    <p class="charming_text">
-<% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
-    <div style="width: 100%;clear: both;">
-<% gatherings.each do|gathering| %>
-                                              <div style="border-bottom: 1px solid;">
-  <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
-  <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
-  <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
-  <%= t(:joined_person) %><%= gathering.members.size %><br/>
-  <%= t(:gathering_des) %><%= gathering.gathering_description %><br/>
-  <%= t(:rental_per_person) %><%= gathering.gathering_rental_price %><br />
-
-  <%= t(:deadline) %><%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
-  <% unless current_user.blank? %>
-    <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
-      <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
-        <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
-      <% end %>
-    <% end %><br/><b><%= t(:cancellation_policy) %><b/>
-    <%if @item.cancellation_policy_flexible %>
-      <%= t(:flexible) %>
-    <% else %>
-      <%= t(:semifelxible) %>
-    <% end %>
-                                                                                          <br/>
-    <%= t(:owner_rules) %>
-    <%=@item.owner_rules%><br/><br/>
-    <%= link_to t(:details), "/offers/#{gathering.id}" %>
-  <% end %>
-                                              </div>
-<% end %>
-    </div>
-    </p>
-
-    <div class="line"></div>
-    <div class="line"></div>
-    <div id="show_comments" style="display: none;" >
-      <b><%= t(:prev_comments) %></b><br/>
-<%unless @item.comments.blank? %>
-  <%@item.comments.each do|f|%>
-                                                                                      <b><%=f.title  %></b><br/>
-    <%= f.comment %><br/>
-                                                                                      <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
-                                                                                      <br/>
-                                                                                      <br/>
-  <%end%>
-<%end%>
-    </div>
-    <div id="rating_of_item_<%= @item.id %>">
-<%= render :partial => "/ratings/rating", :locals => { :asset => @item, :only_view => false } %>
-    </div>
-    
--->
+                  <%= t(:deadline) %><%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
+                  <% unless current_user.blank? %>
+                    <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
+                      <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
+                        <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
+                      <% end %>
+                    <% end %><br/><b><%= t(:cancellation_policy) %><b/>
+                    <%if @item.cancellation_policy_flexible %>
+                      <%= t(:flexible) %>
+                    <% else %>
+                      <%= t(:semifelxible) %>
+                    <% end %>
+                                                                                                                  <br/>
+                    <%= t(:owner_rules) %>
+                    <%=@item.owner_rules%><br/><br/>
+                    <%= link_to t(:details), "/offers/#{gathering.id}" %>
+                  <% end %>
+                                                                  </div>
+                <% end %>
+                    </div>
+                    </p>
+                
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div id="show_comments" style="display: none;" >
+                      <b><%= t(:prev_comments) %></b><br/>
+                <%unless @item.comments.blank? %>
+                  <%@item.comments.each do|f|%>
+                                                                                                              <b><%=f.title  %></b><br/>
+                    <%= f.comment %><br/>
+                                                                                                              <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+                                                                                                              <br/>
+                                                                                                              <br/>
+                  <%end%>
+                <%end%>
+                    </div>
+                    <div id="rating_of_item_<%= @item.id %>">
+                <%= render :partial => "/ratings/rating", :locals => { :asset => @item, :only_view => false } %>
+                    </div>
+                    
+                -->

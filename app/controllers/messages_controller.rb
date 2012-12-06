@@ -25,10 +25,15 @@ class MessagesController < ApplicationController
     send_file( file_info.attachment.path ,:type => file_info.attachment_content_type)
   end
 
-  def contact_me    
+  def contact_me
+    p "eeeeeeeeeeeeeeeeeee",params.inspect
+    ggg
     user = User.find_by_id(params[:user_id])
-    current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
+    msg = current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
+    
     respond_to do |format|
+      new_msg = ActsAsMessageable::Message.find_by_id(msg.id)
+      new_msg.update_attribute(:item_id,params[:item_id])
       format.js do
         unless params[:div_id].blank?
           render :js => "alert(#{t(:message_sent)});$('#contact_me_div_#{params[:div_id]}').toggle('slow');$('#body').val('');"
@@ -41,8 +46,10 @@ class MessagesController < ApplicationController
   
   def gathering_message    
     user = User.find_by_id(params[:user_id])
-    current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
+    msg = current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
     respond_to do |format|
+      new_msg = ActsAsMessageable::Message.find_by_id(msg.id)
+      new_msg.update_attribute(:item_id,params[:item_id])
       format.js do
         render :js => "alert(#{t(:message_sent_to_owner)});$('#contact_me_div').toggle('slow');$('#body').val('');"
       end
@@ -111,7 +118,7 @@ class MessagesController < ApplicationController
     users = User.all :conditions => ["email in(?)", recipients]
     unless users.blank?
       users.each do |user|
-        current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
+        current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe,:item_id => params[:item_id])
       end
       flash[:notice] = t(:message_sent)
       redirect_to inbox_messages_path
