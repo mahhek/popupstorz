@@ -376,13 +376,8 @@ body {
 .menubar {
     float: left;
     position: absolute;
-}
-
-.menubar {
-    float: left;
-    /*font-size: 12px;*/
-    padding-left: 210px;
-    width: 810px;
+    padding-left: 155px;
+    width: 865px;
 }
 
 .header {

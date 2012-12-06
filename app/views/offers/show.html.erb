@@ -158,9 +158,9 @@
 			      <%= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
 			    <% end %>
 			    <br />
-			    <% if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
-			      <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
-			    <% end %>
+			    <%# if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
+			      <%#= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
+			    <%# end %>
 			  <%# end %>
 			<%# end %>
     </div>
