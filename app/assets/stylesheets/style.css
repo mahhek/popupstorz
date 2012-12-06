@@ -1268,6 +1268,15 @@ h2 {
     height: 370px;
 }
 
+.gal-alt {
+	width: 372px;
+	height: 315px;
+}
+
+.gal-alt .rg-thumbs {
+	top: 235px;
+}
+
 .rg-thumbs {
 	position: absolute;
     top: 305px;
