@@ -61,7 +61,7 @@ class SearchesController < ApplicationController
     end
     
     if !params[:search_from].blank? and !params[:search_to].blank? 
-      conds += " OR ( ( availability_from between '#{start_time.to_s}' and '#{end_time.to_s}') or ( availability_to between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
+      conds += " AND ( ( availability_from between '#{start_time.to_s}' and '#{end_time.to_s}') or ( availability_to between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
     end
         
     unless params[:location].blank?
