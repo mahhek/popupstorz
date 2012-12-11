@@ -53,21 +53,17 @@ class SearchesController < ApplicationController
     
     unless params[:search_from].blank?
       start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
-      conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
+      conds += " AND ('#{start_time.to_s}' between availability_from and availability_to)"
     end    
     unless params[:search_to].blank?
       end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
-      conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
+      conds += " AND ('#{end_time.to_s}' between availability_from and availability_to)"
     end
     
     if !params[:search_from].blank? and !params[:search_to].blank? 
-      conds += " OR ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
+      conds += " OR ( ( availability_from between '#{start_time.to_s}' and '#{end_time.to_s}') or ( availability_to between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
     end
-    
-    if !params[:search_from].blank? or !params[:search_to].blank? 
-      conds += " AND status != 'applied'"
-    end
-    
+        
     unless params[:location].blank?
       conds += " AND (city LIKE " + "'%%" + "#{params[:location]}" + "%%'" +")"
     end
