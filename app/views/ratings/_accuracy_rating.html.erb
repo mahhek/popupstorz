@@ -12,7 +12,7 @@
       <% if !(user_signed_in?)%>
         <li class="current-rating" style="width:<%= ( asset.accuracy_rating * 20).to_i -%>px;"></li>
       <%else%>
-        <%if   asset == current_user||!(current_user.rating.blank?)%>
+        <%if asset == current_user||!(current_user.rating.blank?)%>
           <li class='current-rating' style='width:<%= (asset.accuracy_rating * 20).to_i -%>px;'></li>
         <%else%>
           <li class='current-rating' style='width:<%= (asset.accuracy_rating * 20).to_i -%>px;'></li>

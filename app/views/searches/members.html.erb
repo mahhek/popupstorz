@@ -46,7 +46,7 @@
   <div class="resultsholderlist shadowCont">
     <div id="searched-members" class="listx-bg">
       <% unless @members.blank? %>
-        <%= render :partial => "members", :locals => {:members => @members} %>
+        <%= render :partial => "members", :locals => {:members => @members, :only_view => false} %>
       <% else %>
         <%= t(:no_member_given) %>
       <% end %>

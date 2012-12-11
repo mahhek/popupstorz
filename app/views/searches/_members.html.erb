@@ -1,5 +1,6 @@
 <% members.each do | member | %>
   <div class="listx" style="border-bottom: 1px solid gray;padding: 5px;float: left;">
+
     <div class="row" style="float:left; width: 732px;" onclick="window.location='<%= profile_path(member.id) %>'">
       <div class="imgx">
         <% if member.avatars.size > 0 %>
@@ -7,12 +8,23 @@
         <% else %>
           <%= image_tag("empty.png", :width => "113", :height => "147", :alt => "Member-Photo")  %>
         <% end %>
-      </div>  
+      </div>
 
       <div class="name-list" style="margin-bottom: 5px;">
         <h4 style="font-family:proxima-bold; color: #333333;">
           <%= member.first_name + " " + member.last_name %>
-        </h4>TODO rating
+          <ul class='star-rating'>
+            <% if !(user_signed_in?)%>
+              <li class="current-rating" style="width:<%= ( member.accuracy_rating * 20).to_i -%>px;"></li>
+            <%else%>
+              <%if member == current_user %>
+                <li class='current-rating' style='width:<%= (member.accuracy_rating * 20).to_i -%>px;'></li>
+              <% else %>
+                <li id="ratings_<%= member.id %>" class='current-rating' style='width:<%= (member.accuracy_rating * 20).to_i -%>px;'></li>
+              <%end%>
+            <%end%>
+          </ul>
+        </h4>
       </div>
 
       <div class="name-list" style="margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;"><%= member.activity %></div>
@@ -52,8 +64,22 @@
   </div>
 <%end%>
 
-<%#*<script>%>
+<script>
+  <%#*function send_rating(rating_url, mode,val){%>
+    <%#*jQuery.ajax({%>
+      <%#*type:"GET",%>
+      <%#*url: rating_url,%>
+      <%#*data: ({'rate': true }),%>
+      <%#*beforeSend: function (response) {%>
+        <%#*jQuery('#'+mode+'_ajax_loader').show();%>
+      <%#*},%>
+      <%#*success: function (response) {%>
+        <%#*jQuery("#ratings_"+val).html(response);%>
+        <%#*jQuery('#'+mode+'_ajax_loader').hide();%>
+      <%#*}%>
+    <%#*});%>
+  <%#*}%>
 <%#*$(document).ready(function() {%>
 <%#*$('.pagination a').attr('data-remote', 'true');%>
 <%#*});%>
-<%#*</script>%>
+</script>

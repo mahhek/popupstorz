@@ -26,16 +26,19 @@ class SearchesController < ApplicationController
   end
   
   def spaces
+    session[:start_date] = nil
+    session[:end_date] = nil
+    conds = "1=1 "
+    
+    @shareable = Item.select("distinct(is_shareable)")
+    
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @prices = Item.select("distinct(price)").where("price is not NULL").order("price ASC")
-#    @start_price = @prices.first
-#    @last_price = @prices.last
     
     @start_size = @sizes.first
     @last_size = @sizes.last
     
     @start_size = @start_size.blank? ? 0 : @start_size.size
-#    @start_price = @start_price.blank? ? 0 : @start_price.price
     
     @start_price = @items.blank? ? 0 : @items.first.price
     @last_price = @items.blank? ? 0 : @items.last.price
@@ -45,17 +48,34 @@ class SearchesController < ApplicationController
     else
       @last_size = 10000
     end
-    
-#    unless @last_price.blank?
-#      @last_price = @last_price.price.to_f > 10000 ? @last_price.price : 10000
-#    else
-#      @last_price = 10000
-#    end    
+
     @last_price = @last_price.to_f > 10000 ? @last_price : 10000
+    
+    unless params[:search_from].blank?
+      start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
+      conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
+    end    
+    unless params[:search_to].blank?
+      end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
+      conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
+    end
+    
+    if !params[:search_from].blank? and !params[:search_to].blank? 
+      conds += " OR ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
+    end
+    
+    if !params[:search_from].blank? or !params[:search_to].blank? 
+      conds += " AND status != 'applied'"
+    end
+    
+    unless params[:location].blank?
+      conds += " AND (city LIKE " + "'%%" + "#{params[:location]}" + "%%'" +")"
+    end
     
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
-    @items = Item.all
+
+    @items = Item.all(:conditions => [ conds ])
     active_items = []
     unless @items.blank?
       @items.each do|item|

@@ -247,7 +247,7 @@ class ItemsController < ApplicationController
     session[:start_date] = nil
     session[:end_date] = nil
   
-    conds = "1=1 "    
+    conds = "1=1 "
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @shareable = Item.select("distinct(is_shareable)")
