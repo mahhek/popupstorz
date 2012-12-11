@@ -16,7 +16,7 @@
       <%= submit_tag "Search", :class => "search", :style => ""  %>
     <% end %>
   </div>
-  
+
   <div class="clear"></div>
 
   <div class="gellaryHold" >
@@ -27,19 +27,24 @@
             <div style="margin-bottom:2px;">
               <% if item.avatars.size > 0 %>
                 <% avatar = item.avatars.first %>
-                <%= link_to(image_tag(avatar.photo.url(:thumb, :style=>["width:125px;height:125px;"])), item_path(item), :class => "item_image", :width => "133px" ) %>
+                <%= link_to(image_tag(avatar.photo.url(:home)), item_path(item), :class => "item_image" ) %>
               <% else %>
                 <%= image_tag("PUS_Logo.jpg", :border => "0", :alt => "image", :class => "item_image" )  %>
               <%end%>
             </div>
-            </label>
+            <p style="font-family: XXII; color: black;">
+              <%= item.title[0..15] %>
+            </p>
             <p style="font-family: XXII; color: black;">
               <%= item.city %>, <%= item.country_code %>
             </p>
+            
             <% if item.is_shareable == true %>
-              <div class="shareableHome" style="float: left;"> </div>
-              <div style="float: left;margin-left: 5px;margin-top: 10px;color: #00CCCC">
-                <%= t(:shareable) %>
+              <div style="float: left;height: 20px !important;">
+                <div class="shareableHome" style="float: left;"> </div>
+                <div style="float: left;margin-left: 5px;margin-top: 5px;color: #00CCCC">
+                  <%= t(:shareable) %>
+                </div>
               </div>
             <% end %>
             <h6><%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></h6>
