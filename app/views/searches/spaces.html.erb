@@ -7,10 +7,12 @@
   $(function() {
     $('#search_from').datepicker(
     {
+      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
       onSelect: function() {
         $('#search_to').datepicker('option', {minDate: $(this).datepicker('getDate')});
       }});
     $('#search_to').datepicker({
+      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
       onSelect: function() {
         $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
       }});
