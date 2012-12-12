@@ -52,15 +52,15 @@ class SearchesController < ApplicationController
         
     unless params[:search_from].blank?
       start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
-      conds += " AND ('#{start_time.to_s}' between availability_from and availability_to)"
+      conds += " AND (('#{start_time.to_s}' between availability_from and availability_to) OR (available_forever = true))"
     end    
     unless params[:search_to].blank?
       end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
-      conds += " AND ('#{end_time.to_s}' between availability_from and availability_to)"
+      conds += " AND (('#{end_time.to_s}' between availability_from and availability_to)OR (available_forever = true))"
     end
     
     if !params[:search_from].blank? and !params[:search_to].blank? 
-      conds += " AND ( ( availability_from between '#{start_time.to_s}' and '#{end_time.to_s}') or ( availability_to between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
+      conds += " AND ( ( ( availability_from between '#{start_time.to_s}' and '#{end_time.to_s}') or ( availability_to between '#{start_time.to_s}' and '#{end_time.to_s}')  ) OR (available_forever = true))"
     end
         
     unless params[:location].blank?
