@@ -1,3 +1,15 @@
+<div class="resultsholderlist shadowCont">
+  <div id="searched-items" class="listx-bg">
+    <div class="sortby">
+      <span style="font-family:proxima-semibold;"><%= t(:sort_by) %></span>
+      <%= select_tag "sort_option", options_for_select([[t("newest_sort") ,"1"],[t("price_high_to_low") ,"2"],[t("price_low_to_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
+      <span style="float:right;">
+        <%= will_paginate(items, :params => params, :renderer => PaginationListLinkRenderer) %>
+      </span>
+    </div>    
+  </div>
+
+</div>
 <% items.each do | item | %>
   <div class="listx">
     <div class="row" style="border-bottom: 1px solid gray;float:left; width: 732px;padding: 5px;">
@@ -27,16 +39,18 @@
 
         <div class="name-list XXII" style="margin-bottom: 5px;">
           <span style="font-size: 1.1em; font-variant: small-caps; ">
-          	<%= item.city %></span>,<span style="font-size: 1.1em; text-transform: uppercase; "><%= item.country_code %>
+            <%= item.city %></span>,<span style="font-size: 1.1em; text-transform: uppercase; "><%= item.country_code %>
           </span>
         </div>
 
         <div class="name-list" style="margin-bottom: 5px;width: 70%;float: left;">
-          <% if item.is_shareable == true and item .maximum_members > 1 %>
-            <div class="name-list" style="width: 25%;float:left;">          
-              <div style="float:left;width: 25px;clear: both;"><img src="/assets/persons.png" width="25px;height:20px;float:left;" /></div>
-              <div style="float:left;color:#00cccc;"><%= t(:search_shareable) %></div>
-            </div>
+          <% if item.is_shareable == true %>
+            <% if item.maximum_members > 1 %>
+              <div class="name-list" style="width: 25%;float:left;">          
+                <div style="float:left;width: 25px;clear: both;"><img src="/assets/persons.png" width="25px;height:20px;float:left;" /></div>
+                <div style="float:left;color:#00cccc;"><%= t(:search_shareable) %></div>
+              </div>
+            <% end %>
           <% end %>
 
           <div class="name-list" style="width: 75%;float:left;">

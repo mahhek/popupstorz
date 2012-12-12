@@ -35,13 +35,12 @@ class SearchesController < ApplicationController
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @prices = Item.select("distinct(price)").where("price is not NULL").order("price ASC")
     
-    @start_size = @sizes.first
-    @last_size = @sizes.last
+    @start_size = @sizes.first.size
+    @last_size = @sizes.last.size
+    @start_size = @start_size.blank? ? 1 : @start_size.size
     
-    @start_size = @start_size.blank? ? 0 : @start_size.size
-    
-    @start_price = @items.blank? ? 0 : @items.first.price
-    @last_price = @items.blank? ? 0 : @items.last.price
+    @start_price = @items.blank? ? 1 : @items.first.price
+    @last_price = @items.blank? ? 1 : @items.last.price
     
     unless @last_size.blank?
       @last_size = @last_size.size.to_f > 10000 ? @last_size.size : 10000
@@ -50,7 +49,7 @@ class SearchesController < ApplicationController
     end
 
     @last_price = @last_price.to_f > 10000 ? @last_price : 10000
-    
+        
     unless params[:search_from].blank?
       start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
       conds += " AND ('#{start_time.to_s}' between availability_from and availability_to)"
@@ -167,6 +166,7 @@ class SearchesController < ApplicationController
   def search_spaces
     session[:start_date] = nil
     session[:end_date] = nil
+    
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @shareable = Item.select("distinct(is_shareable)")    
@@ -183,7 +183,7 @@ class SearchesController < ApplicationController
     end
     
     if !params[:search_from].blank? and !params[:search_to].blank? 
-      conds += " OR ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
+      conds += " AND ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
     end
     
     if !params[:search_from].blank? or !params[:search_to].blank? 
@@ -221,11 +221,11 @@ class SearchesController < ApplicationController
     end
         
     unless params[:min_size].blank?
-      item_conds += " AND (items.size >= '#{params[:min_size].to_i}')"
+      item_conds += " AND (size >= '#{params[:min_size].to_i}')"
     end
     
     unless params[:max_size].blank?
-      item_conds += " AND (items.size <= '#{params[:max_size].to_i}')"
+      item_conds += " AND (size <= '#{params[:max_size].to_i}')"
     end
         
     unless params["types"].blank?

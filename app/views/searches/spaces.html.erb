@@ -1,8 +1,8 @@
 <%= javascript_include_tag "items.js" %>
 <script type="text/javascript">
-  $(document).ready(function() {
-    $('.pagination a').attr('data-remote', 'true');
-  });
+<%#*$(document).ready(function() {%>
+<%#*$('.pagination a').attr('data-remote', 'true');%>
+<%#*});%>
 
   $(function() {
     $('#search_from').datepicker(
@@ -21,12 +21,13 @@
       max: <%= @last_price %>,
       values: [ <%= @start_price %>, <%= @last_price %> ],
       slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+        $("#amount").val( "$" + ui.values[0] + " - $" + ui.values[1] );
       },
       stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
         $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
         $('#price_range_form').submit();}
     });
+    
     $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
       " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
 
@@ -45,14 +46,11 @@
     });
     $( "#size" ).val( "" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
       " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
-  });
-  
+  });  
 </script>
-
 
 <%= render :partial => "search_header" %>
 <div class="clear"></div>
-
 <div class="rightcontent shadowCont" style="padding: 5px 20px 20px;">
   <h2 style="font-size: 1.4em; font-weight: normal; font-family: proxima-semibold;">
     <%= t(:refine_search) %>
@@ -109,7 +107,7 @@
       <div class="twocol">
         <%= radio_button_tag "spaces","shareable", true,:name => "shareable",:checked => params[:shareable]? true : false,  :value => true ,:class => "radio", :onclick => "$(this.form).trigger('submit.rails')" %><span style="float: none;">Yes</span>
         <%= radio_button_tag "spaces","shareable", false,:name => "shareable",:class => "radio", :value => false,:onclick => "$(this.form).trigger('submit.rails')" %><span style="float: none;">No</span>
-  			 <%#= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
+  <%#= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
       </div>
     </div>
     <%= submit_tag "Submit",:hidden => true, :id => "search_spaces_submit" %>
@@ -132,24 +130,12 @@
 
         <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
       </div>
-    </div>
-    <div class="sortby">
-      <span style="font-family:proxima-semibold;"><%= t(:sort_by) %></span>
-      <%= select_tag "sort_option", options_for_select([[t("newest_sort") ,"1"],[t("price_high_to_low") ,"2"],[t("price_low_to_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
-
-      <span style="float:right;">
-        <%= will_paginate(@items, :params => params, :renderer => PaginationListLinkRenderer) %>
-  <%#*TODO Paginate%>
-      </span>  
-    </div>
+    </div>    
   <% end %>
-  <div class="resultsholderlist shadowCont">
-    <div id="searched-items" class="listx-bg">
-      <% unless @items.blank? %>
-        <%= render :partial => "items", :locals => {:items => @items} %>
-      <% else %>
-        <%= t(:other_search) %>
-      <% end %>
-    </div>
-  </div>
+  <% unless @items.blank? %>
+    <%= render :partial => "items", :locals => {:items => @items} %>
+  <% else %>
+    <%= t(:other_search) %>
+  <% end %>
+
 </div>
