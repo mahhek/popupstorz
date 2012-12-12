@@ -133,7 +133,9 @@
     </div>    
   <% end %>
   <% unless @items.blank? %>
-    <%= render :partial => "items", :locals => {:items => @items} %>
+    <div id="searched-items" >
+      <%= render :partial => "items", :locals => {:items => @items} %>
+    </div>
   <% else %>
     <%= t(:other_search) %>
   <% end %>

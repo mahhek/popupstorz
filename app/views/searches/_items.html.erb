@@ -1,5 +1,5 @@
 <div class="resultsholderlist shadowCont">
-  <div id="searched-items" class="listx-bg">
+  <div class="listx-bg">
     <div class="sortby">
       <span style="font-family:proxima-semibold;"><%= t(:sort_by) %></span>
       <%= select_tag "sort_option", options_for_select([[t("newest_sort") ,"1"],[t("price_high_to_low") ,"2"],[t("price_low_to_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
@@ -8,7 +8,6 @@
       </span>
     </div>    
   </div>
-
 </div>
 <% items.each do | item | %>
   <div class="listx">
