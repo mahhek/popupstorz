@@ -189,7 +189,7 @@ class SearchesController < ApplicationController
     if !params[:search_from].blank? or !params[:search_to].blank? 
       conds += " AND status != 'applied'"
     end
-    
+        
     booked_items = []
     unless conds == "1=1 "
       conds += "and parent_id is NULL"
@@ -204,18 +204,19 @@ class SearchesController < ApplicationController
     end    
     #    Conditions on Items search
     item_conds = "1=1 "
-    if !params[:min_price].blank? and !params[:max_price].blank?
-      item_conds += "AND price >= '#{params[:min_price].to_f}' AND price <= '#{params[:max_price].to_f}'"
-    end
     
     unless params[:search_from].blank?
-      item_conds += " AND ('#{start_time.to_s}' >= availability_from OR '#{start_time.to_s}' <= availability_to)"      
+      item_conds += " AND ( ('#{start_time.to_s}' >= availability_from OR '#{start_time.to_s}' <= availability_to) OR (available_forever = true))"
     end
     
     unless params[:search_to].blank?
-      item_conds += " AND ('#{end_time.to_s}' >= availability_from  OR '#{end_time.to_s}' <= availability_to )"      
+      item_conds += " AND ( ('#{end_time.to_s}' >= availability_from  OR '#{end_time.to_s}' <= availability_to ) OR (available_forever = true))"
     end
-
+    
+    if !params[:min_price].blank? and !params[:max_price].blank?
+      item_conds += "AND price >= '#{params[:min_price].to_f}' AND price <= '#{params[:max_price].to_f}'"
+    end    
+    
     unless params[:location].blank?
       item_conds += " AND (city LIKE " + "'%%" + "#{params[:location]}" + "%%'" +")"
     end

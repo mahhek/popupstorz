@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><%=  t(:popup)%></title>
     <!-- Script TACTfactory -->
-    
+
     <%= javascript_include_tag "application" %>
 
     <%= javascript_include_tag "all" %>
@@ -252,12 +252,11 @@
         <%= yield %>
         <div class="clear"></div>
       </div>
-      <div class="fltR footer mt30 mr100">
-        <span><%= "ctrl: " + params[:controller] + " action: " + params[:action] %></span>
+      <div class="fltR footer mt30 mr100">        
         <a href="/home/feedback"><%= t(:popup_12) %></a>
         <a href="/home/terms"><%= t(:terms) %></a>
         <a href="/home/contact"><%= t(:contact) %></a>        
-      </div>      
+      </div>
     </div>
     <%= render :partial => "/layouts/social_medias" %>
     <script type="text/javascript">    
