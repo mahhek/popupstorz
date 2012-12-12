@@ -44,7 +44,7 @@
         </div>
 
         <div class="name-list" style="margin-bottom: 5px;width: 70%;float: left;">
-          <% if item.is_shareable == true %>
+          <% if item.is_shareable == true and !item.maximum_members.blank? %>
             <% if item.maximum_members > 1 %>
               <div class="name-list" style="width: 25%;float:left;">          
                 <div style="float:left;width: 25px;clear: both;"><img src="/assets/persons.png" width="25px;height:20px;float:left;" /></div>
