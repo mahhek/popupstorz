@@ -1,9 +1,9 @@
 <%if !current_user%>
-  <%= link_to t(:add_favorite), "#", :onclick=> "return no_login()" %>
+  <%= link_to image_tag("/assets/star_empty.png", :width => "18", :height => "18", :alt => "Add to Favorites"), "#", :onclick=> "return no_login()" %>
 <%elsif current_user.favorites.include?(item)%>
-  <%= link_to t(:remove_favorite), remove_from_favorite_item_path(item), :class => "linkAddRmFavorite", :remote => true %>
+  <%= link_to image_tag("/assets/blue-star.jpg", :width => "18", :height => "18", :alt => "Add to Favorites"), remove_from_favorite_item_path(item), :class => "linkAddRmFavorite", :remote => true %>
 <%else%>
-  <%= link_to t(:add_favorite), add_to_favorite_item_path(item), :class => "linkAddRmFavorite", :remote => true %>
+  <%= link_to image_tag("/assets/star_empty.png", :width => "18", :height => "18", :alt => "Add to Favorites"), add_to_favorite_item_path(item), :class => "linkAddRmFavorite", :remote => true %>
 <%end%>
 <script>
   function no_login()

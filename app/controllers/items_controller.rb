@@ -32,7 +32,7 @@ class ItemsController < ApplicationController
     end
     respond_to do |format|
       format.js do
-        foo = render_to_string(:partial => 'favorite', :locals => { :item => @item }).to_json
+        foo = render_to_string(:partial => '/searches/favorite', :locals => { :item => @item }).to_json
         render :js => "$('#favorite_div_#{@item.id}').html(#{foo});"
       end
     end
@@ -46,7 +46,7 @@ class ItemsController < ApplicationController
     end
     respond_to do |format|
       format.js do
-        foo = render_to_string(:partial => 'favorite', :locals => { :item => @item }).to_json
+        foo = render_to_string(:partial => '/searches/favorite', :locals => { :item => @item }).to_json
         render :js => "$('#favorite_div_#{@item.id}').html(#{foo});"
       end
     end
