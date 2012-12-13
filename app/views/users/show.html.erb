@@ -229,7 +229,7 @@
             </label>
             <br/>			
             <label style="font-size:12px;color:grey; float:right;padding-right:2px;">
-              <%= item.rental_start_date.strftime("%m-%d-%Y") %> - <%= item.rental_end_date.strftime("%m-%d-%Y") %>
+              <%= item.availability_from.strftime("%m-%d-%Y") %> - <%= item.availability_to.strftime("%m-%d-%Y") %>
             </label>
           </div>
         <% end %>

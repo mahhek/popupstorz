@@ -157,11 +157,12 @@ class SearchesController < ApplicationController
     @min_price = @offers.blank? ? 0 : @offers.first.gathering_rental_price
     @max_price = @offers.blank? ? 0 : @offers.last.gathering_rental_price
     @max_price = @max_price.to_f > 10000 ? @max_price : 10000
-
+    @gatherings = @offers
+    @gatherings = @gatherings.paginate(:page => params[:page], :per_page => 6 )
     respond_to do |format| 
       format.html
       format.js do
-        foo = render_to_string(:partial => 'gatherings', :locals => { :offers => @offers }).to_json
+        foo = render_to_string(:partial => 'gatherings', :locals => { :offers => @gatherings }).to_json
         render :js => "update_gathering_values('#{params.to_json}');$('#searched-gatherings').html(#{foo});$.setAjaxPagination();"
       end
     end

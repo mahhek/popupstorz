@@ -101,11 +101,11 @@ input[type="text"], input[type="email"], input[type="password"], input[type="fil
 }
 
 hr {
-	background-color: #999999;
+    background-color: #999999;
     border: 0 none;
     color: #999999;
     height: 1px;	
-	}
+}
 
 #logo {
     display: block;
@@ -146,21 +146,21 @@ hr {
 }
 
 .dropdowns ul li {
-	display: inline-block;	
-	padding: 0 5px 0 0;
+    display: inline-block;	
+    padding: 0 5px 0 0;
 }
 
 
 .dropdowns ul li:hover {
-	background-color: white;	
+    background-color: white;	
 }
 
 /*.dropdowns ul li ul li{
-	display: block;;	
+        display: block;;	
 }*/
 
 .dropdowns span {
-	padding: 0 5px 0 6px;	
+    padding: 0 5px 0 6px;	
 }
 
 body {
@@ -230,8 +230,8 @@ body {
 }
 
 .home .chzn-container {
-	display: -moz-inline-box;
-	font-size: 1em !important;
+    display: -moz-inline-box;
+    font-size: 1em !important;
 }
 
 .home .chzn-container-single .chzn-single {
@@ -337,9 +337,9 @@ body {
 }
 
 .booking {
-	text-transform: uppercase;
-	font-size: 1.4em;
-	padding: 2px 5px;
+    text-transform: uppercase;
+    font-size: 1.4em;
+    padding: 2px 5px;
 }
 
 .imgx {
@@ -348,9 +348,9 @@ body {
 }
 
 .menubar-left {
-	float: left;
-	line-height: 37px;	
-	width: 50%;
+    float: left;
+    line-height: 37px;	
+    width: 50%;
 }
 
 #bar-unauth a {
@@ -437,7 +437,7 @@ body {
 }
 
 .loginpannel input[type="submit"] {
- 		 background-color: #CC33CC;
+    background-color: #CC33CC;
     border: 0 solid #000000;
     font-family: proxima-bold;
     font-size: 1.1em;
@@ -481,12 +481,12 @@ body {
 }
 
 .xfields label {
-	float: left;
-   text-align: right;
-   width: 150px;
-   margin-right: 10px;
-   color: #333333;
-   text-transform: uppercase;
+    float: left;
+    text-align: right;
+    width: 150px;
+    margin-right: 10px;
+    color: #333333;
+    text-transform: uppercase;
 }
 
 .xfields .input {
@@ -906,7 +906,7 @@ h2 {
 }
 
 .searchDropdown li {
-	display: inline-block;	
+    display: inline-block;	
 }
 
 .searchDropdown span {
@@ -977,34 +977,34 @@ h2 {
 }
 
 .dropdown span a {
-	padding: 0;	
+    padding: 0;	
 }
 
 .light {
-	font-family: proxima;
-	color: #666;
+    font-family: proxima;
+    color: #666;
 }
 
 .dropdown ul.profil li {
-	background-color: white;
-	padding: 0;
-	line-height: 15px;
+    background-color: white;
+    padding: 0;
+    line-height: 15px;
 }	
 
 .dropdown ul.profil li a {
-	color: #666;	
+    color: #666;	
 }
 
 .dropdown ul.profil li a:hover {
-	color: #CC33CC;
+    color: #CC33CC;
 }
 
 .dropdown ul.profil li:hover {
-	font-family: proxima-semibold;	
+    font-family: proxima-semibold;	
 }
 
 .profil {
-	background-color: white;
+    background-color: white;
     border-color: #BBBBBB;
     border-image: none;
     border-style: solid;
@@ -1106,7 +1106,7 @@ h2 {
 }
 
 .home .chzn-container-single .chzn-single span {
-	padding-top: 1px;	
+    padding-top: 1px;	
 }
 
 .pagination {
@@ -1205,10 +1205,12 @@ h2 {
     position:relative;
     min-height:20px;
 }
-.rg-image{
-    position:relative;
-    text-align:center;
-    line-height:0px;
+.rg-image {
+    height: 300px;
+    line-height: 0;
+    position: relative;
+    text-align: center;
+
 }
 .rg-image img{
     max-height:100%;
@@ -1256,7 +1258,7 @@ h2 {
 }
 
 .rg-gallery{
-	position: relative;
+    position: relative;
     width: 485px;
     float: left;
     margin-top: 20px;
@@ -1264,16 +1266,16 @@ h2 {
 }
 
 .gal-alt {
-	width: 372px;
-	height: 315px;
+    width: 372px;
+    height: 315px;
 }
 
 .gal-alt .rg-thumbs {
-	top: 235px;
+    top: 235px;
 }
 
 .rg-thumbs {
-	position: absolute;
+    position: absolute;
     top: 305px;
 }
 

@@ -14,25 +14,26 @@
 
     <div class="pannelright">
       <img class="closepannel" src="../assets/-.png" />
-
       <label class="heading_right" for="amount"><%= t(:price_range) %></label>
       <input type="text" id="amount" style="border: 0 none !important; border-radius: 0 0 0 0; box-shadow: none; color: #666666; font-family: Proxima; font-size: 1em; font-weight: normal; text-align: center; width: 170px;" />
       <div class="twocol">		   
         <div id="amount-slider-range" style="width: 90%;margin-left: 8px;"></div>
       </div>
-      <div style="float: right; font-size: 0.8em;">max</div><div style="float: left; font-size: 0.8em;">min</div>
+      <div style="float: right; font-size: 0.8em;">max</div>
+      <div style="float: left; font-size: 0.8em;">min</div>
     </div>
   <% end %>
 </div>
 
 <div class="leftcontent">
-  <%= form_for :search, :url => "/search_gatherings", :remote => true do|f| %>
+  <%= form_tag "/search_gatherings", { :id => "gathering_search_form", :remote => true} do %>
     <div class="refinesearchresults shadowCont">
       <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family: proxima-semibold;">
         <%= t(:popunion_search) %>
       </h2>
       <div>
         <div style="width:40%;float:left;">
+          <%= hidden_field_tag "sort_option" %>
           <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
         </div>
 
@@ -43,30 +44,21 @@
 
         <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
       </div>
-    </div>
-    <div class="sortby">
-      <span style="font-family: proxima-semibold;"><%= t(:sort_by) %></span>
-      <%= select_tag "sort_option", options_for_select([[t("newest_sort"),"4"],[t("oldest_sort"),""],[t("price_high_low") ,"2"],[t("price_low_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$(this.form).trigger('submit.rails')" %>
-      <span style="float:right;">
-        <%= will_paginate(@gatherings, :params => params, :renderer => PaginationListLinkRenderer) %>
-      </span>  
+    </div>    
+  <% end %>
+
+  <% unless @gatherings.blank? %>
+    <div id="searched-gatherings" class="listx-bg">    
+      <%= render :partial => "gatherings", :locals => {:offers => @gatherings} %>
+    <% else %>
+      <%= t(:other_search) %>
     </div>
   <% end %>
 
-  <div class="resultsholderlist shadowCont">
-    <div id="searched-gatherings" class="listx-bg">
-      <% unless @gatherings.blank? %>
-        <%= render :partial => "gatherings", :locals => {:offers => @gatherings} %>
-      <% else %>
-        <%= t(:other_search) %>
-      <% end %>
-    </div>
-  </div>
 </div>
 
 <script type="text/javascript">
   $(function() {
-
     $('#search_from1').datepicker(
     {
       minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',

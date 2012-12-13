@@ -103,46 +103,51 @@
     });
   });//]]>
 </script>
-
-<%# a href='#' class="back " onclick='history.go(-1);return false;'>&lt;&lt; Back to results</a %>
+<%= render :partial => "/searches/search_header" %>
+<a href='#' class="back " onclick='history.go(-1);return false;'>&lt;&lt; Back to results</a>
 <div class="leftcontent">
   <div class="shadowCont">
     <div class="fltL">
-      <h1 class="charming" style="margin-bottom: 0; font-family: proxima-bold; color:#333333; font-size:1.7em;">
-        <%= @item.title %>!</h1>
+      <h1 class="charming" style="margin-bottom: 0; font-family: proxima-bold; color:#333333; font-size:1.7em;float: left;">
+        <%= @item.title %>!
+      </h1>
+      <div id="favorite_div_<%= @item.id %>" style="float:left; color: grey;margin-left: 15px;">
+        <%= render :partial => "favorite", :locals => {:item => @item} %>
+      </div>
       <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;color: black;">
-        <%= @item.address %>
-        <%= @item.zipcode %>
-        <span style="font-variant: small-caps; "><%= @item.city %></span>,
-        <span style="text-transform: uppercase; "><%= @item.country_code %></span>
+        <%= @item.address.gsub(/[^0-9]/, '') %>
+<%#= @item.zipcode %>
+<%#*<span style="font-variant: small-caps; ">%>
+<%#= @item.city %>
+<%#*</span>,%>
+<%#*<span style="text-transform: uppercase; ">%>
+<%#= @item.country_code %>
+<%#*</span>%>
       </p>
     </div>
     <div class="fltR">
-      <h1 class="charming graytext" style="margin-bottom: 2px;font-family: proxima-bold; color: #999999; font-size:30px;">
+      <h1 class="charming graytext" style="margin-bottom: 2px;color: #999999; font-size:30px;">
         <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
       </h1>
-      <%= t(:per_day) %>
-      <p class="charming_text graytext"><%=  @item.time_for_unit_price %></p>
-
+      <%= t(:per_day1) %>      
     </div>
     <div class="clear"></div>
     <% unless @item.avatars.size > 0 %>
       <img src="../assets/gallery.png"alt="" class="gallery" />
     <% else %>
-      <div id="rg-gallery" class="rg-gallery">
+      <div id="rg-gallery" class="rg-gallery" style="width: 480px !important;height: 400px !important;">
         <div class="rg-thumbs">
           <!-- Elastislide Carousel Thumbnail Viewer -->
-          <div class="es-carousel-wrapper">
+          <div class="es-carousel-wrapper" style="width: 435px !important;">
             <div class="es-carousel">
               <ul>
                 <% @item.avatars.each do |avatar| %>
-                  <li>
-                    <a href="#">
-                      <img src="<%= avatar.photo.url(:thumb) %>"
-                           data-large="<%= avatar.photo.url(:original) %>"
+                <li style="max-width: 70px !important;max-height: 50px !important;min-width: 70px !important;min-height: 50px !important;overflow: hidden !important;">
+                  <a href="#" style="max-height: 40px !important;overflow: hidden;">
+                      <img src="<%= avatar.photo.url(:small) %>"
+                           data-large="<%= avatar.photo.url(:large) %>"
                            alt="image01"
                            data-description="<%= @item.title %>" />
-    <%#= image_tag(, :alt=>"", :width => "471px",:height=>"391px", :class => "gallery") %>
                     </a>
                   </li>
                 <% end %>
@@ -176,8 +181,8 @@
         <%end%> 
       </p>
       <% if (@item.is_shareable == true) then %>
-        <a class="send" style="font-family: proxima-bold; color: #cc33cc;">
-          <%= link_to t(:create_pop_union), new_item_offer_path(@item.id)  %>      
+        <a href="<%= new_item_offer_path(@item.id) %>" class="send" style="font-family: proxima-bold; color: #CC33CC;">
+          <%= t(:create_pop_union) %>
         </a>
       <% end %>
       <div class="clear"></div>
@@ -286,7 +291,7 @@
                     <% end %>
 
                     <div class="fltR w107">
-                      <%= image_tag("rating.png") %>
+<%#= image_tag("rating.png") %>
                       <h2 style="font-family: proxima-semibold; color: #333333"><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %></h2>
                       <p class="XXII" style="font-family: XXII;"><span style="font-variant: small-caps; ">
                           <%= @item.user.city %></span>,<span style="text-transform: uppercase; "><%= @item.user.country %>
@@ -378,7 +383,50 @@
                       <% end %>
                     </div>
                     <div class="clear"></div>
-                  </div>	
+                  </div>
+
+
+                  <div class="shadowCont w212 mt10">
+                    <h1 class="charming"><%= t(:gatherings2) %></h1>
+                    <p class="charming_text">
+                      <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
+                    <div style="width: 100%;clear: both;">
+                      <% unless gatherings.blank? %>
+                      <% gatherings.each do|gathering| %>
+                        <div style="border-bottom: 1px solid;">
+                          <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
+                          <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
+                          <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
+                          <%= t(:joined_person) %><%= gathering.members.size %><br/>
+                          <%= t(:gathering_des) %><%= gathering.gathering_description %><br/>
+                          <%= t(:rental_per_person) %><%= gathering.gathering_rental_price %><br />
+
+                          <%= t(:deadline) %><%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
+                          <% unless current_user.blank? %>
+                            <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
+                              <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
+                                <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
+                              <% end %>
+                            <% end %><br/><b><%= t(:cancellation_policy) %><b/>
+                              <%if @item.cancellation_policy_flexible %>
+                                <%= t(:flexible) %>
+                              <% else %>
+                                <%= t(:semifelxible) %>
+                              <% end %>
+                              <br/>
+                              <%= t(:owner_rules) %>
+                              <%=@item.owner_rules%><br/><br/>
+                              <%= link_to t(:details), "/offers/#{gathering.id}" %>
+                            <% end %>
+                        </div>
+                      <% end %>
+                      <% else %>
+                      <%= t(:no_gatherings) %>
+                      <% end %>
+                    </div>
+                  </div>  
+
+
                 </div>
 
                 <div class="clear"></div>
@@ -550,7 +598,7 @@
                 <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
                     <div style="width: 100%;clear: both;">
                 <% gatherings.each do|gathering| %>
-                                                                    <div style="border-bottom: 1px solid;">
+                                                                                    <div style="border-bottom: 1px solid;">
                   <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
                   <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
                   <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
@@ -570,12 +618,12 @@
                     <% else %>
                       <%= t(:semifelxible) %>
                     <% end %>
-                                                                                                                      <br/>
+                                                                                                                                                      <br/>
                     <%= t(:owner_rules) %>
                     <%=@item.owner_rules%><br/><br/>
                     <%= link_to t(:details), "/offers/#{gathering.id}" %>
                   <% end %>
-                                                                    </div>
+                                                                                    </div>
                 <% end %>
                     </div>
                     </p>
@@ -586,11 +634,11 @@
                       <b><%= t(:prev_comments) %></b><br/>
                 <%unless @item.comments.blank? %>
                   <%@item.comments.each do|f|%>
-                                                                                                                  <b><%=f.title  %></b><br/>
+                                                                                                                                                  <b><%=f.title  %></b><br/>
                     <%= f.comment %><br/>
-                                                                                                                  <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
-                                                                                                                  <br/>
-                                                                                                                  <br/>
+                                                                                                                                                  <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+                                                                                                                                                  <br/>
+                                                                                                                                                  <br/>
                   <%end%>
                 <%end%>
                     </div>

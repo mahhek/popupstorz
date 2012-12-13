@@ -136,7 +136,7 @@
     </div>    
   <% end %>
   <% unless @items.blank? %>    
-    <div id="searched-items">      
+    <div id="searched-items">
       <%= render :partial => "items", :locals => {:items => @items} %>
     </div>
   <% else %>

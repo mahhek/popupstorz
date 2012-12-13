@@ -1,59 +1,73 @@
-<% offers.each do | gathering | %>
-  <% item = gathering.item %>
-  <div class="listx" style="border-bottom: 1px solid gray;">
-    <div class="row" style="float:left; width: 732px;padding: 5px;">
-      <div class="row" style="float:left; width: 732px;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
+<div class="listx-bg">
+  <div class="sortby">
+    <span style="font-family:proxima-semibold;"><%= t(:sort_by) %></span>    
+    <%= select_tag "sort_option_sel", options_for_select([[t("newest_sort"),"4"],[t("oldest_sort"),""],[t("price_high_low") ,"2"],[t("price_low_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#sort_option').val($(this).val());$('#gathering_search_form').trigger('submit.rails')" %>
+    <span style="float:right;">
+      <%= will_paginate(offers, :params => params, :renderer => PaginationListLinkRenderer) %>
+    </span>
+  </div>
+</div>
+<div class="resultsholderlist shadowCont">
+  <% offers.each do | gathering | %>
+    <% item = gathering.item %>
+    <div class="listx" style="border-bottom: 1px solid gray;">
+      <div class="row" style="float:left; width: 732px;padding: 5px;">
+        <div class="row" style="float:left; width: 732px;">
 
-        <div class="imgx">
-          <% if item.avatars.size > 0 %>
-            <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "178", :height => "119", :alt => "Space-Photo")  %>
-          <% else %>
-            <%= image_tag("empty.png", :width => "178", :height => "119", :alt => "Space-Photo")  %>
-          <% end %>
+          <div class="imgx" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
+            <% if item.avatars.size > 0 %>
+              <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "178", :height => "119", :alt => "Space-Photo")  %>
+            <% else %>
+              <%= image_tag("empty.png", :width => "178", :height => "119", :alt => "Space-Photo")  %>
+            <% end %>
+          </div>
+
+          <div style="color: #666666; float: right; font-size: 26px;text-align: right;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
+            <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            <br />
+            <span class="perweek" style="font-size: 0.7em;">
+              <%= gathering.gathering_rental_price %><%= t(:per_day) %>
+            </span>
+          </div>
+
+          <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold; color:#333333;">
+            <h4 style="float:left;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'"><%= item.title %></h4>
+            <div id="favorite_div_<%= item.id %>" style="float:left; color: grey;margin-left: 15px;">
+              <%= render :partial => "favorite", :locals => {:item => item} %>
+            </div>
+          </div>
+
+          <div class="name-list XXII" style="margin-bottom: 5px;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
+            <span style="font-size: 1.1em; font-variant: small-caps; ">
+              <%= item.city %></span>,<span style="font-size: 1.1em; text-transform: uppercase; "><%= item.country_code %>
+            </span>
+          </div>        
+
+          <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold float:left;width:65%;color:#666666;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
+            <%= item.listing_type.name %>
+          </div>
+          <div onclick="window.location='<%= "/offers/#{gathering.id}" %>'" class="name-list" style="font-family: proxima-bold; color: #666666;"><%= item.type %></div>
+          <div class="name-list" style="margin-bottom: 5px;width: 70%;float: left;">
+
+          </div>
+
         </div>
+        <div id="favorite_div_<%= item.id %>" style="margin-top: 17px; color: grey;">
 
-        <div style="color: #666666; float: right; font-size: 26px;text-align: right;">
-          <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-          <br />
-          <span class="perweek" style="font-size: 0.7em;">
-            <%= t(:by) %> <%= gathering.gathering_rental_price %><%= t(:per_day) %>
-          </span>
-        </div>
-
-        <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold; color:#333333;">
-          <h4><%= item.title %></h4>
-        </div>
-
-        <div class="name-list XXII" style="margin-bottom: 5px;">
-          <span style="font-size: 1.1em; font-variant: small-caps; ">
-            <%= item.city %></span>,<span style="font-size: 1.1em; text-transform: uppercase; "><%= item.country_code %>
-          </span>
-        </div>        
-
-        <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold float:left;width:65%;color:#666666;">
-          <%= item.listing_type.name %>
-        </div>
-        <div class="name-list" style="font-family: proxima-bold; color: #666666;"><%= item.type %></div>
-        <div class="name-list" style="margin-bottom: 5px;width: 70%;float: left;">
-
-        </div>
-
-      </div>
-      <div id="favorite_div_<%= item.id %>" style="margin-top: 17px; color: grey;">
-
-        <% unless current_user.blank? %>
-          <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>
-            <% if !gathering.members.include?(current_user) %>
-              <%= link_to "Join this pop'union", "/join_gathering/#{gathering.id}", :class => "linkAddRmFavorite" %>
+          <% unless current_user.blank? %>
+            <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>
+              <% if !gathering.members.include?(current_user) %>
+                <%= link_to "Join this pop'union", "/join_gathering/#{gathering.id}", :class => "linkAddRmFavorite" %>
+              <% end %>
             <% end %>
           <% end %>
-        <% end %>
+        </div>
+
+        <a class="info"></span>
+        </a>
       </div>
-
-      <a class="info"></span>
-      </a>
+      <div class="clear"></div>
     </div>
-    <div class="clear"></div>
-  </div>
-<%end%>
+  <%end%>
 
+</div>

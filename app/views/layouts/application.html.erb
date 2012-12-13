@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:og="http://opengraphprotocol.org/schema/"
@@ -95,10 +96,13 @@
                   </ul></li>
 
                 <% if user_signed_in? %>
-                  <li><span><%= link_to "#{current_user.popup_storz_display_name}", dashboard_path(current_user.id), :class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %></span>
+                  <li>
+                    <span>
+                      <%= link_to "#{current_user.popup_storz_display_name}", dashboard_path(current_user.id), :class => ((params[:controller] == "home" and params[:action] == "index") or (params[:controller] == "users" and params[:action] == "show") ? "m_act" : "") %>
+                    </span>
                     <ul class="profil" style="font-family: proxima; width: 150px;">
-                      <li><a href="#">Profil (todo)</a></li>
-                      <li><a href="#">Account (todo)</a></li>
+                      <li><a href="<%= profile_path(current_user.id) %>"><%= t(:my_profile) %></a></li>
+                      <li><a href="/invitation"><%= t(:account) %></a></li>
 
                       <% if current_user && current_user.admin? %>
                         <li><%= link_to t(:admin_panel), admin_items_path, :style => "font-family: proxima-bold;" %></li>
@@ -126,11 +130,17 @@
                       <%= link_to messages_size.to_s, inbox_messages_path, :style=>["background: none repeat scroll 0 0 white; border: 1px solid; margin-right: 23px; min-width: 18px; padding: 0px 3px; text-align: center;"] %>
                     <% end %>       
                   </li>
-                  <li><span class="searchMenu <%= (((params[:controller] == "items" and params[:action] == "search_keyword")  or params[:controller] == "searches" or (params[:controller] == "items" and params[:action] == "show")) ? "m_act" : "") %>" ><%= t(:search) %></span>
-                    <ul id="search_options" class="searchMenu" style="display: none;">
+                  
+                  <% cls = ( ( (params[:controller] == "items" and params[:action] == "search_keyword")  or (params[:controller] == "searches") or (params[:controller] == "items" and params[:action] == "show") ) ? "m_act" : "") %>
+                  
+                  <li class="<%= cls %>">
+                    <span>
+                      <%= t(:search) %>
+                    </span>
+                    <ul id="search_options" class="searchMenu" style="display: <%= cls == "m_act" ? 'block' : 'none' %>">
                       <li class="searchMenu"><%= link_to t(:spaces3), "/searches/spaces" %></li>
                       <li class="searchMenu"><%= link_to t(:gatherings2),  "/searches/gatherings" %></li>
-                      <li class="searchMenu"><%= link_to "Members",  "/searches/members" %></li>
+                      <li class="searchMenu"><%= link_to t(:mem),  "/searches/members" %></li>
                     </ul>
                   </li>
                 </ul>

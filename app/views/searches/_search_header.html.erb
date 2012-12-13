@@ -1,16 +1,13 @@
 <div id="bar-searchaction" class="menu-sub-layout" >
-    <span class="menu-sub" style="background-color: <%= ((params[:action] == "search_keyword") or params[:action] == 'spaces' or params[:action] == 'search_spaces') ? 'cyan' : '' %>">      
-      <%= link_to 'Spaces', spaces_searches_path #, :class => ( ( (params[:action] == "search_keyword") ||  (params[:controller] == "searches" &&  (params[:action] == "spaces" || params[:action] == "search_spaces" )) ) ? "m_act" : "")
-      %>
-    </span>
+    <div class="menu-sub" style="background-color: <%= ((params[:action] == "search_keyword") or (params[:action] == "spaces") or (params[:action] == "search_spaces") or (params[:controller] == "items" and params[:action] == "show")) ? "cyan" : '' %>">
+      <%= link_to t(:spaces3), spaces_searches_path %>
+    </div>
     
-    <span class="menu-sub" style="background-color: <%= (params[:action] == 'gatherings' || params[:action] == 'search_gatherings') ? 'cyan' : '' %>">
-      <%= link_to 'Gatherings', gatherings_searches_path #, :class => ((params[:controller] == "searches" && (params[:action] == "gatherings" || params[:action] == "search_gatherings" ) ) ? "m_act" : "") 
-      %>
-    </span>    
+    <div class="menu-sub" style="background-color: <%= (params[:action] == 'gatherings' || params[:action] == 'search_gatherings') ? "cyan" : '' %>">
+      <%= link_to t(:pop_unions), gatherings_searches_path %>
+    </div>    
     
-    <span class="menu-sub" style="background-color: <%= (params[:action] == 'members' or params[:action] == 'search_members') ? 'cyan' : '' %>">
-      <%= link_to 'Members', members_searches_path #, :class => ( (params[:controller] == "searches" &&  (params[:action] == "members" || params[:action] == "search_members" ) ) ? "m_act" : "") 
-      %>
-    </span>
+    <div class="menu-sub" style="background-color: <%= (params[:action] == 'members' or params[:action] == 'search_members') ? "cyan" : '' %>">
+      <%= link_to t(:mem), members_searches_path %>
+    </div>
 </div>

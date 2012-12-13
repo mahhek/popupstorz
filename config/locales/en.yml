@@ -690,7 +690,10 @@ en:
    USD: "USD"
    place_cancellation_policy: "The cancellation policy for this place is"
    
-   create_pop_union: Create pop'union
-   popunion_search: Pop'unions Search
+   popunion_search: "Pop'unions Search"
    
    rating_comment: "Rating and Comments"
+   
+   pop_unions: "Pop'unions"
+   per_day1: "per day"
+   create_new_pop_union: "Create pop'union"

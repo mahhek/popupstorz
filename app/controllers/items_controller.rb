@@ -220,7 +220,7 @@ class ItemsController < ApplicationController
     if @item.availablities_saturday == true
       @available_days << 6
     end
-            
+
     @offers = @item.offers.where("(status LIKE '%Confirmed%') and parent_id is NULL")    
     @offers.each do|offer|
       @booked_dates << offer.rental_start_date.strftime("%m/%d/%Y").to_s.strip+" to "+offer.rental_end_date.strftime("%m/%d/%Y").to_s.strip
