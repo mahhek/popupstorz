@@ -114,22 +114,20 @@
       <div id="favorite_div_<%= @item.id %>" style="float:left; color: grey;margin-left: 15px;">
         <%= render :partial => "favorite", :locals => {:item => @item} %>
       </div>
-      <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;color: black;clear: both;">
-        <%= @item.address.gsub(/\d/,'') %>
-<%#= @item.zipcode %>
-<%#*<span style="font-variant: small-caps; ">%>
-<%#= @item.city %>
-<%#*</span>,%>
-<%#*<span style="text-transform: uppercase; ">%>
-<%#= @item.country_code %>
-<%#*</span>%>
+      <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;color: black;clear: both;width: 100%;">
+        <% addr = @item.address.gsub(/\d/,'') %>
+        <% addr = addr.split(",") %>
+        <%= addr[0] %>
+        <%= @item.zipcode %>
+        <%= addr[1].blank? ? " " : " , "+addr[1] %>
+        <%= addr[2].blank? ? " " : " , "+addr[2] %>
       </p>
     </div>
     <div class="fltR">
       <h1 class="charming graytext" style="margin-bottom: 2px;color: #999999; font-size:30px;">
         <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
       </h1>
-      <%= t(:per_day1) %>      
+      <div style="margin-bottom: 2px;color: #999999; font-size:20px;" class="charming graytext"><%= t(:per_day1) %></div>
     </div>
     <div class="clear"></div>
     <% unless @item.avatars.size > 0 %>
@@ -142,8 +140,8 @@
             <div class="es-carousel">
               <ul>
                 <% @item.avatars.each do |avatar| %>
-                <li style="max-width: 70px !important;max-height: 50px !important;min-width: 70px !important;min-height: 50px !important;overflow: hidden !important;">
-                  <a href="#" style="max-height: 40px !important;overflow: hidden;">
+                  <li style="max-width: 70px !important;max-height: 50px !important;min-width: 70px !important;min-height: 50px !important;overflow: hidden !important;">
+                    <a href="#" style="max-height: 40px !important;overflow: hidden;">
                       <img src="<%= avatar.photo.url(:small) %>"
                            data-large="<%= avatar.photo.url(:large) %>"
                            alt="image01"
@@ -392,36 +390,36 @@
                       <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
                     <div style="width: 100%;clear: both;">
                       <% unless gatherings.blank? %>
-                      <% gatherings.each do|gathering| %>
-                        <div style="border-bottom: 1px solid;">
-                          <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
-                          <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
-                          <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
-                          <%= t(:joined_person) %><%= gathering.members.size %><br/>
-                          <%= t(:gathering_des) %><%= gathering.gathering_description %><br/>
-                          <%= t(:rental_per_person) %><%= gathering.gathering_rental_price %><br />
+                        <% gatherings.each do|gathering| %>
+                          <div style="border-bottom: 1px solid;">
+                            <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
+                            <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
+                            <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
+                            <%= t(:joined_person) %><%= gathering.members.size %><br/>
+                            <%= t(:gathering_des) %><%= gathering.gathering_description %><br/>
+                            <%= t(:rental_per_person) %><%= gathering.gathering_rental_price %><br />
 
-                          <%= t(:deadline) %><%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
-                          <% unless current_user.blank? %>
-                            <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
-                              <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
-                                <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
+                            <%= t(:deadline) %><%= gathering.gathering_deadline.blank? ? '' : gathering.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
+                            <% unless current_user.blank? %>
+                              <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id && gathering.owner_id != current_user.id %>
+                                <% if !gathering.members.include?(current_user) && gathering.rental_start_date >= Date.today %>
+                                  <%= link_to "Join", "/join_gathering/#{gathering.id}" %> |
+                                <% end %>
+                              <% end %><br/><b><%= t(:cancellation_policy) %><b/>
+                                <%if @item.cancellation_policy_flexible %>
+                                  <%= t(:flexible) %>
+                                <% else %>
+                                  <%= t(:semifelxible) %>
+                                <% end %>
+                                <br/>
+                                <%= t(:owner_rules) %>
+                                <%=@item.owner_rules%><br/><br/>
+                                <%= link_to t(:details), "/offers/#{gathering.id}" %>
                               <% end %>
-                            <% end %><br/><b><%= t(:cancellation_policy) %><b/>
-                              <%if @item.cancellation_policy_flexible %>
-                                <%= t(:flexible) %>
-                              <% else %>
-                                <%= t(:semifelxible) %>
-                              <% end %>
-                              <br/>
-                              <%= t(:owner_rules) %>
-                              <%=@item.owner_rules%><br/><br/>
-                              <%= link_to t(:details), "/offers/#{gathering.id}" %>
-                            <% end %>
-                        </div>
-                      <% end %>
+                          </div>
+                        <% end %>
                       <% else %>
-                      <%= t(:no_gatherings) %>
+                        <%= t(:no_gatherings) %>
                       <% end %>
                     </div>
                   </div>  
@@ -598,7 +596,7 @@
                 <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
                     <div style="width: 100%;clear: both;">
                 <% gatherings.each do|gathering| %>
-                                                                                    <div style="border-bottom: 1px solid;">
+                                                                                          <div style="border-bottom: 1px solid;">
                   <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
                   <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
                   <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
@@ -618,12 +616,12 @@
                     <% else %>
                       <%= t(:semifelxible) %>
                     <% end %>
-                                                                                                                                                      <br/>
+                                                                                                                                                                  <br/>
                     <%= t(:owner_rules) %>
                     <%=@item.owner_rules%><br/><br/>
                     <%= link_to t(:details), "/offers/#{gathering.id}" %>
                   <% end %>
-                                                                                    </div>
+                                                                                          </div>
                 <% end %>
                     </div>
                     </p>
@@ -634,11 +632,11 @@
                       <b><%= t(:prev_comments) %></b><br/>
                 <%unless @item.comments.blank? %>
                   <%@item.comments.each do|f|%>
-                                                                                                                                                  <b><%=f.title  %></b><br/>
+                                                                                                                                                              <b><%=f.title  %></b><br/>
                     <%= f.comment %><br/>
-                                                                                                                                                  <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
-                                                                                                                                                  <br/>
-                                                                                                                                                  <br/>
+                                                                                                                                                              <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+                                                                                                                                                              <br/>
+                                                                                                                                                              <br/>
                   <%end%>
                 <%end%>
                     </div>

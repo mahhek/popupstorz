@@ -133,7 +133,7 @@
                   
                   <% cls = ( ( (params[:controller] == "items" and params[:action] == "search_keyword")  or (params[:controller] == "searches") or (params[:controller] == "items" and params[:action] == "show") ) ? "m_act" : "") %>
                   
-                  <li class="<%= cls %>">
+                  <li class="<%= cls %>" style="width:100px;">
                     <span>
                       <%= t(:search) %>
                     </span>
