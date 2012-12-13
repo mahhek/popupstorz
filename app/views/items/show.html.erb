@@ -104,7 +104,7 @@
   });//]]>
 </script>
 <%= render :partial => "/searches/search_header" %>
-<a href='#' class="back " onclick='history.go(-1);return false;'>&lt;&lt; Back to results</a>
+<a href='#' class="back " onclick='history.go(-1);return false;'>&lt;&lt; <%= t(:back) %></a>
 <div class="leftcontent">
   <div class="shadowCont">
     <div class="fltL">
@@ -114,8 +114,8 @@
       <div id="favorite_div_<%= @item.id %>" style="float:left; color: grey;margin-left: 15px;">
         <%= render :partial => "favorite", :locals => {:item => @item} %>
       </div>
-      <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;color: black;">
-        <%= @item.address.gsub(/[^0-9]/, '') %>
+      <p class="charming_text XXII" style="font-family: XXII; font-size:1.3em;color: black;clear: both;">
+        <%= @item.address.gsub(/\d/,'') %>
 <%#= @item.zipcode %>
 <%#*<span style="font-variant: small-caps; ">%>
 <%#= @item.city %>
