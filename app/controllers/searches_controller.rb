@@ -62,6 +62,10 @@ class SearchesController < ApplicationController
     if !params[:search_from].blank? and !params[:search_to].blank? 
       conds += " AND ( ( ( availability_from between '#{start_time.to_s}' and '#{end_time.to_s}') or ( availability_to between '#{start_time.to_s}' and '#{end_time.to_s}')  ) OR (available_forever = true))"
     end
+       
+    if conds == "1=1 "
+      conds += " AND (('#{Date.today.to_s}' between availability_from and availability_to) OR (available_forever = true))"
+    end
         
     unless params[:location].blank?
       conds += " AND (city LIKE " + "'%%" + "#{params[:location]}" + "%%'" +")"
@@ -107,14 +111,6 @@ class SearchesController < ApplicationController
         count += 1
       end
     end
-  
-    unless params[:min_price].blank?
-      conds += " AND (gathering_rental_price >= '#{params[:min_price]}')"
-    end
-    
-    unless params[:max_price].blank?
-      conds += " AND (gathering_rental_price <= '#{params[:max_price]}')"
-    end
     
     unless params[:search_from].blank?
       start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
@@ -126,6 +122,14 @@ class SearchesController < ApplicationController
       conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
     end
     
+    unless params[:min_price].blank?
+      conds += " AND (gathering_rental_price >= '#{params[:min_price]}')"
+    end
+    
+    unless params[:max_price].blank?
+      conds += " AND (gathering_rental_price <= '#{params[:max_price]}')"
+    end
+        
     unless sel_items.blank?
       conds += " AND item_id in(#{items})"
     end
@@ -184,6 +188,10 @@ class SearchesController < ApplicationController
     
     if !params[:search_from].blank? and !params[:search_to].blank? 
       conds += " AND ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
+    end
+    
+    if params[:search_from].blank? and params[:search_to].blank?
+      conds += " AND (('#{Date.today.to_s}' between rental_start_date and rental_end_date))"
     end
     
     if !params[:search_from].blank? or !params[:search_to].blank? 
@@ -287,7 +295,6 @@ class SearchesController < ApplicationController
     session[:end_date] = params[:search_to]
     @vals = params
     @items = @items.paginate(:page => params[:page], :per_page => 6 )
-    
     respond_to do |format|
       format.html
       format.js do
