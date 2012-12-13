@@ -229,7 +229,7 @@
             </label>
             <br/>			
             <label style="font-size:12px;color:grey; float:right;padding-right:2px;">
-              <%= item.availability_from.strftime("%m-%d-%Y") %> - <%= item.availability_to.strftime("%m-%d-%Y") %>
+              <%= item.availability_from.blank? ? "" : item.availability_from.strftime("%m-%d-%Y") %> - <%= item.availability_to.blank? ? "" : item.availability_to.strftime("%m-%d-%Y") %>
             </label>
           </div>
         <% end %>
