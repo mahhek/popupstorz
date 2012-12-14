@@ -527,8 +527,7 @@ en:
    zero_applied: "0 applied"
    one_confirm: "1 confirmed"
    msg2: "Message:"
-   stand_booking: "Standard Booking"
-   create_gathering: "Create a Pop'union"
+      
    suggest_term: "Suggest Terms"
    need_this: "I need this... From: *"
    join_deadline: "Joining Deadline:"
@@ -697,3 +696,6 @@ en:
    pop_unions: "Pop'unions"
    per_day1: "per day"
    create_new_pop_union: "Create pop'union"
+   booking_type: "Booking Type"
+   create_gatherings: "Create a Pop'union"
+   stand_bookings: "Standard Booking"
