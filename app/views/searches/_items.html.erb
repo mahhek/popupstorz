@@ -24,7 +24,8 @@
           <div style="color: #666666; float: right; font-size: 26px;text-align: right;" onclick="window.location='<%= "/items/#{item.id}" %>'">
             <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %><br>
             <span class="perweek" style="font-size: 0.7em;">
-              <%= item.time_for_unit_price %><%= t(:per_day) %>
+              <%#= item.time_for_unit_price %>
+              <%= t(:per_day) %>
             </span>
           </div>
 
