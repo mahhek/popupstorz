@@ -96,9 +96,7 @@
           }
         }
 
-<% if !params[:pick_up].blank? && !params[:return].blank? %>
-
-  <%
+<% if !params[:pick_up].blank? && !params[:return].blank?
   date1 = params[:pick_up]
   date2 = params[:return]
   dates = (Date.strptime(date1,'%m/%d/%Y')..Date.strptime(date2,'%m/%d/%Y')).to_a
@@ -418,36 +416,36 @@
 
           <table>
             <tr>
-              <td ><%= t(:daily_price) %></td> <!-- TODO translate -->
+              <td ><%= t(:daily_price) %></td>
               <td id="price_per_day">
                 <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
               </td>
             </tr>
             <tr>
-              <td ><%= t(:cleaning_fee) %></td> <!-- TODO translate -->
+              <td ><%= t(:cleaning_fee) %></td>
               <td id="cleaning_fee"><%= number_to_currency(exchange_currency(@item.cleaning_fee.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td>
             </tr>
             <tr>
-              <td ><%= t(:sub_total) %></td> <!-- TODO translate -->
-              <td id="offer_total_amount"></td> <!-- TODO show the real subtotal -->				
+              <td ><%= t(:sub_total) %></td>
+              <td id="offer_total_amount"></td>
             </tr>
             <tr>
               <td ><%= t(:service_fee) %></td>
               <td id="offer_service_fee"></td>
             </tr>
             <tr id="tr_totalPrice" style="background-color: yellow; font-family: proxima-bold;">
-              <td ><%= "Total" %></td> <!-- TODO translate & change text to "Grand Total" if the gathering mode is selected -->
-              <td id="grand_total_amount"></td> <!-- TODO show the total -->				
+              <td ><%= "Total" %></td>
+              <td id="grand_total_amount"></td>
             </tr>
             <tr id="tr_pricePerPerson" style="background-color: yellow; display: none">
-              <td ><%= "Price per person" %></td> <!-- TODO translate -->
-              <td ><%= number_to_currency(exchange_currency(@item.cleaning_fee.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td> <!-- TODO show the price per person -->				
+              <td ><%= "Price per person" %></td>
+              <td ><%= number_to_currency(exchange_currency(@item.cleaning_fee.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td>
             </tr>
           </table>	
           <br/>
           <table >
             <tr>
-              <td ><%= "Security deposit" %></td> <!-- TODO translate -->
+              <td ><%= "Security deposit" %></td>
               <td ><%= number_to_currency(exchange_currency(@item.deposit.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td> <!-- TODO show the real security deposit -->				
             </tr>
           </table>
@@ -481,10 +479,7 @@
 
               <% end %>
             </span>
-            <br/> <!-- TODO translate -->
-  <%#*<span>%>
-  <%#*link to cancelation policies%>
-  <%#*</span>%>
+            <br/>
 
             <br/><br/>
             <span style="font-family: proxima-bold;"><%= "Owner rules" %></span>
@@ -669,7 +664,18 @@
           new_days += 1;
         }
       }
-
+      
+      jQuery.ajax({
+        type:"GET",
+        url: '/items/set_dates?start_date='+start+'&end_date='+end,
+        success: function(){
+          jQuery.ajax({
+            type:"GET",
+            url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= session[:curr] %>'
+          });
+        }
+      });
+      
 <%#*number_of_days = ((end_date - start_date)/(1000*60*60*24)) + 1;%>
       number_of_days = new_days;
 
@@ -682,18 +688,12 @@
       $('#duration').text(number_of_days+ " days");
       
       calculated_price = calculate_price(number_of_days);
+      $('#offer_total_amount').html("<%= session[:curr] == 'USD'? "$" : "€" %>"+calculated_price);
       
-      $('#offer_total_amount').html("$"+calculated_price);
+      grand_total_amount = Math.round($('#offer_total_amount').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#offer_service_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''))
       
-      srv_fee = (calculated_price * 0.1);
-      
-      $('#offer_service_fee').html("$"+srv_fee);
-      
-      grand_total_amount = Math.floor($('#offer_total_amount').html().replace("$",'')) + Math.floor($('#price_per_day').html().replace("$",'')) + Math.floor($('#cleaning_fee').html().replace("$",'')) + Math.floor($('#offer_service_fee').html().replace("$",''))
-      
-      $('#grand_total_amount').html("$"+grand_total_amount);
+      $('#grand_total_amount').html("<%= session[:curr] == 'USD'? "$" : "€" %>"+grand_total_amount);
 
-<%#*$('#total_price').val(calculated_price);%>
 
       if($("#gathering_fields").is(":hidden") == false){
         if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
@@ -706,17 +706,6 @@
           $("#offer_gathering_rental_price").val(parseInt(calculated_price)/parseInt($("#offer_persons_in_gathering").val()));
         }
       }
-
-      jQuery.ajax({
-        type:"GET",
-        url: '/items/set_dates?start_date='+start+'&end_date='+end,
-        success: function(){
-          jQuery.ajax({
-            type:"GET",
-            url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= session[:curr] %>'
-          });
-        }
-      });
 
     }
   }

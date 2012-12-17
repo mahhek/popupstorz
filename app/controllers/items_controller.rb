@@ -17,9 +17,20 @@ class ItemsController < ApplicationController
 
   def exchange_price
     exchanged_price = number_to_currency(exchange_currency(params[:calculated_price].to_i, params[:price_unit]),:unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)
+    if session[:curr] == "EUR"
+      exchanged_val = exchanged_price.split("€")
+      exchanged_val = exchanged_val[1].to_f * 0.1
+      exchanged_val = "€"+exchanged_val.to_s
+    else
+      exchanged_val = exchanged_price.split("$")
+      exchanged_val = (exchanged_val[1].to_f * 0.1).round
+      exchanged_val = "$"+exchanged_val.to_s
+    end
+    
     respond_to do |format|
       format.js do
-        render :js => "$('#total_price').text('#{exchanged_price}');"
+        srv_fee = exchanged_price.to_f * 0.1;
+        render :js => "$('#total_price').text('#{exchanged_price}');$('#offer_service_fee').text('#{exchanged_val}');"
       end
     end
   end
