@@ -16,11 +16,11 @@ class ItemsController < ApplicationController
   end
 
   def exchange_price
-    session[:grand_total] = ""
     exchanged_price = number_to_currency(exchange_currency((params[:calculated_price].to_f).round, params[:price_unit]),:unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)
+
     if session[:curr] == "EUR"
       exchanged_val = exchanged_price.split("€")
-      exchanged_val = exchanged_val[1].to_f      
+      exchanged_val = exchanged_val[1].gsub(",", "").to_f      
       
       sub_total = exchanged_val+(params[:cleaning].to_f).round
       srv_fee = (sub_total * 0.1).round
@@ -28,14 +28,14 @@ class ItemsController < ApplicationController
       srv_fee = "€"+srv_fee.to_s
     else
       exchanged_val = exchanged_price.split("$")
-      exchanged_val = exchanged_val[1].to_f
+      exchanged_val = exchanged_val[1].gsub(",", "").to_f
+      
       sub_total = exchanged_val+(params[:cleaning].to_f).round
       srv_fee = (sub_total * 0.1).round
       
       grand_total = sub_total + srv_fee
       srv_fee = "$"+srv_fee.to_s
     end
-    session[:grand_total] = grand_total
     respond_to do |format|
       format.js do
         render :js => "$('#offer_grand_total_amount').val('#{grand_total}');$('#grand_total_amount').text('#{session[:curr] == "EUR" ? "€" : "$"}'+'#{grand_total}');$('#offer_total_amount').text('#{session[:curr] == "EUR" ? "€" : "$"}'+'#{sub_total}');$('#offer_service_fee').text('#{srv_fee}');"
