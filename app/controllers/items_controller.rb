@@ -16,21 +16,29 @@ class ItemsController < ApplicationController
   end
 
   def exchange_price
-    exchanged_price = number_to_currency(exchange_currency(params[:calculated_price].to_i, params[:price_unit]),:unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)
+    session[:grand_total] = ""
+    exchanged_price = number_to_currency(exchange_currency((params[:calculated_price].to_f).round, params[:price_unit]),:unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)
     if session[:curr] == "EUR"
       exchanged_val = exchanged_price.split("€")
-      exchanged_val = exchanged_val[1].to_f * 0.1
-      exchanged_val = "€"+exchanged_val.to_s
+      exchanged_val = exchanged_val[1].to_f      
+      
+      sub_total = exchanged_val+(params[:cleaning].to_f).round
+      srv_fee = (sub_total * 0.1).round
+      grand_total = sub_total + srv_fee
+      srv_fee = "€"+srv_fee.to_s
     else
       exchanged_val = exchanged_price.split("$")
-      exchanged_val = (exchanged_val[1].to_f * 0.1).round
-      exchanged_val = "$"+exchanged_val.to_s
+      exchanged_val = exchanged_val[1].to_f
+      sub_total = exchanged_val+(params[:cleaning].to_f).round
+      srv_fee = (sub_total * 0.1).round
+      
+      grand_total = sub_total + srv_fee
+      srv_fee = "$"+srv_fee.to_s
     end
-    
+    session[:grand_total] = grand_total
     respond_to do |format|
       format.js do
-        srv_fee = exchanged_price.to_f * 0.1;
-        render :js => "$('#total_price').text('#{exchanged_price}');$('#offer_service_fee').text('#{exchanged_val}');"
+        render :js => "$('#offer_grand_total_amount').val('#{grand_total}');$('#grand_total_amount').text('#{session[:curr] == "EUR" ? "€" : "$"}'+'#{grand_total}');$('#offer_total_amount').text('#{session[:curr] == "EUR" ? "€" : "$"}'+'#{sub_total}');$('#offer_service_fee').text('#{srv_fee}');"
       end
     end
   end

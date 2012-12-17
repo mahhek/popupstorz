@@ -127,7 +127,8 @@ class OffersController < ApplicationController
     if @item.availablities_saturday == true
       @available_days << 6
     end
-    
+    params[:offer][:total_amount] = params[:offer][:grand_total_amount]
+    params[:offer].delete(:grand_total_amount)
     unless @offer.blank?
       set_dates
       @offer.update_attributes(params[:offer])
@@ -136,7 +137,7 @@ class OffersController < ApplicationController
       set_dates
       if params[:offer][:gathering_deadline] != "mm/dd/yy" and !params[:offer][:gathering_deadline].blank?
         params[:offer][:gathering_deadline] = DateTime.strptime(params[:offer][:gathering_deadline], "%m/%d/%Y").to_time
-      end      
+      end
       params[:offer][:additional_message] = params[:offer][:offer_messages_attributes]            
       @offer = Offer.new(params[:offer].merge(:item_id => params[:item_id]).merge(:user_id => current_user.id).merge(:status => "pending"))
 
