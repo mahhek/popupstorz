@@ -690,7 +690,15 @@
       calculated_price = calculate_price(number_of_days);
       $('#offer_total_amount').html("<%= session[:curr] == 'USD'? "$" : "€" %>"+calculated_price);
       
-      grand_total_amount = Math.round($('#offer_total_amount').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#offer_service_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''))
+      if(Math.round($('#offer_service_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) == 0){
+        srv_fee = Math.round($('#offer_total_amount').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) * 0.1
+        grand_total_amount = Math.round($('#offer_total_amount').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round(srv_fee);
+      }
+      else{
+        grand_total_amount = Math.round($('#offer_total_amount').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#offer_service_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''));
+      }
+
+      
       
       $('#grand_total_amount').html("<%= session[:curr] == 'USD'? "$" : "€" %>"+grand_total_amount);
 
