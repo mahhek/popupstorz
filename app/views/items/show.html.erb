@@ -278,7 +278,6 @@
                 </div>
                 </div>
                 <div class="fltR">
-
                   <div class="shadowCont w212">
                     <% if @item.user.avatars.size > 0 %>
                       <%= link_to image_tag(@item.user.avatars.first.photo.url(:thumb), :height => "100", :width=> "94", :alt => "Seller-Image" ), profile_path(@item.user), :class => "fltL" %>
@@ -287,7 +286,6 @@
                     <% end %>
 
                     <div class="fltR w107">
-<%#= image_tag("rating.png") %>
                       <h2 style="font-family: proxima-semibold; color: #333333"><%= link_to @item.user.popup_storz_display_name, profile_path(@item.user) %></h2>
                       <p class="XXII" style="font-family: XXII;"><span style="font-variant: small-caps; ">
                           <%= @item.user.city %></span>,<span style="text-transform: uppercase; "><%= @item.user.country %>
