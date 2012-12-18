@@ -381,7 +381,7 @@
 
         <div class="clear">&nbsp;</div>
 
-        <div id="BookingGathering" style="padding: 5px; display: <%= @book_without_dates == false ? 'none' : 'block' %>"> <!-- TODO hide/show this div in case of gathering radio button is selected -->
+        <div id="gathering_fields" style="padding: 5px; display: <%= @book_without_dates == false ? 'none' : 'block' %>"> <!-- TODO hide/show this div in case of gathering radio button is selected -->
           <span class ="blockParts2"><%= t(:gathering) %></span> <!-- TODO translate -->
           <div class="clear">&nbsp;</div>
           <div>
@@ -546,8 +546,8 @@
     }
   });
 
-  function checkPrefferedAddress(){
-    if($("input[@name=offer[preferred_location]]:checked").val() == "true"){      
+  function checkPrefferedAddress(){    
+    if($("input[@name=offer[preferred_location]]:checked").val() == "true"){
       if($("#offer_preferred_address").val() == "") {
         alert('Please enter some preferred location first!.');
         return false;
@@ -583,8 +583,14 @@
           return true;
         }
       }
-    }else{
-      if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {        
+    }else{    
+      if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
+        if($("#gathering_fields").is(":hidden") == true){
+          alert("Please enter response date");
+        }
+        else{
+          alert("Please enter gathering deadline");
+        }
         return false;
         if($("#gathering_fields").is(":hidden") == true){
           if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy" ){
@@ -843,7 +849,7 @@
     $("#response_div").hide();
     
     $("#AnsweringDate").hide();
-    $("#BookingGathering").show();
+    $("#gathering_fields").show();
     
     $("#tr_totalPrice").removeAttr("background-color");
     $("#tr_pricePerPerson").show();
@@ -858,7 +864,7 @@
     $("#gathering_bg").css("background-color","white");
     
     $("#AnsweringDate").show();
-    $("#BookingGathering").hide();
+    $("#gathering_fields").hide();
     
     $("#tr_totalPrice").css("background-color","yellow");
     $("#tr_pricePerPerson").hide();
