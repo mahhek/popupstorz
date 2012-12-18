@@ -697,15 +697,16 @@
         grand_total_amount = Math.round($('#offer_total_amount').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#offer_service_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''));
       }
 
-      if($("#gathering_fields").is(":hidden") == false){
+      if($("#gathering_fields").is(":hidden") == false){        
         if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
           alert("Please enter persons in gathering");
         }
         else if($("#offer_persons_in_gathering").val() == 1){
           alert("Persons in gathering must be more than 1");
         }
-        else{
-          $("#offer_gathering_rental_price").val(parseInt(calculated_price)/parseInt($("#offer_persons_in_gathering").val()));
+        else{          
+          var total= Math.round($("#grand_total_amount").html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''));
+          $("#offer_gathering_rental_price").val((total/parseInt($("#offer_persons_in_gathering").val())).toFixed(2));
         }
       }
 
