@@ -17,7 +17,6 @@ class ItemsController < ApplicationController
 
   def exchange_price
     exchanged_price = number_to_currency(exchange_currency((params[:calculated_price].to_f).round, params[:price_unit]),:unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)
-
     if session[:curr] == "EUR"
       exchanged_val = exchanged_price.split("€")
       exchanged_val = exchanged_val[1].gsub(",", "").to_f      
@@ -38,7 +37,11 @@ class ItemsController < ApplicationController
     end
     respond_to do |format|
       format.js do
-        render :js => "$('#offer_grand_total_amount').val('#{grand_total}');$('#grand_total_amount').text('#{session[:curr] == "EUR" ? "€" : "$"}'+'#{grand_total}');$('#offer_total_amount').text('#{session[:curr] == "EUR" ? "€" : "$"}'+'#{sub_total}');$('#offer_service_fee').text('#{srv_fee}');"
+        if params[:persons].to_i != 0
+          per_person_amount = grand_total / params[:persons].to_i
+        end
+        
+        render :js => "$('#offer_grand_total_amount').val('#{grand_total}');$('#grand_total_amount').text('#{session[:curr] == "EUR" ? "€" : "$"}'+'#{grand_total}');$('#offer_total_amount').text('#{session[:curr] == "EUR" ? "€" : "$"}'+'#{sub_total}');$('#offer_service_fee').text('#{srv_fee}');$('#offer_gathering_rental_price').val('#{per_person_amount}')"
       end
     end
   end

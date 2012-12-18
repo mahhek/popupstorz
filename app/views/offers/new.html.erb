@@ -665,10 +665,11 @@
       jQuery.ajax({
         type:"GET",
         url: '/items/set_dates?start_date='+start+'&end_date='+end,
-        success: function(){
+        success: function(){          
+          var persons = Math.round($("#offer_persons_in_gathering").val());
           jQuery.ajax({
             type:"GET",
-            url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= session[:curr] %>'+'&cleaning='+Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''))
+            url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= session[:curr] %>'+'&cleaning='+Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''))+'&persons='+persons
           });
         }
       });
@@ -697,7 +698,8 @@
         grand_total_amount = Math.round($('#offer_total_amount').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#offer_service_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''));
       }
 
-      if($("#gathering_fields").is(":hidden") == false){        
+      if($("#gathering_fields").is(":hidden") == false){
+        
         if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
           alert("Please enter persons in gathering");
         }
@@ -705,8 +707,8 @@
           alert("Persons in gathering must be more than 1");
         }
         else{          
-          var total= Math.round($("#grand_total_amount").html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''));
-          $("#offer_gathering_rental_price").val((total/parseInt($("#offer_persons_in_gathering").val())).toFixed(2));
+          var total = Math.round($("#grand_total_amount").html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''));
+          $("#offer_gathering_rental_price").val((grand_total_amount/parseInt($("#offer_persons_in_gathering").val())).toFixed(2));
         }
       }
 
@@ -717,7 +719,12 @@
     months = Math.round(number_of_days/30);
     weeks = Math.round((number_of_days - (Math.round((30 * months))))/7);
     days = (number_of_days - (30 * months)) - (weeks * 7);
-    return months * $('#per_month_price').val()  + weeks * $('#per_week_price').val() + days * $('#per_day_price').val();
+    p_month = Math.round($('#per_month_price').val().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'').replace(",",""));
+    p_week = Math.round($('#per_week_price').val().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'').replace(",",""));
+    p_day = Math.round($('#per_day_price').val().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'').replace(",",""));                    
+                    
+    return months * p_month  + weeks * p_week + days * p_day;
+    
   }
 </script>
 
