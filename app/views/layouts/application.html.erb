@@ -241,13 +241,13 @@
               <span class="menu-sub" style="background-color: <%= (params[:controller] == 'messages' ) ? 'cyan' : '' %>">
                 <%= link_to t(:messages), inbox_messages_path %>
               </span>
-              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' and (params[:action] == "overview" or params[:action] == "new") ) ? 'cyan' : '' %>">
                 <%= link_to t(:my_listings), overview_items_path %>
               </span>
-              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' and params[:action] == "created_coming_gatherings" ) ? 'cyan' : '' %>">
                 <%= link_to t(:my_bookings), "/items/created_coming_gatherings" %>
               </span>
-              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' ) ? 'cyan' : '' %>">
+              <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' and params[:action] == "favorites" ) ? 'cyan' : '' %>">
                 <%= link_to t(:my_favorites), favorites_items_path %>
               </span>
               <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">

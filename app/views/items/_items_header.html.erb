@@ -1,16 +1,16 @@
 <div class="submenu" style="font-size: 1.3em; margin-bottom: 20px;">
-	<%= link_to 'Manage bookings ', overview_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "overview" or params[:action] == "overview" )) ? 'selected' : 'unselected') %>
-		<span class="separator"></span>
- 
-	<%= link_to 'Manage listings', items_path, :class => ((params[:controller] == "items" and ( params[:action] == "index" or params[:action] == "index" )) ? 'selected' : 'unselected') %>
-		<span class="separator"></span>
- 
+  <%= link_to 'Manage bookings ', overview_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "overview" or params[:action] == "overview" )) ? 'selected' : 'unselected') %>
+  <span class="separator"></span>
 
-	<%= link_to 'Gatherings getting created', gatherings_at_my_place_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "gatherings_at_my_place" )) ? 'selected' : 'unselected') %>
-		<span class="separator"></span>
-	
-	<%= link_to 'Past transactions', past_transactions_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action]=="past_transactions" )) ? 'selected' : 'unselected') %>
-		<span class="separator"></span>
- 
-	<%= link_to 'List a space', new_item_path, :class => ((params[:controller] == "items" and params[:action] == "new") ? 'selected' : 'unselected') %>
+  <%= link_to 'Manage listings', items_path, :class => ((params[:controller] == "items" and ( params[:action] == "index" or params[:action] == "index" )) ? 'selected' : 'unselected') %>
+  <span class="separator"></span>
+
+
+  <%= link_to 'Gatherings getting created', gatherings_at_my_place_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "gatherings_at_my_place" )) ? 'selected' : 'unselected') %>
+  <span class="separator"></span>
+
+  <%= link_to 'Past transactions', past_transactions_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action]=="past_transactions" )) ? 'selected' : 'unselected') %>
+  <span class="separator"></span>
+
+  <%= link_to 'List a space', new_item_path, :class => ((params[:controller] == "items" and params[:action] == "new") ? 'selected' : 'unselected') %>
 </div>

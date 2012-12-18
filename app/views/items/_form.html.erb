@@ -85,7 +85,7 @@
 </div>
 
 <div class="xfields"><label><%= t(:type) %></label>
-  <%= select_tag "item[listing_type_id]", options_from_collection_for_select(@listing_types,:id, :name, @item.listing_type_id), :style => "margin: 6px;", :class => "input" %>
+  <%= select_tag "item[listing_type_id]", options_from_collection_for_select(@listing_types,:id, :name, @item.listing_type_id), :prompt => "Other", :style => "margin: 6px;", :class => "input" %>
 </div>
 
 <div class="xfields"><label>Detailed Description</label>
@@ -96,7 +96,7 @@
 <div class="xfields" style="margin-left: 160px;">
   <div class="input">    
     <%= f.check_box :available_forever, :onclick => "availability_check()" %>
-    <span><%= t(:available_forever) %></span>
+    <span><%= t(:permanently) %></span>
   </div>
 </div>
 
@@ -129,8 +129,10 @@
     <br /> 
     <%= select_tag "item[is_shareable]", options_for_select([[t("Yes"),true],[t("No"),false]], @item.is_shareable), :onchange => "check_persons_limit(this.value)", :class => "input" %>
     &nbsp;
-    <%= t(:maximum_allowed_persons) %>: &nbsp;
-    <%= f.text_field :maximum_members, :size => "5" %> <%= t(:persons) %>
+    <div id="sharing_options" style="display: block;">
+      <%= t(:maximum_allowed_persons) %>: &nbsp;
+      <%= f.text_field :maximum_members, :size => "5" %> <%= t(:persons) %>
+    </div>
   </div>
 </div>
 
@@ -358,10 +360,12 @@
     if(val == 'false'){
       $("#item_maximum_members").attr('disabled', true);
       $("#person_count").hide();
+      $("#sharing_options").hide();
     }
     else{
       $("#item_maximum_members").attr('disabled', false);
       $("#person_count").show();
+      $("#sharing_options").show();
     }
   }
     
