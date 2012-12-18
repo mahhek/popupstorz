@@ -236,7 +236,7 @@
               <div style="float: left;">
                 <%= radio_button_tag 'plan', 'standard_booking', @book_without_dates== false ? true : false, :onclick => "hide_gathering()" %> 
                 <span class="booking" style="border: 1px solid; background-color:<%= @book_without_dates == false ? 'cyan' : 'white' %>; font-size: 1.4em; padding: 5px;"  id="std_bg">
-                  <%= t(:stand_booking) %>
+                  <%= t(:stand_bookings) %>
                 </span>
               </div>
               <div style="float: right;">
@@ -430,7 +430,7 @@
 
             <tr id="tr_pricePerPerson" style="background-color: yellow; display: none;">
               <td ><%= "Price per person" %></td>
-              <td><%= f.text_field :gathering_rental_price, :readonly => true %></td>
+              <td><%= f.text_field :gathering_rental_price, :readonly => true, :style => "background-color:yellow;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;" %></td>
             </tr>
           </table>	
           <br/>
