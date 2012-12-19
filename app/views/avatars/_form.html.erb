@@ -1,21 +1,11 @@
 <div style="padding: 20px;">
-  <div id="get-list-header">
-    <div class="white-button" style="float: left;margin-right: 10px;">
-      <%if current_user.admin%>
-      <%= link_to t(:details), edit_admin_item_path(@item) %>
-      <%else%>
-      <%= link_to t(:details), edit_item_path(@item) %>
-      <%end%>
-    </div>
-    <div class="white-button" style="float: left;margin-right: 10px;">
-      <%= link_to t(:photo), "#" %>
-    </div>
-    <div class="white-button" style="float: left;margin-right: 10px;">
-      <%if current_user.admin%>
-      <%= link_to t(:preview), admin_item_path(@item) %>
-      <%else%>
-      <%= link_to t(:preview), item_path(@item) %>
-      <%end%>
+  <div id="hd-result">
+    <div class="container_12">
+      <div id="r-nav" class="grid_9">
+        <a href='#' class="back " onclick='history.go(-1);return false;'>&lt;&lt; <%= t(:back) %></a>
+      </div>
+      <div class="grid_3"> &nbsp; </div>
+      <div class="clear">&nbsp;</div>
     </div>
   </div>
   <br/>
@@ -69,7 +59,11 @@
     <br/>
 
     <% if @avatar.new_record? %>
-      <center><button type="submit" class="large-max button orange"> <%= t(:upload_pic) %></button></center>
+      <center>
+        <button type="submit" class = "search" > 
+          <%= t(:upload_pic) %>
+        </button>
+      </center>
     <%end%>
   </div>
 

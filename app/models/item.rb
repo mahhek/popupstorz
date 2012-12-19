@@ -1,5 +1,4 @@
 # -*- encoding : utf-8 -*-
-
 class Item < ActiveRecord::Base
   acts_as_commentable
   acts_as_rateable
@@ -19,7 +18,7 @@ class Item < ActiveRecord::Base
   has_and_belongs_to_many :users
 
   validates :address, :presence => true
-  validates :listing_type_id, :presence => true
+#  validates :listing_type_id, :presence => true
   validates :title, :presence => true
   validates :description, :presence => true
   validates :price, :presence => true

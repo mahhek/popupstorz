@@ -104,8 +104,9 @@
         </div>
         <div id="booking-form">
           <% if @offer.is_gathering %>
-            <% rentareto_fee = @offer.gathering_rental_price.blank? ? 0 : (( @offer.gathering_rental_price * 10 ) / 100 ) %>
-            <% owner_amount = @offer.gathering_rental_price.blank? ? 0 : @offer.gathering_rental_price %>
+            <% rentareto_fee = @offer.gathering_rental_price.blank? ? 0 : (( (@offer.gathering_rental_price * 10 ) / 100).round ) %>
+            <% owner_amount = @offer.gathering_rental_price.blank? ? 0 : (@offer.gathering_rental_price).round %>
+            
             <% total_amount = rentareto_fee + owner_amount %>
             <%= f.hidden_field :rentareto_fee, :value => rentareto_fee %>
             <%= f.hidden_field :seller_amount, :value => owner_amount %>

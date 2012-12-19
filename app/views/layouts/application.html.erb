@@ -131,7 +131,7 @@
                     <% end %>       
                   </li>
                   
-                  <% cls = ( ( (params[:controller] == "items" and params[:action] == "search_keyword")  or (params[:controller] == "searches") or (params[:controller] == "items" and params[:action] == "show") ) ? "m_act" : "") %>
+                  <% cls = ( ( (params[:controller] == "items" and params[:action] == "search_keyword")  or (params[:controller] == "searches") or (params[:controller] == "items" and params[:action] == "show")  or (params[:controller] == "offers" and params[:action] == "new")  or (params[:controller] == "payments" and params[:action] == "new")) ? "m_act" : "") %>
                   
                   <li class="<%= cls %>" style="width:100px;">
                     <span>

@@ -44,7 +44,7 @@
           </div>        
 
           <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold float:left;width:65%;color:#666666;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
-            <%= item.listing_type.name %>
+            <%= item.listing_type.blank? ? "#{t(:other)}" : item.listing_type.name %>
           </div>
           <div onclick="window.location='<%= "/offers/#{gathering.id}" %>'" class="name-list" style="font-family: proxima-bold; color: #666666;"><%= item.type %></div>
           <div class="name-list" style="margin-bottom: 5px;width: 70%;float: left;">

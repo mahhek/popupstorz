@@ -28,7 +28,9 @@
         </div>
 
         <h1 class="size"><%= t(:type) %></h1>
-        <p class="size_text"><%= item.listing_type.name %></p>
+        <p class="size_text">
+          <%= item.listing_type.blank? ? "#{t(:other)}" : item.listing_type.name %>
+        </p>
         <div class="clear"></div>
         <h1 class="size"><%= t(:no_of_floors) %></h1>
         <p class="size_text"></p>

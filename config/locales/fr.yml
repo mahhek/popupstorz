@@ -615,3 +615,5 @@ fr:
    confirm2: "Confirmation de pop'union"
    plz_confirm: "Le nombre de membres requis a été atteint, veuillez confirmer la pop'union."
    feedback_pending: "Evaluation en attente."
+   
+   booking_type: "Booking Type"

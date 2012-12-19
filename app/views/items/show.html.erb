@@ -167,7 +167,7 @@
         <%= t(:size) %> <%= @item.size %> <%= @item.size_unit %></p>
       <p style=" font-family: proxima-bold; color: #333333;">
         <%= t(:type) %> 
-        <%= @item.listing_type.name %></p>
+        <%= @item.listing_type.blank? ? "#{t(:other)}" : @item.listing_type.name %></p>
       <div class="clear"></div>
 
       <p style="margin-top: 250px; font-family: proxima-semibold; color: #333333">
