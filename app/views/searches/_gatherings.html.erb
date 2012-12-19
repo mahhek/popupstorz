@@ -36,7 +36,7 @@
               <%= render :partial => "favorite", :locals => {:item => item} %>
             </div>
           </div>
-          
+
           <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold float:left;width:65%;color:#666666;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
             <%= item.listing_type.blank? ? "#{t(:other)}" : item.listing_type.name %>
           </div>
@@ -49,24 +49,31 @@
             </span>
           </div>
 
-          
-          <div onclick="window.location='<%= "/offers/#{gathering.id}" %>'" class="name-list" style="font-family: proxima-bold; color: #666666;"><%= item.type %></div>
-          <div class="name-list" style="margin-bottom: 5px;width: 70%;float: left;">
 
+          <div onclick="window.location='<%= "/offers/#{gathering.id}" %>'" class="name-list" style="font-family: proxima-bold; color: #666666;">
+            <%= item.type %>
           </div>
 
-        </div>
-        <div id="favorite_div_<%= item.id %>" style="margin-top: 17px; color: grey;">
-
-          <% unless current_user.blank? %>
-            <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>
-              <% if !gathering.members.include?(current_user) %>
-                <%= link_to "Join this pop'union", "/join_gathering/#{gathering.id}", :class => "linkAddRmFavorite" %>
+          <div class="name-list" style="margin-bottom: 5px;width: 72%;float: left;margin-top: 15px;">
+            <div style="float: left;width: 75%">
+            <%= t(:gathering) %>:<%= gathering.persons_in_gathering %><br />
+            <%= gathering.rental_start_date.strftime("%Y-%m-%d") %> - <%= gathering.rental_end_date.strftime("%Y-%m-%d") %>
+            </div>
+            
+            <div id="favorite_div_<%= item.id %>" style="color: grey;float: left;">
+            <% unless current_user.blank? %>
+              <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>
+                <% if !gathering.members.include?(current_user) %>
+                  <%= link_to "Join this pop'union", "/join_gathering/#{gathering.id}", :class => "linkAddRmFavorite" %>
+                <% end %>
               <% end %>
             <% end %>
-          <% end %>
-        </div>
+          </div>
+          </div>
 
+          
+
+        </div>
         <a class="info"></span>
         </a>
       </div>
