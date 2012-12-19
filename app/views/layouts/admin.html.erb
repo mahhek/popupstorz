@@ -42,6 +42,7 @@
     </div>
 
     <div>
+      <%= link_to t(:home), "/" %> &nbsp;|&nbsp;
       <%= t(:admin_panel) %> &nbsp;|&nbsp;
       <% if user_signed_in? %>
         <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>&nbsp;|&nbsp;

@@ -26,7 +26,7 @@
             <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
             <br />
             <span class="perweek" style="font-size: 0.7em;">
-              <%= gathering.gathering_rental_price %><%= t(:per_day) %>
+              <%= t(:per_day) %>
             </span>
           </div>
 
@@ -36,16 +36,20 @@
               <%= render :partial => "favorite", :locals => {:item => item} %>
             </div>
           </div>
-
-          <div class="name-list XXII" style="margin-bottom: 5px;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
-            <span style="font-size: 1.1em; font-variant: small-caps; ">
-              <%= item.city %></span>,<span style="font-size: 1.1em; text-transform: uppercase; "><%= item.country_code %>
-            </span>
-          </div>        
-
+          
           <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold float:left;width:65%;color:#666666;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
             <%= item.listing_type.blank? ? "#{t(:other)}" : item.listing_type.name %>
           </div>
+
+          <div class="name-list XXII" style="margin-bottom: 5px;float: left;" onclick="window.location='<%= "/items/#{item.id}" %>'">
+            <span style="font-size: 1.1em; font-variant: small-caps; ">
+              <%= item.city %></span>,
+            <span style="font-size: 1.1em; text-transform: uppercase; ">
+              <%= item.country_code %>
+            </span>
+          </div>
+
+          
           <div onclick="window.location='<%= "/offers/#{gathering.id}" %>'" class="name-list" style="font-family: proxima-bold; color: #666666;"><%= item.type %></div>
           <div class="name-list" style="margin-bottom: 5px;width: 70%;float: left;">
 

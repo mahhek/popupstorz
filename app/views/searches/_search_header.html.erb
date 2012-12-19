@@ -1,13 +1,13 @@
 <div id="bar-searchaction" class="menu-sub-layout" >
-    <div class="menu-sub" style="background-color: <%= ((params[:action] == "search_keyword") or (params[:action] == "spaces") or (params[:action] == "search_spaces") or (params[:controller] == "items" and params[:action] == "show")) ? "cyan" : '' %>">
-      <%= link_to t(:spaces3), spaces_searches_path %>
-    </div>
-    
-    <div class="menu-sub" style="background-color: <%= (params[:action] == 'gatherings' || params[:action] == 'search_gatherings') ? "cyan" : '' %>">
-      <%= link_to t(:pop_unions), gatherings_searches_path %>
-    </div>    
-    
-    <div class="menu-sub" style="background-color: <%= (params[:action] == 'members' or params[:action] == 'search_members') ? "cyan" : '' %>">
-      <%= link_to t(:mem), members_searches_path %>
-    </div>
+  <div class="menu-sub" style="background-color: <%= ((params[:action] == "search_keyword") or (params[:action] == "spaces") or (params[:action] == "search_spaces") or (params[:controller] == "items" and params[:action] == "show")) ? "cyan" : '' %>">
+    <%= link_to t(:spaces3), spaces_searches_path %>
+  </div>
+
+  <div class="menu-sub" style="background-color: <%= (params[:action] == 'gatherings' || params[:action] == 'search_gatherings') ? "cyan" : '' %>">
+    <%= link_to t(:pop_unions), gatherings_searches_path %>
+  </div>    
+
+  <div class="menu-sub" style="background-color: <%= (params[:action] == 'members' or params[:action] == 'search_members') ? "cyan" : '' %>">
+    <%= link_to t(:mem), members_searches_path %>
+  </div>
 </div>
