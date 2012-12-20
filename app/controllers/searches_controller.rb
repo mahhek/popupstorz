@@ -25,8 +25,7 @@ class SearchesController < ApplicationController
     @members = @members.paginate(:page => params[:page], :per_page => 6 )
   end
   
-  def spaces
-    
+  def spaces    
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     
@@ -37,41 +36,41 @@ class SearchesController < ApplicationController
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @shareable = Item.select("distinct(is_shareable)")    
     #    Conditions to find booked items in given dates
-    conds = "1=1 "
-    unless params[:search_from].blank?
-      start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
-      conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
-    end
-    
-    unless params[:search_to].blank?
-      end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
-      conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
-    end
-    
-    if !params[:search_from].blank? and !params[:search_to].blank? 
-      conds += " AND ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
-    end
-    
-    if params[:search_from].blank? and params[:search_to].blank?
-      conds += " AND (('#{Date.today.to_s}' between rental_start_date and rental_end_date))"
-    end
-    
-    if !params[:search_from].blank? or !params[:search_to].blank? 
-      conds += " AND status != 'applied'"
-    end
-        
-    booked_items = []
-    unless conds == "1=1 "
-      conds += " AND parent_id is NULL"
-      offers = Offer.find(:all,:conditions => [ conds ])  
-      offers.each do|offer|
-        if params[:location].blank?
-          booked_items << offer.item
-        else
-          booked_items << offer.item(:conditions => ["city LIKE '%#{params[:location]}%'"])
-        end
-      end
-    end
+#    conds = "1=1 "
+#    unless params[:search_from].blank?
+#      start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
+#      conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
+#    end
+#    
+#    unless params[:search_to].blank?
+#      end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
+#      conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
+#    end
+#    
+#    if !params[:search_from].blank? and !params[:search_to].blank? 
+#      conds += " AND ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
+#    end
+#    
+#    if params[:search_from].blank? and params[:search_to].blank?
+#      conds += " AND (('#{Date.today.to_s}' between rental_start_date and rental_end_date))"
+#    end
+#    
+#    if !params[:search_from].blank? or !params[:search_to].blank? 
+#      conds += " AND status != 'applied'"
+#    end
+#        
+#    booked_items = []
+#    unless conds == "1=1 "
+#      conds += " AND parent_id is NULL"
+#      offers = Offer.find(:all,:conditions => [ conds ])  
+#      offers.each do|offer|
+#        if params[:location].blank?
+#          booked_items << offer.item
+#        else
+#          booked_items << offer.item(:conditions => ["city LIKE '%#{params[:location]}%'"])
+#        end
+#      end
+#    end
     #    Conditions on Items search
     item_conds = "1=1 "
     
@@ -84,11 +83,11 @@ class SearchesController < ApplicationController
     end
     
     if !params[:search_from].blank? and !params[:search_to].blank?
-      conds += " AND ( ( ( availability_from between '#{start_time.to_s}' and '#{end_time.to_s}') or ( availability_to between '#{start_time.to_s}' and '#{end_time.to_s}')  ) OR (available_forever = true))"
+      item_conds += " AND ( ( ( availability_from between '#{start_time.to_s}' and '#{end_time.to_s}') or ( availability_to between '#{start_time.to_s}' and '#{end_time.to_s}')  ) OR (available_forever = true))"
     end
        
     if params[:search_from].blank? and params[:search_to].blank?
-      conds += " AND (('#{Date.today.to_s}' between availability_from and availability_to) OR (available_forever = true))"
+      item_conds += " AND (('#{Date.today.to_s}' between availability_from and availability_to) OR (available_forever = true))"
     end
     
     if !params[:min_price].blank? and !params[:max_price].blank?
@@ -142,7 +141,8 @@ class SearchesController < ApplicationController
     
     items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
 
-    @items = items - booked_items    
+#    @items = items - booked_items    
+    @items = items
     # Items whose owners are active users
     active_items = []  
     @items.each do|item|
@@ -256,41 +256,42 @@ class SearchesController < ApplicationController
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @shareable = Item.select("distinct(is_shareable)")    
     #    Conditions to find booked items in given dates
-    conds = "1=1 "
-    unless params[:search_from].blank?
-      start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
-      conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
-    end
+#    conds = "1=1 "
+#    unless params[:search_from].blank?
+#      start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
+#      conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
+#    end
+#    
+#    unless params[:search_to].blank?
+#      end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
+#      conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
+#    end
+#    
+#    if !params[:search_from].blank? and !params[:search_to].blank? 
+#      conds += " AND ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
+#    end
+#    
+#    if params[:search_from].blank? and params[:search_to].blank?
+#      conds += " AND (('#{Date.today.to_s}' between rental_start_date and rental_end_date))"
+#    end
+#    
+#    if !params[:search_from].blank? or !params[:search_to].blank? 
+#      conds += " AND status != 'applied'"
+#    end
+#        
+#    booked_items = []
+##    unless conds == "1=1 "
+#      conds += " AND parent_id is NULL"
+#      offers = Offer.find(:all,:conditions => [ conds ])
+#      offers.each do|offer|
+#        if params[:location].blank?
+#          booked_items << offer.item
+#        else
+#          booked_items << offer.item(:conditions => ["city LIKE '%#{params[:location]}%'"])
+#        end
+#      end
+##    end
     
-    unless params[:search_to].blank?
-      end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
-      conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
-    end
-    
-    if !params[:search_from].blank? and !params[:search_to].blank? 
-      conds += " AND ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
-    end
-    
-    if params[:search_from].blank? and params[:search_to].blank?
-      conds += " AND (('#{Date.today.to_s}' between rental_start_date and rental_end_date))"
-    end
-    
-    if !params[:search_from].blank? or !params[:search_to].blank? 
-      conds += " AND status != 'applied'"
-    end
-        
-    booked_items = []
-    unless conds == "1=1 "
-      conds += " AND parent_id is NULL"
-      offers = Offer.find(:all,:conditions => [ conds ])  
-      offers.each do|offer|
-        if params[:location].blank?
-          booked_items << offer.item
-        else
-          booked_items << offer.item(:conditions => ["city LIKE '%#{params[:location]}%'"])
-        end
-      end
-    end
     #    Conditions on Items search
     item_conds = "1=1 "
     
@@ -303,11 +304,11 @@ class SearchesController < ApplicationController
     end
     
     if !params[:search_from].blank? and !params[:search_to].blank?
-      conds += " AND ( ( ( availability_from between '#{start_time.to_s}' and '#{end_time.to_s}') or ( availability_to between '#{start_time.to_s}' and '#{end_time.to_s}')  ) OR (available_forever = true))"
+      item_conds += " AND ( ( ( availability_from between '#{start_time.to_s}' and '#{end_time.to_s}') or ( availability_to between '#{start_time.to_s}' and '#{end_time.to_s}')  ) OR (available_forever = true))"
     end
        
     if params[:search_from].blank? and params[:search_to].blank?
-      conds += " AND (('#{Date.today.to_s}' between availability_from and availability_to) OR (available_forever = true))"
+      item_conds += " AND (('#{Date.today.to_s}' between availability_from and availability_to) OR (available_forever = true))"
     end
     
     if !params[:min_price].blank? and !params[:max_price].blank?
@@ -361,7 +362,8 @@ class SearchesController < ApplicationController
     
     items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
 
-    @items = items - booked_items    
+#    @items = items - booked_items    
+    @items = items
     # Items whose owners are active users
     active_items = []  
     @items.each do|item|

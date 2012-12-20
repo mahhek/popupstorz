@@ -128,7 +128,6 @@ hr {
     margin-right: 15px;
 }
 
-
 .chzn-container-single .chzn-single {
     padding: 0 0 0 4px;
 }
@@ -561,6 +560,14 @@ body {
     overflow: hidden !important;
 }
 
+.refinesearchresults1 {
+    background-color: #FFFFFF;
+    height: 62px;
+    margin-top: 20px;
+    padding-top: 3px !important;
+    overflow: hidden !important;
+}
+
 .refinesearchresults .area {
     border: 1px solid #000000;
     float: left;
@@ -591,8 +598,12 @@ body {
     margin-right: 7px;
 }
 
-
-
+.refinesearchresults1 span {
+    float: left;
+    font-size: 14px;
+    line-height: 26px;
+    margin-right: 7px;
+}
 
 .sortby {
     float: right;
