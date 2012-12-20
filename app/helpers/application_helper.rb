@@ -6,7 +6,11 @@ module ApplicationHelper
   end
   
   def nl2br(s)
-    s.gsub(/\n/, '<br>')
+    unless s.blank?
+      s.gsub(/\n/, '<br>')
+    else
+      s
+    end    
   end
   
 end

@@ -446,8 +446,10 @@
             </tr>
 
             <tr id="tr_pricePerPerson" style="background-color: yellow; display: none;">
-              <td style="font-weight: bold"><%= "Price per person" %></td>
-              <td><%= f.text_field :gathering_rental_price, :readonly => true, :style => "background-color:yellow;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;font-family: proxima-bold;font-weight: bold;" %></td>
+              <td style="font-weight: bold"><%= "Price per person" %></td>              
+              <td><b><%= session[:curr] == "USD" ? "$" : "€" %></b>
+                <%= f.text_field :gathering_rental_price, {:value => "0",:readonly => true, :style => "background-color:yellow;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;font-family: proxima-bold;font-weight: bold;width:70%;"} %>
+              </td>
             </tr>
           </table>	
           <br/>
@@ -734,8 +736,8 @@
 
   function calculate_price(number_of_days){
     if(number_of_days > 6){
-    months = Math.round(number_of_days/30);
-    weeks = Math.round((number_of_days - (Math.round((30 * months))))/7);
+      months = Math.round(number_of_days/30);
+      weeks = Math.round((number_of_days - (Math.round((30 * months))))/7);
     
       days = (number_of_days - (30 * months)) - (weeks * 7);
     }

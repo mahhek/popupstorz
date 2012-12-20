@@ -211,6 +211,7 @@ en:
    delete_photo: "Delete photo"
    sure_delete: "Are you sure?"
    upload_pic: "Upload Picture"
+   upload_pics: "Upload Picture(s)"
    type_acceptable: "gif / jpeg / png acceptable"
    resend_instructions: "Resend confirmation instructions"
    create_new_space: "Create New Space"

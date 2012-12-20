@@ -34,7 +34,7 @@
       <div>
         <div style="width:40%;float:left;">
           <%= hidden_field_tag "sort_option" %>
-          <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
+          <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide") %>
         </div>
 
         <span><%= t(:from2) %></span>
