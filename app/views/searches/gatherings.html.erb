@@ -8,6 +8,7 @@
   <%= form_tag "/search_gatherings", {:remote => true, :method => :get, :id => "price_range_form", :pars => params } do %>
     <%= hidden_field_tag "min_price", "" %>
     <%= hidden_field_tag "max_price", "" %>
+    <%= hidden_field_tag "sort_option" %>
     <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '', :id => "gathering_searched_location" %>
     <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '', :id => "gathering_searched_from" %>
     <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '', :id => "gathering_searched_to" %>
@@ -32,8 +33,7 @@
         <%= t(:popunion_search) %>
       </h2>
       <div>
-        <div style="float:left;position: absolute;text-align: center;">
-          <%= hidden_field_tag "sort_option" %>
+        <div style="float:left;position: absolute;text-align: center;">          
           <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide") %>
         </div>
 

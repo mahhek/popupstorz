@@ -1,7 +1,7 @@
 <div class="listx-bg">
   <div class="sortby">
     <span style="font-family:proxima-semibold;"><%= t(:sort_by) %></span>
-    <%= select_tag "sort_option_sel", options_for_select([[t("newest_sort") ,"1"],[t("price_high_to_low") ,"2"],[t("price_low_to_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#sort_option').val($(this).val());$('#search_spaces_form').trigger('submit.rails')" %>
+    <%= select_tag "sort_option_sel", options_for_select([[t("newest_sort") ,"1"],[t("price_high_to_low") ,"2"],[t("price_low_to_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#sort_option').val($(this).val());$('#price_range_form').trigger('submit.rails')" %>
     <span style="float:right;">
       <%= will_paginate(@items, :params => params, :renderer => PaginationListLinkRenderer) %>
     </span>

@@ -57,10 +57,11 @@
     <%= t(:refine_search) %>
   </h2>
   <%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "price_range_form" } do %>
+    <%= hidden_field_tag "sort_option" %>
     <%= hidden_field_tag "min_price", "" %>
     <%= hidden_field_tag "max_price", "" %>
     <%= hidden_field_tag "min_size", "" %>
-    <%= hidden_field_tag "max_size", "" %>
+    <%= hidden_field_tag "max_size", !params[:max_size].blank? ? params[:max_size] : '' %>
     <%= hidden_field_tag "location", !params[:location].blank? ? params[:location] : '', :id => "searched_location" %>
     <%= hidden_field_tag "search_from", !params[:search_from].blank? ? params[:search_from] : '', :id => "searched_from" %>
     <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '', :id => "searched_to" %>
@@ -119,8 +120,7 @@
   <%= form_tag "/search_spaces", {:remote => true, :method => :get, :pars => params, :id => "search_spaces_form" } do %>
     <div class="refinesearchresults1 shadowCont">
       <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family: proxima-semibold;">Spaces search</h2>
-      <div>
-        <%= hidden_field_tag "sort_option" %>
+      <div>        
         <div style="float:left;position: absolute;text-align: center;">
           <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city,params[:location]), :prompt => "World Wide", :class => "paris") %>
         </div>
