@@ -1,51 +1,54 @@
 <%= javascript_include_tag "items.js" %>
 <script type="text/javascript">
+  $(document).ready(function() {
+    $('#location').chosen();
+    $("#abc").slider();
+    $(function() {
+      $('#search_from').datepicker(
+      {
+        minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
+        onSelect: function() {
+          $('#search_to').datepicker('option', {minDate: $(this).datepicker('getDate')});
+        }});
+      $('#search_to').datepicker({
+        minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
+        onSelect: function() {
+          $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
+        }});
 
-  $(function() {
-    $('#search_from').datepicker(
-    {
-      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
-      onSelect: function() {
-        $('#search_to').datepicker('option', {minDate: $(this).datepicker('getDate')});
-      }});
-    $('#search_to').datepicker({
-      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
-      onSelect: function() {
-        $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
-      }});
-
-    $("#amount-slider-range").slider({
-      range: true,
-      min: <%= @start_price.blank? ? 0 : @start_price %>,
-      max: <%= @last_price.blank? ? 0 : @last_price %>,
-      values: [ <%= @start_price %>, <%= @last_price.blank? ? 0 : @last_price %> ],
-      slide: function( event, ui ) {
-        $("#amount").val( "$" + ui.values[0] + " - $" + ui.values[1] );
-      },
-      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
-        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
-        $('#price_range_form').submit();}
-    });
+      $("#amount-slider-range").slider({
+        range: true,
+        min: <%= @start_price.blank? ? 0 : @start_price %>,
+        max: <%= @last_price.blank? ? 0 : @last_price %>,
+        values: [ <%= @start_price %>, <%= @last_price.blank? ? 0 : @last_price %> ],
+        slide: function( event, ui ) {
+          $("#amount").val( "$" + ui.values[0] + " - $" + ui.values[1] );
+        },
+        stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
+          $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
+          $('#price_range_form').submit();}
+      });
     
-    $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
-      " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
+      $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
+        " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
 
-    $( "#sizes-slider-range" ).slider({
-      range: true,
-      min: <%= @start_size.blank? ? 0 : @start_size %>,
-      max: <%= @last_size %>,
-      values: [ <%= @start_size.blank? ? 0 : @start_size %>, <%= @last_size %> ],
-      slide: function( event, ui ) {
-        $( "#size" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-      },
-      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
-        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));
-        $('#price_range_form').submit();
-      }
+      $( "#sizes-slider-range" ).slider({
+        range: true,
+        min: <%= @start_size.blank? ? 0 : @start_size %>,
+        max: <%= @last_size.blank? ? 0 : @last_size %>,
+        values: [ <%= @start_size.blank? ? 0 : @start_size %>, <%= @last_size.blank? ? 0 : @last_size %> ],
+        slide: function( event, ui ) {
+          $( "#size" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+        },
+        stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
+          $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));
+          $('#price_range_form').submit();
+        }
+      });
+      $( "#size" ).val( "" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
+        " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
     });
-    $( "#size" ).val( "" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
-      " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
-  });  
+  });
 </script>
 
 <%= render :partial => "search_header" %>
@@ -78,7 +81,7 @@
 
     <div class="pannelright">
       <img class="closepannel" src="../assets/-.png" />
-
+      <input type="text" id="abc" />
       <label class="heading_right" for="size"><%= t(:sizes) %><small><%= t(:sqmt) %></small>:</label>
       <input type="text" id="size" style="border: 0 none !important; border-radius: 0 0 0 0; box-shadow: none; color: #666666; font-family: Proxima; font-size: 1em; font-weight: normal; text-align: center; width: 170px;" />
       <div class="twocol">
@@ -143,8 +146,3 @@
   <% end %>
 
 </div>
-<script type="text/javascript">
-  $(document).ready(function() {
-    $('#location').chosen();
-  });
-</script>

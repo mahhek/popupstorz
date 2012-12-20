@@ -4,7 +4,7 @@
  * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
- *= require_tree . 
+ *= require_tree .
 */
 
 ul.hmenu {
@@ -190,7 +190,7 @@ ul.hmenu li {
 }
 
 .shareableHome{
-   background: url("../assets/Shareable.png") no-repeat scroll 0 0 transparent;
+    background: url("../assets/Shareable.png") no-repeat scroll 0 0 transparent;
     color: #00CCCC;
     float: left;
     font-size: 12px;

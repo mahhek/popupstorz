@@ -35,6 +35,21 @@ class SearchesController < ApplicationController
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @shareable = Item.select("distinct(is_shareable)")    
+    
+    @start_size = @sizes.first.size
+    @last_size = @sizes.last.size
+    @start_size = @start_size.blank? ? 1 : @start_size.size
+    
+    @start_price = @items.blank? ? 1 : @items.first.price
+    @last_price = @items.blank? ? 1 : @items.last.price
+    
+    unless @last_size.blank?
+      @last_size = @last_size.size.to_f > 10000 ? @last_size.size : 10000
+    else
+      @last_size = 10000
+    end
+
+    @last_price = @last_price.to_f > 10000 ? @last_price : 10000
     #    Conditions to find booked items in given dates
 #    conds = "1=1 "
 #    unless params[:search_from].blank?
@@ -157,9 +172,7 @@ class SearchesController < ApplicationController
     if params[:sort_option].blank?
       @items = @items.sort_by{|e| e[:price]}
     end
-    @min_price = @items.blank? ? 0 : @items.first.price
-    @max_price = @items.blank? ? 0 : @items.last.price
-    @max_price = @max_price.to_f > 10000 ? @max_price : 10000
+    
     if params[:sort_option].blank?
       @items = @items.sort_by{|e| e[:size]}
     end
@@ -257,6 +270,21 @@ class SearchesController < ApplicationController
     @sizes = Item.select("distinct(size)").where("size is not NULL").order("size ASC")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
     @shareable = Item.select("distinct(is_shareable)")    
+    
+    @start_size = @sizes.first.size
+    @last_size = @sizes.last.size
+    @start_size = @start_size.blank? ? 1 : @start_size.size
+    
+    @start_price = @items.blank? ? 1 : @items.first.price
+    @last_price = @items.blank? ? 1 : @items.last.price
+    
+    unless @last_size.blank?
+      @last_size = @last_size.size.to_f > 10000 ? @last_size.size : 10000
+    else
+      @last_size = 10000
+    end
+
+    @last_price = @last_price.to_f > 10000 ? @last_price : 10000
     #    Conditions to find booked items in given dates
 #    conds = "1=1 "
 #    unless params[:search_from].blank?
@@ -378,9 +406,7 @@ class SearchesController < ApplicationController
     if params[:sort_option].blank?
       @items = @items.sort_by{|e| e[:price]}
     end
-    @min_price = @items.blank? ? 0 : @items.first.price
-    @max_price = @items.blank? ? 0 : @items.last.price
-    @max_price = @max_price.to_f > 10000 ? @max_price : 10000
+    
     if params[:sort_option].blank?
       @items = @items.sort_by{|e| e[:size]}
     end
