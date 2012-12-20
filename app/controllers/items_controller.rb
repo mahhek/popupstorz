@@ -55,11 +55,7 @@ class ItemsController < ApplicationController
     respond_to do |format|
       format.js do
         foo = render_to_string(:partial => '/searches/favorite', :locals => { :item => @item }).to_json
-        unless params[:gathering].blank?
-          render :js => "$('#favorite_div_#{params[:gathering]}').html(#{foo});"
-        else
-          render :js => "$('#favorite_div_#{@item.id}').html(#{foo});"
-        end
+        render :js => "$('#favorite_div_#{@item.id}').html(#{foo});"
       end
     end
   end
@@ -72,12 +68,8 @@ class ItemsController < ApplicationController
     end
     respond_to do |format|
       format.js do
-        foo = render_to_string(:partial => '/searches/favorite', :locals => { :item => @item, :gathering => params[:gathering] }).to_json
-        unless params[:gathering].blank?
-          render :js => "$('#favorite_div_#{params[:gathering]}').html(#{foo});"
-        else
-          render :js => "$('#favorite_div_#{@item.id}').html(#{foo});"
-        end        
+        foo = render_to_string(:partial => '/searches/favorite', :locals => { :item => @item }).to_json
+        render :js => "$('#favorite_div_#{@item.id}').html(#{foo});"
       end
     end
   end

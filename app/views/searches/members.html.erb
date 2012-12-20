@@ -29,9 +29,15 @@
       <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family:proxima-semibold;"><%= t(:mem_search)%></h2>
       <div>
         <div style="width:92%;float:left;">
-          <%= text_field_tag "user", "",:style=>["width:320px"], :hint => "Enter member name or email" %>
-          <span>Change City</span>
-          <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
+          <div style="float: left;width: 70%;">
+            <%= text_field_tag "user", "",:style=>["width:320px"], :hint => "Enter member name or email" %>
+          </div>
+          <div class="refinesearchresults1" style="float: left;width: 30%;height: 0px;margin-top: 0px !important;">
+            <span>Change City</span>
+            <div style="float:right;position: absolute;text-align: center;">
+              <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide", :class => "paris") %>
+            </div>
+          </div>
         </div>
 
         <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
@@ -105,4 +111,9 @@
     $("#searched_member_location").attr("value",str.location.toString());
     $("#searched_member_user").attr("value",str.user.toString());
   }
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#location').chosen();
+  });
 </script>

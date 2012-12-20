@@ -1,10 +1,6 @@
 <%= javascript_include_tag "items.js" %>
 <script type="text/javascript">
-<%#*$(document).ready(function() {%>
-<%#*$('.pagination a').attr('data-remote', 'true');%>
-<%#*});%>
-  $('#location').chosen();
-  
+
   $(function() {
     $('#search_from').datepicker(
     {
@@ -20,9 +16,9 @@
 
     $("#amount-slider-range").slider({
       range: true,
-      min: <%= @start_price %>,
-      max: <%= @last_price %>,
-      values: [ <%= @start_price %>, <%= @last_price %> ],
+      min: <%= @start_price.blank? ? 0 : @start_price %>,
+      max: <%= @last_price.blank? ? 0 : @last_price %>,
+      values: [ <%= @start_price %>, <%= @last_price.blank? ? 0 : @last_price %> ],
       slide: function( event, ui ) {
         $("#amount").val( "$" + ui.values[0] + " - $" + ui.values[1] );
       },
@@ -36,9 +32,9 @@
 
     $( "#sizes-slider-range" ).slider({
       range: true,
-      min: <%= @start_size %>,
+      min: <%= @start_size.blank? ? 0 : @start_size %>,
       max: <%= @last_size %>,
-      values: [ <%= @start_size %>, <%= @last_size %> ],
+      values: [ <%= @start_size.blank? ? 0 : @start_size %>, <%= @last_size %> ],
       slide: function( event, ui ) {
         $( "#size" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
       },
@@ -119,20 +115,22 @@
 
 <div class="leftcontent">
   <%= form_tag "/search_spaces", {:remote => true, :method => :get, :pars => params, :id => "search_spaces_form" } do %>
-    <div class="refinesearchresults shadowCont">
+    <div class="refinesearchresults1 shadowCont">
       <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family: proxima-semibold;">Spaces search</h2>
       <div>
         <%= hidden_field_tag "sort_option" %>
-        <div style="width:35%;float:left;">
-          <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city,params[:location]), :prompt => "World Wide") %>
+        <div style="float:left;position: absolute;text-align: center;">
+          <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city,params[:location]), :prompt => "World Wide", :class => "paris") %>
         </div>
 
-        <span><%= t(:from) %></span>
-        <%= text_field_tag :search_from, params[:search_from], :id => "search_from", "hint" => "mm/dd/yyyy" %>
-        <span><%= t(:to) %></span>
-        <%= text_field_tag :search_to, params[:search_to], :id => "search_to", "hint" => "mm/dd/yyyy" %>
+        <div style="float: right;width: 70%;margin-top: -5px;">
+          <span><%= t(:from) %></span>
+          <span><%= text_field_tag :search_from, params[:search_from], :id => "search_from", "hint" => "mm/dd/yyyy" %></span>
+          <span><%= t(:to) %></span>
+          <span><%= text_field_tag :search_to, params[:search_to], :id => "search_to", "hint" => "mm/dd/yyyy" %></span>
 
-        <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
+          <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
+        </div>
       </div>
     </div>    
   <% end %>
@@ -145,3 +143,8 @@
   <% end %>
 
 </div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#location').chosen();
+  });
+</script>

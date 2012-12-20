@@ -95,12 +95,12 @@
 <h2><%= t(:availablilities) %></h2>
 <div class="xfields" style="margin-left: 160px;">
   <div class="input">    
-    <%= f.check_box :available_forever, :onclick => "availability_check()" %>
+    <%= f.check_box :available_forever, :checked => true, :onclick => "availability_check()" %>
     <span><%= t(:permanently) %></span>
   </div>
 </div>
 
-<div class="xfields" id="availabilities_div">
+<div class="xfields" id="availabilities_div" style="display:none;">
   <label>&nbsp;</label>
   <div class="input">
     <span style="font-family: proxima-bold;"><%= t(:available_from) %></span>    
@@ -108,6 +108,10 @@
     <span style="font-family: proxima-bold;"><%= t(:available_to) %></span>
     <%= f.text_field :availability_to %>
     <br />
+  </div>
+</div>
+<div class="xfields" style="width:650px;margin-left: 160px;">
+     <div class="input">
     <%=f.check_box :availablities_daytime %><span><%= t(:daytime) %></span>
     <%=f.check_box :availablities_evenings %><span><%= t(:evenings) %></span><br/>
     <%=f.check_box :availablities_monday %><span><%= t(:mondays) %></span>
@@ -119,6 +123,7 @@
     <%=f.check_box :availablities_sunday %><span><%= t(:sundays) %></span>
   </div>
 </div>
+
 
 <h2><%= t(:shareability) %></h2>
 

@@ -27,22 +27,23 @@
 
 <div class="leftcontent">
   <%= form_tag "/search_gatherings", { :id => "gathering_search_form", :remote => true} do %>
-    <div class="refinesearchresults shadowCont">
+    <div class="refinesearchresults1 shadowCont">
       <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family: proxima-semibold;">
         <%= t(:popunion_search) %>
       </h2>
       <div>
-        <div style="width:40%;float:left;">
+        <div style="float:left;position: absolute;text-align: center;">
           <%= hidden_field_tag "sort_option" %>
           <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city), :prompt => "World Wide") %>
         </div>
 
-        <span><%= t(:from2) %></span>
-        <%= text_field_tag :search_from, params[:search_from], :id => "search_from1", "hint" => "mm/dd/yyyy" %>
-        <span><%= t(:to2) %></span>
-        <%= text_field_tag :search_to, params[:search_to], :id => "search_to2", "hint" => "mm/dd/yyyy" %>
-
-        <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
+        <div style="float: right;width: 70%;margin-top: -5px;">
+          <span><%= t(:from2) %></span>
+          <span><%= text_field_tag :search_from, params[:search_from], :id => "search_from1", "hint" => "mm/dd/yyyy" %></span>
+          <span><%= t(:to2) %></span>
+          <span><%= text_field_tag :search_to, params[:search_to], :id => "search_to2", "hint" => "mm/dd/yyyy" %></span>
+          <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
+        </div>
       </div>
     </div>    
   <% end %>

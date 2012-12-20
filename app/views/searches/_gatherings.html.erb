@@ -30,13 +30,6 @@
             </span>
           </div>
 
-          <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold; color:#333333;">
-            <h4 style="float:left;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'"><%= item.title %></h4>
-            <div id="favorite_div_<%= item.id %>" style="float:left; color: grey;margin-left: 15px;">
-              <%= render :partial => "favorite", :locals => {:item => item} %>
-            </div>
-          </div>
-
           <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold float:left;width:65%;color:#666666;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
             <%= item.listing_type.blank? ? "#{t(:other)}" : item.listing_type.name %>
           </div>
@@ -54,7 +47,7 @@
             <%= item.type %>
           </div>
 
-          <div class="name-list" style="margin-bottom: 5px;width: 72%;float: left;margin-top: 15px;">
+          <div class="name-list" style="margin-bottom: 5px;width: 72%;float: left;margin-top: 40px;">
             <div style="float: left;width: 75%">
             <%= t(:gathering) %>:<%= gathering.persons_in_gathering %><br />
             <%= gathering.rental_start_date.strftime("%Y-%m-%d") %> - <%= gathering.rental_end_date.strftime("%Y-%m-%d") %>

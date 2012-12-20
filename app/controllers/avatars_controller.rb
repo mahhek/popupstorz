@@ -2,12 +2,9 @@
 class AvatarsController < ApplicationController
   before_filter :load_item
   def new
-    if current_user.admin
-      
+    if current_user.admin      
        @avatar = @item.avatars.build
       render :layout => "admin"
-     
-      
     else
       @avatar = @item.avatars.build
     end
@@ -18,6 +15,7 @@ class AvatarsController < ApplicationController
     if current_user.admin
       return redirect_to admin_items_path
     else
+      
       return redirect_to items_path
     end
   end
@@ -46,7 +44,7 @@ class AvatarsController < ApplicationController
         @avatar = @item.avatars.build(params[:avatar])
         @avatar.caption = "" if params[:avatar][:caption] == t(:photo_caption)
         if @avatar.save
-          flash[:notice] = t(:upload_picture)
+          flash[:notice] = t(:photos_upload_success)
           #      @item.update_attribute("item_status", params[:item_status])
         else
           flash[:notice] = t(:cant_save_picture)
