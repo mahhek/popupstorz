@@ -23,13 +23,17 @@
           </div>
 
           <div style="color: #666666; float: right; font-size: 26px;text-align: right;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
-            <%= number_to_currency(exchange_currency(item.price.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            <%= number_to_currency(exchange_currency(gathering.gathering_rental_price.round, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
             <br />
             <span class="perweek" style="font-size: 0.7em;">
-              <%= t(:per_day) %>
+              <%= t(:per_person2) %>
             </span>
           </div>
-
+          
+          <div class="name-list" style="margin-bottom: 5px;font-family: proxima-bold;color: #333333;">
+            <h4 style="float:left;" onclick="window.location='<%= "/items/#{item.id}" %>'"><%= item.title %></h4>            
+          </div>
+          
           <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold float:left;width:65%;color:#666666;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
             <%= item.listing_type.blank? ? "#{t(:other)}" : item.listing_type.name %>
           </div>
@@ -49,7 +53,7 @@
 
           <div class="name-list" style="margin-bottom: 5px;width: 72%;float: left;margin-top: 40px;">
             <div style="float: left;width: 75%">
-            <%= t(:gathering) %>:<%= gathering.persons_in_gathering %><br />
+<%= t(:gathering) %><%= gathering.persons_in_gathering %>&nbsp;<%= t(:persons) %>&nbsp;<br />
             <%= gathering.rental_start_date.strftime("%Y-%m-%d") %> - <%= gathering.rental_end_date.strftime("%Y-%m-%d") %>
             </div>
             
