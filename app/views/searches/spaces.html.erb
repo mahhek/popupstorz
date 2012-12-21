@@ -56,7 +56,7 @@
   <h2 style="font-size: 1.4em; font-weight: normal; font-family: proxima-semibold;">
     <%= t(:refine_search) %>
   </h2>
-  <%= form_tag "/search_spaces", {:remote => true, :method => :get, :id => "price_range_form" } do %>
+  <%= form_tag "/search_spaces", {:remote => true, :method => :get,:pars => params, :id => "price_range_form" } do %>
     <%= hidden_field_tag "sort_option" %>
     <%= hidden_field_tag "min_price", "" %>
     <%= hidden_field_tag "max_price", "" %>
@@ -81,7 +81,7 @@
 
     <div class="pannelright">
       <img class="closepannel" src="../assets/-.png" />
-      
+
       <label class="heading_right" for="size"><%= t(:sizes) %><small><%= t(:sqmt) %></small>:</label>
       <input type="text" id="size" style="border: 0 none !important; border-radius: 0 0 0 0; box-shadow: none; color: #666666; font-family: Proxima; font-size: 1em; font-weight: normal; text-align: center; width: 170px;" />
       <div class="twocol">
@@ -95,9 +95,10 @@
 
       <div class="heading_right"><%= t(:types) %></div>
       <div class="onecol">
-          <%= check_box_tag 'types[][listing_type_id]', '',true, :onclick => "$(this.form).trigger('submit.rails')" %><%= t(:other) %><br />
+        <div style="float: left;"><%= check_box_tag 'types[]', '',false, :onclick => "$(this.form).trigger('submit.rails')" %></div>
+        <span style="float: none;"><%= t(:other) %></span>
         <% @types.each do |type| %>
-          <%= check_box_tag 'types[]', type.id, params["types"].blank? ? true : params["types"].include?(type.id.to_s), :onclick => "$(this.form).trigger('submit.rails')" %>
+          <%= check_box_tag 'types[]', type.id, params["types"].blank? ? false : params["types"].include?(type.id.to_s), :onclick => "$(this.form).trigger('submit.rails')" %>
           <span style="float: none;"><%= type.name.capitalize %></span><br />
         <% end %>
       </div>
@@ -110,18 +111,18 @@
       <div class="twocol">
         <%= check_box_tag "shared", true, "", :checked => true, :onclick => "$(this.form).trigger('submit.rails')"  %><span style="float: none;">Yes</span>
         <%= check_box_tag "not_shared", true, "", :checked => true, :onclick => "$(this.form).trigger('submit.rails')"  %><span style="float: none;">No</span>
-        <%#= radio_button_tag "spaces","shareable", true,:name => "shareable",:checked => params[:shareable]? true : false,  :value => true ,:class => "radio", :onclick => "$(this.form).trigger('submit.rails')" %>
-        <%#= radio_button_tag "spaces","shareable", false,:name => "shareable",:class => "radio", :value => false,:onclick => "$(this.form).trigger('submit.rails')" %>
-        <%#*<span style="float: none;">No</span>%>
-        <%#= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
+  <%#= radio_button_tag "spaces","shareable", true,:name => "shareable",:checked => params[:shareable]? true : false,  :value => true ,:class => "radio", :onclick => "$(this.form).trigger('submit.rails')" %>
+  <%#= radio_button_tag "spaces","shareable", false,:name => "shareable",:class => "radio", :value => false,:onclick => "$(this.form).trigger('submit.rails')" %>
+  <%#*<span style="float: none;">No</span>%>
+  <%#= check_box_tag "shareable", params[:shareable]? 'false' : 'true' ,params[:shareable]? true : false, :onclick => "$(this.form).trigger('submit.rails')" %>
       </div>
     </div>
     <%= submit_tag "Submit",:hidden => true, :id => "search_spaces_submit" %>
-  <% end %>
+  <%# end %>
 </div>
 
 <div class="leftcontent">
-  <%= form_tag "/search_spaces", {:remote => true, :method => :get, :pars => params, :id => "search_spaces_form" } do %>
+  <%#= form_tag "/search_spaces", {:remote => true, :method => :get, :pars => params, :id => "search_spaces_form" } do %>
     <div class="refinesearchresults1 shadowCont">
       <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family: proxima-semibold;">Spaces search</h2>
       <div>        

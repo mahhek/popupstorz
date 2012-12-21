@@ -291,10 +291,12 @@ class SearchesController < ApplicationController
     item_conds = "1=1 "
     
     unless params[:search_from].blank?
+      start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date
       item_conds += " AND ( ('#{start_time.to_s}' >= availability_from OR '#{start_time.to_s}' <= availability_to) OR (available_forever = true))"
     end
     
     unless params[:search_to].blank?
+      end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
       item_conds += " AND ( ('#{end_time.to_s}' >= availability_from  OR '#{end_time.to_s}' <= availability_to ) OR (available_forever = true))"
     end
     
@@ -336,10 +338,11 @@ class SearchesController < ApplicationController
       item_conds += " AND (#{type_arr})"
     end
         
-    if params[:shared] == true and params[:not_shared] == true      
-    
+    if params[:shared] == "true" and params[:not_shared] == "true"
+      item_conds += " AND ((is_shareable = true) OR (is_shareable = false))"
+      
     elsif params[:shared] == "true"
-      item_conds += " AND (is_shareable = true)"    
+      item_conds += " AND (is_shareable = true)"
     
     elsif params[:not_shared] == "true"
       item_conds += " AND (is_shareable = false)"
@@ -357,7 +360,7 @@ class SearchesController < ApplicationController
     else
       order_by = "price ASC"
     end
-    
+
     items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
 
 #    @items = items - booked_items    
