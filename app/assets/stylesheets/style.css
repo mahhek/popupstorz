@@ -210,7 +210,7 @@ body {
 }
 
 .menu-sub {
-    border: 1px solid black;
+    border: 1px #666666;
     margin: 0 100px;	
     padding: 2px 0;
 }
@@ -219,6 +219,21 @@ body {
     text-transform: uppercase;	
     padding: 2px 30px;
 }
+
+.menu-sub a.active {
+    background: #00ffff;
+    border: #000000;
+}
+
+.menu-sub a:hover {
+    background: #ccffff;
+    border: #999999;
+}
+
+.menu-sub a.active:hover {
+    background:#00cccc;
+}
+
 
 .home {
     text-align: center;
