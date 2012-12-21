@@ -326,7 +326,7 @@ en:
    req_fields: "Required fields(and the display names): "
    size: "Size:"
    availabilities: "Availabilities:"
-   permanently: "Permanently:"
+   permanently: "Forever:"
    daytime: "Daytime"
    evenings: "Evenings"
    mondays: "Mondays"
@@ -702,3 +702,4 @@ en:
    stand_bookings: "Standard Booking"
    other: "Other"
    photos_upload_success: "Thank you for uploading pictures, you now have more chances of renting out your space !"
+   choose_dates: "Choose Dates"

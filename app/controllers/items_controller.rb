@@ -118,17 +118,10 @@ class ItemsController < ApplicationController
   def create
     @countries = Country.all
     set_values
-    if params[:item][:available_forever] == "1"
-      params[:item][:availablities_daytime]= true
-      params[:item][:availablities_evenings] = true
-      params[:item][:availablities_monday] = true
-      params[:item][:availablities_tuesday] = true
-      params[:item][:availablities_wednesday] = true
-      params[:item][:availablities_thursday] = true
-      params[:item][:availablities_friday] = true
-      params[:item][:availablities_saturday] = true
-      params[:item][:availablities_sunday] = true    
+    if params[:item][:availability] == "forever"
+      params[:item][:available_forever] = "1"
     end
+    params[:item].delete(:availability)
     @item = Item.new(params[:item])
     @map = GMap.new("map")
     if params[:item][:latitude].blank?
@@ -167,10 +160,10 @@ class ItemsController < ApplicationController
   end
   
   def set_values
-    if params[:item][:available_forever] == "1"
+    if params[:item][:availability] == "forever"
       params[:item][:availability_from] = ""
       params[:item][:availability_to] = ""
-    end    
+    end
     unless params[:item][:availability_from].blank?
       params[:item][:availability_from] = DateTime.strptime(params[:item][:availability_from], "%m/%d/%Y").to_time
     end
@@ -196,6 +189,10 @@ class ItemsController < ApplicationController
     @countries = Country.all
     @item = Item.find(params[:id])    
     set_values    
+    if params[:item][:availability] == "forever"
+      params[:item][:available_forever] = "1"
+    end
+    params[:item].delete(:availability)
     @item.availability_option_ids = params[:availability_options]
     if @item.update_attributes(params[:item])
       flash[:notice] = t(:updating_space)

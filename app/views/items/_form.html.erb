@@ -94,9 +94,15 @@
 
 <h2><%= t(:availablilities) %></h2>
 <div class="xfields" style="margin-left: 160px;">
-  <div class="input">    
-    <%= f.check_box :available_forever, :checked => true, :onclick => "availability_check()" %>
-    <span><%= t(:permanently) %></span>
+  <div class="input" style="float: left;width: 25%;">
+    <div class="input" style="float: left;margin-left: 5px;">
+      <%= radio_button_tag "item[availability]", "forever", true, :class => "input", :onclick => "availability_check()" %>
+      <div style="float:left;margin-left: 5px;margin-top: -8px;font-weight: bold;"><%= t(:permanently) %></div>
+    </div>    
+  </div>
+  <div class="input" style="float: left;margin-left: 5px;">
+    <%= radio_button_tag "item[availability]", "from_to", false, :class => "input", :onclick => "availability_check()" %>
+    <div style="float:left;margin-left: 5px;margin-top: -8px;font-weight: bold;"><%= t(:choose_dates) %></div>
   </div>
 </div>
 
@@ -111,7 +117,7 @@
   </div>
 </div>
 <div class="xfields" style="width:650px;margin-left: 160px;">
-     <div class="input">
+  <div class="input">
     <%=f.check_box :availablities_daytime %><span><%= t(:daytime) %></span>
     <%=f.check_box :availablities_evenings %><span><%= t(:evenings) %></span><br/>
     <%=f.check_box :availablities_monday %><span><%= t(:mondays) %></span>
@@ -149,7 +155,7 @@
   </span>
 </div>
 
-<div class="xfields" style="margin: 20px 0; width:960px;"><label>Rental price</label>
+<div class="xfields" style="margin: 20px 0; width:960px;"><label><%= t(:rental_price) %></label>
   <!--<span> -->
   <div style="font-family: proxima-bold; float:left;"><%= f.text_field :price,  :class => "price", :size =>""%> <span class="unit">$</span> per day</div>
   <div style="font-family: proxima-bold; float:left;"><%= f.text_field :price_per_week,  :class => "price",:size =>""  %> <span class="unit">$</span> per week</div>
@@ -158,14 +164,14 @@
   <br /><span style="color: #666666; margin-left: 362px; margin-top: -12px; position: absolute;">If you wish, you can apply a lower rate for weekly or monthly rentals</span>
 </div>
 
-<div class="xfields"><label>Cleaning fee</label>
+<div class="xfields"><label><%= t(:cleaning_fee) %></label>
   <span>
     <%= f.text_field :cleaning_fee, :class => "input" %> <span class="unit"> $</span>
 <!--    <%= select_tag "item[cleaning_fee]", options_for_select([["$","$"],["€","€"]], @item.cleaning_fee) %>&nbsp;&nbsp; -->
   </span>
 </div>
 
-<div class="xfields"><label>Deposit</label>
+<div class="xfields"><label><%= t(:deposit) %></label>
   <span>
     <%= f.text_field :deposit, :class => "input" %><span class="unit"> $</span>
    <!-- <%= select_tag "item[deposit]", options_for_select([["$","$"],["€","€"]], @item.deposit) %>&nbsp;&nbsp; -->
@@ -177,7 +183,7 @@
 <div class="xfields"><label>&nbsp;</label>
   <div class="input" style="width: 80%;">
     <span><%= t(:place_cancellation_policy) %>:</span>
-    <span>TODO check out our full cancellation policies</span><br/>
+    <span>Check out our full cancellation policies</span><br/>
     <%= f.radio_button :cancellation_policy_flexible, true, :class => "input" %>
     <div class="input policy">
       <span style="color: black; margin: 5px 0;"><%= t(:flexible) %></span><br/><br/>
@@ -244,11 +250,7 @@
       map.setZoom(15);
       map.addOverlay(marker);
 
-
-
       if(resolveName) {
-
-
         var get_location_name_fun = function() {
           $.ajax({
             url: "/xml/address_search.xml?lat=" + latlng.lat() + "&lon=" + latlng.lng(),
@@ -381,9 +383,9 @@
   
   
   function availability_check(){
-    if($("#item_available_forever").attr('checked') == "checked"){
+    if($("input[@name=item[availability]]:checked").val() == "forever"){
       $("#availabilities_div").hide();
-    }
+    }    
     else{
       $("#availabilities_div").show();
     }
