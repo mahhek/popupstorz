@@ -17,12 +17,14 @@ class Item < ActiveRecord::Base
   has_many :offers
   has_and_belongs_to_many :users
 
+  validates :maximum_members, :presence => {:if => :is_shareable}
   validates :address, :presence => true
 #  validates :listing_type_id, :presence => true
   validates :title, :presence => true
   validates :description, :presence => true
   validates :price, :presence => true
   before_save :check_and_calculate_prices
+#  validates :check_max_members
   #  validates :is_agree, :presence => true
   #  validates_format_of :phone, :allow_blank => true,
   #  :with => /^(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*/
@@ -33,7 +35,7 @@ class Item < ActiveRecord::Base
   def creator_id
     self.user_id.to_i
   end
-
+  
   def check_and_calculate_prices
     self.price_per_week = (self.price * 7).to_i if self.price_per_month.blank?
     self.price_per_month = (self.price * 30).to_i if self.price_per_month.blank?

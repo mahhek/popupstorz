@@ -102,6 +102,7 @@ class SearchesController < ApplicationController
   def spaces    
     @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
     @types = ListingType.select("distinct(name), id").where("name is not NULL")
+    @types << {"Other"=>"Other"}
     
     session[:start_date] = nil
     session[:end_date] = nil
@@ -334,8 +335,7 @@ class SearchesController < ApplicationController
       end
       item_conds += " AND (#{type_arr})"
     end
-    
-    
+        
     if params[:shared] == true and params[:not_shared] == true      
     
     elsif params[:shared] == "true"
@@ -344,6 +344,7 @@ class SearchesController < ApplicationController
     elsif params[:not_shared] == "true"
       item_conds += " AND (is_shareable = false)"
     end
+    
     case params[:sort_option]
     when "1"
       order_by = "created_at DESC"

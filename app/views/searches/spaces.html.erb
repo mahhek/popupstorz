@@ -95,8 +95,9 @@
 
       <div class="heading_right"><%= t(:types) %></div>
       <div class="onecol">
+          <%= check_box_tag 'types[][listing_type_id]', '',true, :onclick => "$(this.form).trigger('submit.rails')" %><%= t(:other) %><br />
         <% @types.each do |type| %>
-          <%= check_box_tag 'types[]', type.id, params["types"].blank? ? false : params["types"].include?(type.id.to_s), :onclick => "$(this.form).trigger('submit.rails')" %>
+          <%= check_box_tag 'types[]', type.id, params["types"].blank? ? true : params["types"].include?(type.id.to_s), :onclick => "$(this.form).trigger('submit.rails')" %>
           <span style="float: none;"><%= type.name.capitalize %></span><br />
         <% end %>
       </div>
