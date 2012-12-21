@@ -182,29 +182,33 @@
 
 <div class="xfields"><label>&nbsp;</label>
   <div class="input" style="width: 80%;">
-    <span><%= t(:place_cancellation_policy) %>:</span>
-    <span>Check out our full cancellation policies</span><br/>
-    <%= f.radio_button :cancellation_policy_flexible, true, :class => "input" %>
-    <div class="input policy">
-      <span style="color: black; margin: 5px 0;"><%= t(:flexible) %></span><br/><br/>
-      <%= t(:cancel_ln1) %><br/>
-      <%= t(:cancel_ln2) %><br/><br/>
+    <div style="float: left;width: 100%;clear: both;">
+      <span><%= t(:place_cancellation_policy) %>:</span>
+      <span>Check out our full cancellation policies</span><br/>
+      <%= f.radio_button :cancellation_policy_flexible, true, :class => "input" %>
+      <div class="input policy">
+        <span style="color: black; margin: 5px 0;"><%= t(:flexible) %></span><br/><br/>
+        <%= t(:cancel_ln1) %><br/>
+        <%= t(:cancel_ln2) %><br/><br/>
 
-      <%= t(:cancel_ln3) %><br/><br/>
+        <%= t(:cancel_ln3) %><br/><br/>
 
-      <%= t(:cancel_ln4) %><br/><br/>
-      <%= t(:cancel_ln5) %><br/><br/>
+        <%= t(:cancel_ln4) %><br/><br/>
+        <%= t(:cancel_ln5) %><br/><br/>
+      </div>
     </div>
-    <%=f.radio_button :cancellation_policy_flexible, false, :class => "input" %> 
-    <div class="input policy">
-      <span style="color: black; margin: 5px 0;"><%= t(:semi_flexible) %></span><br/><br/>
-      <%= t(:semi_cancel_ln1) %><br/>
-      <%= t(:semi_cancel_ln2) %><br/><br/>
+    <div style="float: left;width: 100%;clear: both;">
+      <%= f.radio_button :cancellation_policy_flexible, false, :class => "input" %> 
+      <div class="input policy">
+        <span style="color: black; margin: 5px 0;"><%= t(:semi_flexible) %></span><br/><br/>
+        <%= t(:semi_cancel_ln1) %><br/>
+        <%= t(:semi_cancel_ln2) %><br/><br/>
 
-      <%= t(:semi_cancel_ln3) %><br/><br/>
+        <%= t(:semi_cancel_ln3) %><br/><br/>
 
-      <%= t(:semi_cancel_ln4) %><br/><br/>
-      <%= t(:semi_cancel_ln5) %>
+        <%= t(:semi_cancel_ln4) %><br/><br/>
+        <%= t(:semi_cancel_ln5) %>
+      </div>
     </div>
   </div>
 </div>
@@ -225,6 +229,15 @@
   var get_location_name_timeout = null;
 
   $(document).ready(function() {
+    
+    $("#item_size").ForceNumericOnly();
+    $("#item_maximum_members").ForceNumericOnly();
+    $("#item_price").ForceNumericOnly();
+    $("#item_price_per_week").ForceNumericOnly();
+    $("#item_price_per_month").ForceNumericOnly();
+    $("#item_cleaning_fee").ForceNumericOnly();
+    $("#item_deposit").ForceNumericOnly();
+    
     $('#map').css("margin", "0 auto");
 
     $("#availabilities_div").css('display', 'none');
@@ -388,8 +401,28 @@
     }    
     else{
       $("#availabilities_div").css('display', 'block');
-      <%#*$("#availabilities_div").show();%>
+<%#*$("#availabilities_div").show();%>
     }
   }
+  
+  $.fn.ForceNumericOnly =
+    function()
+  {
+    return this.each(function()
+    {
+      $(this).keydown(function(e)
+      {
+        var key = e.charCode || e.keyCode || 0;
+        // allow backspace, tab, delete, arrows, numbers and keypad numbers ONLY
+        return (
+        key == 8 || 
+          key == 9 ||
+          key == 46 ||
+          (key >= 37 && key <= 40) ||
+          (key >= 48 && key <= 57) ||
+          (key >= 96 && key <= 105));
+      });
+    });
+  };
 
 </script>
