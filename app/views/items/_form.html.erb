@@ -106,7 +106,7 @@
   </div>
 </div>
 
-<div class="xfields" id="availabilities_div" style="display:none;">
+<div class="xfields" id="availabilities_div">
   <label>&nbsp;</label>
   <div class="input">
     <span style="font-family: proxima-bold;"><%= t(:available_from) %></span>    
@@ -225,11 +225,10 @@
   var get_location_name_timeout = null;
 
   $(document).ready(function() {
-
-
     $('#map').css("margin", "0 auto");
 
-
+    $("#availabilities_div").css('display', 'none');
+    
     var update_location_fun = function(resolveName) {
       if(resolveName == null) {
         resolveName = true;
@@ -383,11 +382,13 @@
   
   
   function availability_check(){
+    
     if($("input[@name=item[availability]]:checked").val() == "forever"){
-      $("#availabilities_div").hide();
+      $("#availabilities_div").css('display', 'none');
     }    
     else{
-      $("#availabilities_div").show();
+      $("#availabilities_div").css('display', 'block');
+      <%#*$("#availabilities_div").show();%>
     }
   }
 
