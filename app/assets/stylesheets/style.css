@@ -1170,9 +1170,9 @@ h2 {
     color: #000000;
     font-weight: bold;
     
-    -webkit-border: 2px solid #000000;
-    -moz-border: 2px solid #000000;
-    border: 2px solid #000000;
+    -webkit-border: 1px solid #000000;
+    -moz-border: 1px solid #000000;
+    border: 1px solid #000000;
     
     -webkit-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.6);
     -moz-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.6);
@@ -1189,9 +1189,9 @@ h2 {
 .pagination li.current:hover {
    font-weight: bold;
    
-   -webkit-border: 2px solid #000000;
-    -moz-border: 2px solid #000000;
-    border: 2px solid #000000;
+   -webkit-border: 1px solid #000000;
+    -moz-border: 1px solid #000000;
+    border: 1px solid #000000;
     
     -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.9);
     -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.9);
