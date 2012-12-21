@@ -13,29 +13,52 @@ class SearchesController < ApplicationController
     else
       @last_price = 10000
     end
-    @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")
-    @gatherings = Offer.find(:all,:conditions => [ "status != 'Cancelled' and parent_id is NULL and is_gathering = true and persons_in_gathering > 0" ], :order=> "rental_start_date ASC")
+    @users_with_uniq_cities = Item.select("distinct(city)").where("city is not NULL and city != ''")    
+    
+    count = 1
+    items = ""
+    
+    conds = "status != 'Cancelled' and parent_id is NULL and is_gathering = true and persons_in_gathering > 0"
+    sel_items = Item.find(:all)
+    sel_items.each do|item|
+      if count != 1
+        items = items +","+ "#{item.id.to_s}"
+      else
+        items += item.id.to_s
+      end
+      count += 1
+    end
+    unless sel_items.blank?
+      conds += " AND item_id in (#{items})"
+    end
+    
+    @gatherings = Offer.find(:all,:conditions => [ conds ], :order=> "rental_start_date ASC")
+    unless @gatherings.blank?
+      @gatherings = @gatherings.uniq
+    end
+    
     @gatherings = @gatherings.paginate(:page => params[:page], :per_page => 6 )
   end
   
   def search_gatherings
     conds = "status != 'Cancelled' and parent_id is NULL and is_gathering = true and persons_in_gathering > 0 "
     cities = []
+    city_conds = "1=1"
     items = ""
     if params[:location] && !params[:location].blank?
-      city_conds = "(LOWER(city) LIKE " + "'%%" + params[:location].strip.downcase.to_s+ "%%'" +")"
-      sel_items = Item.find(:all, :conditions => [ city_conds ])      
-      count = 1
-      sel_items.each do|item|
-        if count != 1
-          items = items +","+ "#{item.id.to_s}"
-        else
-          items += item.id.to_s
-        end
-        count += 1
-      end
+      city_conds += " AND (LOWER(city) LIKE " + "'%%" + params[:location].strip.downcase.to_s+ "%%'" +")"
     end
-    
+    sel_items = Item.find(:all, :conditions => [ city_conds ])      
+    count = 1
+    sel_items.each do|item|
+      if count != 1
+        items = items +","+ "#{item.id.to_s}"
+      else
+        items += item.id.to_s
+      end
+      count += 1
+    end
+        
     unless params[:search_from].blank?
       start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
       conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
@@ -55,8 +78,9 @@ class SearchesController < ApplicationController
     end
         
     unless sel_items.blank?
-      conds += " AND item_id in(#{items})"
+      conds += " AND item_id in (#{items})"
     end
+    
     case params[:sort_option]
     when "1"
       order_by = "is_recommended, gathering_rental_price DESC"
@@ -70,23 +94,20 @@ class SearchesController < ApplicationController
       order_by = "created_at ASC"
     else
       order_by = "gathering_rental_price ASC"
+    end    
+    @gatherings = Offer.find(:all,:conditions => [ conds ], :order=> order_by)    
+    unless @gatherings.blank?
+      @gatherings = @gatherings.uniq
     end
-    @offers = Offer.find(:all,:conditions => [ conds ], :order=> order_by)
-    @offers = @offers.paginate(:page => params[:page], :per_page => 6 )
     
-    unless @offers.blank?
-      @offers = @offers.uniq
-    end
-   
-    @min_price = @offers.blank? ? 0 : @offers.first.gathering_rental_price
-    @max_price = @offers.blank? ? 0 : @offers.last.gathering_rental_price
+    @min_price = @gatherings.blank? ? 0 : @gatherings.first.gathering_rental_price
+    @max_price = @gatherings.blank? ? 0 : @gatherings.last.gathering_rental_price
     @max_price = @max_price.to_f > 10000 ? @max_price : 10000
-    @gatherings = @offers
     @gatherings = @gatherings.paginate(:page => params[:page], :per_page => 6 )
     respond_to do |format| 
       format.html
       format.js do
-        foo = render_to_string(:partial => 'gatherings', :locals => { :offers => @gatherings }).to_json
+        foo = render_to_string(:partial => 'gatherings', :locals => { :offers => @gatherings,:params => params }).to_json
         render :js => "update_gathering_values('#{params.to_json}');$('#searched-gatherings').html(#{foo});$.setAjaxPagination();"
       end
     end
@@ -197,7 +218,7 @@ class SearchesController < ApplicationController
     
     items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
 
-#    @items = items - booked_items    
+    #    @items = items - booked_items    
     @items = items
     # Items whose owners are active users
     active_items = []  
@@ -251,41 +272,41 @@ class SearchesController < ApplicationController
 
     @last_price = @last_price.to_f > 10000 ? @last_price : 10000
     #    Conditions to find booked items in given dates
-#    conds = "1=1 "
-#    unless params[:search_from].blank?
-#      start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
-#      conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
-#    end
-#    
-#    unless params[:search_to].blank?
-#      end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
-#      conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
-#    end
-#    
-#    if !params[:search_from].blank? and !params[:search_to].blank? 
-#      conds += " AND ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
-#    end
-#    
-#    if params[:search_from].blank? and params[:search_to].blank?
-#      conds += " AND (('#{Date.today.to_s}' between rental_start_date and rental_end_date))"
-#    end
-#    
-#    if !params[:search_from].blank? or !params[:search_to].blank? 
-#      conds += " AND status != 'applied'"
-#    end
-#        
-#    booked_items = []
-##    unless conds == "1=1 "
-#      conds += " AND parent_id is NULL"
-#      offers = Offer.find(:all,:conditions => [ conds ])
-#      offers.each do|offer|
-#        if params[:location].blank?
-#          booked_items << offer.item
-#        else
-#          booked_items << offer.item(:conditions => ["city LIKE '%#{params[:location]}%'"])
-#        end
-#      end
-##    end
+    #    conds = "1=1 "
+    #    unless params[:search_from].blank?
+    #      start_time =  DateTime.strptime(params[:search_from], "%m/%d/%Y").to_date      
+    #      conds += " AND ('#{start_time.to_s}' between rental_start_date and rental_end_date)"
+    #    end
+    #    
+    #    unless params[:search_to].blank?
+    #      end_time =  DateTime.strptime(params[:search_to], "%m/%d/%Y").to_date
+    #      conds += " AND ('#{end_time.to_s}' between rental_start_date and rental_end_date)"
+    #    end
+    #    
+    #    if !params[:search_from].blank? and !params[:search_to].blank? 
+    #      conds += " AND ( ( rental_start_date between '#{start_time.to_s}' and '#{end_time.to_s}') or ( rental_end_date between '#{start_time.to_s}' and '#{end_time.to_s}')  )"
+    #    end
+    #    
+    #    if params[:search_from].blank? and params[:search_to].blank?
+    #      conds += " AND (('#{Date.today.to_s}' between rental_start_date and rental_end_date))"
+    #    end
+    #    
+    #    if !params[:search_from].blank? or !params[:search_to].blank? 
+    #      conds += " AND status != 'applied'"
+    #    end
+    #        
+    #    booked_items = []
+    ##    unless conds == "1=1 "
+    #      conds += " AND parent_id is NULL"
+    #      offers = Offer.find(:all,:conditions => [ conds ])
+    #      offers.each do|offer|
+    #        if params[:location].blank?
+    #          booked_items << offer.item
+    #        else
+    #          booked_items << offer.item(:conditions => ["city LIKE '%#{params[:location]}%'"])
+    #        end
+    #      end
+    ##    end
     
     #    Conditions on Items search
     item_conds = "1=1 "
@@ -363,7 +384,7 @@ class SearchesController < ApplicationController
 
     items = Item.find(:all,:conditions => [ item_conds ], :order => order_by)    
 
-#    @items = items - booked_items    
+    #    @items = items - booked_items    
     @items = items
     # Items whose owners are active users
     active_items = []  
