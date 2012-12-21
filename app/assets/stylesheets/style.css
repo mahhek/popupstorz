@@ -216,21 +216,25 @@ body {
 }
 
 .menu-sub a {
+    border: 1px #666666;
     text-transform: uppercase;	
     padding: 2px 30px;
 }
 
 .menu-sub a.active {
+    border: 1px #666666;
     background: #00ffff;
     border: #000000;
 }
 
 .menu-sub a:hover {
+    border: 1px #666666;
     background: #ccffff;
     border: #999999;
 }
 
 .menu-sub a.active:hover {
+    border: 1px #666666;
     background:#00cccc;
 }
 
