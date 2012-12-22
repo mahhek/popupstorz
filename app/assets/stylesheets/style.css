@@ -209,6 +209,20 @@ body {
     font-family: proxima-semibold;
 }
 
+.menu-sub-layout.active {
+    background: #00ffff;
+    border: #000000;
+}
+
+.menu-sub-layout:hover {
+    background: #ccffff;
+    border: #999999;
+}
+
+.menu-sub-layout.active:hover {
+    background:#00cccc;
+}
+
 .menu-sub {
     border: 1px #666666;
     margin: 0 100px;	
@@ -219,23 +233,6 @@ body {
     border: 1px #666666;
     text-transform: uppercase;	
     padding: 2px 30px;
-}
-
-.menu-sub a.active {
-    border: 1px #666666;
-    background: #00ffff;
-    border: #000000;
-}
-
-.menu-sub a:hover {
-    border: 1px #666666;
-    background: #ccffff;
-    border: #999999;
-}
-
-.menu-sub a.active:hover {
-    border: 1px #666666;
-    background:#00cccc;
 }
 
 .home {
