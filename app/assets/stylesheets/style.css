@@ -556,23 +556,6 @@ body {
     font-size: 1.4em;
 }
 
-#bar-useraction .menu-sub a.active, #bar-searchaction .menu-sub a.active {
-    border: 1px #666666;
-    background: #00ffff;
-    border: #000000;
-}
-
-#bar-useraction .menu-sub a:hover, #bar-searchaction .menu-sub a:hover {
-    border: 1px #666666;
-    background: #ccffff;
-    border: #999999;
-}
-
-#bar-useraction .menu-sub a.active:hover, #bar-searchaction .menu-sub a.active:hover {
-    border: 1px #666666;
-    background:#00cccc;
-}
-
 .rightcontent { 
     float: right;
     padding: 0 17px;
