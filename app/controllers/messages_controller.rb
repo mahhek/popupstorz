@@ -26,8 +26,6 @@ class MessagesController < ApplicationController
   end
 
   def contact_me
-    p "eeeeeeeeeeeeeeeeeee",params.inspect
-    ggg
     user = User.find_by_id(params[:user_id])
     msg = current_user.send_message(user, :topic => params[:topic], :body => params[:body].html_safe)
     

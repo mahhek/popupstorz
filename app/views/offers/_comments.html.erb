@@ -1,0 +1,27 @@
+<% comments.each do|comm| %>
+  <% user = comm.user %>
+  <div class="row" style="float:left; width: 478px;" onclick="window.location='<%= profile_path(user.id) %>'">
+    <div class="imgx">
+      <% if user.avatars.size > 0 %>
+        <%= image_tag(user.avatars.first.photo.url(:thumb), :width => "85", :height => "111", :alt => "Member-Photo")  %>
+      <% else %>
+        <%= image_tag("empty.png", :width => "85", :height => "111", :alt => "Member-Photo")  %>
+      <% end %>
+    </div>  
+
+    <div class="name-list" style="margin-bottom: 5px;">
+      <h4 style="font-family:proxima-bold; color: #333333;">
+        <%= user.first_name + " " + user.last_name %>
+      </h4>
+    </div>
+
+    <div class="name-list" style="margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;">
+      <%= comm.comment %>
+    </div>
+  </div>
+
+  <div style="color: grey;float: right;">
+    <span><%= comm.created_at.strftime("%Y-%m-%d %H:%M:%S") %></span>
+    <div class="clear"></div>
+  </div>
+<%end%>

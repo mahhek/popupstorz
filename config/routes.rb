@@ -160,6 +160,7 @@ PopupStorz::Application.routes.draw do
     resources :offers do
       collection do
         post :change_commission_rate
+        post :add_comment
       end
     end
     resources :messages do

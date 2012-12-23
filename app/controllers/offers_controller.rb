@@ -478,17 +478,17 @@ class OffersController < ApplicationController
     redirect_to "/items/created_coming_gatherings"
   end
   
-  def add_comment
+  def add_comment    
     @comment = Comment.new(params[:comment])
     @comment.user=current_user
     @offer = Offer.find(params[:id])
-    if @offer.comments << @comment
-      flash[:notice] = t(:comment_added)
-      redirect_to "/offers/#{@offer.id}"
-    else
-      flash[:error] = t(:not_saved)
-      render :show
-    end   
+    @offer.comments << @comment
+    respond_to do |format|
+      format.js do
+        view = render_to_string(:partial => 'comments', :locals => { :comments => @offer.comments }).to_json
+        render :js => "$('#comments_div').html(#{view})"
+      end
+    end
   end
   
   protected

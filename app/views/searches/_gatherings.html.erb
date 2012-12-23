@@ -1,6 +1,8 @@
 <div class="listx-bg">
   <div class="sortby">
-    <span style="font-family:proxima-semibold;"><%= t(:sort_by) %></span>    
+    <%#*<span style="font-family:proxima-semibold;">%>
+      <%#= t(:sort_by) %>
+    <%#*</span>%>    
     <%= select_tag "sort_option_sel", options_for_select([[t("newest_sort"),"4"],[t("oldest_sort"),""],[t("price_high_low") ,"2"],[t("price_low_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#sort_option').val($(this).val());$('#price_range_form').trigger('submit.rails')" %>
     <span style="float:right;">
       <%= will_paginate(@gatherings, :params => params, :renderer => PaginationListLinkRenderer) %>
@@ -29,11 +31,11 @@
               <%= t(:per_person2) %>
             </span>
           </div>
-          
+
           <div class="name-list" style="margin-bottom: 5px;font-family: proxima-bold;color: #333333;">
             <h4 style="float:left;" onclick="window.location='<%= "/items/#{item.id}" %>'"><%= item.title %></h4>            
           </div>
-          
+
           <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold float:left;width:65%;color:#666666;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
             <%= item.listing_type.blank? ? "#{t(:other)}" : item.listing_type.name %>
           </div>
@@ -53,22 +55,22 @@
 
           <div class="name-list" style="margin-bottom: 5px;width: 72%;float: left;margin-top: 40px;">
             <div style="float: left;width: 75%">
-<%= t(:gathering) %><%= gathering.persons_in_gathering %>&nbsp;<%= t(:persons) %>&nbsp;<br />
-            <%= gathering.rental_start_date.strftime("%Y-%m-%d") %> - <%= gathering.rental_end_date.strftime("%Y-%m-%d") %>
+              <%= t(:gathering) %><%= gathering.persons_in_gathering %>&nbsp;<%= t(:persons) %>&nbsp;<br />
+              <%= gathering.rental_start_date.strftime("%Y-%m-%d") %> - <%= gathering.rental_end_date.strftime("%Y-%m-%d") %>
             </div>
-            
+
             <div id="favorite_div_<%= item.id %>" style="color: grey;float: left;">
-            <% unless current_user.blank? %>
-              <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>
-                <% if !gathering.members.include?(current_user) %>
-                  <%= link_to "Join this pop'union", "/join_gathering/#{gathering.id}", :class => "linkAddRmFavorite" %>
+              <% unless current_user.blank? %>
+                <% if gathering.members.size.to_i < gathering.persons_in_gathering.to_i && gathering.user_id != current_user.id %>
+                  <% if !gathering.members.include?(current_user) %>
+                    <%= link_to "Join this pop'union", "/join_gathering/#{gathering.id}", :class => "linkAddRmFavorite" %>
+                  <% end %>
                 <% end %>
               <% end %>
-            <% end %>
-          </div>
+            </div>
           </div>
 
-          
+
 
         </div>
         <a class="info"></span>

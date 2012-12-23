@@ -1,4 +1,52 @@
-<%= javascript_include_tag "items.js" %>
+<%#= javascript_include_tag "items.js" %>
+<script type="text/javascript">
+  $(document).ready(function() {    
+   
+    $('.pagination a').attr('data-remote', 'true');
+    
+    $('#location').chosen();
+    $('#sort_option_sel').chosen();
+  
+    $(function() {
+      $('#search_from1').datepicker(
+      {
+        minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
+        onSelect: function() {
+          $('#search_to2').datepicker('option', {minDate: $(this).datepicker('getDate')});
+        }});
+      $('#search_to2').datepicker({
+        minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
+        onSelect: function() {
+          $('#search_from1').datepicker('option', {maxDate: $(this).datepicker('getDate')});
+        }});
+
+      $( "#amount-slider-range" ).slider({
+        range: true,
+        min: <%= @start_price %>,
+        max: <%= @last_price %>,
+        values: [ <%= @start_price %>, <%= @last_price %> ],
+        slide: function( event, ui ) {
+          $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+        },
+        stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
+          $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
+          $('#price_range_form').submit();}
+      });
+      $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
+        " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
+    });
+  });
+  
+  
+  function update_gathering_values(params){
+    var str = $.parseJSON(params);
+    $("#gathering_searched_location").attr("value",str.location.toString());
+    $("#gathering_searched_from").attr("value",str.search_from.toString());
+    $("#gathering_searched_to").attr("value",str.search_to.toString());
+  }
+</script>
+
+
 <%= render :partial => "search_header" %>
 <div class="clear"></div>
 
@@ -15,7 +63,6 @@
     <%= hidden_field_tag "search_to", !params[:search_to].blank? ? params[:search_to] : '', :id => "gathering_searched_to" %>
 
     <div class="pannelright">
-      <img class="closepannel" src="../assets/-.png" />
       <label class="heading_right" for="amount"><%= t(:price_range) %></label>
       <input type="text" id="amount" style="border: 0 none !important; border-radius: 0 0 0 0; box-shadow: none; color: #666666; font-family: Proxima; font-size: 1em; font-weight: normal; text-align: center; width: 170px;" />
       <div class="twocol">		   
@@ -25,9 +72,9 @@
       <div style="float: left; font-size: 0.8em;">min</div>
     </div>
   <%# end %>
-</div>
+  </div>
 
-<div class="leftcontent">
+  <div class="leftcontent">
   <%#= form_tag "/search_gatherings", { :id => "gathering_search_form", :remote => true} do %>
     <div class="refinesearchresults1 shadowCont">
       <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family: proxima-semibold;">
@@ -58,46 +105,4 @@
   <% end %>
 
 </div>
-
-<script type="text/javascript">
-  
-  $('#location').chosen();
-  
-  $(function() {
-    $('#search_from1').datepicker(
-    {
-      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
-      onSelect: function() {
-        $('#search_to2').datepicker('option', {minDate: $(this).datepicker('getDate')});
-      }});
-    $('#search_to2').datepicker({
-      minDate: '<%= Time.now.strftime("%m/%d/%Y").to_s %>',
-      onSelect: function() {
-        $('#search_from1').datepicker('option', {maxDate: $(this).datepicker('getDate')});
-      }});
-
-    $( "#amount-slider-range" ).slider({
-      range: true,
-      min: <%= @start_price %>,
-      max: <%= @last_price %>,
-      values: [ <%= @start_price %>, <%= @last_price %> ],
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-      },
-      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
-        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
-        $('#price_range_form').submit();}
-    });
-    $( "#amount" ).val( "$" + $( "#amount-slider-range" ).slider( "values", 0 ) +
-      " - $" + $( "#amount-slider-range" ).slider( "values", 1 ) );
-  });
-  
-  
-  function update_gathering_values(params){
-    var str = $.parseJSON(params);
-    $("#gathering_searched_location").attr("value",str.location.toString());
-    $("#gathering_searched_from").attr("value",str.search_from.toString());
-    $("#gathering_searched_to").attr("value",str.search_to.toString());
-  }
-</script>
 

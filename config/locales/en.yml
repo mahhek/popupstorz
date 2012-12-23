@@ -703,3 +703,8 @@ en:
    other: "Other"
    photos_upload_success: "Thank you for uploading pictures, you now have more chances of renting out your space !"
    choose_dates: "Choose Dates"
+   persons_needed : "Persons Needed"
+   confirmed_guests: "Confirmed Guests"
+   join_this_gathering: "Join this Gathering"
+   post: "Post"
+   show_price_details: "Show Price Details"

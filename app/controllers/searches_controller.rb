@@ -38,6 +38,13 @@ class SearchesController < ApplicationController
     end
     
     @gatherings = @gatherings.paginate(:page => params[:page], :per_page => 6 )
+    respond_to do |format| 
+      format.html
+      format.js do
+        foo = render_to_string(:partial => 'gatherings', :locals => { :offers => @gatherings,:params => params }).to_json
+        render :js => "$('#searched-gatherings').html(#{foo});$.setAjaxPagination();"
+      end
+    end
   end
   
   def search_gatherings
