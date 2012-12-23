@@ -223,7 +223,7 @@
       </span>
 
       <span class="blue" style="margin-top: 40px;">
-        <%#*@Sep. 23, 2012 - Oct. 10, 2012%>
+<%#*@Sep. 23, 2012 - Oct. 10, 2012%>
         <%= @offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= @offer.rental_end_date.strftime("%m-%d-%Y") %>
       </span>
       <span style="color: #333333; font-size: 0.9em;">
@@ -425,15 +425,15 @@
 
   <div id="searched-members" class="listx-bg">
     <div class="listx" style="border-bottom: 1px solid gray;padding: 5px;float: left;">
-      <% unless @offer.comments.blank? %>
-        <div id="comments_div">        
-          <%= render :partial => "comments", :locals => {:comments => @offer.comments} %>
-        </div>        
+      <div id="comments_div">
+      <% unless @offer.comments.blank? %>        
+        <%= render :partial => "comments", :locals => {:comments => @offer.comments} %>
       <% else %>
         <i><%= t(:no_added_comments)%></i>
       <%end%>
     </div>
   </div>
+</div>
 </div>
 <div class="clear"></div>
 
