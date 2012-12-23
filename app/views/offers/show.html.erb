@@ -365,10 +365,11 @@
             <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
             <%= link_to t(:decline), "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
           <% end %>
-        <% end %>
-        <% if @offer.status == "confirmed" && @offer.persons_in_gathering.blank? %>
-          <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
-          <%= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
+
+          <% if @offer.status == "confirmed" && @offer.persons_in_gathering.blank? %>
+            <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
+            <%= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
+          <% end %>
         <% end %>
         <br />
         <% if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
