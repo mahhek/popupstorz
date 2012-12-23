@@ -209,20 +209,6 @@ body {
     font-family: proxima-semibold;
 }
 
-.menu-sub-layout.active {
-    background: #00ffff;
-    border: #000000;
-}
-
-.menu-sub-layout:hover {
-    background: #ccffff;
-    border: #999999;
-}
-
-.menu-sub-layout.active:hover {
-    background:#00cccc;
-}
-
 .menu-sub {
     border: 1px #666666;
     margin: 0 100px;	
