@@ -456,7 +456,7 @@
           <table style="width: 315px !important;">
             <tr>
               <td ><%= "Security deposit" %></td>
-              <td ><%= number_to_currency(exchange_currency(@item.deposit.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td> <!-- TODO show the real security deposit -->				
+              <td ><%= number_to_currency(exchange_currency(@item.deposit.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td>
             </tr>
           </table>
         </div>

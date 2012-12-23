@@ -3,9 +3,9 @@ class OffersController < ApplicationController
   
   def show
     @comment = Comment.new
-    @offer = Offer.find(params[:id])
+    @offer = Offer.find_by_id(params[:id])
     if @offer.blank?
-      flash[:notice] = t(:no_gathering_found)
+      flash[:notice] = t(:no_booking_found)
       redirect_to "/"
     end    
   end
