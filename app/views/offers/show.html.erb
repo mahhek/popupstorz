@@ -2,7 +2,16 @@
 <% applied = @offer.members.where("status != 'Approved'") %>
 <% approved = @offer.members.where("status ='Approved'") %>
 <% joined = GatheringMember.where("status = 'Approved' and offer_id = #{@offer.id}") %>
-
+<script type="text/javascript">
+  function send_rating(rating_url, mode,asset){
+    jQuery.ajax({
+      type:"GET",
+      url: rating_url,
+      data: ({'rate': true })
+      
+    });
+  }
+</script>
 <style>
   .rg-image{
     height: 280px !important;
@@ -52,13 +61,26 @@
 
 </style>
 
-
+<%= render :partial => "/searches/search_header" %>
 <!-- TODO Add header for search or dasboard by the context -->
-
+<div id="hd-result">
+  <div class="container_12">
+    <div id="r-nav" class="grid_9">
+      <a href='#' class="back " onclick='history.go(-1);return false;'>&lt;&lt; <%= t(:back) %></a>
+    </div>
+    <div class="grid_3"> &nbsp; </div>
+    <div class="clear">&nbsp;</div>
+  </div>
+</div>
 <div class="shadowCont offer">
   <div id="offer_title">
     <span style="font-size: 1.4em;margin-right: 50px; color: #333333;">
-      <%= t(:gather) %></span>
+      <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
+        <%= t(:gather) %>
+      <% else %>
+        <%= t(:stand_bookings) %>
+      <% end %>
+    </span>
     <span><%= t(:status) %></span>
     <span class="blue" style=";text-transform: uppercase; display: inline;">
       <% if @offer.status == "Accepted - Payment pending" or 
@@ -125,16 +147,22 @@
       </span>
 
       <div style="margin-top: 150px;">
-        <span style=""><%= @offer.item.maximum_members %>&nbsp;<%= t(:persons_needed) %></span><br />
+        <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
+          <span style="color:#666666">
+            <%= @offer.item.maximum_members %>&nbsp;
+            <%= t(:persons_needed) %>
+          </span><br />
+        
         <span style="font-family: proxima-semibold; color: #00CCCC; margin-right: 10px;">
           <%= approved.size %>&nbsp;<%= t(:confirmed) %>
         </span>
-        <span style="color: #666666;"><%= applied.size %>&nbsp;<%= t(:applied) %></span>
+        <span style="color: #999999;"><%= applied.size %>&nbsp;<%= t(:applied) %></span>
+        <% end %>
       </div>
     </div>	  
 
-    <div style="float: right; padding-top: 20px; text-align: right;max-width: 280px;">
-      <span style="font-family: proxima-semibold; font-size: 2em; line-height: 10px;">
+    <div style="float: right; padding-top: 20px; text-align: right;max-width: 250px;">
+      <span style="font-family: proxima-semibold; font-size: 2em; line-height: 10px;color: #999999">
         <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
           <%= number_to_currency(exchange_currency(@offer.gathering_rental_price.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>          
         <% else %>
@@ -142,27 +170,45 @@
         <% end %>
       </span>
       <br /><br />
-      <span style="color: #333333;"><%= (@offer.is_gathering and @offer.persons_in_gathering.to_i > 0) ?  t(:per_person2) : "" %><br /><br />
-      </span>
-      <br />
+      <% if(@offer.is_gathering and @offer.persons_in_gathering.to_i > 0) %>
+        <span style="color: #333333;">        
+          <%= t(:per_person2)%>
+          <br /><br />
+        </span>
+        <br />
+      <% end %>
 
       <span style="cursor: pointer;color: #666666; font-size: 0.8em;" onclick="$('#offer_price_details').toggle();">
         <%= t(:show_price_details) %>
-      </span><br />
+      </span>
+        <br />
       <span id="offer_price_details" style="display: none;color: #666666; font-size: 1em;">
-        <b><%= t(:sec_deposit) %></b>
-        <%= number_to_currency(exchange_currency(@item.deposit.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
+        <b><%= t(:daily_price) %></b>
+        <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+        
         <br/>
         <b><%= t(:cleaning_fee) %></b>
         <%= number_to_currency(exchange_currency(@offer.item.cleaning_fee.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
         <br/>
-        <b><%= t(:per_day_rate) %></b>
-        <%= number_to_currency(exchange_currency(@offer.item.price.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+        
+        <b><%= t(:sub_total) %></b>
+        <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
+          <%= number_to_currency(exchange_currency(@offer.gathering_rental_price.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>          
+        <% else %>
+          <%#= number_to_currency(exchange_currency((@item.price.round.to_f + @offer.item.cleaning_fee.to_f.round), @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)  %>
+          <%= number_to_currency(exchange_currency(@offer.total_amount.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+        <% end %>
+        
         <br/>
 
         <b> <%= t(:total_days) %>:</b>
         <%= @offer.total_days %>
         <br/><br/>
+
+        <b> <%= t(:security_deposit) %>:</b>
+        <%= number_to_currency(exchange_currency(@item.deposit.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+        <br/><br/>
+
         <b><%= t(:avail_dur) %></b><br />
         <% if !@offer.item.availablities_daytime.blank? and @offer.item.availablities_daytime == true %>
           <span class="avail_item">
@@ -223,15 +269,14 @@
       </span>
 
       <span class="blue" style="margin-top: 40px;">
-<%#*@Sep. 23, 2012 - Oct. 10, 2012%>
-        <%= @offer.rental_start_date.strftime("%m-%d-%Y") %> - <%= @offer.rental_end_date.strftime("%m-%d-%Y") %>
+        <%= @offer.rental_start_date.strftime("%b. %d ,%Y") %> - <%= @offer.rental_end_date.strftime("%b. %d, %Y") %>
       </span>
-      <span style="color: #333333; font-size: 0.9em;">
+      <span style="color: #999999; font-size: 0.9em;">
         <%= t(:app_deadline) %>
         <% if @offer.persons_in_gathering.to_i > 0 or @offer.is_gathering %>
-          <%= @offer.gathering_deadline.blank? ? '' : @offer.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
+          <%= @offer.gathering_deadline.blank? ? '' : @offer.gathering_deadline.strftime("%b.%d, %Y") %><br /><br />
         <% else %>
-          <%= @offer.cancellation_date.blank? ? '' : @offer.cancellation_date.strftime("%m-%d-%Y") %><br /><br />
+          <%= @offer.cancellation_date.blank? ? '' : @offer.cancellation_date.strftime("%b.%d, %Y") %><br /><br />
         <% end %>
       </span>
 
@@ -275,7 +320,7 @@
       <span onclick="$('#policies_div').toggle();" style="cursor: pointer;color: #666666;">
         <%= t(:show_details) %>
       </span>
-      <div id="policies_div" style="display: none;width:360px !important;">
+      <div id="policies_div" style="display: none;width:360px !important;color:#999999">
         <% unless @item.cancellation_policy_flexible.blank? %>
           <%= t(:cancel_ln1) %><br/>
           <%= t(:cancel_ln2) %><br/><br/>
@@ -296,9 +341,9 @@
       </div>
       <br />
       <br />
-      <span class="title">Owner Rules</span>
+      <span class="title"><%= t(:owner_rules) %></span>
       <span onclick="$('#rules_div').toggle()" style="cursor: pointer;color: #666666;"><%= t(:show) %></span><br />
-      <p class="size_text" id="rules_div" style="display:none;width:360px !important;word-wrap:break-word;overflow: hidden;">
+      <p class="size_text" id="rules_div" style="display:none;width:360px !important;word-wrap:break-word;overflow: hidden;color:#999999">
         <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
       </p>
       <br />
@@ -338,8 +383,8 @@
     <div class="listx" style="border-bottom: 1px solid gray;padding: 5px;float: left;">
       <% joined.each do|j_mem| %>
         <% member = j_mem.user %>
-        <div class="row" style="float:left; width: 340px;" onclick="window.location='<%#= profile_path(member.id) %>'">
-          <div class="imgx">
+        <div class="row" style="float:left; width: 340px;">
+          <div class="imgx" onclick="window.location='<%= profile_path(member.id) %>'">
             <% if member.avatars.size > 0 %>
               <%= image_tag(member.avatars.first.photo.url(:thumb), :width => "85", :height => "111", :alt => "Member-Photo")  %>
             <% else %>
@@ -347,18 +392,20 @@
             <% end %>
           </div>  
 
-          <div class="name-list" style="margin-bottom: 5px;">
-            TODO rating
-            <h4 style="font-family:proxima-bold; color: #333333;">
+          <div class="name-list" style="margin-bottom: 5px;">            
+            <h4 style="float: left;font-family:proxima-bold; color: #333333;" onclick="window.location='<%= profile_path(member.id) %>'">
               <%= member.first_name + " " + member.last_name %>
             </h4>
+            <div style="float: left;width:200px;" id="rating_of_user_<%= member.id %>" >
+              <%= render :partial => "searches/member_rating", :locals => {:member => member, :only_view => false} %>
+            </div>
           </div>
 
-          <div class="name-list" style="margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;">
+          <div class="name-list" style="margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;" onclick="window.location='<%= profile_path(member.id) %>'">
             <%= member.activity %>
           </div>
 
-          <div class="name-list XXII" style="margin-bottom: 5px;">
+          <div class="name-list XXII" style="margin-bottom: 5px;" onclick="window.location='<%= profile_path(member.id) %>'">
             <% unless member.city.blank? %>
               <%= member.city %>
             <% end %>
@@ -426,14 +473,14 @@
   <div id="searched-members" class="listx-bg">
     <div class="listx" style="border-bottom: 1px solid gray;padding: 5px;float: left;">
       <div id="comments_div">
-      <% unless @offer.comments.blank? %>        
-        <%= render :partial => "comments", :locals => {:comments => @offer.comments} %>
-      <% else %>
-        <i><%= t(:no_added_comments)%></i>
-      <%end%>
+        <% unless @offer.comments.blank? %>
+          <%= render :partial => "comments", :locals => {:comments => @offer.comments.order("created_at DESC")} %>
+        <% else %>
+          <i><%= t(:no_added_comments)%></i>
+        <%end%>
+      </div>
     </div>
   </div>
-</div>
 </div>
 <div class="clear"></div>
 

@@ -485,7 +485,7 @@ class OffersController < ApplicationController
     @offer.comments << @comment
     respond_to do |format|
       format.js do
-        view = render_to_string(:partial => 'comments', :locals => { :comments => @offer.comments }).to_json
+        view = render_to_string(:partial => 'comments', :locals => { :comments => @offer.comments.order("created_at DESC") }).to_json
         render :js => "$('#comments_div').html(#{view})"
       end
     end
