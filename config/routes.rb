@@ -60,7 +60,8 @@ PopupStorz::Application.routes.draw do
   match "/pending_gathering_acceptance" => "offers#pending_gathering_acceptance"
   match "/offers/add_comment" => "offers#add_comment"
   match "/cancel_booking/:id" => "offers#cancel_booking"
-     
+  match "/searches/user_rating" => "searches#user_rating"
+  
   devise_for :users, :controllers => {:registrations => "registrations"}
 
   resources :accounts do

@@ -1,85 +1,68 @@
-<% members.each do | member | %>
-  <div class="listx" style="border-bottom: 1px solid gray;padding: 5px;float: left;">
-
-    <div class="row" style="float:left; width: 732px;" onclick="window.location='<%= profile_path(member.id) %>'">
-      <div class="imgx">
-        <% if member.avatars.size > 0 %>
-          <%= image_tag(member.avatars.first.photo.url(:thumb), :width => "113", :height => "149", :alt => "Member-Photo")  %>
-        <% else %>
-          <%= image_tag("empty.png", :width => "113", :height => "147", :alt => "Member-Photo")  %>
-        <% end %>
-      </div>
-
-      <div class="name-list" style="margin-bottom: 5px;">
-        <h4 style="font-family:proxima-bold; color: #333333;">
-          <%= member.first_name + " " + member.last_name %>
-          <ul class='star-rating'>
-            <% if !(user_signed_in?)%>
-              <li class="current-rating" style="width:<%= ( member.accuracy_rating * 20).to_i -%>px;"></li>
-            <%else%>
-              <%if member == current_user %>
-                <li class='current-rating' style='width:<%= (member.accuracy_rating * 20).to_i -%>px;'></li>
-              <% else %>
-                <li id="ratings_<%= member.id %>" class='current-rating' style='width:<%= (member.accuracy_rating * 20).to_i -%>px;'></li>
-              <%end%>
-            <%end%>
-          </ul>
-        </h4>
-      </div>
-
-      <div class="name-list" style="margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;"><%= member.activity %></div>
-
-      <div class="name-list XXII" style="margin-bottom: 5px;">
-        <% unless member.city.blank? %>
-          <%= member.city %>
-        <% end %>
-        <% unless member.country.blank? %>
-          <%= member.country %>
-        <% end %>
-      </div>
-    </div>
-
-    <div style="margin-top: -30px; color: grey;float: right;">
-      <% if (current_user != member) %>
-        <%= link_to_function "Send Message", "$('#contact_me_div_#{member.id}').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
-      <% end %>
-
-      <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= member.id %>">
-        <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
-          <%= hidden_field_tag :topic, "Inquiry" %>
-          <%= hidden_field_tag :user_id, member.id %>
-
-          <span style="width: auto;float: left;">
-            <%= text_area_tag  :body, "", :style => "width:135px; height:100px;" %>
-          </span>
-
-          <div style="margin-right: 10px; text-align: right;">
-            <%= submit_tag "Send", :onclick => "$('#contact_me_div_#{member.id}').hide();" %>&nbsp;&nbsp;&nbsp;
-            <%= link_to_function "Cancel", "$('#contact_me_div_#{member.id}').toggle('slow');"  %>
-          </div>
-        <% end %>
-      </div>
-      <div class="clear"></div>
-    </div>
+<div class="listx-bg">
+  <div class="sortby">    
+    <span style="float:right;">
+      <%= will_paginate(@members, :params => params, :renderer => PaginationListLinkRenderer) %>
+    </span>
   </div>
-<%end%>
+</div>
+<div class="resultsholderlist shadowCont">
+  <% members.each do | member | %>    
+    <div class="listx" style="border-bottom: 1px solid gray;padding: 5px;float: left;">
 
-<script>
-  <%#*function send_rating(rating_url, mode,val){%>
-    <%#*jQuery.ajax({%>
-      <%#*type:"GET",%>
-      <%#*url: rating_url,%>
-      <%#*data: ({'rate': true }),%>
-      <%#*beforeSend: function (response) {%>
-        <%#*jQuery('#'+mode+'_ajax_loader').show();%>
-      <%#*},%>
-      <%#*success: function (response) {%>
-        <%#*jQuery("#ratings_"+val).html(response);%>
-        <%#*jQuery('#'+mode+'_ajax_loader').hide();%>
-      <%#*}%>
-    <%#*});%>
-  <%#*}%>
-<%#*$(document).ready(function() {%>
-<%#*$('.pagination a').attr('data-remote', 'true');%>
-<%#*});%>
-</script>
+      <div class="row" style="float:left; width: 732px;">
+        <div class="imgx" onclick="window.location='<%= profile_path(member.id) %>'">
+          <% if member.avatars.size > 0 %>
+            <%= image_tag(member.avatars.first.photo.url(:thumb), :width => "113", :height => "149", :alt => "Member-Photo")  %>
+          <% else %>
+            <%= image_tag("empty.png", :width => "113", :height => "147", :alt => "Member-Photo")  %>
+          <% end %>
+        </div>
+
+        <div class="name-list" style="margin-bottom: 5px;">
+          <h4 style="font-family:proxima-bold; color: #333333;">
+            <%= member.first_name + " " + member.last_name %>
+            <div id="rating_of_user_<%= member.id %>" >
+              <%= render :partial => "member_rating", :locals => {:member => member, :only_view => false} %>
+            </div>
+          </h4>
+        </div>
+
+        <div class="name-list" style="margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;" onclick="window.location='<%= profile_path(member.id) %>'">
+          <%= member.activity %>
+        </div>
+
+        <div onclick="window.location='<%= profile_path(member.id) %>'" class="name-list XXII" style="margin-bottom: 5px;">
+          <% unless member.city.blank? %>
+            <%= member.city %>
+          <% end %>
+          <% unless member.country.blank? %>
+            <%= member.country %>
+          <% end %>
+        </div>
+      </div>
+
+      <div style="margin-top: -30px; color: grey;float: right;">
+        <% if (current_user != member) %>
+          <%= link_to_function "Send Message", "$('#contact_me_div_#{member.id}').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
+        <% end %>
+
+        <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= member.id %>">
+          <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form"}, :remote  => true do %>
+            <%= hidden_field_tag :topic, "Inquiry" %>
+            <%= hidden_field_tag :user_id, member.id %>
+
+            <span style="width: auto;float: left;">
+              <%= text_area_tag  :body, "", :style => "width:135px; height:100px;" %>
+            </span>
+
+            <div style="margin-right: 10px; text-align: right;">
+              <%= submit_tag "Send", :onclick => "$('#contact_me_div_#{member.id}').hide();" %>&nbsp;&nbsp;&nbsp;
+              <%= link_to_function "Cancel", "$('#contact_me_div_#{member.id}').toggle('slow');"  %>
+            </div>
+          <% end %>
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+  <%end%>
+</div>

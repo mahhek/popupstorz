@@ -8,8 +8,6 @@
     <%= hidden_field_tag "user", '', :id => "searched_member_name" %>
 
     <div class="pannelright">
-      <img class="closepannel" src="../assets/-.png" />
-
       <div class="heading_right"><%= t(:active3)%></div>
       <div class="twocol">
         <% @users_with_uniq_activites.each do |type| %>
@@ -42,21 +40,15 @@
 
         <%= image_submit_tag("Objet-dynamique-vectoriel1-.png") %>
       </div>
-    </div>
-    <div class="sortby">
-      <span style="float:right;">
-        <%= will_paginate(@members, :params => params, :renderer => PaginationListLinkRenderer) %>
-      </span>
-    </div>
+    </div>    
   <% end %>
-  <div class="resultsholderlist shadowCont">
-    <div id="searched-members" class="listx-bg">
-      <% unless @members.blank? %>
-        <%= render :partial => "members", :locals => {:members => @members, :only_view => false} %>
-      <% else %>
-        <%= t(:no_member_given) %>
-      <% end %>
-    </div>
+
+  <div id="searched-members" class="listx-bg">
+    <% unless @members.blank? %>
+      <%= render :partial => "members", :locals => {:members => @members, :only_view => false} %>
+    <% else %>
+      <%= t(:no_member_given) %>
+    <% end %>
   </div>
 </div>
 
@@ -71,49 +63,24 @@
       onSelect: function() {
         $('#search_from').datepicker('option', {maxDate: $(this).datepicker('getDate')});
       }});
-
-    $("#amount-slider-range").slider({
-      range: true,
-      min: <%= @start_price.blank? ? 0 : @start_price %>,
-      max: <%= @last_price.blank? ? 0 : @last_price %>,
-      values: [ <%= @start_price %>, <%= @last_price %> ],
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-      },
-      stop: function(event, ui) {$("#min_price").val($( "#amount-slider-range" ).slider( "values", 0 ));
-        $("#max_price").val($( "#amount-slider-range" ).slider( "values", 1 ));
-        $('#price_range_form').submit();}
-    });
-    $( "#amount" ).val( "" + $( "#amount-slider-range" ).slider( "values", 0 ) +
-      " - " + $( "#amount-slider-range" ).slider( "values", 1 ) );
-
-    $( "#sizes-slider-range" ).slider({
-      range: true,
-      min: <%= @start_size %>,
-      max: <%= @last_size %>,
-      values: [ <%= @start_size %>, <%= @last_size %> ],
-      slide: function( event, ui ) {
-        $( "#size" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-      },
-      stop: function(event, ui) {$("#min_size").val($( "#sizes-slider-range" ).slider( "values", 0 ));
-        $("#max_size").val($( "#sizes-slider-range" ).slider( "values", 1 ));
-        $('#price_range_form').submit();
-      }
-    });
-    $( "#size" ).val( "" + $( "#sizes-slider-range" ).slider( "values", 0 ) +
-      " - " + $( "#sizes-slider-range" ).slider( "values", 1 ) );
+  
   });
-</script>
-
-<script type="text/javascript">
   function update_member_values(params){
     var str = $.parseJSON(params);
     $("#searched_member_location").attr("value",str.location.toString());
     $("#searched_member_user").attr("value",str.user.toString());
   }
-</script>
-<script type="text/javascript">
   $(document).ready(function() {
     $('#location').chosen();
   });
+</script>
+<script type="text/javascript">
+  function send_rating(rating_url, mode,asset){
+    jQuery.ajax({
+      type:"GET",
+      url: rating_url,
+      data: ({'rate': true })
+      
+    });
+  }
 </script>
