@@ -268,6 +268,15 @@
         <% end %><br />
       </span>
 
+      <% if(!@offer.is_gathering and @offer.persons_in_gathering.to_i <= 0) %>
+        <span style="color: #999999;">        
+          <%= "Total Rental Price"%>
+          <%= number_to_currency(exchange_currency(@offer.total_amount.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+          <br /><br />
+        </span>
+        <br />
+      <% end %>
+
       <span class="blue" style="margin-top: 40px;">
         <%= @offer.rental_start_date.strftime("%b. %d ,%Y") %> - <%= @offer.rental_end_date.strftime("%b. %d, %Y") %>
       </span>
@@ -280,15 +289,12 @@
         <% end %>
       </span>
 
-
       <% unless current_user.blank? %>
         <% if @offer.members.size.to_i < @offer.persons_in_gathering.to_i && @offer.user_id != current_user.id && @offer.owner_id != current_user.id %>
           <% if !@offer.members.include?(current_user) && @offer.rental_start_date >= Date.today %>
-            <a class="join">        
-              <div style="float:left;margin: 5px;clear:both;width: 100%;">
-                <%= link_to t(:join_this_gathering), "/join_gathering/#{@offer.id}",:class => "search ml70", :style => "float:right;margin-right:20px;" %>
-              </div>            
-            </a>
+            <div style="float:left;margin: 5px;clear:both;width: 100%;">
+              <%= link_to t(:join_this_gathering), "/join_gathering/#{@offer.id}",:class => "join", :style => "float:right;margin-right:20px;" %>
+            </div>
           <% end %>
         <% end %>
       <% end %>
@@ -342,28 +348,38 @@
       <br />
       <br />
       <span class="title"><%= t(:owner_rules) %></span>
-      <span onclick="$('#rules_div').toggle()" style="cursor: pointer;color: #666666;"><%= t(:show) %></span><br />
+      <span onclick="$('#rules_div').toggle()" style="cursor: pointer;color: #666666;">
+        <%= t(:show) %></span>
+      <br />
       <p class="size_text" id="rules_div" style="display:none;width:360px !important;word-wrap:break-word;overflow: hidden;color:#999999">
         <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
       </p>
-      <br />
+      <br /><br />
 
-      <% unless current_user.blank? %>
-        <% if current_user.id == @offer.owner_id %>
+    </div>
+
+    <div style="float: left; margin-left: 10px;width: 25%;">
+      <% unless current_user.blank? %>    
+        <% if current_user.id.to_i == @offer.owner_id.to_i %>    
           <% if @offer.status == "joinings approved" %>
             <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
             <%= link_to t(:decline), "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
           <% end %>
-
-          <% if @offer.status == "confirmed" && @offer.persons_in_gathering.blank? %>
-            <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
-            <%= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
-          <% end %>
-          <br />
-          <% if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
-            <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
-          <% end %>
         <% end %>
+        <% if @offer.status == "confirmed" && @offer.persons_in_gathering.blank? %>
+          <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
+          <%= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
+        <% end %>
+        <br />
+        <% if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
+          <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
+        <% end %>
+
+        <% if current_user.id.to_i == @offer.user_id.to_i && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
+          <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
+        <% end %>
+
+
       <% end %>
     </div>
     <div class="clear"></div>
@@ -372,157 +388,166 @@
 </div>
 <div class="clear"></div>
 
-<div class="fltL shadowCont" style="width: 350px; margin-top: 20px;">
-  <span style="font-size: 1.6em;">Members</span>
-  <span style="color: #666666; display: block; font-family: proxima-semibold; font-size: 1.1em;margin: 5px 0;">
-    <%= t(:confirmed) %>
-  </span>
-  <hr />
 
-  <div id="searched-members" class="listx-bg">
-    <div class="listx" style="border-bottom: 1px solid gray;padding: 5px;float: left;">
-      <% joined.each do|j_mem| %>
-        <% member = j_mem.user %>
-        <div class="row" style="float:left; width: 340px;">
-          <div class="imgx" onclick="window.location='<%= profile_path(member.id) %>'">
-            <% if member.avatars.size > 0 %>
-              <%= image_tag(member.avatars.first.photo.url(:thumb), :width => "85", :height => "111", :alt => "Member-Photo")  %>
-            <% else %>
-              <%= image_tag("empty.png", :width => "85", :height => "111", :alt => "Member-Photo")  %>
-            <% end %>
-          </div>
+<% if(@offer.is_gathering and @offer.persons_in_gathering.to_i > 0) %>
+  <div class="fltL shadowCont" style="width: 350px; margin-top: 20px;">
+    <span style="font-size: 1.6em;">Members</span>
+    <span style="color: #666666; display: block; font-family: proxima-semibold; font-size: 1.1em;margin: 5px 0;">
+      <%= t(:confirmed) %>
+    </span>
+    <hr />
 
-          <div class="name-list" style="margin-bottom: 5px;">
-            <h4 style="float: left;font-family:proxima-bold; color: #333333;" onclick="window.location='<%= profile_path(member.id) %>'">
-              <%= member.first_name + " " + member.last_name %>
-            </h4>
-            <div style="float: left;width:200px;" id="rating_of_user_<%= member.id %>" >
-              <%= render :partial => "searches/member_rating", :locals => {:member => member, :only_view => false} %>
+    <div id="searched-members" class="listx-bg">
+      <div class="listx" style="border-bottom: 1px solid gray;padding: 5px;float: left;">
+        <% joined.each do|j_mem| %>
+          <% member = j_mem.user %>
+          <div class="row" style="float:left; width: 340px;">
+            <div class="imgx" onclick="window.location='<%= profile_path(member.id) %>'">
+              <% if member.avatars.size > 0 %>
+                <%= image_tag(member.avatars.first.photo.url(:thumb), :width => "85", :height => "111", :alt => "Member-Photo")  %>
+              <% else %>
+                <%= image_tag("empty.png", :width => "85", :height => "111", :alt => "Member-Photo")  %>
+              <% end %>
+            </div>
+
+            <div class="name-list" style="margin-bottom: 5px;">
+              <h4 style="float: left;font-family:proxima-bold; color: #333333;" onclick="window.location='<%= profile_path(member.id) %>'">
+                <%= member.first_name + " " + member.last_name %>
+              </h4>
+              <div style="float: left;width:200px;" id="rating_of_user_<%= member.id %>" >
+                <%= render :partial => "searches/member_rating", :locals => {:member => member, :only_view => false} %>
+              </div>
+            </div>
+            <br /><br />
+
+            <div class="name-list" style="margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;" onclick="window.location='<%= profile_path(member.id) %>'">
+              <%= member.activity %>
+            </div>
+            <div class="name-list XXII" style="margin-bottom: 5px;" onclick="window.location='<%= profile_path(member.id) %>'">
+              <% unless member.city.blank? %>
+                <%= member.city %>
+              <% end %>
+              <% unless member.country.blank? %>
+                <%= member.country %>
+              <% end %>
             </div>
           </div>
-          <br /><br />
 
-          <div class="name-list" style="margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;" onclick="window.location='<%= profile_path(member.id) %>'">
-            <%= member.activity %>
-          </div>
-
-          <div class="name-list XXII" style="margin-bottom: 5px;" onclick="window.location='<%= profile_path(member.id) %>'">
-            <% unless member.city.blank? %>
-              <%= member.city %>
+          <div style="margin-top: -30px; color: grey;float: right;">
+            <% if (current_user != @offer.user) %>
+              <%= link_to_function "Send Message", "$('#contact_me_div_#{member.id}').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
             <% end %>
-            <% unless member.country.blank? %>
-              <%= member.country %>
-            <% end %>
+
+            <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= member.id %>">
+              <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form_#{member.id}"}, :remote  => true do %>
+                <%= hidden_field_tag :topic, "Inquiry" %>
+                <%= hidden_field_tag :user_id, member.id %>
+                <%= hidden_field_tag :item_id, @offer.item.id %>
+                <%= hidden_field_tag :div_id, member.id %>
+
+                <span style="width: auto;float: left;">
+                  <%= text_area_tag  :body, "", :style => "width:135px; height:100px;" %>
+                </span>
+
+                <div style="margin-right: 10px; text-align: right;">
+                  <%= submit_tag "Send", :onclick => "$('#contact_me_div_#{member.id}').hide();" %>&nbsp;&nbsp;&nbsp;
+                  <%= link_to_function "Cancel", "$('#contact_me_div_#{member.id}').toggle('slow');"  %>
+                </div>
+              <% end %>
+            </div>
+            <div class="clear"></div>
           </div>
-        </div>
+        <% end %>
+      </div>
+    </div>
 
-        <div style="margin-top: -30px; color: grey;float: right;">
-          <% if (current_user != @offer.user) %>
-            <%= link_to_function "Send Message", "$('#contact_me_div_#{member.id}').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
-          <% end %>
 
-          <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= member.id %>">
-            <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form_#{member.id}"}, :remote  => true do %>
-              <%= hidden_field_tag :topic, "Inquiry" %>
-              <%= hidden_field_tag :user_id, member.id %>
-              <%= hidden_field_tag :item_id, @offer.item.id %>
-              <%= hidden_field_tag :div_id, member.id %>
+    <hr />
 
-              <span style="width: auto;float: left;">
-                <%= text_area_tag  :body, "", :style => "width:135px; height:100px;" %>
-              </span>
+    <span style="color: #666666; display: block; font-family: proxima-semibold; font-size: 1.1em;margin: 5px 0;">
+      <%= t(:applied) %>
+    </span>
 
-              <div style="margin-right: 10px; text-align: right;">
-                <%= submit_tag "Send", :onclick => "$('#contact_me_div_#{member.id}').hide();" %>&nbsp;&nbsp;&nbsp;
-                <%= link_to_function "Cancel", "$('#contact_me_div_#{member.id}').toggle('slow');"  %>
+    <div id="searched-members" class="listx-bg">
+      <div class="listx" style="border-bottom: 1px solid gray;padding: 5px;float: left;">        
+        <% applied_requests = @offer.members.where("status !='Approved'") %>
+        <% unless applied_requests.blank? %>
+          <% applied_requests.each do|req| %>
+
+            <div class="row" style="float:left; width: 340px;">
+              <div class="imgx" onclick="window.location='<%= profile_path(req.id) %>'">
+                <% if req.avatars.size > 0 %>
+                  <%= image_tag(req.avatars.first.photo.url(:thumb), :width => "85", :height => "111", :alt => "Member-Photo")  %>
+                <% else %>
+                  <%= image_tag("empty.png", :width => "85", :height => "111", :alt => "Member-Photo")  %>
+                <% end %>
               </div>
+              <div class="name-list" style="margin-bottom: 5px;">
+                <h4 style="float: left;font-family:proxima-bold; color: #333333;" onclick="window.location='<%= profile_path(req.id) %>'">
+                  <%= req.first_name + " " + req.last_name %>
+                </h4>
+                <div style="float: left;width:200px;" id="rating_of_user_<%= req.id %>" >
+                  <%= render :partial => "searches/member_rating", :locals => {:member => req, :only_view => false} %>
+                </div>
+              </div>
+
+              <div class="name-list" style="float: left;width:200px;margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;" onclick="window.location='<%= profile_path(req.id) %>'">
+                <%= req.activity %>
+              </div>
+
+              <div class="name-list XXII" style="margin-bottom: 5px;float: left;width:200px;" onclick="window.location='<%= profile_path(req.id) %>'">
+                <% unless req.city.blank? %>
+                  <%= req.city %>
+                <% end %>
+                <% unless req.country.blank? %>
+                  <%= req.country %>
+                <% end %>
+              </div>
+            </div>
+
+            <div style="margin-top: -30px; color: grey;float: right;">
+              <% if (current_user != @offer.user) %>
+                <%= link_to_function "Send Message", "$('#contact_me_div_#{req.id}').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
+              <% end %>
+
+              <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= req.id %>">
+                <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form_#{req.id}"}, :remote  => true do %>
+                  <%= hidden_field_tag :topic, "Inquiry" %>
+                  <%= hidden_field_tag :user_id, req.id %>
+                  <%= hidden_field_tag :item_id, @offer.item.id %>
+                  <%= hidden_field_tag :div_id, req.id %>
+
+                  <span style="width: auto;float: left;">
+                    <%= text_area_tag  :body, "", :style => "width:135px; height:100px;" %>
+                  </span>
+
+                  <div style="margin-right: 10px; text-align: right;">
+                    <%= submit_tag "Send", :onclick => "$('#contact_me_div_#{req.id}').hide();" %>&nbsp;&nbsp;&nbsp;
+                    <%= link_to_function "Cancel", "$('#contact_me_div_#{req.id}').toggle('slow');"  %>
+                  </div>
+                <% end %>
+              </div>
+              <div class="clear"></div>
+            </div>
+            <% approved_requests = @offer.members.where("status ='Approved'") %>
+            <% request = GatheringMember.where("user_id = #{req.id} and offer_id = #{@offer.id}").first %>            
+            <% if request.status == "confirmed" && current_user.id == @offer.user_id %>
+              <% if approved_requests.size <  @offer.persons_in_gathering.to_i %>
+                <%= link_to t(:approve), "/approve_gathering_request/#{@offer.id}?mem=#{req.id}", :class => "green" %>
+                <%= link_to t(:decline), "/decline_gathering_request/#{@offer.id}?mem=#{req.id}", :class => "red" %>
+                <br /><br />
+              <% end %>
             <% end %>
-          </div>
-          <div class="clear"></div>
-        </div>
-      <% end %>
+
+          <% end %>
+        <% else %>
+          <%= t(:zero_applied) %>
+        <% end %>
+        <br/><br/>
+      </div>
     </div>
   </div>
-</div>
-
-<hr />
-
-<span style="color: #666666; display: block; font-family: proxima-semibold; font-size: 1.1em;margin: 5px 0;">
-  <%= t(:confirmed) %>
-</span>
-<hr />
-
-<div id="searched-members" class="listx-bg">
-  <div class="listx" style="border-bottom: 1px solid gray;padding: 5px;float: left;">
-    <b><%= t(:applied) %>(<%= applied %>)</b>
-    <% applied_requests = @offer.members.where("status !='Approved'") %>
-    <% applied_requests.each do|req| %>
-
-      <div class="row" style="float:left; width: 340px;">
-        <div class="imgx" onclick="window.location='<%= profile_path(req.id) %>'">
-          <img src="<%= req.avatars.blank? ? "../assets/User-icon.png" : req.avatars.first.photo.url(:thumb) %>" alt="image01" style="width: 50px;height: 50px;" />
-        </div>
-        <div class="name-list" style="margin-bottom: 5px;">
-          <h4 style="float: left;font-family:proxima-bold; color: #333333;" onclick="window.location='<%= profile_path(req.id) %>'">
-            <%= req.first_name + " " + req.last_name %>
-          </h4>
-          <div style="float: left;width:200px;" id="rating_of_user_<%= req.id %>" >
-            <%= render :partial => "searches/member_rating", :locals => {:member => req, :only_view => false} %>
-          </div>
-        </div>
-
-        <div class="name-list" style="margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;" onclick="window.location='<%= profile_path(req.id) %>'">
-          <%= req.activity %>
-        </div>
-
-        <div class="name-list XXII" style="margin-bottom: 5px;" onclick="window.location='<%= profile_path(req.id) %>'">
-          <% unless req.city.blank? %>
-            <%= req.city %>
-          <% end %>
-          <% unless member.country.blank? %>
-            <%= req.country %>
-          <% end %>
-        </div>
-      </div>
-
-      <div style="margin-top: -30px; color: grey;float: right;">
-        <% if (current_user != @offer.user) %>
-          <%= link_to_function "Send Message", "$('#contact_me_div_#{req.id}').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
-        <% end %>
-
-        <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= req.id %>">
-          <%= form_tag contact_me_messages_path , :html => {:id => "contact_me_form_#{req.id}"}, :remote  => true do %>
-            <%= hidden_field_tag :topic, "Inquiry" %>
-            <%= hidden_field_tag :user_id, req.id %>
-            <%= hidden_field_tag :item_id, @offer.item.id %>
-            <%= hidden_field_tag :div_id, req.id %>
-
-            <span style="width: auto;float: left;">
-              <%= text_area_tag  :body, "", :style => "width:135px; height:100px;" %>
-            </span>
-
-            <div style="margin-right: 10px; text-align: right;">
-              <%= submit_tag "Send", :onclick => "$('#contact_me_div_#{req.id}').hide();" %>&nbsp;&nbsp;&nbsp;
-              <%= link_to_function "Cancel", "$('#contact_me_div_#{req.id}').toggle('slow');"  %>
-            </div>
-          <% end %>
-        </div>
-        <div class="clear"></div>
-      </div>
-
-      <% request = GatheringMember.where("user_id = #{req.id} and offer_id = #{@offer.id}").first %>
-      <% if request.status == "confirmed" && current_user.id == @offer.user_id %>
-        <% if approved_requests.size <  @offer.persons_in_gathering.to_i %>
-          <%= link_to t(:approve), "/approve_gathering_request/#{@offer.id}?mem=#{req.id}", :class => "green" %> |
-          <%= link_to t(:decline), "/decline_gathering_request/#{@offer.id}?mem=#{req.id}", :class => "red" %>
-          <br /><br />
-        <% end %>
-      <% end %>
-
-    <% end %><br/><br/>
-  </div>
-</div>
-
+<% end %>
 
 
 

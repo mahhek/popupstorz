@@ -31,7 +31,9 @@ class MessagesController < ApplicationController
     
     respond_to do |format|
       new_msg = ActsAsMessageable::Message.find_by_id(msg.id)
-      new_msg.update_attribute(:item_id,params[:item_id])
+      unless params[:item_id].blank?
+        new_msg.update_attribute(:item_id,params[:item_id])
+      end
       format.js do
         unless params[:div_id].blank?
           render :js => "alert(#{t(:message_sent)});$('#contact_me_div_#{params[:div_id]}').toggle('slow');$('#body').val('');"

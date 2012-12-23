@@ -99,7 +99,7 @@
               <form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>"> <input TYPE="submit" VALUE="check in"> </form>
             <% end %>
 
-            <% unless 	offer.status == "Approved" || 
+            <% unless offer.status == "Approved" || 
                 offer.status == "Accepted" || 
                 offer.status == "confirmed" || 
                 offer.status == "Confirmed" || 

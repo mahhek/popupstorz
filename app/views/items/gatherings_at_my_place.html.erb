@@ -85,6 +85,11 @@
               <%= link_to "Approve", "/accept_gathering/#{offer.id}?item_id=#{offer.item.id}" %> | 
               <%= link_to "Decline", "/reject_gathering/#{offer.id}?item_id=#{offer.item.id}" %>
             <% end %>  
+              
+            <% if offer.owner_id == current_user.id && offer.status == "all joinings approved" %>
+              <%= link_to "Approve", "/accept_gathering/#{offer.id}?item_id=#{offer.item.id}" %> | 
+              <%= link_to "Decline", "/reject_gathering/#{offer.id}?item_id=#{offer.item.id}" %>
+            <% end %>  
           </div>
           <div class="clear"></div>
         </div>

@@ -29,15 +29,23 @@
             </span>
           </div>
 
-          <div class="name-list" style="margin-bottom: 5px;font-family: proxima-bold;color: #333333;">
-            <h4 style="float:left;" onclick="window.location='<%= "/offers/#{item.id}" %>'"><%= item.title %></h4>            
-          </div>
+          <%if !gathering.is_gathering or gathering.persons_in_gathering.to_i <= 0 %>          
+            <div style="color: #999999; float: right; text-align: right;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
+              Total Rental Price: 
+              <%= number_to_currency(exchange_currency(gathering.total_amount.round, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            </div>
+          <% end %>
 
-          <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold float:left;width:65%;color:#666666;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
+
+          <div class="name-list" style="margin-bottom: 5px;font-family: proxima-bold;color: #333333;">
+            <h4 style="float:left;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'"><%= item.title %></h4>            
+          </div><br />
+
+          <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold float:left;width:55%;float: left;color:#666666;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
             <%= item.listing_type.blank? ? "#{t(:other)}" : item.listing_type.name %>
           </div>
 
-          <div class="name-list XXII" style="margin-bottom: 5px;float: left;" onclick="window.location='<%= "/offers/#{item.id}" %>'">
+          <div class="name-list XXII" style="margin-bottom: 5px;float: left;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
             <span style="font-size: 1.1em; font-variant: small-caps; ">
               <%= item.city %></span>,
             <span style="font-size: 1.1em; text-transform: uppercase; ">
