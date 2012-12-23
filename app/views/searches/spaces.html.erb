@@ -2,6 +2,7 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $('#location').chosen();
+    $('#sort_option_sel').chosen();
     $(function() {
       $('#search_from').datepicker(
       {
@@ -68,7 +69,6 @@
     <%= hidden_field_tag "sizes", !params[:sizes].blank? ? params[:sizes] : '' %>
 
     <div class="pannelright">
-      <img class="closepannel" src="../assets/-.png" />
 
       <label class="heading_right" for="amount"><%= t(:price_range) %></label>
       <input type="text" id="amount" style="border: 0 none !important; border-radius: 0 0 0 0; box-shadow: none; color: #666666; font-family: Proxima; font-size: 1em; font-weight: normal; text-align: center; width: 170px;" />
@@ -80,7 +80,6 @@
     </div>
 
     <div class="pannelright">
-      <img class="closepannel" src="../assets/-.png" />
 
       <label class="heading_right" for="size"><%= t(:sizes) %><small><%= t(:sqmt) %></small>:</label>
       <input type="text" id="size" style="border: 0 none !important; border-radius: 0 0 0 0; box-shadow: none; color: #666666; font-family: Proxima; font-size: 1em; font-weight: normal; text-align: center; width: 170px;" />
@@ -91,7 +90,6 @@
     </div>
 
     <div class="pannelright">
-      <img class="closepannel" src="../assets/-.png" />
 
       <div class="heading_right"><%= t(:types) %></div>
       <div class="onecol">
@@ -105,7 +103,6 @@
     </div>
 
     <div class="pannelright">
-      <img class="closepannel" src="../assets/-.png" />
 
       <div class="heading_right"><%= t(:shareable) %></div>
       <div class="twocol">

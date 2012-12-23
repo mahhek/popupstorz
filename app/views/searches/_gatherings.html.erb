@@ -30,14 +30,14 @@
           </div>
 
           <div class="name-list" style="margin-bottom: 5px;font-family: proxima-bold;color: #333333;">
-            <h4 style="float:left;" onclick="window.location='<%= "/items/#{item.id}" %>'"><%= item.title %></h4>            
+            <h4 style="float:left;" onclick="window.location='<%= "/offers/#{item.id}" %>'"><%= item.title %></h4>            
           </div>
 
           <div class="name-list" style="margin-bottom: 5px; font-family: proxima-bold float:left;width:65%;color:#666666;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
             <%= item.listing_type.blank? ? "#{t(:other)}" : item.listing_type.name %>
           </div>
 
-          <div class="name-list XXII" style="margin-bottom: 5px;float: left;" onclick="window.location='<%= "/items/#{item.id}" %>'">
+          <div class="name-list XXII" style="margin-bottom: 5px;float: left;" onclick="window.location='<%= "/offers/#{item.id}" %>'">
             <span style="font-size: 1.1em; font-variant: small-caps; ">
               <%= item.city %></span>,
             <span style="font-size: 1.1em; text-transform: uppercase; ">
