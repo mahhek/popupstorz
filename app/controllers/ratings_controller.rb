@@ -10,8 +10,7 @@ class RatingsController < ApplicationController
     else
       @rating = Rating.find(:first, :conditions =>["rateable_id = ? and rateable_type = ?",@asset.id,@asset.class.to_s])
     end
-    if @rating
-      
+    if @rating      
       @rating.update_attribute(:accuracy_rating, params[:accuracy_rating]) unless params[:accuracy_rating].blank?
       @rating.update_attribute(:commodities_rating, params[:commodities_rating]) unless params[:commodities_rating].blank?
       @rating.update_attribute(:location_rating, params[:location_rating]) unless params[:location_rating].blank?

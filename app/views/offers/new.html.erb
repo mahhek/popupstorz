@@ -565,87 +565,57 @@
     }
   });
 
-  function checkPrefferedAddress(){    
-    if($("input[@name=offer[preferred_location]]:checked").val() == "true"){
-      if($("#offer_preferred_address").val() == "") {
-        alert('Please enter some preferred location first!.');
-        return false;
-      }else{
-        if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
-          if($("#gathering_fields").is(":hidden") == false){
-            return true;
-          }
-          else{
-            alert('Please enter gathering joining deadline date.');
-            return false;
-          }
-        }else{
-          if($("#gathering_fields").is(":hidden") == false){
-            alert($("#offer_persons_in_gathering").val());
-            if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
-              alert("Please enter persons in gathering");
-              return false;
-            }
-            if($("#offer_persons_in_gathering").val() == 1){
-              alert("Persons in gathering must be more than 1");
-              return false;
-            }
-            if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
-              alert('Please enter gathering deadline date.');
-              return false;
-            }
-            if(parseInt($("#offer_persons_in_gathering").val()) > parseInt('<%= @item.maximum_members %>')){
-              alert("Persons in gathering should not exceed maximum persons allowed.");
-              return false;
-            }
-          }
+  function checkPrefferedAddress(){
+    if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
+      if($("#gathering_fields").is(":hidden") == true){
+        if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy"){
+          alert("Please enter response date"); 
+          return false;
+        }          
+      }
+      else{
+        if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy" ){
+          alert("Please enter gathering deadline");
+          return false;
+        }
+      }
+      
+      if($("#gathering_fields").is(":hidden") == true){
+        if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy" ){
+          alert('Please enter response deadline date.');
+          return false;
+        }
+        else{
           return true;
         }
       }
-    }else{    
-      if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
-        if($("#gathering_fields").is(":hidden") == true){
-          alert("Please enter response date");
-        }
-        else{
-          alert("Please enter gathering deadline");
-        }
-        return false;
-        if($("#gathering_fields").is(":hidden") == true){
-          if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy" ){
-            alert('Please enter response deadline date.');
-            return false;
-          }
-          else{
-            return true;
-          }
-        }
-        else{
+      else{
+        if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy" ){
           alert('Please enter gathering joining deadline date.');
           return false;
         }
       }
-      else{
-        if($("#gathering_fields").is(":hidden") == false){
-          if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
-            alert("Please enter persons in gathering");
-            return false;
-          }
-          if($("#offer_persons_in_gathering").val() == 1){
-            alert("Persons in gathering must be more than 1");
-            return false;
-          }
-          if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
-            alert('Please enter gathering deadline date.');
-            return false;
-          }
-          if(parseInt($("#offer_persons_in_gathering").val()) > parseInt('<%= @item.maximum_members %>')){
-            alert("Persons in gathering should not exceed maximum persons allowed.");
-            return false;
-          }
+    }
+    else{
+      if($("#gathering_fields").is(":hidden") == false){
+        if($("#offer_persons_in_gathering").val() == '' || $("#offer_persons_in_gathering").val() == 0){
+          alert("Please enter persons in gathering");
+          return false;
         }
-        return true;
+        if($("#offer_persons_in_gathering").val() == 1){
+          alert("Persons in gathering must be more than 1");
+          return false;
+        }
+        if($("#offer_gathering_deadline").val() == "" || $("#offer_gathering_deadline").val() == "mm/dd/yy") {
+          alert('Please enter gathering deadline date.');
+          return false;
+        }
+        if(parseInt($("#offer_persons_in_gathering").val()) > parseInt('<%= @item.maximum_members %>')){
+          alert("Persons in gathering should not exceed maximum persons allowed.");
+          return false;
+        }
       }
+      return true;
     }
   }
 
