@@ -1,0 +1,32 @@
+<% asset = member %>
+<ul class='star-rating'>
+  <% if !(user_signed_in?)%>
+    <li class="current-rating" style="width:<%= ( member.accuracy_rating * 20).to_i -%>px;" />
+  <%else%>
+    <%if member == current_user %>
+      <li class='current-rating' style='width:<%= (member.accuracy_rating * 20).to_i -%>px;' />
+    <% else %>
+      <li class='current-rating' style='width:<%= (member.accuracy_rating * 20).to_i -%>px;' />
+      <li>
+        <%= link_to_function "#", only_view == false ? "send_rating('/searches/user_rating?id=#{asset.id}&accuracy_rating=1&class_name=#{asset.class}', 'accuracy_rating','#{asset.id}');" : "javascript:void(0);" ,
+          :class => 'one-star', :name => '1 star out of 5' %>
+      </li>
+      <li>
+        <%= link_to_function "#", only_view == false ? "send_rating('/searches/user_rating?id=#{asset.id}&accuracy_rating=2&class_name=#{asset.class}', 'accuracy_rating','#{asset.id}');" : "javascript:void(0);" ,
+          :class => 'two-stars', :name => '2 stars out of 5' %>
+      </li>
+      <li>
+        <%= link_to_function "#", only_view == false ? "send_rating('/searches/user_rating?id=#{asset.id}&accuracy_rating=3&class_name=#{asset.class}', 'accuracy_rating','#{asset.id}');" : "javascript:void(0);" ,
+          :class => 'three-stars', :name => '3 stars out of 5' %>
+      </li>
+      <li>
+        <%= link_to_function "#", only_view == false ? "send_rating('/searches/user_rating?id=#{asset.id}&accuracy_rating=4&class_name=#{asset.class}', 'accuracy_rating','#{asset.id}');" : "javascript:void(0);" ,
+          :class => 'four-stars', :name => '4 stars out of 5' %>
+      </li>
+      <li>
+        <%= link_to_function "#", only_view == false ? "send_rating('/searches/user_rating?id=#{asset.id}&accuracy_rating=5&class_name=#{asset.class}', 'accuracy_rating','#{asset.id}');" : "javascript:void(0);" ,
+          :class => 'five-stars', :name => '5 stars out of 5' %>
+      </li>
+    <%end%>
+  <%end%>
+</ul>
