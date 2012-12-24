@@ -129,6 +129,7 @@ class OffersController < ApplicationController
     end
     params[:offer][:total_amount] = params[:offer][:grand_total_amount]
     params[:offer].delete(:grand_total_amount)
+    
     unless @offer.blank?
       set_dates
       @offer.update_attributes(params[:offer])
@@ -138,7 +139,7 @@ class OffersController < ApplicationController
       if params[:offer][:gathering_deadline] != "mm/dd/yy" and !params[:offer][:gathering_deadline].blank?
         params[:offer][:gathering_deadline] = DateTime.strptime(params[:offer][:gathering_deadline], "%m/%d/%Y").to_time
       end
-      params[:offer][:additional_message] = params[:offer][:offer_messages_attributes]            
+      params[:offer][:additional_message] = params[:offer][:offer_messages_attributes]["0"][:message]
       @offer = Offer.new(params[:offer].merge(:item_id => params[:item_id]).merge(:user_id => current_user.id).merge(:status => "pending"))
 
       if @offer.save!
@@ -458,17 +459,26 @@ class OffersController < ApplicationController
           end
         end
         if current_user.id == offer.owner_id
-          current_user.send_message(owner, :topic => t(:gather_cancelled_email), :body => " #{t(:gathering_created_email2)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:owner_cancelled_apology)}".html_safe)
-          @notification = Notification.new(:user_id => owner.id, :notification_type =>t(:gather_cancelled_email), :description => "#{t(:gathering_created_email2)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> #{t(:by)} #{user.popup_storz_display_name} #{t(:owner_cancelled_apology)}".html_safe)
+          current_user.send_message(owner, :topic => t(:gather_cancelled_email), :body => " #{t(:gathering_on_your_place)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:cancelled_by_you_owner)}".html_safe)
+          @notification = Notification.new(:user_id => owner.id, :notification_type =>t(:gather_cancelled_email), :description => "#{t(:gathering_created_email2)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> #{t(:by)} #{user.popup_storz_display_name} #{t(:cancelled_by_you_owner)}".html_safe)
           @notification.save          
         else
           current_user.send_message(owner, :topic => t(:gather_cancelled_email), :body => "#{t(:gathering_on_your_place)}  #{offer.item.title} #{t(:by)} #{user.popup_storz_display_name} #{t(:email_from)} #{offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:creator_cancelled_apology)}".html_safe)
           @notification = Notification.new(:user_id => owner.id, :notification_type =>t(:gather_cancelled_email), :description => "#{t(:gathering_on_your_place)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> #{t(:by)} #{user.popup_storz_display_name} #{t(:creator_cancelled_apology)}".html_safe)
           @notification.save
         end
-        current_user.send_message(user, :topic => t(:gather_cancelled_email), :body => "#{t(:gathering_created_email2)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:owner_cancelled_apology)}".html_safe)
-        @notification = Notification.new(:user_id => user.id, :notification_type =>t(:gather_cancelled_email), :description => "#{t(:gathering_created_email2)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:owner_cancelled_apology)}".html_safe)
-        @notification.save        
+        
+        if current_user == user
+          current_user.send_message(user, :topic => t(:gather_cancelled_email), :body => "#{t(:gathering_created_email2)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:cancelled_by_you)}".html_safe)
+          @notification = Notification.new(:user_id => user.id, :notification_type =>t(:gathering_created_email2), :description => "#{t(:gathering_created_email2)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:cancelled_by_you)}".html_safe)
+          @notification.save        
+        else
+          current_user.send_message(user, :topic => t(:gather_cancelled_email), :body => "#{t(:gathering_created_email2)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:owner_cancelled_apology)}".html_safe)
+          @notification = Notification.new(:user_id => user.id, :notification_type =>t(:gather_cancelled_email), :description => "#{t(:gathering_created_email2)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:owner_cancelled_apology)}".html_safe)
+          @notification.save
+        end
+        
+        
         flash[:notice] = t(:booking_cancelled)
       else
         flash[:notice] = t(:booking_cant_be_cancelled)

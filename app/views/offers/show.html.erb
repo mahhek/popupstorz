@@ -377,7 +377,7 @@
           <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
         <% end %>
 
-        <% if (@offer.status == "Confirmed") && current_user.id.to_i == @offer.user_id.to_i && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
+        <% if (@offer.status == "Accepted - Payment pending" or @offer.status == "all joinings approved" or @offer.status == "Accepted - Confirmation pending" or @offer.status == "joinings approved" or @offer.status == "Applied" or @offer.status == "confirmed"or @offer.status == "Confirmed") && current_user.id.to_i == @offer.user_id.to_i && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
           <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
         <% end %>
 
