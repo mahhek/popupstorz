@@ -184,7 +184,7 @@ body {
 .shadowCont h1 {
     font-size: 22px;
     margin-bottom: 20px;
-    font-family: Proxima;
+    font-family: Proxima-semibold;
 }
 .shadowCont p {
     font-size: 1em;
@@ -389,6 +389,7 @@ body {
     z-index: 999;
     background-color: white;
     font-family: proxima-bold;
+    font-size: 1.1em;
 }
 
 
@@ -486,7 +487,6 @@ body {
     width: 150px;
     margin-right: 10px;
     color: #333333;
-    text-transform: uppercase;
 }
 
 .xfields .input {
@@ -499,8 +499,9 @@ body {
 
 .offer h2 {
     color: #333333;
-    font-size: 1.2em;
-    margin: 23px 0 0;	
+    font-size: 1.1em;
+    margin: 23px 0 0;
+    text-transform: uppercase;
 } 
 
 .offer .policy {
