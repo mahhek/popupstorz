@@ -18,9 +18,14 @@
               <% end %>
             </div>
 
-            <div style="color: #666666; float: right; font-size: 26px;text-align: right; font-family: Proxima-semibold;
-                 font-size: 2em;"><%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><br>
-              <%if offer.is_gathering %><span style="font-family: Proxima; font-size: 0.6em;">per person</span><%end%></div>
+            <div style="color: #666666; float: right; font-size: 26px;text-align: right; font-family: Proxima-semibold;font-size: 2em;">
+              <%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><br>
+              <%if offer.is_gathering %>
+                <span style="font-family: Proxima; font-size: 0.6em;"><%= t(:per_person) %></span>
+              <% else %>
+                  <span style="font-family: Proxima; font-size: 0.6em;"><%= t(:total_rental_price) %></span>
+              <%end%>
+            </div>
             <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4></div>
 
             <div class="name-list XXII" style="margin-bottom: 5px;"><%= item.address %></div>
@@ -32,14 +37,7 @@
               <%= number_to_currency(exchange_currency(item.price_per_week.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/week,
               <%= number_to_currency(exchange_currency(item.price_per_month.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>/month.
             </div>
-            
-            <%if !offer.is_gathering or offer.persons_in_gathering.to_i <= 0%>
-            <div class="name-list" style="margin-bottom: 5px;">
-              <b>Total Rental Price: </b>
-              <%= number_to_currency(exchange_currency(offer.total_amount.round, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
-            </div>
-            <% end %>
-            
+
             <div style="margin-top: 17px; color: grey;">
               <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
                 Gathering : <%= offer.gathering_description %> 

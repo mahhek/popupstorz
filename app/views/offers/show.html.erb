@@ -135,8 +135,8 @@
     </div>
 
     <div style="padding-top: 20px; float: left;" >
-      <span style="font-size: 1.4em; color: #666666;"><%= @offer.item.title %></span><br />
-      <span><%= @offer.item.listing_type.blank? ? "#{t(:other)}" : @offer.item.listing_type.name %></span><br />
+      <span style="font-size: 1.8em; color: #666666;"><%= @offer.item.title %></span><br />
+      <span style="color:#999999;"><%= @offer.item.listing_type.blank? ? "#{t(:other)}" : @offer.item.listing_type.name %></span><br />
       <span style="display: block; font-family: XXII; font-size: 1.2em; margin-top: 4px; text-transform: uppercase;">
         <% addr = @offer.item.address.gsub(/\d/,'') %>
         <% addr = addr.split(",") %>
@@ -172,11 +172,14 @@
       <br /><br />
       <% if(@offer.is_gathering and @offer.persons_in_gathering.to_i > 0) %>
         <span style="color: #333333;">        
-          <%= t(:per_person2)%>
-          <br /><br />
+          <%= t(:per_person2)%>          
         </span>
-        <br />
+      <% else %>
+        <span style="color: #333333;">        
+          <%= t(:total_rental_price)%>
+        </span>
       <% end %>
+      <br />
 
       <span style="cursor: pointer;color: #666666; font-size: 0.8em;" onclick="$('#offer_price_details').toggle();">
         <%= t(:show_price_details) %>
@@ -268,15 +271,6 @@
         <% end %><br />
       </span>
 
-      <% if(!@offer.is_gathering and @offer.persons_in_gathering.to_i <= 0) %>
-        <span style="color: #999999;">        
-          <%= "Total Rental Price"%>
-          <%= number_to_currency(exchange_currency(@offer.total_amount.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-          <br /><br />
-        </span>
-        <br />
-      <% end %>
-
       <span class="blue" style="margin-top: 40px;">
         <%= @offer.rental_start_date.strftime("%b. %d ,%Y") %> - <%= @offer.rental_end_date.strftime("%b. %d, %Y") %>
       </span>
@@ -310,6 +304,13 @@
           <%= t(:gathering_des) %></span>
         <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
           <%= raw nl2br(@offer.gathering_description) %>
+        </div>
+      <% else %>
+        <span style="font-family: proxima-semibold; text-transform: uppercase;">
+          <%= t(:additional_message) %>
+        </span>
+        <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
+          <%= raw nl2br(@offer.additional_message) %>
         </div>
       <% end %>
     </div>
@@ -376,7 +377,7 @@
           <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
         <% end %>
 
-        <% if current_user.id.to_i == @offer.user_id.to_i && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
+        <% if (@offer.status == "Confirmed") && current_user.id.to_i == @offer.user_id.to_i && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
           <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
         <% end %>
 
