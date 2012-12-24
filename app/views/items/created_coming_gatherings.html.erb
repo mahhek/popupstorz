@@ -9,10 +9,9 @@
       <% @gatherings.each do | offer | %>
 
         <!-- Item-row -->
-        <%item=offer.item%>
-        <div class="listx" 	style="margin-bottom: 20px;border: 1px solid gray;">
+        <% item = offer.item %>
+        <div class="listx" style="margin-bottom: 20px;border: 1px solid gray;">
           <div class="row" style="float:left; width: 83%;padding: 5px;border-right: 1px solid;" onclick="window.location='<%= "/offers/#{offer.id}" %>'">
-
             <!-- Img-row -->
             <div class="imgx">
     <%#=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
@@ -25,7 +24,14 @@
 
             <!-- price-bloc-row -->
             <div style="color: grey; float: right; font-size: 26px;text-align: right;"><%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><br>
-              <span style="font-size: 0.7em;"><%= t(:by_day) %></span></div>
+              <span style="font-size: 0.7em;">
+                <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
+                <%= t(:per_day) %>
+                <% else %>
+                <%= t(:total_rental_price) %>
+                <% end %>
+              </span>
+            </div>
             <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4>
               <%if offer.rental_end_date < Date.today %>
                 <div id="rating_of_item_<%= offer.item.id %>">
@@ -50,7 +56,7 @@
               <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
                 Gathering : </b><%= offer.gathering_description %> 
               <%else%>	          
-                Standard Gathering
+                Standard Booking
               <%end%>
             </div>
             <!-- gathering-popup-row -->

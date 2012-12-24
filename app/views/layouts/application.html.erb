@@ -121,7 +121,7 @@
                 <% unread_notifications_count = current_user.notifications.unread_notifications.count %>
 
                 <ul class="searchDropdown searchMenu sf-menu">
-                  <li class="<%= ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] != "show" and params[:action] !="search_keyword") ) ? "m_act" : "") %>" style="font-family: proxima-bold; float: left;">
+                  <li class="<%= ((params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "users" or params[:controller] == "email_settings"  or (params[:controller] == "items" and params[:action] == "show" and params[:action] !="search_keyword") or (params[:controller] == "offers" and params[:action] == "show") ) ? "m_act" : "") %>" style="font-family: proxima-bold; float: left;">
                     <%= link_to t(:dashboard), inbox_messages_path, :style => "padding-right: 0;" %>
 
                     <% messages_size = current_user.messages.are_to(current_user).unread.size %>
@@ -130,7 +130,7 @@
                     <% end %>       
                   </li>
                   
-                  <% cls = ( ( (params[:controller] == "items" and params[:action] == "search_keyword")  or (params[:controller] == "searches") or (params[:controller] == "items" and params[:action] == "show")or (params[:controller] == "offers" and params[:action] == "show")  or (params[:controller] == "offers" and params[:action] == "new")  or (params[:controller] == "payments" and params[:action] == "new")) ? "m_act" : "") %>
+                  <% cls = ( ( (params[:controller] == "items" and params[:action] == "search_keyword")  or (params[:controller] == "searches") or (params[:controller] == "offers" and params[:action] == "new")  or (params[:controller] == "payments" and params[:action] == "new")) ? "m_act" : "") %>
                   
                   <li class="<%= cls %>" style="width:100px;">
                     <span>
@@ -230,13 +230,7 @@
 
           <div id="bar-useraction" class="menu-sub-layout" style="">
             <!-- Test C  TACT=This is a joke ??? why check Test B ?-->
-            <% if (
-                params[:controller] == "accounts"	|| 
-                  params[:controller] == "messages"	|| 
-                  params[:controller] == "items"		|| 
-                  params[:controller] == "users"		|| 
-                  params[:controller] == "email_settings" 
-              ) %>
+            <% if (params[:controller] == "accounts" or params[:controller] == "messages" or params[:controller] == "items" or params[:controller] == "users" or params[:controller] == "email_settings") %>
               <span class="menu-sub" style="background-color: <%= (params[:controller] == 'messages' ) ? 'cyan' : '' %>">
                 <%= link_to t(:messages), inbox_messages_path %>
               </span>

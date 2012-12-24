@@ -103,7 +103,29 @@
     });
   });//]]>
 </script>
-<%= render :partial => "/searches/search_header" %>
+<%#= render :partial => "/searches/search_header" %>
+<div id="bar-useraction" class="menu-sub-layout" style="">
+  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'messages' ) ? 'cyan' : '' %>">
+    <%= link_to t(:messages), inbox_messages_path %>
+  </span>
+  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' and (params[:action] == "overview" or params[:action] == "new" or params[:action] == "show") ) ? 'cyan' : '' %>">
+    <%= link_to t(:my_listings), overview_items_path %>
+  </span>
+  <span class="menu-sub" style="background-color: <%= ( (params[:controller] == 'items' and params[:action] == "created_coming_gatherings" ) or (params[:controller] == 'offers' and params[:action] == "show" ) ) ? 'cyan' : '' %>">
+    <%= link_to t(:my_bookings), "/items/created_coming_gatherings" %>
+  </span>
+  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' and params[:action] == "favorites" ) ? 'cyan' : '' %>">
+    <%= link_to t(:my_favorites), favorites_items_path %>
+  </span>
+  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
+    <%= link_to t(:my_profile), profile_path(current_user.id) if current_user %>  
+  </span>
+  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
+    <%= link_to t(:account),"/invitation" %>
+  </span>
+</div>
+
+
 <a href='#' class="back " onclick='history.go(-1);return false;'>&lt;&lt; <%= t(:back) %></a>
 <div class="leftcontent">
   <div class="shadowCont">
@@ -333,7 +355,7 @@
                             <%= hidden_field_tag :per_day_price, number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
                             <%= hidden_field_tag :per_week_price, number_to_currency(exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
                             <%= hidden_field_tag :per_month_price, number_to_currency(exchange_currency(@item.price_per_month.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
-                            
+
                           </span><br />		
                           <span style="color: #666666; display: inline-block; font-size: 0.9em; line-height: 14px; text-align: center; width: 100%;">Excluding Pop Up Storz fee</span>			
                         </div>
@@ -584,7 +606,7 @@
                 <% gatherings = @curr_offers.where("persons_in_gathering is NOT NULL") %>
                     <div style="width: 100%;clear: both;">
                 <% gatherings.each do|gathering| %>
-                                                                                              <div style="border-bottom: 1px solid;">
+                                                                                                <div style="border-bottom: 1px solid;">
                   <%= t(:start_date) %><%= gathering.rental_start_date.strftime("%m-%d-%Y") %><br />
                   <%= t(:end_date) %><%= gathering.rental_end_date.strftime("%m-%d-%Y") %><br />
                   <%= t(:total_req_person) %><%= gathering.persons_in_gathering %><br />
@@ -604,12 +626,12 @@
                     <% else %>
                       <%= t(:semifelxible) %>
                     <% end %>
-                                                                                                                                                                          <br/>
+                                                                                                                                                                              <br/>
                     <%= t(:owner_rules) %>
                     <%=@item.owner_rules%><br/><br/>
                     <%= link_to t(:details), "/offers/#{gathering.id}" %>
                   <% end %>
-                                                                                              </div>
+                                                                                                </div>
                 <% end %>
                     </div>
                     </p>
@@ -620,11 +642,11 @@
                       <b><%= t(:prev_comments) %></b><br/>
                 <%unless @item.comments.blank? %>
                   <%@item.comments.each do|f|%>
-                                                                                                                                                                      <b><%=f.title  %></b><br/>
+                                                                                                                                                                          <b><%=f.title  %></b><br/>
                     <%= f.comment %><br/>
-                                                                                                                                                                      <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
-                                                                                                                                                                      <br/>
-                                                                                                                                                                      <br/>
+                                                                                                                                                                          <i><%= f.user.first_name %> at <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S") %></i>
+                                                                                                                                                                          <br/>
+                                                                                                                                                                          <br/>
                   <%end%>
                 <%end%>
                     </div>

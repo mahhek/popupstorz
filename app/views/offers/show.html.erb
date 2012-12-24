@@ -60,8 +60,27 @@
   }
 
 </style>
-
-<%= render :partial => "/searches/search_header" %>
+<div id="bar-useraction" class="menu-sub-layout" style="">
+  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'messages' ) ? 'cyan' : '' %>">
+    <%= link_to t(:messages), inbox_messages_path %>
+  </span>
+  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' and (params[:action] == "overview" or params[:action] == "new"or params[:action] == "show") ) ? 'cyan' : '' %>">
+    <%= link_to t(:my_listings), overview_items_path %>
+  </span>
+  <span class="menu-sub" style="background-color: <%= ( (params[:controller] == 'items' and params[:action] == "created_coming_gatherings" ) or (params[:controller] == 'offers' and params[:action] == "show" ) ) ? 'cyan' : '' %>">
+    <%= link_to t(:my_bookings), "/items/created_coming_gatherings" %>
+  </span>
+  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' and params[:action] == "favorites" ) ? 'cyan' : '' %>">
+    <%= link_to t(:my_favorites), favorites_items_path %>
+  </span>
+  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
+    <%= link_to t(:my_profile), profile_path(current_user.id) if current_user %>  
+  </span>
+  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
+    <%= link_to t(:account),"/invitation" %>
+  </span>
+</div>
+<%#= render :partial => "/searches/search_header" %>
 <!-- TODO Add header for search or dasboard by the context -->
 <div id="hd-result">
   <div class="container_12">
@@ -135,8 +154,8 @@
     </div>
 
     <div style="padding-top: 20px; float: left;" >
-      <span style="font-size: 1.8em; color: #666666;"><%= @offer.item.title %></span><br />
-      <span style="color:#999999;"><%= @offer.item.listing_type.blank? ? "#{t(:other)}" : @offer.item.listing_type.name %></span><br />
+      <span style="font-size: 1.8em;"><b><%= @offer.item.title %></b></span><br />
+      <span style="color:#666666;font-size: 15px;"><b><%= @offer.item.listing_type.blank? ? "#{t(:other)}" : @offer.item.listing_type.name %></b></span><br />
       <span style="display: block; font-family: XXII; font-size: 1.2em; margin-top: 4px; text-transform: uppercase;">
         <% addr = @offer.item.address.gsub(/\d/,'') %>
         <% addr = addr.split(",") %>
@@ -300,18 +319,23 @@
   <div id="offer_extra">
     <div style="float: left;">
       <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
-        <span style="font-family: proxima-semibold; text-transform: uppercase;">
-          <%= t(:gathering_des) %></span>
-        <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
-          <%= raw nl2br(@offer.gathering_description) %>
-        </div>
+        <% unless @offer.gathering_description.blank? %>
+          <span style="font-family: proxima-semibold; text-transform: uppercase;">
+            <%= t(:gathering_des) %>
+          </span>
+          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
+            <%= raw nl2br(@offer.gathering_description) %>
+          </div>
+        <% end %>
       <% else %>
-        <span style="font-family: proxima-semibold; text-transform: uppercase;">
-          <%= t(:additional_message) %>
-        </span>
-        <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
-          <%= raw nl2br(@offer.additional_message) %>
-        </div>
+        <% unless @offer.additional_message.blank? %>
+          <span style="font-family: proxima-semibold; text-transform: uppercase;">
+            <%= t(:additional_message) %>
+          </span>
+          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
+            <%= raw nl2br(@offer.additional_message) %>
+          </div>
+        <% end %>
       <% end %>
     </div>
 
