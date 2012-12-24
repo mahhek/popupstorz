@@ -88,7 +88,7 @@ class OffersController < ApplicationController
  
   def create
     if params[:offer][:offer_messages_attributes]["0"][:message].blank?
-      params[:offer].delete(:additional_message)
+      params[:offer].delete(:offer_messages_attributes)
     else
       params[:offer][:additional_message] = params[:offer][:offer_messages_attributes]["0"][:message]
     end
@@ -147,7 +147,7 @@ class OffersController < ApplicationController
       end
       
       @offer = Offer.new(params[:offer].merge(:item_id => params[:item_id]).merge(:user_id => current_user.id).merge(:status => "pending"))
-
+      
       if @offer.save!
         session[:return] = nil
         session[:pick_up] = nil        
@@ -242,21 +242,21 @@ class OffersController < ApplicationController
         if current_user.id == @offer.user_id
           @item.update_attribute("item_status","Reserved")
           flash[:notice] = t(:accepting_offer)
-          current_user.send_message(@offer.user, :topic => t(:offer_accepted_email), :body => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
-          @notification = Notification.new(:user_id => m.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
+          current_user.send_message(@offer.user, :topic => t(:offer_accepted_email), :body => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
+          @notification = Notification.new(:user_id => m.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
           @notification.save
         else
           @item.update_attribute("item_status","Reserved")
           flash[:notice] = t(:accepting_offer)
-          current_user.send_message(@offer.user, :topic =>  t(:offer_accepted_email) , :body => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
-          @notification = Notification.new(:user_id => m.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
+          current_user.send_message(@offer.user, :topic =>  t(:offer_accepted_email) , :body => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
+          @notification = Notification.new(:user_id => m.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
           @notification.save
           flash[:notice] = t(:accepting_offer)
           redirect_to "/"
         end
       else
-        current_user.send_message(@offer.user, :topic =>  t(:offer_accepted_email) , :body => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
-        @notification = Notification.new(:user_id => @offer.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
+        current_user.send_message(@offer.user, :topic =>  t(:offer_accepted_email) , :body => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
+        @notification = Notification.new(:user_id => @offer.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
         @notification.save
         flash[:notice] = t(:accepting_offer)
       end
@@ -265,8 +265,8 @@ class OffersController < ApplicationController
       @item = @offer.item
       members = GatheringMember.find(:all, :conditions => "offer_id = #{@offer.id} and status = 'Approved'")
       members.each do|m|
-        current_user.send_message(m.user, :topic =>  t(:offer_accepted_email) , :body => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
-        @notification = Notification.new(:user_id => m.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
+        current_user.send_message(m.user, :topic =>  t(:offer_accepted_email) , :body => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
+        @notification = Notification.new(:user_id => m.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
         @notification.save
       end
       @offer.update_attribute("status", "Confirmed")
@@ -286,14 +286,14 @@ class OffersController < ApplicationController
       if current_user.id == @offer.user_id
         @offer.update_attribute("status", "Declined")
         flash[:notice] = t(:offer_declined)
-        current_user.send_message(@item.user, :topic => t(:offer_declined_email) , :body => "#{t(:gathering_created_email)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:owner_cancelled)} ".html_safe)
-        @notification = Notification.new(:user_id => @item.user.id, :notification_type =>t(:offer_declined_email), :description => "#{t(:gathering_created_email)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:owner_cancelled)}".html_safe)
+        current_user.send_message(@item.user, :topic => t(:offer_declined_email) , :body => "#{t(:gathering_created_email)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:owner_cancelled)} ".html_safe)
+        @notification = Notification.new(:user_id => @item.user.id, :notification_type =>t(:offer_declined_email), :description => "#{t(:gathering_created_email)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:owner_cancelled)}".html_safe)
         @notification.save
       else
         @offer.update_attribute("status", "Declined")
         flash[:notice] = t(:offer_declined)
-        current_user.send_message(@offer.user, :topic => t(:offer_declined_email), :body => "#{t(:gathering_applied)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:owner_cancelled)}".html_safe)
-        @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>t(:offer_declined_email), :description => "#{t(:gathering_applied)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")} #{t(:owner_cancelled)}".html_safe)
+        current_user.send_message(@offer.user, :topic => t(:offer_declined_email), :body => "#{t(:gathering_applied)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:owner_cancelled)}".html_safe)
+        @notification = Notification.new(:user_id => @offer.user.id, :notification_type =>t(:offer_declined_email), :description => "#{t(:gathering_applied)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:owner_cancelled)}".html_safe)
         @notification.save        
       end
     else      
