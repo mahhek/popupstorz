@@ -87,11 +87,11 @@ class OffersController < ApplicationController
   end
  
   def create
-    if params[:offer][:offer_messages_attributes]["0"][:message].blank?
-      params[:offer].delete(:offer_messages_attributes)
-    else
+#    if params[:offer][:offer_messages_attributes]["0"][:message].blank?
+#      params[:offer].delete(:offer_messages_attributes)
+#    else
       params[:offer][:additional_message] = params[:offer][:offer_messages_attributes]["0"][:message]
-    end
+#    end
     
     @offer = Offer.find_by_item_id_and_user_id_and_status(params[:item_id],current_user.id,"Pending")
     @item = Item.find params[:item_id]
