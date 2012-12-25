@@ -198,18 +198,18 @@
           <% end %>
         <% end %>
       </span>
-      <br /><br />
-      <b>
+      <br />
+      
         <% if(@offer.is_gathering and @offer.persons_in_gathering.to_i > 0) %>
-          <span style="color: #999999;font-size: 18px;">
+          <span style="font-family: proxima-semibold; font-size: 1.3em; color: #999999">
             <b><%= t(:per_person2)%></b>
           </span>
         <% else %>
-          <span style="color: #999999;font-size: 18px;">        
-            <b><%= t(:total_rental_price)%></b>
+          <span style="font-family: proxima-semibold; font-size: 1.3em; color: #999999">
+            <%= t(:total_rental_price)%>
           </span>
         <% end %>
-      </b>
+      
       <br />
 
       <span style="cursor: pointer;color: #666666; font-size: 0.8em;" onclick="$('#offer_price_details').toggle();">
@@ -471,13 +471,13 @@
           <%= link_to t(:decline), "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
         <% end %>
 
-        <% if @offer.status == "confirmed" && @offer.persons_in_gathering.blank? %>
+        <% if (@offer.status == "confirmed" or @offer.status == "Confirmed") && @offer.persons_in_gathering.blank? %>
           <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
           <%= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
         <% end %>
       <% end %>
       <br />
-      <% if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
+      <% if (@offer.status == "confirmed" or @offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
         <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
       <% end %>
 
