@@ -217,7 +217,7 @@
       </span>
       <br />
 
-      <span id="offer_price_details" style="display: none;color: #666666; font-size: 1em;">
+      <div id="offer_price_details" style="display: none;color: #666666; font-size: 1em;">
         <div style="float: right;width: 80%;">
           <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
             <b><%= t(:daily_price) %></b>
@@ -306,7 +306,6 @@
           </div>
         </div>
 
-
         <div style="float: right;width:100%;margin-top: 10px;">
           <b><%= t(:avail_dur) %></b><br />
           <% if !@offer.item.availablities_daytime.blank? and @offer.item.availablities_daytime == true %>
@@ -365,10 +364,11 @@
               <%= image_tag("available.png", :style => "width: 10px;") %>
               <%= t(:sunday) %>
             </span>
-          <% end %><br />
-
-      </span>
-
+          <% end %>
+      </div>
+    </div>
+      
+    <div style="float: right;width:100%;margin-top: 10px;">
       <span class="blue" style="margin-top: 40px;">
         <%= @offer.rental_start_date.strftime("%b. %d ,%Y") %> - <%= @offer.rental_end_date.strftime("%b. %d, %Y") %>
       </span>
