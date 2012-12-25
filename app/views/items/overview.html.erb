@@ -21,9 +21,11 @@
             <%#*<div style="color: #666666; float: right; font-size: 26px;text-align: right; font-family: Proxima-semibold;font-size: 2em;">%>
               <%#= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><br>
               <%#if offer.is_gathering %>
-                <%#*<span style="font-family: Proxima; font-size: 0.6em;"><%= t(:per_person) %></span>%>
+                <%#*<span style="font-family: Proxima; font-size: 0.6em;"><%= t(:per_person) %>
+              <%#*</span>%>
               <%# else %>
-                  <%#*<span style="font-family: Proxima; font-size: 0.6em;"><%= t(:total_rental_price) %></span>%>
+                  <%#*<span style="font-family: Proxima; font-size: 0.6em;"><%= t(:total_rental_price) %>
+              <%#*</span>%>
               <%#end%>
             <%#*</div>%>
             <div style="color: grey; float: right; font-size: 26px;text-align: right;">
