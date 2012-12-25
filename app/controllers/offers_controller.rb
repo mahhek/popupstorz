@@ -475,8 +475,8 @@ class OffersController < ApplicationController
           @notification = Notification.new(:user_id => user.id, :notification_type =>t(:gathering_created_email2), :description => "#{t(:gathering_created_email2)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:cancelled_by_you)}".html_safe)
           @notification.save        
         else
-          current_user.send_message(user, :topic => t(:gather_cancelled_email), :body => "#{t(:gathering_created_email2)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:owner_cancelled_apology)}".html_safe)
-          @notification = Notification.new(:user_id => user.id, :notification_type =>t(:gather_cancelled_email), :description => "#{t(:gathering_created_email2)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:owner_cancelled_apology)}".html_safe)
+          current_user.send_message(user, :topic => t(:gather_cancelled_email), :body => "#{t(:gathering_created_email2)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:owner_cancelled_apology_without_payment)}".html_safe)
+          @notification = Notification.new(:user_id => user.id, :notification_type =>t(:gather_cancelled_email), :description => "#{t(:gathering_created_email2)} #{offer.item.title} #{t(:email_from)} #{offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:owner_cancelled_apology_without_payment)}".html_safe)
           @notification.save
         end
         

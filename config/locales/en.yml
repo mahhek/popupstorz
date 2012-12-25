@@ -627,6 +627,7 @@ en:
    by: "by"
    creator_cancelled_apology : "has been cancelled by its creator. We apologize for this inconvenience."
    owner_cancelled_apology : "has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid."
+   owner_cancelled_apology_without_payment : "has been cancelled by the owner. We apologize for this inconvenience."
    cancelled_by_you: "has been cancelled by you."
    cancelled_by_you_owner: "has been cancelled by you. We will contact you in order to find out what happened, and will be deducted 15% on your next booking."
    
