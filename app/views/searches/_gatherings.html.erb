@@ -22,19 +22,43 @@
           </div>
 
           <div style="color: #666666; float: right; font-size: 26px;text-align: right;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
-            <%= number_to_currency(exchange_currency(gathering.gathering_rental_price.round, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-            <br />
-            <span class="perweek" style="font-size: 0.7em;">
-              <%= t(:per_person2) %>
-            </span>
+            <%#= number_to_currency(exchange_currency(gathering.gathering_rental_price.round, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            <%#*<br />%>
+            <%#*<span class="perweek" style="font-size: 0.7em;">%>
+              <%#= t(:per_person2) %>
+            <%#*</span>%>
+            <% if gathering.is_gathering and gathering.persons_in_gathering.to_i > 0 %>        
+                <% if session[:curr] == gathering.current_currency %>            
+                  <%= gathering.current_currency == "USD" ? "$" : "€" + " "%>
+                  <%= gathering.gathering_rental_price.round.to_s %>
+                <% else %>
+                  <%= number_to_currency(exchange_currency(gathering.gathering_rental_price.round,  gathering.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+                <% end %>
+              <% else %>
+                <% if session[:curr] == gathering.current_currency %>            
+                  <%= gathering.current_currency == "USD" ? "$" : "€" %>
+                  <%= gathering.total.round.to_s %>
+                <% else %>
+                  <%= number_to_currency(exchange_currency(gathering.total.round, gathering.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+                <% end %>
+              <% end %>
+              <br />
+              <span style="font-size: 0.7em;">
+                <%if gathering.is_gathering or gathering.persons_in_gathering.to_i > 0%>
+                  <%= t(:per_person2) %>
+                <% else %>
+                  <%= t(:total_rental_price) %>
+                <% end %>
+              </span>
           </div>
 
-          <%if !gathering.is_gathering or gathering.persons_in_gathering.to_i <= 0 %>          
-            <div style="color: #999999; float: right; text-align: right;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
-              Total Rental Price: 
-              <%= number_to_currency(exchange_currency(gathering.total_amount.round, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-            </div>
-          <% end %>
+          <%#if !gathering.is_gathering or gathering.persons_in_gathering.to_i <= 0 %>          
+            <%#*<div style="color: #999999; float: right; text-align: right;" onclick="window.location='%>
+<%#= "/offers/#{gathering.id}" %>
+              <%#*Total Rental Price:%> 
+              <%#= number_to_currency(exchange_currency(gathering.total_amount.round, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            <%#*</div>%>
+          <%# end %>
 
 
           <div class="name-list" style="margin-bottom: 5px;font-family: proxima-bold;color: #333333;">
