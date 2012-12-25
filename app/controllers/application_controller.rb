@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
     session[:curr] = "USD" if session[:curr].blank?
   end
 
-  def exchange_currency(amount, currency)
+  def exchange_currency(amount, currency)    
     Money.new(amount * 100, currency).exchange_to(session[:curr])
   end
 

@@ -427,7 +427,7 @@
               <td ><%= t(:daily_price) %></td>
               <td>
                 <%= session[:curr] == "USD" ? "$" : "€" %>
-                <%= text_field_tag "offer[daily_price]", exchange_currency(@item.price.round, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0, :style => "background-color:#FFFFFF;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;font-family: proxima-bold;font-weight: bold;width:70%;margin-left:-5px", :readonly => true, :id=>"price_per_day" %>
+                <%= text_field_tag "offer[daily_price]", exchange_currency(@item.price.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :style => "background-color:#FFFFFF;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;font-family: proxima-bold;font-weight: bold;width:70%;margin-left:-5px", :readonly => true, :id=>"price_per_day" %>
   <%#= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
               </td>
             </tr>
@@ -435,7 +435,7 @@
               <td ><%= t(:cleaning_fee) %></td>
               <td>
                 <%= session[:curr] == "USD" ? "$" : "€" %>
-                <%= text_field_tag "offer[cleaning_fee]", exchange_currency(@item.cleaning_fee.round, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0, :style => "background-color:#FFFFFF;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;font-family: proxima-bold;font-weight: bold;width:70%;margin-left:-5px",:readonly => true, :id=>"cleaning_fee" %>
+                <%= text_field_tag "offer[cleaning_fee]", exchange_currency(@item.cleaning_fee.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0, :style => "background-color:#FFFFFF;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;font-family: proxima-bold;font-weight: bold;width:70%;margin-left:-5px",:readonly => true, :id=>"cleaning_fee" %>
   <%#= number_to_currency(exchange_currency(@item.cleaning_fee.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
               </td>
             </tr>
@@ -682,16 +682,16 @@
       
       calculated_price = calculate_price(number_of_days);
       
-      sub_price = Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''));
+      sub_price = Math.round($('#price_per_day').val()) + Math.round($('#cleaning_fee').val());
       
       $('#offer_total_amount').val(sub_price);
       
       if(Math.round($('#offer_service_fee').val()) == 0){
         srv_fee = Math.round($('#offer_total_amount').val()) * 0.1
-        grand_total_amount = Math.round($('#offer_total_amount').val()) + Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').val()) + Math.round(srv_fee);
+        grand_total_amount = Math.round($('#offer_total_amount').val()) + Math.round($('#price_per_day').val()) + Math.round($('#cleaning_fee').val()) + Math.round(srv_fee);
       }
       else{
-        grand_total_amount = Math.round($('#offer_total_amount').val()) + Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').val()) + Math.round($('#offer_service_fee').val());
+        grand_total_amount = Math.round($('#offer_total_amount').val()) + Math.round($('#price_per_day').val()) + Math.round($('#cleaning_fee').val()) + Math.round($('#offer_service_fee').val());
       }
 
       if($("#gathering_fields").is(":hidden") == false){
@@ -715,7 +715,7 @@
           var persons = Math.round($("#offer_persons_in_gathering").val());
           jQuery.ajax({
             type:"GET",
-            url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= session[:curr] %>'+'&cleaning='+Math.round($('#cleaning_fee').val())+'&persons='+persons
+            url: '/items/exchange_price?calculated_price='+$('#price_per_day').val()+'&price_unit=<%= session[:curr] %>'+'&cleaning='+$('#cleaning_fee').val()+'&persons='+persons
           });
         }
       });
