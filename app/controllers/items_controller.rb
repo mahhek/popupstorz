@@ -33,7 +33,7 @@ class ItemsController < ApplicationController
       srv_fee = (sub_total * 0.1).round
       
       grand_total = sub_total + srv_fee
-      srv_fee = "$"+srv_fee.to_s
+      srv_fee = srv_fee
     end
     respond_to do |format|
       format.js do
@@ -41,7 +41,7 @@ class ItemsController < ApplicationController
           per_person_amount = (grand_total / params[:persons].to_i).round
         end
         
-        render :js => "$('#offer_grand_total_amount').val('#{grand_total}');$('#grand_total_amount').text('#{session[:curr] == "EUR" ? "€" : "$"}'+'#{grand_total}');$('#offer_total_amount').text('#{session[:curr] == "EUR" ? "€" : "$"}'+'#{sub_total}');$('#offer_service_fee').text('#{srv_fee}');$('#offer_gathering_rental_price').val('#{per_person_amount}')"
+        render :js => "$('#offer_grand_total_amount').val('#{grand_total}');$('#grand_total_amount').val('#{grand_total}');$('#offer_total_amount').val('#{sub_total}');$('#offer_service_fee').val('#{srv_fee}');$('#offer_gathering_rental_price').val('#{per_person_amount}')"
       end
     end
   end

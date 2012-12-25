@@ -610,7 +610,7 @@ en:
    joining_decline: "Joining Declined"
    req_to_join: "Your request to join the"
    has_been_declined: "has been declined."
-   approval_req: "Pop'union Approval Required"
+   approval_req: "Booking Approval Required"
    rent_place: "would like to rent your place "
    manage_booking: ". Please go to Dashboard > Listings > Manage Bookings to accept or decline the offer."
    need_answer: "and needs an answer before"

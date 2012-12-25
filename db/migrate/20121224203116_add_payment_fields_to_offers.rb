@@ -6,6 +6,5 @@ class AddPaymentFieldsToOffers < ActiveRecord::Migration
     add_column :offers, :service_fee, :float
     add_column :offers, :total, :float
     add_column :offers, :current_currency, :string
-    add_column :offers, :price_per_person, :float
   end
 end

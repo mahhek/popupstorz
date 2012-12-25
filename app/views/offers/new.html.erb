@@ -1,3 +1,4 @@
+# coding: UTF-8
 <style>
   .booked {
     border: 4px solid;
@@ -424,25 +425,40 @@
           <table style="width: 315px !important;">
             <tr>
               <td ><%= t(:daily_price) %></td>
-              <td id="price_per_day">
-                <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+              <td>
+                <%= session[:curr] == "USD" ? "$" : "€" %>
+                <%= text_field_tag "offer[daily_price]", exchange_currency(@item.price.round, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0, :style => "background-color:#FFFFFF;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;font-family: proxima-bold;font-weight: bold;width:70%;margin-left:-5px", :readonly => true, :id=>"price_per_day" %>
+  <%#= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
               </td>
             </tr>
             <tr>
               <td ><%= t(:cleaning_fee) %></td>
-              <td id="cleaning_fee"><%= number_to_currency(exchange_currency(@item.cleaning_fee.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td>
+              <td>
+                <%= session[:curr] == "USD" ? "$" : "€" %>
+                <%= text_field_tag "offer[cleaning_fee]", exchange_currency(@item.cleaning_fee.round, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0, :style => "background-color:#FFFFFF;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;font-family: proxima-bold;font-weight: bold;width:70%;margin-left:-5px",:readonly => true, :id=>"cleaning_fee" %>
+  <%#= number_to_currency(exchange_currency(@item.cleaning_fee.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+              </td>
             </tr>
             <tr>
               <td ><%= t(:sub_total) %></td>
-              <td id="offer_total_amount"></td>
+              <td>
+                <%= session[:curr] == "USD" ? "$" : "€" %>
+                <%= text_field_tag "offer[sub_total]", "0", :style => "background-color:#FFFFFF;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;font-family: proxima-bold;font-weight: bold;width:70%;margin-left:-5px",:readonly => true, :id=>"offer_total_amount" %>
+              </td>
             </tr>
             <tr>
               <td ><%= t(:service_fee) %></td>
-              <td id="offer_service_fee"></td>
+              <td>
+                <%= session[:curr] == "USD" ? "$" : "€" %>
+                <%= text_field_tag "offer[service_fee]", "0", :style => "background-color:#FFFFFF;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;font-family: proxima-bold;font-weight: bold;width:70%;margin-left:-5px",:readonly => true, :id=>"offer_service_fee" %>
+              </td>
             </tr>
             <tr id="tr_totalPrice">
               <td ><%= "Total" %></td>
-              <td id="grand_total_amount"></td>
+              <td>
+                <%= session[:curr] == "USD" ? "$" : "€" %>
+                <%= text_field_tag "offer[total]", "0", :style => "background-color:#FFFFFF;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;font-family: proxima-bold;font-weight: bold;width:70%;margin-left:-5px",:readonly => true, :id=>"grand_total_amount" %>
+              </td>
             </tr>
 
             <tr id="tr_pricePerPerson" style="background-color: yellow; display: none;">
@@ -456,7 +472,9 @@
           <table style="width: 315px !important;">
             <tr>
               <td ><%= "Security deposit" %></td>
-              <td ><%= number_to_currency(exchange_currency(@item.deposit.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td>
+              <td>
+                <%#= text_field_tag :security_deposit %>
+                <%= number_to_currency(exchange_currency(@item.deposit.round, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %></td>
             </tr>
           </table>
         </div>
@@ -509,9 +527,10 @@
       <%= hidden_field_tag :per_day_price, exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
       <%= hidden_field_tag :per_week_price, exchange_currency(@item.price_per_week.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
       <%= hidden_field_tag :per_month_price, exchange_currency(@item.price_per_month, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0 %>
-      <%= f.hidden_field :grand_total_amount, :value => exchange_currency(@calculated_price.to_i, @item.price_unit) %>
+      <%= f.hidden_field   :grand_total_amount, :value => exchange_currency(@calculated_price.to_i, @item.price_unit) %>
       <%= hidden_field_tag "offer[is_gathering]", false %>
-      <%= hidden_field_tag "offer[total_days]", 0 %>
+      <%= hidden_field_tag "offer[total_days]", @number_of_days %>
+      <%= hidden_field_tag "offer[current_currency]", session[:curr] %>
 
 
       <div class="clear"></div>
@@ -665,14 +684,14 @@
       
       sub_price = Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''));
       
-      $('#offer_total_amount').html("<%= session[:curr] == 'USD'? "$" : "€" %>"+sub_price);
+      $('#offer_total_amount').val(sub_price);
       
-      if(Math.round($('#offer_service_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) == 0){
-        srv_fee = Math.round($('#offer_total_amount').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) * 0.1
-        grand_total_amount = Math.round($('#offer_total_amount').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round(srv_fee);
+      if(Math.round($('#offer_service_fee').val()) == 0){
+        srv_fee = Math.round($('#offer_total_amount').val()) * 0.1
+        grand_total_amount = Math.round($('#offer_total_amount').val()) + Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').val()) + Math.round(srv_fee);
       }
       else{
-        grand_total_amount = Math.round($('#offer_total_amount').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#offer_service_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''));
+        grand_total_amount = Math.round($('#offer_total_amount').val()) + Math.round($('#price_per_day').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",'')) + Math.round($('#cleaning_fee').val()) + Math.round($('#offer_service_fee').val());
       }
 
       if($("#gathering_fields").is(":hidden") == false){
@@ -684,7 +703,7 @@
           alert("Persons in gathering must be more than 1");
         }
         else{          
-          var total = Math.round($("#grand_total_amount").html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''));
+          var total = Math.round($("#grand_total_amount").val());
           $("#offer_gathering_rental_price").val((grand_total_amount/parseInt($("#offer_persons_in_gathering").val())).toFixed(2));
         }
       }
@@ -696,7 +715,7 @@
           var persons = Math.round($("#offer_persons_in_gathering").val());
           jQuery.ajax({
             type:"GET",
-            url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= session[:curr] %>'+'&cleaning='+Math.round($('#cleaning_fee').html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''))+'&persons='+persons
+            url: '/items/exchange_price?calculated_price='+calculated_price+'&price_unit=<%= session[:curr] %>'+'&cleaning='+Math.round($('#cleaning_fee').val())+'&persons='+persons
           });
         }
       });
@@ -881,7 +900,7 @@
         alert("Persons in gathering should not exceed maximum persons allowed.");
       }
       else{
-        var total= Math.round($("#grand_total_amount").html().replace("<%= session[:curr] == 'USD'? "$" : "€" %>",''));        
+        var total= Math.round($("#grand_total_amount").val());        
         $("#offer_gathering_rental_price").val((total/parseInt(obj)).toFixed(2));
       }
     }

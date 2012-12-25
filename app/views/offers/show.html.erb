@@ -182,22 +182,34 @@
 
     <div style="float: right; padding-top: 20px; text-align: right;max-width: 250px;">
       <span style="font-family: proxima-semibold; font-size: 2em; line-height: 10px;color: #999999">
-        <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
-          <%= number_to_currency(exchange_currency(@offer.gathering_rental_price.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>          
+        <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>        
+          <% if session[:curr] == @offer.current_currency %>            
+            <%= @offer.current_currency == "USD" ? "$" : "€" + " "%>
+            <%= @offer.gathering_rental_price.to_s %>
+          <% else %>
+            <%= number_to_currency(exchange_currency(@offer.gathering_rental_price.to_f,  @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+          <% end %>
         <% else %>
-          <%= number_to_currency(exchange_currency(@offer.total_amount.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+          <% if session[:curr] == @offer.current_currency %>            
+            <%= @offer.current_currency == "USD" ? "$" : "€" %>
+            <%= @offer.total.to_s %>
+          <% else %>
+            <%= number_to_currency(exchange_currency(@offer.total.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+          <% end %>
         <% end %>
       </span>
       <br /><br />
-      <% if(@offer.is_gathering and @offer.persons_in_gathering.to_i > 0) %>
-        <span style="color: #333333;">        
-          <%= t(:per_person2)%>          
-        </span>
-      <% else %>
-        <span style="color: #333333;">        
-          <%= t(:total_rental_price)%>
-        </span>
-      <% end %>
+      <b>
+        <% if(@offer.is_gathering and @offer.persons_in_gathering.to_i > 0) %>
+          <span style="color: #999999;font-size: 14px;">
+            <%= t(:per_person2)%>          
+          </span>
+        <% else %>
+          <span style="color: #999999;font-size: 14px;">        
+            <%= t(:total_rental_price)%>
+          </span>
+        <% end %>
+      </b>
       <br />
 
       <span style="cursor: pointer;color: #666666; font-size: 0.8em;" onclick="$('#offer_price_details').toggle();">
@@ -206,30 +218,59 @@
       <br />
       <span id="offer_price_details" style="display: none;color: #666666; font-size: 1em;">
         <b><%= t(:daily_price) %></b>
-        <%= number_to_currency(exchange_currency(@item.price.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-
-        <br/>
-        <b><%= t(:cleaning_fee) %></b>
-        <%= number_to_currency(exchange_currency(@offer.item.cleaning_fee.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-        <br/>
-
-        <b><%= t(:sub_total) %></b>
-        <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
-          <%= number_to_currency(exchange_currency(@offer.gathering_rental_price.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>          
+        <% if session[:curr] == @offer.current_currency %>            
+          <%= @offer.current_currency == "USD" ? "$" : "€" %>
+          <%= @offer.daily_price.to_s %>
         <% else %>
-  <%#= number_to_currency(exchange_currency((@item.price.round.to_f + @offer.item.cleaning_fee.to_f.round), @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)  %>
-          <%= number_to_currency(exchange_currency(@offer.total_amount.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+          <%= number_to_currency(exchange_currency(@offer.daily_price.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
         <% end %>
 
         <br/>
+        <b><%= t(:cleaning_fee) %></b>
+        <% if session[:curr] == @offer.current_currency %>            
+          <%= @offer.current_currency == "USD" ? "$" : "€" %>
+          <%= @offer.cleaning_fee.to_s %>
+        <% else %>
+          <%= number_to_currency(exchange_currency(@offer.cleaning_fee.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+        <% end %>
+<%#= number_to_currency(exchange_currency(@offer.item.cleaning_fee.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+        <br/>
+
+        <b><%= t(:sub_total) %></b>
+        <% if session[:curr] == @offer.current_currency %>            
+          <%= @offer.current_currency == "USD" ? "$" : "€" %>
+          <%= @offer.sub_total.to_s %>
+        <% else %>
+          <%= number_to_currency(exchange_currency(@offer.sub_total.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+        <% end %>
+        <br/>
+
+        <b><%= t(:service_fee) %></b>
+        <% if session[:curr] == @offer.current_currency %>            
+          <%= @offer.current_currency == "USD" ? "$" : "€" %>
+          <%= @offer.service_fee.to_s %>
+        <% else %>
+          <%= number_to_currency(exchange_currency(@offer.service_fee.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+        <% end %><br/>
+
+        <b><%= t(:total) %></b>
+        <% if session[:curr] == @offer.current_currency %>            
+          <%= @offer.current_currency == "USD" ? "$" : "€" %>
+          <%= @offer.total.to_s %>
+        <% else %>
+          <%= number_to_currency(exchange_currency(@offer.total.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+        <% end %><br/>
 
         <b> <%= t(:total_days) %>:</b>
-        <%= @offer.total_days %>
+<%#= distance_of_time_in_words(@offer.rental_end_date - @offer.rental_start_date) %>
+        <%= @offer.total_days == 0 ? "1" : @offer.total_days %>
         <br/><br/>
 
         <b> <%= t(:security_deposit) %>:</b>
         <%= number_to_currency(exchange_currency(@item.deposit.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
         <br/><br/>
+
+
 
         <b><%= t(:avail_dur) %></b><br />
         <% if !@offer.item.availablities_daytime.blank? and @offer.item.availablities_daytime == true %>
