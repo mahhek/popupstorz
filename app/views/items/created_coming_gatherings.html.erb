@@ -77,7 +77,7 @@
               <%end%>
             </div>
             <!-- gathering-popup-row -->
-            <a class="info"><%= offer.rental_start_date.strftime("%b. %d, %Y") %> - <%= offer.rental_end_date.strftime("%b. %d, %Y") %>
+            <a style="color:grey;" class="info"><%= offer.rental_start_date.strftime("%b. %d, %Y") %> - <%= offer.rental_end_date.strftime("%b. %d, %Y") %>
               <span><b> Response required before : </b>
                 <% if offer.is_gathering or offer.persons_in_gathering.to_i > 0 %>
                   <%= offer.gathering_deadline.strftime("%b. %d, %Y") %>
@@ -92,8 +92,6 @@
                 <%= link_to_function "Send Message", "$('#contact_me_div_#{offer.item.user_id}').toggle('slow');", :class => "send"  %>
               </div>
             <% end %>
-
-
           </div>
 
           <!-- action-bloc-row -->
