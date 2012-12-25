@@ -202,11 +202,11 @@
       <b>
         <% if(@offer.is_gathering and @offer.persons_in_gathering.to_i > 0) %>
           <span style="color: #999999;font-size: 16px;">
-            <%= t(:per_person2)%>          
+            <b><%= t(:per_person2)%></b>
           </span>
         <% else %>
           <span style="color: #999999;font-size: 16px;">        
-            <%= t(:total_rental_price)%>
+            <b><%= t(:total_rental_price)%></b>
           </span>
         <% end %>
       </b>
@@ -218,7 +218,7 @@
       <br />
 
       <div id="offer_price_details" style="display: none;color: #666666; font-size: 1em;">
-        <div style="float: right;width: 80%;">
+        <div style="float: right;width: 90%;">
           <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
             <b><%= t(:daily_price) %></b>
           </div>
@@ -232,7 +232,7 @@
           </div>
         </div>
 
-        <div style="float: right;width: 80%;">
+        <div style="float: right;width: 90%;">
           <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
             <b><%= t(:cleaning_fee) %></b>
           </div>
@@ -246,7 +246,7 @@
           </div>
         </div>
 
-        <div style="float: right;width: 80%;">
+        <div style="float: right;width: 90%;">
           <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
             <b><%= t(:sub_total) %></b>
           </div>
@@ -260,7 +260,7 @@
           </div>
         </div>
 
-        <div style="float: right;width: 80%;">
+        <div style="float: right;width: 90%;">
           <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
             <b><%= t(:service_fee) %></b>
           </div>
@@ -274,7 +274,7 @@
           </div>
         </div>
 
-        <div style="float: right;width: 80%;">
+        <div style="float: right;width: 90%;">
           <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
             <b><%= t(:total) %></b>
           </div>
@@ -288,7 +288,7 @@
           </div>
         </div>
 
-        <div style="float: right;width: 80%;">
+        <div style="float: right;width: 90%;">
           <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
             <b> <%= t(:total_days) %></b>
           </div>
@@ -297,7 +297,7 @@
           </div>
         </div>
 
-        <div style="float: right;width: 80%;">
+        <div style="float: right;width: 90%;">
           <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
             <b> <%= t(:security_deposit) %></b>
           </div>
