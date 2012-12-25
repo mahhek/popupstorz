@@ -305,7 +305,7 @@ en:
    currency: "Currency: "
    price5: "Price"
    rental_price: "Rental Price: "
-   cleaning_fee: "Cleaning Fee: "
+   cleaning_fee: "Cleaning Fee "
    deposit_fee: "Deposit Fee:"
    deposit: "Deposit: "
    cancel_booking: "Cancel Booking"

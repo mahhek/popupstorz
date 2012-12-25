@@ -10,7 +10,7 @@
         <div class="listx" style="margin-bottom: 20px;border: 1px solid gray;">
           <div class="row" style="float:left; width: 83%;padding: 5px;border-right: 1px solid;" onclick="window.location='<%= "/items/#{item.id}" %>'">
             <div class="imgx">
-  							<%#=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
+              <%#=  check_box_tag "items[]", item.id, false, {:id => "items_#{item.id}", :class => "checkBoxClass", :onclick => "defineDelete();"} %>
               <% if item.avatars.size > 0 %>
                 <%= image_tag(item.avatars.first.photo.url(:thumb), :width => "178", :height => "119", :alt => "Space-Photo")  %>
               <% else %>
@@ -23,7 +23,7 @@
               <br />
               <span style="font-size: 0.7em;">
                 <%= t(:per_day) %>
-                <%= item.time_for_unit_price %>
+                <%#= item.time_for_unit_price %>
               </span>
             </div>
 

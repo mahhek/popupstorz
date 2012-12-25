@@ -185,27 +185,27 @@
         <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>        
           <% if session[:curr] == @offer.current_currency %>            
             <%= @offer.current_currency == "USD" ? "$" : "€" + " "%>
-            <%= @offer.gathering_rental_price.to_s %>
+            <%= @offer.gathering_rental_price.round.to_s %>
           <% else %>
-            <%= number_to_currency(exchange_currency(@offer.gathering_rental_price.to_f,  @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            <%= number_to_currency(exchange_currency(@offer.gathering_rental_price.round,  @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
           <% end %>
         <% else %>
           <% if session[:curr] == @offer.current_currency %>            
             <%= @offer.current_currency == "USD" ? "$" : "€" %>
-            <%= @offer.total.to_s %>
+            <%= @offer.total.round.to_s %>
           <% else %>
-            <%= number_to_currency(exchange_currency(@offer.total.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            <%= number_to_currency(exchange_currency(@offer.total.round, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
           <% end %>
         <% end %>
       </span>
       <br /><br />
       <b>
         <% if(@offer.is_gathering and @offer.persons_in_gathering.to_i > 0) %>
-          <span style="color: #999999;font-size: 14px;">
+          <span style="color: #999999;font-size: 16px;">
             <%= t(:per_person2)%>          
           </span>
         <% else %>
-          <span style="color: #999999;font-size: 14px;">        
+          <span style="color: #999999;font-size: 16px;">        
             <%= t(:total_rental_price)%>
           </span>
         <% end %>
@@ -216,119 +216,157 @@
         <%= t(:show_price_details) %>
       </span>
       <br />
+
       <span id="offer_price_details" style="display: none;color: #666666; font-size: 1em;">
-        <b><%= t(:daily_price) %></b>
-        <% if session[:curr] == @offer.current_currency %>            
-          <%= @offer.current_currency == "USD" ? "$" : "€" %>
-          <%= @offer.daily_price.to_s %>
-        <% else %>
-          <%= number_to_currency(exchange_currency(@offer.daily_price.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-        <% end %>
+        <div style="float: right;width: 80%;">
+          <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
+            <b><%= t(:daily_price) %></b>
+          </div>
+          <div style="border:1px solid;">
+            <% if session[:curr] == @offer.current_currency %>            
+              <%= @offer.current_currency == "USD" ? "$" : "€" %>
+              <%= @offer.daily_price.to_s %>
+            <% else %>
+              <%= number_to_currency(exchange_currency(@offer.daily_price.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            <% end %>
+          </div>
+        </div>
 
-        <br/>
-        <b><%= t(:cleaning_fee) %></b>
-        <% if session[:curr] == @offer.current_currency %>            
-          <%= @offer.current_currency == "USD" ? "$" : "€" %>
-          <%= @offer.cleaning_fee.to_s %>
-        <% else %>
-          <%= number_to_currency(exchange_currency(@offer.cleaning_fee.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-        <% end %>
-<%#= number_to_currency(exchange_currency(@offer.item.cleaning_fee.to_f, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-        <br/>
+        <div style="float: right;width: 80%;">
+          <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
+            <b><%= t(:cleaning_fee) %></b>
+          </div>
+          <div style="border:1px solid;">
+            <% if session[:curr] == @offer.current_currency %>            
+              <%= @offer.current_currency == "USD" ? "$" : "€" %>
+              <%= @offer.cleaning_fee.to_s %>
+            <% else %>
+              <%= number_to_currency(exchange_currency(@offer.cleaning_fee.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            <% end %>
+          </div>
+        </div>
 
-        <b><%= t(:sub_total) %></b>
-        <% if session[:curr] == @offer.current_currency %>            
-          <%= @offer.current_currency == "USD" ? "$" : "€" %>
-          <%= @offer.sub_total.to_s %>
-        <% else %>
-          <%= number_to_currency(exchange_currency(@offer.sub_total.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-        <% end %>
-        <br/>
+        <div style="float: right;width: 80%;">
+          <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
+            <b><%= t(:sub_total) %></b>
+          </div>
+          <div style="border:1px solid;">
+            <% if session[:curr] == @offer.current_currency %>            
+              <%= @offer.current_currency == "USD" ? "$" : "€" %>
+              <%= @offer.sub_total.to_s %>
+            <% else %>
+              <%= number_to_currency(exchange_currency(@offer.sub_total.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            <% end %>
+          </div>
+        </div>
 
-        <b><%= t(:service_fee) %></b>
-        <% if session[:curr] == @offer.current_currency %>            
-          <%= @offer.current_currency == "USD" ? "$" : "€" %>
-          <%= @offer.service_fee.to_s %>
-        <% else %>
-          <%= number_to_currency(exchange_currency(@offer.service_fee.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-        <% end %><br/>
+        <div style="float: right;width: 80%;">
+          <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
+            <b><%= t(:service_fee) %></b>
+          </div>
+          <div style="border:1px solid;">
+            <% if session[:curr] == @offer.current_currency %>            
+              <%= @offer.current_currency == "USD" ? "$" : "€" %>
+              <%= @offer.service_fee.to_s %>
+            <% else %>
+              <%= number_to_currency(exchange_currency(@offer.service_fee.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            <% end %>
+          </div>
+        </div>
 
-        <b><%= t(:total) %></b>
-        <% if session[:curr] == @offer.current_currency %>            
-          <%= @offer.current_currency == "USD" ? "$" : "€" %>
-          <%= @offer.total.to_s %>
-        <% else %>
-          <%= number_to_currency(exchange_currency(@offer.total.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-        <% end %><br/>
+        <div style="float: right;width: 80%;">
+          <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
+            <b><%= t(:total) %></b>
+          </div>
+          <div style="border:1px solid;">
+            <% if session[:curr] == @offer.current_currency %>            
+              <%= @offer.current_currency == "USD" ? "$" : "€" %>
+              <%= @offer.total.to_s %>
+            <% else %>
+              <%= number_to_currency(exchange_currency(@offer.total.to_f, @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            <% end %>
+          </div>
+        </div>
 
-        <b> <%= t(:total_days) %>:</b>
-<%#= distance_of_time_in_words(@offer.rental_end_date - @offer.rental_start_date) %>
-        <%= @offer.total_days == 0 ? "1" : @offer.total_days %>
-        <br/><br/>
+        <div style="float: right;width: 80%;">
+          <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
+            <b> <%= t(:total_days) %></b>
+          </div>
+          <div style="border:1px solid;">
+            <%= @offer.total_days == 0 ? "1" : @offer.total_days %>            
+          </div>
+        </div>
 
-        <b> <%= t(:security_deposit) %>:</b>
-        <%= number_to_currency(exchange_currency(@item.deposit.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-        <br/><br/>
+        <div style="float: right;width: 80%;">
+          <div style="border:1px solid;width: 70%;float:left;padding-right: 5px;">
+            <b> <%= t(:security_deposit) %></b>
+          </div>
+          <div style="border:1px solid;">
+            <%= number_to_currency(exchange_currency(@item.deposit.to_i, @item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>            
+          </div>
+        </div>
 
 
+        <div style="float: right;width:100%;margin-top: 10px;">
+          <b><%= t(:avail_dur) %></b><br />
+          <% if !@offer.item.availablities_daytime.blank? and @offer.item.availablities_daytime == true %>
+            <span class="avail_item">
+              <%= image_tag("available.png", :style => "width: 10px;") %>
+              <%= t(:daytime) %>
+            </span>
+          <% end %>
+          <% if !@offer.item.availablities_evenings.blank? and @offer.item.availablities_evenings == true %>
+            <span class="avail_item">
+              <%= image_tag("available.png", :style => "width: 10px;") %>
+              <%= t(:evenings) %>
+            </span>
+          <% end %>
+          <br />
 
-        <b><%= t(:avail_dur) %></b><br />
-        <% if !@offer.item.availablities_daytime.blank? and @offer.item.availablities_daytime == true %>
-          <span class="avail_item">
-            <%= image_tag("available.png", :style => "width: 10px;") %>
-            <%= t(:daytime) %>
-          </span>
-        <% end %>
-        <% if !@offer.item.availablities_evenings.blank? and @offer.item.availablities_evenings == true %>
-          <span class="avail_item">
-            <%= image_tag("available.png", :style => "width: 10px;") %>
-            <%= t(:evenings) %>
-          </span>
-        <% end %>
-        <br />
+          <% if !@offer.item.availablities_monday.blank? and @offer.item.availablities_monday == true %>
+            <span class="avail_item">
+              <%= image_tag("available.png", :style => "width: 10px;") %>
+              <%= t(:monday) %>
+            </span>
+          <% end %>
+          <% if !@offer.item.availablities_tuesday.blank? and @offer.item.availablities_tuesday == true %>          
+            <span class="avail_item">
+              <%= image_tag("available.png", :style => "width: 10px;") %>
+              <%= t(:tuesday) %>
+            </span><br />
+          <% end %>
+          <% if !@offer.item.availablities_wednesday.blank? and @offer.item.availablities_wednesday == true %>          
+            <span class="avail_item">
+              <%= image_tag("available.png", :style => "width: 10px;") %>
+              <%= t(:wednesday) %>
+            </span>
+          <% end %>
+          <% if !@offer.item.availablities_thursday.blank? and @offer.item.availablities_thursday == true %>          
+            <span class="avail_item">
+              <%= image_tag("available.png", :style => "width: 10px;") %>
+              <%= t(:thursday) %>
+            </span><br />
+          <% end %>
+          <% if !@offer.item.availablities_friday.blank? || @offer.item.availablities_friday == true %>          
+            <span class="avail_item">
+              <%= image_tag("available.png", :style => "width: 10px;") %>
+              <%= t(:friday) %>
+            </span>
+          <% end %>
+          <% if !@offer.item.availablities_saturday.blank? || @offer.item.availablities_saturday == true %>          
+            <span class="avail_item">
+              <%= image_tag("available.png", :style => "width: 10px;") %>
+              <%= t(:saturday) %>
+            </span><br />
+          <% end %>
 
-        <% if !@offer.item.availablities_monday.blank? and @offer.item.availablities_monday == true %>
-          <span class="avail_item">
-            <%= image_tag("available.png", :style => "width: 10px;") %>
-            <%= t(:monday) %>
-          </span>
-        <% end %>
-        <% if !@offer.item.availablities_tuesday.blank? and @offer.item.availablities_tuesday == true %>          
-          <span class="avail_item">
-            <%= image_tag("available.png", :style => "width: 10px;") %>
-            <%= t(:tuesday) %>
-          </span><br />
-        <% end %>
-        <% if !@offer.item.availablities_wednesday.blank? and @offer.item.availablities_wednesday == true %>          
-          <span class="avail_item">
-            <%= image_tag("available.png", :style => "width: 10px;") %>
-            <%= t(:wednesday) %>
-          </span>
-        <% end %>
-        <% if !@offer.item.availablities_thursday.blank? and @offer.item.availablities_thursday == true %>          
-          <span class="avail_item">
-            <%= image_tag("available.png", :style => "width: 10px;") %>
-            <%= t(:thursday) %>
-          </span><br />
-        <% end %>
-        <% if !@offer.item.availablities_friday.blank? || @offer.item.availablities_friday == true %>          
-          <span class="avail_item">
-            <%= image_tag("available.png", :style => "width: 10px;") %>
-            <%= t(:friday) %>
-          </span>
-        <% end %>
-        <% if !@offer.item.availablities_saturday.blank? || @offer.item.availablities_saturday == true %>          
-          <span class="avail_item">
-            <%= image_tag("available.png", :style => "width: 10px;") %>
-            <%= t(:saturday) %>
-          </span><br />
-        <% end %>
-        <% if !@offer.item.availablities_sunday.blank? || @offer.item.availablities_sunday == true %>          
-          <span class="avail_item">
-            <%= image_tag("available.png", :style => "width: 10px;") %>
-            <%= t(:sunday) %>
-          </span>
-        <% end %><br />
+          <% if !@offer.item.availablities_sunday.blank? || @offer.item.availablities_sunday == true %>          
+            <span class="avail_item">
+              <%= image_tag("available.png", :style => "width: 10px;") %>
+              <%= t(:sunday) %>
+            </span>
+          <% end %><br />
+
       </span>
 
       <span class="blue" style="margin-top: 40px;">
@@ -353,104 +391,105 @@
         <% end %>
       <% end %>
     </div>
-
-    <div class="clear"></div>
   </div>
 
-  <div id="offer_extra">
-    <div style="float: left;">
-      <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
-        <% unless @offer.gathering_description.blank? %>
-          <span style="font-family: proxima-semibold; text-transform: uppercase;">
-            <%= t(:gathering_des) %>
-          </span>
-          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
-            <%= raw nl2br(@offer.gathering_description) %>
-          </div>
-        <% end %>
+  <div class="clear"></div>
+</div>
+
+<div id="offer_extra">
+  <div style="float: left;">
+    <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
+      <% unless @offer.gathering_description.blank? %>
+        <span style="font-family: proxima-semibold; text-transform: uppercase;">
+          <%= t(:gathering_des) %>
+        </span>
+        <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
+          <%= raw nl2br(@offer.gathering_description) %>
+        </div>
+      <% end %>
+    <% else %>
+      <% unless @offer.additional_message.blank? %>
+        <span style="font-family: proxima-semibold; text-transform: uppercase;">
+          <%= t(:additional_message) %>
+        </span>
+        <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
+          <%= raw nl2br(@offer.additional_message) %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div style="float: left; margin-left: 10px;">
+    <span class="title"><%= t(:cancellation_policy) %></span>
+    <span style="font-family: proxima-semibold;margin-right: 5px;">
+      <% unless @item.cancellation_policy_flexible.blank? %>
+        <%= t(:flexible) %>
       <% else %>
-        <% unless @offer.additional_message.blank? %>
-          <span style="font-family: proxima-semibold; text-transform: uppercase;">
-            <%= t(:additional_message) %>
-          </span>
-          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
-            <%= raw nl2br(@offer.additional_message) %>
-          </div>
-        <% end %>
+        <%= t(:semi_flexible) %>
+      <% end %>
+    </span>
+    <span onclick="$('#policies_div').toggle();" style="cursor: pointer;color: #666666;">
+      <%= t(:show_details) %>
+    </span>
+    <div id="policies_div" style="display: none;width:360px !important;color:#999999">
+      <% unless @item.cancellation_policy_flexible.blank? %>
+        <%= t(:cancel_ln1) %><br/>
+        <%= t(:cancel_ln2) %><br/><br/>
+
+        <%= t(:cancel_ln3) %><br/><br/>
+
+        <%= t(:cancel_ln4)%><br/><br/>
+        <%= t(:cancel_ln5)%><br/><br/>
+      <% else %>
+        <%= t(:semi_cancel_ln1) %><br/>
+        <%= t(:semi_cancel_ln2) %><br/><br/>
+
+        <%= t(:semi_cancel_ln3) %><br/><br/>
+
+        <%= t(:semi_cancel_ln4) %><br/><br/>
+        <%= t(:semi_cancel_ln5) %>
       <% end %>
     </div>
+    <br />
+    <br />
+    <span class="title"><%= t(:owner_rules) %></span>
+    <span onclick="$('#rules_div').toggle()" style="cursor: pointer;color: #666666;">
+      <%= t(:show) %></span>
+    <br />
+    <p class="size_text" id="rules_div" style="display:none;width:360px !important;word-wrap:break-word;overflow: hidden;color:#999999">
+      <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
+    </p>
+    <br /><br />
 
-    <div style="float: left; margin-left: 10px;">
-      <span class="title"><%= t(:cancellation_policy) %></span>
-      <span style="font-family: proxima-semibold;margin-right: 5px;">
-        <% unless @item.cancellation_policy_flexible.blank? %>
-          <%= t(:flexible) %>
-        <% else %>
-          <%= t(:semi_flexible) %>
-        <% end %>
-      </span>
-      <span onclick="$('#policies_div').toggle();" style="cursor: pointer;color: #666666;">
-        <%= t(:show_details) %>
-      </span>
-      <div id="policies_div" style="display: none;width:360px !important;color:#999999">
-        <% unless @item.cancellation_policy_flexible.blank? %>
-          <%= t(:cancel_ln1) %><br/>
-          <%= t(:cancel_ln2) %><br/><br/>
-
-          <%= t(:cancel_ln3) %><br/><br/>
-
-          <%= t(:cancel_ln4)%><br/><br/>
-          <%= t(:cancel_ln5)%><br/><br/>
-        <% else %>
-          <%= t(:semi_cancel_ln1) %><br/>
-          <%= t(:semi_cancel_ln2) %><br/><br/>
-
-          <%= t(:semi_cancel_ln3) %><br/><br/>
-
-          <%= t(:semi_cancel_ln4) %><br/><br/>
-          <%= t(:semi_cancel_ln5) %>
-        <% end %>
-      </div>
-      <br />
-      <br />
-      <span class="title"><%= t(:owner_rules) %></span>
-      <span onclick="$('#rules_div').toggle()" style="cursor: pointer;color: #666666;">
-        <%= t(:show) %></span>
-      <br />
-      <p class="size_text" id="rules_div" style="display:none;width:360px !important;word-wrap:break-word;overflow: hidden;color:#999999">
-        <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
-      </p>
-      <br /><br />
-
-    </div>
-
-    <div style="float: left; margin-left: 10px;width: 25%;">
-      <% unless current_user.blank? %>    
-        <% if current_user.id.to_i == @offer.owner_id.to_i %>    
-          <% if @offer.status == "joinings approved" %>
-            <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
-            <%= link_to t(:decline), "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
-          <% end %>
-
-          <% if @offer.status == "confirmed" && @offer.persons_in_gathering.blank? %>
-            <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
-            <%= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
-          <% end %>
-        <% end %>
-        <br />
-        <% if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
-          <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
-        <% end %>
-
-        <% if (@offer.status == "Accepted - Payment pending" or @offer.status == "all joinings approved" or @offer.status == "Accepted - Confirmation pending" or @offer.status == "joinings approved" or @offer.status == "Applied" or @offer.status == "confirmed"or @offer.status == "Confirmed") && current_user.id.to_i == @offer.user_id.to_i && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
-          <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
-        <% end %>
-
-
-      <% end %>
-    </div>
-    <div class="clear"></div>
   </div>
+
+  <div style="float: left; margin-left: 10px;width: 25%;">
+    <% unless current_user.blank? %>    
+      <% if current_user.id.to_i == @offer.owner_id.to_i %>    
+        <% if @offer.status == "joinings approved" %>
+          <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
+          <%= link_to t(:decline), "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
+        <% end %>
+
+        <% if @offer.status == "confirmed" && @offer.persons_in_gathering.blank? %>
+          <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
+          <%= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
+        <% end %>
+      <% end %>
+      <br />
+      <% if (@offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
+        <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
+      <% end %>
+
+      <% if (@offer.status == "Accepted - Payment pending" or @offer.status == "all joinings approved" or @offer.status == "Accepted - Confirmation pending" or @offer.status == "joinings approved" or @offer.status == "Applied" or @offer.status == "confirmed"or @offer.status == "Confirmed") && current_user.id.to_i == @offer.user_id.to_i && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
+        <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
+      <% end %>
+
+
+    <% end %>
+  </div>
+  <div class="clear"></div>
+</div>
 
 </div>
 <div class="clear"></div>
@@ -527,7 +566,6 @@
         <% end %>
       </div>
     </div>
-
 
     <hr />
 

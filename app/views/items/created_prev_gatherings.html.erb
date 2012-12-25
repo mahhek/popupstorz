@@ -25,8 +25,31 @@
 
             <!-- price-bloc-row -->
             <div style="color: grey; float: right; font-size: 26px;text-align: right;">
-              <%= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%><br>
-              <span style="font-size: 0.7em;"><%= t(:per_day) %></span></div>
+    <%#= number_to_currency(exchange_currency(offer.total_amount.to_i, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0)%>
+              <% if offer.is_gathering and offer.persons_in_gathering.to_i > 0 %>        
+                <% if session[:curr] == offer.current_currency %>            
+                  <%= offer.current_currency == "USD" ? "$" : "€" + " "%>
+                  <%= offer.gathering_rental_price.round.to_s %>
+                <% else %>
+                  <%= number_to_currency(exchange_currency(offer.gathering_rental_price.round,  offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+                <% end %>
+              <% else %>
+                <% if session[:curr] == offer.current_currency %>            
+                  <%= offer.current_currency == "USD" ? "$" : "€" %>
+                  <%= offer.total.round.to_s %>
+                <% else %>
+                  <%= number_to_currency(exchange_currency(offer.total.round, offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+                <% end %>
+              <% end %>
+              <br />
+              <span style="font-size: 0.7em;">
+                <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
+                  <%= t(:per_day) %>
+                <% else %>
+                  <%= t(:total_rental_price) %>
+                <% end %>
+              </span>
+            </div>
             <div class="name-list" style="margin-bottom: 5px;"><h4><%= item.title %></h4>
               <%if offer.rental_end_date < Date.today %>
                 <div id="rating_of_item_<%= offer.item.id %>">
