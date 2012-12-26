@@ -453,6 +453,11 @@ body {
     padding-right: 5px;
 }
 
+#loginpannel input[type="submit"]:hover {
+    color: #ffffff
+
+}
+
 .loginpannel input[type="text"], .loginpannel input[type="password"] {
     border: 1px solid #000000;
     float: left;
