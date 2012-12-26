@@ -1393,6 +1393,7 @@ ul, li {
     /*font-weight: bold; */
     font-family: proxima-bold;
     padding-bottom: 1em;
+    text-transform: uppercase;
 }
 
 .blockParts2{
