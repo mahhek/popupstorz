@@ -588,7 +588,7 @@ en:
    offer_declined_email: "Offer Declined"
    gathering_created_email: "The pop'union you created on the place: "
    owner_cancelled: " has been cancelled by the owner. We apologize for this inconvenience. You will be fully refunded for all fees you have paid. "
-   gathering_applied: "The pop'union to which you have applied on the place"
+   gathering_applied: "The booking to which you have applied on the place"
    reject_place: "rejected your offer on the place:"
    app_gathering: "Pop'union Application"
    go_to_dashboard: ". Please go to Dashboard > Bookings > Upcoming to accept or decline the applicant"
@@ -701,6 +701,7 @@ en:
    rating_comment: "Rating and Comments"
    
    pop_unions: "Pop'unions"
+   pop_union: "Pop'union"
    per_day1: "per day"
    create_new_pop_union: "Create pop'union"
    booking_type: "Booking Type"
@@ -715,3 +716,8 @@ en:
    post: "Post"
    show_price_details: "Show Price Details"
    total_rental_price: "Total Rental Price"
+   persons_required: "Persons required"
+   pop_description: "Pop'union Description"
+   
+   owner_declined: " has been declined by the owner. We apologize for this inconvenience."
+   owner_declined_apology_without_payment : "has been declined by the owner. We apologize for this inconvenience."

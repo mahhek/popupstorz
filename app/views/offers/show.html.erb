@@ -407,6 +407,14 @@
           <%= raw nl2br(@offer.gathering_description) %>
         </div>
       <% end %>
+      <% unless @offer.additional_message.blank? %>
+        <span style="font-family: proxima-semibold; text-transform: uppercase;">
+          <%= t(:pop_description) %>
+        </span>
+        <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
+          <%= raw nl2br(@offer.additional_message) %>
+        </div>
+      <% end %>
     <% else %>
       <% unless @offer.additional_message.blank? %>
         <span style="font-family: proxima-semibold; text-transform: uppercase;">
@@ -588,12 +596,12 @@
                 <% end %>
               </div>
               <div class="name-list" style="margin-bottom: 5px;">
-                <h4 style="float: left;font-family:proxima-bold; color: #333333;" onclick="window.location='<%= profile_path(req.id) %>'">
-                  <%= req.first_name + " " + req.last_name %>
-                </h4>
                 <div style="float: left;width:200px;" id="rating_of_user_<%= req.id %>" >
                   <%= render :partial => "searches/member_rating", :locals => {:member => req, :only_view => false} %>
                 </div>
+                <h4 style="float: left;font-family:proxima-bold; color: #333333;" onclick="window.location='<%= profile_path(req.id) %>'">
+                  <%= req.first_name + " " + req.last_name %>
+                </h4>                
               </div>
 
               <div class="name-list" style="float: left;width:200px;margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;" onclick="window.location='<%= profile_path(req.id) %>'">
@@ -673,10 +681,8 @@
 
     <%= hidden_field_tag "id",@offer.id %>
     <div class="field">
-      <%= f.label :comment %><br />
-      <%= f.text_area "comment", :rows => 3, :style=> "width:550px", :hint=>"Share your ideas with the other member..." %><br />
+      <%= f.text_area "comment", :rows => 3, :style=> "color:#666666;width:550px;font-size:1em", :hint=>"Share your ideas with the other member..." %><br />
       <%= f.submit "#{t(:post)}", :class =>"join",:style => "display: inline; float: right; margin: 5px;" %>
-
     </div>
   <% end %>
 
