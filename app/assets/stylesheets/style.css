@@ -963,20 +963,20 @@ h2 {
     position: absolute;
 }
 .dropdown ul li {
-    background-color: #CC33CC;
+    background-color: #ffffff;
     float: left;
     width: 100%;
     line-height: 22px;
 }
 .dropdown ul li:hover {
-    background-color: #000;
+    color: #cc33cc;
 }
 .dropdown span {
     padding: 8px;
 }
 .dropdown ul li a {
     padding: 5px 9px;
-    color: #fff;
+    color: #666666;
 }
 /*.dropdown:hover ul {
     display: block;
@@ -1013,10 +1013,6 @@ h2 {
 
 .dropdown ul.profil li a:hover {
     color: #CC33CC;
-}
-
-.dropdown ul.profil li:hover {
-    font-family: proxima-semibold;	
 }
 
 .profil {
