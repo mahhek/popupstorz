@@ -1132,12 +1132,12 @@ h2 {
 .ml70{margin-left:45px !important;}
 .search {
     background: none repeat scroll 0 0 #CC33CC;
-    border-radius: 5px 5px 5px 5px;
+    border-radius: 3px 3px 3px 3px;
     color: #FFFFFF;
     margin: 0 auto;
     font-size: 20px;
     font-family: Proxima-bold;
-    padding: 6px 25px 2px;
+    padding: 4px 25px 4px;
 }
 
 .home .chzn-container-single .chzn-single span {
