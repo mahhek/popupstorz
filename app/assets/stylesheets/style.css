@@ -210,13 +210,12 @@ body {
 }
 
 .menu-sub {
-    border: 1px #666666;
+    border: 1px solid #666666;
     margin: 0 100px;	
     padding: 2px 0;
 }
 
 .menu-sub a {
-    border: 1px #666666;
     text-transform: uppercase;	
     padding: 2px 30px;
 }
