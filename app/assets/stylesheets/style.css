@@ -1039,14 +1039,33 @@ h2 {
 }
 
 .play_hold h1{font-size:18px;color:#666666;font-family: Proxima-semibold;margin-bottom:10px;text-align: center}
-.mr100{margin-right:100px;}
 .ml40{margin-left:40px;}
 .text_he{font-size:13px; color:#000;}
 .search_dd{border: 1px solid #000000;float: left;font-size: 18px;height: 32px;margin-right: 22px;margin-top: 14px;width: 175px;}
 .blue{color:#07c9c9 !important;}
-.footer{font-size:11px; color:#353631;padding-bottom:20px;}
-.footer a{text-decoration:none;color:#353631; margin-right:10px;}
-.footer a:last-child{margin-right:0;}
+
+.footer {
+    font-size: 1.1em; 
+    color: #666666;
+    padding-bottom: 20px; 
+    width: 100%;
+    text-align:c enter;
+}
+
+.footer a {
+    text-decoration: none;
+    color: #666666; 
+    margin-right: 10px;
+}
+
+.footer a:hover {
+    color: #000000;
+}
+
+.footer a:last-child {
+    margin-right: 0px;
+}
+
 .right{right:0;position:absolute;top:200px;}
 .right .mail, .right .facebook, .right .google, 
 .right .twiter{background:url(../assets/icon_sprit.png) no-repeat scroll 0 0 transparent;display: block; height: 20px; margin-bottom: 7px; width: 22px;}
