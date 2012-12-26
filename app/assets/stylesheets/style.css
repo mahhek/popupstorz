@@ -215,6 +215,10 @@ body {
     padding: 2px 0;
 }
 
+.menu-sub:hover {
+    background-color: #ccffff;
+}
+
 .menu-sub a {
     text-transform: uppercase;	
     padding: 2px 30px;
@@ -1139,7 +1143,7 @@ h2 {
 .pagination li {
     display: block;
     text-decoration: none;
-    color: #000000;
+    color: #666666;
     font: 13px proxima,Arial,sans-serif;
     text-shadow: 0px 1px white;
     padding: 5px 8px;
@@ -1147,37 +1151,31 @@ h2 {
     -webkit-border-radius: 1px;
     -moz-border-radius: 1px;
     border-radius: 1px;
-    -webkit-border: 1px solid #000000;
-    -moz-border: 1px solid #000000;
-    border: 1px solid #000000;
+    -webkit-border: 1px solid #cccccc;
+    -moz-border: 1px solid #cccccc;
+    border: 1px solid #cccccc;
 
-    -webkit-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.4);
-    -moz-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.4);
-    box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.4);
     background: #ffffff;
 }
 
 .pagination li.current {
     color: #000000;
     text-shadow: 0px 1px #ccffff;
+    
+    -webkit-border: 1px solid #000000;
+    -moz-border: 1px solid #000000;
+    border: 1px solid #000000;
 
-    -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.8);
-    -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.8);
-    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.8);
     background: #00ffff;
 }
 
 .pagination li:hover {
     color: #000000;
-    font-weight: bold;
     
-    -webkit-border: 1px solid #000000;
-    -moz-border: 1px solid #000000;
-    border: 1px solid #000000;
+    -webkit-border: 1px solid #666666;
+    -moz-border: 1px solid #666666;
+    border: 1px solid #666666;
     
-    -webkit-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.6);
-    -moz-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.6);
-    box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.6);
     background: #ccffff;
 }
 
@@ -1188,16 +1186,11 @@ h2 {
 }
 
 .pagination li.current:hover {
-   font-weight: bold;
-   
-   -webkit-border: 1px solid #000000;
+    -webkit-border: 1px solid #000000;
     -moz-border: 1px solid #000000;
     border: 1px solid #000000;
-    
-    -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.9);
-    -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.9);
-    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.9);
-    background: #00ffff;
+
+    background: #00cccc;
 }
 
 
