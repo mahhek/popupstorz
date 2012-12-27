@@ -939,11 +939,13 @@ h2 {
     padding: 8px;
 }
 .searchDropdown ul li a {
+    font-family: proxima;
     padding: 0px 9px;
     color: #666666;
 }
 .searchDropdown ul li a:hover {
     color: #CC33CC;
+    text-decoration: underline;
 }
 .searchDropdown:target ul {
     display: block;
@@ -966,11 +968,17 @@ h2 {
     margin: 0 6px;
 }
 .dropdown ul {
-    background-color: transparent;
+    background-color: white;
     float: none;
     list-style: none outside none;
     display: none;
     position: absolute;
+    background-color: white;
+    border-color: #BBBBBB;
+    border-image: none;
+    border-style: solid;
+    border-width: 0 1px 1px;
+    color: #666666;
 }
 .dropdown ul li {
     background-color: #ffffff;
@@ -980,6 +988,11 @@ h2 {
 }
 .dropdown ul li:hover {
     color: #cc33cc;
+    text-decoration: underline;
+}
+.dropdown ul li a:hover {
+    color: #cc33cc;
+    text-decoration: underline;
 }
 .dropdown span {
     padding: 8px;
