@@ -219,6 +219,12 @@ body {
     background-color: #ccffff;
 }
 
+.menu-sub.current:hover, .menu-sub a.current:hover {
+    color: #000000;
+    background-color: #00cccc;
+    border: 1px solid #000000;
+}
+
 .menu-sub a {
     text-transform: uppercase;	
     padding: 2px 30px;
@@ -454,7 +460,7 @@ body {
 }
 
 #loginpannel input[type="submit"]:hover {
-    color: #ffffff
+    color: #ffffff;
 
 }
 
