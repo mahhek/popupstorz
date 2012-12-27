@@ -372,7 +372,11 @@ class OffersController < ApplicationController
           @notification = Notification.new(:user_id => current_user.id, :notification_type => t(:send_offer_owner), :description => "#{t(:req_no_mem)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> #{t(:email_from)} #{offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:has_been)}".html_safe)
           @notification.save          
         end
-        flash[:notice] = t(:thanks_for)+ user.popup_storz_display_name.to_s + t(:in_gathering)
+        if current_user == owner
+          flash[:notice] = t(:thanks_for_accepting_offer)+ offer.item.title
+        else
+          flash[:notice] = t(:thanks_for)+ user.popup_storz_display_name.to_s + t(:in_gathering)
+        end
       else
         flash[:notice] = t(:offer_cant_be_accepted)
       end
@@ -393,8 +397,8 @@ class OffersController < ApplicationController
       if gathering_member.destroy
         flash[:notice] = t(:request_declined)
         user = User.find(gathering_member.user_id)
-        current_user.send_message(user, :topic => t(:joining_decline), :body => "#{t(:req_to_join)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{t(:join_gathering)}</a> #{t(:has_been_declined)}".html_safe)
-        @notification = Notification.new(:user_id => gathering_member.user_id, :notification_type => t(:joining_decline), :description => "#{t(:req_to_join)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{t(:join_gathering)} </a> #{t(:has_been_declined)}".html_safe)
+        current_user.send_message(user, :topic => t(:joining_decline), :body => "#{t(:req_to_join)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{t(:join_gathering)}</a> #{offer.item.title} from #{offer.rental_start_date.strftime("%b. %d ,%Y")} to #{offer.rental_end_date.strftime("%b. %d ,%Y")} #{t(:has_been_declined)}".html_safe)
+        @notification = Notification.new(:user_id => gathering_member.user_id, :notification_type => t(:joining_decline), :description => "#{t(:req_to_join)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{t(:join_gathering)} </a> #{offer.item.title} from #{offer.rental_start_date.strftime("%b. %d ,%Y")} to #{offer.rental_end_date.strftime("%b. %d ,%Y")} #{t(:has_been_declined)}".html_safe)
         @notification.save
       else
         flash[:notice] = t(:request_cant_declined)
@@ -406,7 +410,7 @@ class OffersController < ApplicationController
         flash[:notice] = t(:offer_cant_be_rejected)
       end
     end
-    redirect_to gatherings_items_path
+    redirect_to "/items/created_coming_gatherings"
   end
   
   def send_gathering_deadline

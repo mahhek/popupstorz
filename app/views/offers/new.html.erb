@@ -299,7 +299,7 @@
                 <% end %>
               <% end %>
             </div>
-            
+
             <div id="msg_gathering_div" style="display: none;" >              
               <%= t(:pop_description) %>
             </div>
@@ -307,8 +307,10 @@
           <div style="width: 100%;margin-top: 10px;">
             <%= f.fields_for :offer_messages do |offer_message| %>
               <% if offer_message.object.new_record? %>
-                <%= offer_message.text_area :message, :hint => "Ask questions, tell them a bit about more about you, establish a friendly contact !", :id => "booking_msg" %>
-                <%#= offer_message.text_area :message, :hint => "Ask questions, tell them a bit about more about you, establish a friendly contact !", :id => "gathering_msg", :style => "display:none;" %>
+                <div id="offer_msg_text">
+                  <%= offer_message.text_area :message, :hint => "Ask questions, tell them a bit about more about you, establish a friendly contact !", :id => "booking_msg" %>
+                </div>
+      <%#= offer_message.text_area :message, :hint => "Ask questions, tell them a bit about more about you, establish a friendly contact !", :id => "gathering_msg", :style => "display:none;" %>
                 <%= offer_message.hidden_field :user_id, :value => current_user.id %>
                 <%= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
               <%end%>
@@ -886,7 +888,8 @@
     $("#tr_pricePerPerson").show();
     $("#msg_gathering_div").show();
     $("#msg_booking_div").hide();
-    $("#offer_offer_messages_attributes_0_message").attr("title","abc");
+    
+    
   }
 
   function hide_gathering(){
@@ -903,7 +906,7 @@
     $("#tr_pricePerPerson").hide();
     $("#msg_gathering_div").hide();
     $("#msg_booking_div").show();
-    $("#offer_offer_messages_attributes_0_message").attr("title","Ask questions, tell them a bit about more about you, establish a friendly contact !");    
+    
   }
 
   function check_persons(obj,val){

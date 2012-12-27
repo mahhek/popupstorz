@@ -120,7 +120,7 @@
               <% if offer.status == "Accepted - Payment pending" or offer.status == "all joinings approved" or offer.status == "Accepted - Confirmation pending" or offer.status == "joinings approved" or offer.status == "Applied" or offer.status == "confirmed" or offer.status == "ALL JOININGS APPROVED" %>
                 <% if joined.size.to_i < offer.persons_in_gathering.to_i or offer.cancellation_date.blank? %>
                   <span style="color: #00DAFF;"><%= "Creating" %></span>        
-                <% else %>
+                  <% elsif offer.status != "joinings approved" %>                
                   <span style="color: #00DAFF;"><%= "Applied" %></span>
                 <% end %>
                   <br />
