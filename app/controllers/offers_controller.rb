@@ -372,13 +372,13 @@ class OffersController < ApplicationController
           @notification = Notification.new(:user_id => current_user.id, :notification_type => t(:send_offer_owner), :description => "#{t(:req_no_mem)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{offer.item.title}</a> #{t(:email_from)} #{offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:has_been)}".html_safe)
           @notification.save          
         end
-        flash[:notice] = t(:offer_accepted)
+        flash[:notice] = t(:thanks_for)+ user.popup_storz_display_name.to_s + t(:in_gathering)
       else
         flash[:notice] = t(:offer_cant_be_accepted)
       end
     else
       if offer.update_attribute("status", "Confirmed")
-        flash[:notice] = t(:offer_accepted)
+        flash[:notice] = t(:thanks_for) + t(:offer)
       else
         flash[:notice] = t(:offer_cant_be_accepted)
       end

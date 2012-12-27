@@ -722,5 +722,6 @@ en:
    owner_declined: " has been declined by the owner. We apologize for this inconvenience."
    owner_declined_apology_without_payment : "has been declined by the owner. We apologize for this inconvenience."
    creator: "CREATOR"
-   thanks_for: "Thank you for accepting"
+   thanks_for: "Thank you for accepting "
    in_gathering: " in your pop'union!"
+   offer: " offer"

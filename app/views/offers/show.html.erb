@@ -592,7 +592,7 @@
         <% applied_requests = @offer.members.where("status !='Approved'") %>
         <% unless applied_requests.blank? %>
           <% applied_requests.each do|req| %>
-            <div class="row" style="float:left; width: 340px;">
+            <div class="row" style="float:left; width: 340px;padding-bottom: 5px;margin-bottom: 5px;border-bottom: 1px solid;">
               <div class="imgx" onclick="window.location='<%= profile_path(req.id) %>'">
                 <% if req.avatars.size > 0 %>
                   <%= image_tag(req.avatars.first.photo.url(:thumb), :width => "85", :height => "111", :alt => "Member-Photo")  %>
@@ -604,7 +604,7 @@
                 <div style="float: left;width:200px;" id="rating_of_user_<%= req.id %>" >
                   <%= render :partial => "searches/member_rating", :locals => {:member => req, :only_view => false} %>
                 </div>
-                <div style="float:right;">
+                <div style="float:left;">
                   <h4 style="float: left;font-family:proxima-bold; color: #333333;" onclick="window.location='<%= profile_path(req.id) %>'">
                     <%= req.first_name + " " + req.last_name %>
                   </h4>                
@@ -621,6 +621,18 @@
                 <% end %>
                 <% unless req.country.blank? %>
                   <%= req.country %>
+                <% end %>
+              </div>              
+
+              <div style="float:left;clear: both;">
+                <% approved_requests = @offer.members.where("status ='Approved'") %>
+                <% request = GatheringMember.where("user_id = #{req.id} and offer_id = #{@offer.id}").first %>            
+                <% if request.status == "confirmed" && current_user.id == @offer.user_id %>
+                  <% if approved_requests.size <  @offer.persons_in_gathering.to_i %>
+                    <%= link_to t(:approve), "/approve_gathering_request/#{@offer.id}?mem=#{req.id}", :class => "green" %>
+                    <%= link_to t(:decline), "/decline_gathering_request/#{@offer.id}?mem=#{req.id}", :class => "red" %>
+                    <br /><br />
+                  <% end %>
                 <% end %>
               </div>
             </div>
@@ -649,15 +661,7 @@
               </div>
               <div class="clear"></div>
             </div>
-            <% approved_requests = @offer.members.where("status ='Approved'") %>
-            <% request = GatheringMember.where("user_id = #{req.id} and offer_id = #{@offer.id}").first %>            
-            <% if request.status == "confirmed" && current_user.id == @offer.user_id %>
-              <% if approved_requests.size <  @offer.persons_in_gathering.to_i %>
-                <%= link_to t(:approve), "/approve_gathering_request/#{@offer.id}?mem=#{req.id}", :class => "green" %>
-                <%= link_to t(:decline), "/decline_gathering_request/#{@offer.id}?mem=#{req.id}", :class => "red" %>
-                <br /><br />
-              <% end %>
-            <% end %>
+
 
           <% end %>
         <% else %>

@@ -491,9 +491,7 @@ class ItemsController < ApplicationController
     @offers = Offer.find(:all, :conditions => ["(user_id = ?) and persons_in_gathering is NULL and is_gathering = false and rental_start_date >= '#{Date.parse("#{Date.today}","%Y-%d-%m")}'",current_user.id], :order => "rental_start_date ASC")
     @gatherings = @gatherings + @offers    
     @gatherings = @gatherings.uniq
-#    @gatherings = @gatherings.sort! { |a, b|  a.attribute <=> b.attribute }
-#    p "aaaaaaaaaaaaaaaaaaa",@gatherings.inspect
-#    ff
+    @gatherings = @gatherings.sort! { |g1, g2|  g1.item.title <=> g2.item.title }
   end
     
   def pending_gathering_acceptance

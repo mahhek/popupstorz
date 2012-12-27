@@ -85,7 +85,6 @@
         $("#std_bg").css("background-color","cyan");
       }
       
-      
       if(<%= @book_without_dates %> == true){
         $("#tr_pricePerPerson").show();
       }
@@ -169,8 +168,6 @@
         $("#breadCrumb_firstStep").addClass("notSelectedBookingProcess");
         $("#breadCrumb_secondStep").removeClass("notSelectedBookingProcess");  			
         $("#breadCrumb_secondStep").addClass("selectedBookingProcess");
-  			
-  			
         return false; 			
       });
     });
