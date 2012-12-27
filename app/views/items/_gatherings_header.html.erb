@@ -1,11 +1,11 @@
 <div class="submenu" style="font-size: 1.3em; margin-bottom: 20px;">
 
-	<%= link_to 'Upcoming', created_coming_gatherings_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "created_coming_gatherings" )) ? 'selected' : 'unselected') %>
-   <span class="separator"></span>
+  <%= link_to 'Upcoming', created_coming_gatherings_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "created_coming_gatherings" )) ? 'selected' : 'unselected') %>
+  <span class="separator"></span>
 
-   <%= link_to 'Past', created_prev_gatherings_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "created_prev_gatherings" )) ? 'selected' : 'unselected') %>
-   <span class="separator"></span>
- 
-   <%= link_to 'Pending Gathering Acceptance', pending_gathering_acceptance_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "pending_gathering_acceptance" )) ? 'selected' : 'unselected') %>
+  <%= link_to 'Past', created_prev_gatherings_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "created_prev_gatherings" )) ? 'selected' : 'unselected') %>
+  <span class="separator"></span>
+
+  <%= link_to "Pending Pop'union Acceptance", pending_gathering_acceptance_items_path, :class => ((params[:controller] == "items" and ( params[:action] == "gatherings" or params[:action] == "pending_gathering_acceptance" )) ? 'selected' : 'unselected') %>
 
 </div>

@@ -199,17 +199,17 @@
         <% end %>
       </span>
       <br />
-      
-        <% if(@offer.is_gathering and @offer.persons_in_gathering.to_i > 0) %>
-          <span style="font-family: proxima-semibold; font-size: 1.3em; color: #999999">
-            <b><%= t(:per_person2)%></b>
-          </span>
-        <% else %>
-          <span style="font-family: proxima-semibold; font-size: 1.3em; color: #999999">
-            <%= t(:total_rental_price)%>
-          </span>
-        <% end %>
-      
+
+      <% if(@offer.is_gathering and @offer.persons_in_gathering.to_i > 0) %>
+        <span style="font-family: proxima-semibold; font-size: 1.3em; color: #999999">
+          <b><%= t(:per_person2)%></b>
+        </span>
+      <% else %>
+        <span style="font-family: proxima-semibold; font-size: 1.3em; color: #999999">
+          <%= t(:total_rental_price)%>
+        </span>
+      <% end %>
+
       <br />
 
       <span style="cursor: pointer;color: #666666; font-size: 0.8em;" onclick="$('#offer_price_details').toggle();">
@@ -365,139 +365,139 @@
               <%= t(:sunday) %>
             </span>
           <% end %>
+        </div>
       </div>
-    </div>
-      
-    <div style="float: right;width:100%;margin-top: 10px;">
-      <span class="blue" style="margin-top: 40px;">
-        <%= @offer.rental_start_date.strftime("%b. %d ,%Y") %> - <%= @offer.rental_end_date.strftime("%b. %d, %Y") %>
-      </span>
-      <span style="color: #999999; font-size: 0.9em;">
-        <%= t(:app_deadline) %>
-        <% if @offer.persons_in_gathering.to_i > 0 or @offer.is_gathering %>
-          <%= @offer.gathering_deadline.blank? ? '' : @offer.gathering_deadline.strftime("%b.%d, %Y") %><br /><br />
-        <% else %>
-          <%= @offer.cancellation_date.blank? ? '' : @offer.cancellation_date.strftime("%b.%d, %Y") %><br /><br />
-        <% end %>
-      </span>
 
-      <% unless current_user.blank? %>
-        <% if @offer.members.size.to_i < @offer.persons_in_gathering.to_i && @offer.user_id != current_user.id && @offer.owner_id != current_user.id %>
-          <% if !@offer.members.include?(current_user) && @offer.rental_start_date >= Date.today %>
-            <div style="float:left;margin: 5px;clear:both;width: 100%;">
-              <%= link_to t(:join_this_gathering), "/join_gathering/#{@offer.id}",:class => "join", :style => "float:right;margin-right:20px;" %>
-            </div>
+      <div style="float: right;width:100%;margin-top: 10px;">
+        <span class="blue" style="margin-top: 40px;">
+          <%= @offer.rental_start_date.strftime("%b. %d ,%Y") %> - <%= @offer.rental_end_date.strftime("%b. %d, %Y") %>
+        </span>
+        <span style="color: #999999; font-size: 0.9em;">
+          <%= t(:app_deadline) %>
+          <% if @offer.persons_in_gathering.to_i > 0 or @offer.is_gathering %>
+            <%= @offer.gathering_deadline.blank? ? '' : @offer.gathering_deadline.strftime("%b.%d, %Y") %><br /><br />
+          <% else %>
+            <%= @offer.cancellation_date.blank? ? '' : @offer.cancellation_date.strftime("%b.%d, %Y") %><br /><br />
+          <% end %>
+        </span>
+
+        <% unless current_user.blank? %>
+          <% if @offer.members.size.to_i < @offer.persons_in_gathering.to_i && @offer.user_id != current_user.id && @offer.owner_id != current_user.id %>
+            <% if !@offer.members.include?(current_user) && @offer.rental_start_date >= Date.today %>
+              <div style="float:left;margin: 5px;clear:both;width: 100%;">
+                <%= link_to t(:join_this_gathering), "/join_gathering/#{@offer.id}",:class => "join", :style => "float:right;margin-right:20px;" %>
+              </div>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
+      </div>
     </div>
+
+    <div class="clear"></div>
   </div>
 
-  <div class="clear"></div>
-</div>
-
-<div id="offer_extra">
-  <div style="float: left;">
-    <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
-      <% unless @offer.gathering_description.blank? %>
-        <span style="font-family: proxima-semibold; text-transform: uppercase;">
-          <%= t(:gathering_des) %>
-        </span>
-        <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
-          <%= raw nl2br(@offer.gathering_description) %>
-        </div>
-      <% end %>
-      <% unless @offer.additional_message.blank? %>
-        <span style="font-family: proxima-semibold; text-transform: uppercase;">
-          <%= t(:pop_description) %>
-        </span>
-        <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
-          <%= raw nl2br(@offer.additional_message) %>
-        </div>
-      <% end %>
-    <% else %>
-      <% unless @offer.additional_message.blank? %>
-        <span style="font-family: proxima-semibold; text-transform: uppercase;">
-          <%= t(:additional_message) %>
-        </span>
-        <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
-          <%= raw nl2br(@offer.additional_message) %>
-        </div>
-      <% end %>
-    <% end %>
-  </div>
-
-  <div style="float: left; margin-left: 10px;">
-    <span class="title"><%= t(:cancellation_policy) %></span>
-    <span style="font-family: proxima-semibold;margin-right: 5px;">
-      <% unless @item.cancellation_policy_flexible.blank? %>
-        <%= t(:flexible) %>
-      <% else %>
-        <%= t(:semi_flexible) %>
-      <% end %>
-    </span>
-    <span onclick="$('#policies_div').toggle();" style="cursor: pointer;color: #666666;">
-      <%= t(:show_details) %>
-    </span>
-    <div id="policies_div" style="display: none;width:360px !important;color:#999999">
-      <% unless @item.cancellation_policy_flexible.blank? %>
-        <%= t(:cancel_ln1) %><br/>
-        <%= t(:cancel_ln2) %><br/><br/>
-
-        <%= t(:cancel_ln3) %><br/><br/>
-
-        <%= t(:cancel_ln4)%><br/><br/>
-        <%= t(:cancel_ln5)%><br/><br/>
-      <% else %>
-        <%= t(:semi_cancel_ln1) %><br/>
-        <%= t(:semi_cancel_ln2) %><br/><br/>
-
-        <%= t(:semi_cancel_ln3) %><br/><br/>
-
-        <%= t(:semi_cancel_ln4) %><br/><br/>
-        <%= t(:semi_cancel_ln5) %>
-      <% end %>
-    </div>
-    <br />
-    <br />
-    <span class="title"><%= t(:owner_rules) %></span>
-    <span onclick="$('#rules_div').toggle()" style="cursor: pointer;color: #666666;">
-      <%= t(:show) %></span>
-    <br />
-    <p class="size_text" id="rules_div" style="display:none;width:360px !important;word-wrap:break-word;overflow: hidden;color:#999999">
-      <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
-    </p>
-    <br /><br />
-
-  </div>
-
-  <div style="float: left; margin-left: 10px;width: 25%;">
-    <% unless current_user.blank? %>    
-      <% if current_user.id.to_i == @offer.owner_id.to_i %>    
-        <% if @offer.status == "joinings approved" %>
-          <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
-          <%= link_to t(:decline), "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
+  <div id="offer_extra">
+    <div style="float: left;">
+      <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
+        <% unless @offer.gathering_description.blank? %>
+          <span style="font-family: proxima-semibold; text-transform: uppercase;">
+            <%= t(:gathering_des) %>
+          </span>
+          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
+            <%= raw nl2br(@offer.gathering_description) %>
+          </div>
         <% end %>
-
-        <% if (@offer.status == "confirmed" or @offer.status == "Confirmed") && @offer.persons_in_gathering.blank? %>
-          <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
-          <%= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
+        <% unless @offer.additional_message.blank? %>
+          <span style="font-family: proxima-semibold; text-transform: uppercase;">
+            <%= t(:pop_description) %>
+          </span>
+          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
+            <%= raw nl2br(@offer.additional_message) %>
+          </div>
+        <% end %>
+      <% else %>
+        <% unless @offer.additional_message.blank? %>
+          <span style="font-family: proxima-semibold; text-transform: uppercase;">
+            <%= t(:additional_message) %>
+          </span>
+          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
+            <%= raw nl2br(@offer.additional_message) %>
+          </div>
         <% end %>
       <% end %>
+    </div>
+
+    <div style="float: left; margin-left: 10px;">
+      <span class="title"><%= t(:cancellation_policy) %></span>
+      <span style="font-family: proxima-semibold;margin-right: 5px;">
+        <% unless @item.cancellation_policy_flexible.blank? %>
+          <%= t(:flexible) %>
+        <% else %>
+          <%= t(:semi_flexible) %>
+        <% end %>
+      </span>
+      <span onclick="$('#policies_div').toggle();" style="cursor: pointer;color: #666666;">
+        <%= t(:show_details) %>
+      </span>
+      <div id="policies_div" style="display: none;width:360px !important;color:#999999">
+        <% unless @item.cancellation_policy_flexible.blank? %>
+          <%= t(:cancel_ln1) %><br/>
+          <%= t(:cancel_ln2) %><br/><br/>
+
+          <%= t(:cancel_ln3) %><br/><br/>
+
+          <%= t(:cancel_ln4)%><br/><br/>
+          <%= t(:cancel_ln5)%><br/><br/>
+        <% else %>
+          <%= t(:semi_cancel_ln1) %><br/>
+          <%= t(:semi_cancel_ln2) %><br/><br/>
+
+          <%= t(:semi_cancel_ln3) %><br/><br/>
+
+          <%= t(:semi_cancel_ln4) %><br/><br/>
+          <%= t(:semi_cancel_ln5) %>
+        <% end %>
+      </div>
       <br />
-      <% if (@offer.status == "confirmed" or @offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
-        <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
+      <br />
+      <span class="title"><%= t(:owner_rules) %></span>
+      <span onclick="$('#rules_div').toggle()" style="cursor: pointer;color: #666666;">
+        <%= t(:show) %></span>
+      <br />
+      <p class="size_text" id="rules_div" style="display:none;width:360px !important;word-wrap:break-word;overflow: hidden;color:#999999">
+        <%= @item.owner_rules.blank? ? "" : nl2br(@item.owner_rules).html_safe %>
+      </p>
+      <br /><br />
+
+    </div>
+
+    <div style="float: left; margin-left: 10px;width: 25%;">
+      <% unless current_user.blank? %>    
+        <% if current_user.id.to_i == @offer.owner_id.to_i %>    
+          <% if @offer.status == "joinings approved" %>
+            <%= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
+            <%= link_to t(:decline), "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
+          <% end %>
+
+    <%# if (@offer.status == "confirmed" or @offer.status == "Confirmed") && @offer.persons_in_gathering.blank? %>
+    <%#= link_to t(:approve), "/accept_gathering/#{@offer.id}?mem=#{@offer.user.id}", :class => "green" %>
+    <%#= link_to t(:decline),  "/reject_gathering/#{@offer.id}?mem=#{@offer.user.id}&item_id=#{@offer.item.id}", :class => "red" %>
+    <%# end %>
+        <% end %>
+        <br />
+        <% if (@offer.status == "confirmed" or @offer.status == "Confirmed") && current_user.id == @offer.owner_id && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
+          <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
+        <% end %>
+
+        <% if (@offer.status == "Accepted - Payment pending" or @offer.status == "all joinings approved" or @offer.status == "Accepted - Confirmation pending" or @offer.status == "joinings approved" or @offer.status == "Applied" or @offer.status == "confirmed"or @offer.status == "Confirmed") && current_user.id.to_i == @offer.user_id.to_i && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
+          <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
+        <% end %>
+
+
       <% end %>
-
-      <% if (@offer.status == "Accepted - Payment pending" or @offer.status == "all joinings approved" or @offer.status == "Accepted - Confirmation pending" or @offer.status == "joinings approved" or @offer.status == "Applied" or @offer.status == "confirmed"or @offer.status == "Confirmed") && current_user.id.to_i == @offer.user_id.to_i && @offer.rental_start_date.to_date > Date.parse("#{Date.today}","%Y-%d-%m") %>
-        <%= link_to "Cancel Booking", "/cancel_booking/#{@offer.id}", :class => "red" %>
-      <% end %>
-
-
-    <% end %>
+    </div>
+    <div class="clear"></div>
   </div>
-  <div class="clear"></div>
-</div>
 
 </div>
 <div class="clear"></div>
@@ -524,14 +524,20 @@
               <% end %>
             </div>
 
-            <div class="name-list" style="margin-bottom: 5px;">
-              <h4 style="float: left;font-family:proxima-bold; color: #333333;" onclick="window.location='<%= profile_path(member.id) %>'">
-                <%= member.first_name + " " + member.last_name %>
-              </h4>
-              <div style="float: left;width:200px;" id="rating_of_user_<%= member.id %>" >
+            <div class="name-list" style="margin-bottom: 5px;float: left;width: 68%;">
+              <div style="float: left;width:150px;" id="rating_of_user_<%= member.id %>" >
                 <%= render :partial => "searches/member_rating", :locals => {:member => member, :only_view => false} %>
               </div>
+              <div style="float: right;font-weight: bold;font-size: 1em;margin-top: 5px;">
+                <% if (member == @offer.user) %>
+                  <%= t(:creator) %>
+                <% end %>
+              </div>
+              <h4 style="float: left;font-family:proxima-bold; color: #333333;" onclick="window.location='<%= profile_path(member.id) %>'">
+                <%= member.first_name + " " + member.last_name %>                
+              </h4>              
             </div>
+
             <br /><br />
 
             <div class="name-list" style="margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;" onclick="window.location='<%= profile_path(member.id) %>'">
@@ -586,7 +592,6 @@
         <% applied_requests = @offer.members.where("status !='Approved'") %>
         <% unless applied_requests.blank? %>
           <% applied_requests.each do|req| %>
-
             <div class="row" style="float:left; width: 340px;">
               <div class="imgx" onclick="window.location='<%= profile_path(req.id) %>'">
                 <% if req.avatars.size > 0 %>
@@ -599,9 +604,11 @@
                 <div style="float: left;width:200px;" id="rating_of_user_<%= req.id %>" >
                   <%= render :partial => "searches/member_rating", :locals => {:member => req, :only_view => false} %>
                 </div>
-                <h4 style="float: left;font-family:proxima-bold; color: #333333;" onclick="window.location='<%= profile_path(req.id) %>'">
-                  <%= req.first_name + " " + req.last_name %>
-                </h4>                
+                <div style="float:right;">
+                  <h4 style="float: left;font-family:proxima-bold; color: #333333;" onclick="window.location='<%= profile_path(req.id) %>'">
+                    <%= req.first_name + " " + req.last_name %>
+                  </h4>                
+                </div>
               </div>
 
               <div class="name-list" style="float: left;width:200px;margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;" onclick="window.location='<%= profile_path(req.id) %>'">

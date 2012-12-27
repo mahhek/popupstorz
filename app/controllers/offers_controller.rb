@@ -237,24 +237,26 @@ class OffersController < ApplicationController
       unless @item.blank?        
         if current_user.id == @offer.user_id
           @item.update_attribute("item_status","Reserved")
-          flash[:notice] = t(:accepting_offer)
+          #          flash[:notice] = t(:accepting_offer)
+          flash[:notice] = t(:thanks_for)+@offer.user.popup_storz_display_name.to_s
           current_user.send_message(@offer.user, :topic => t(:offer_accepted_email), :body => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
           @notification = Notification.new(:user_id => m.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
           @notification.save
         else
           @item.update_attribute("item_status","Reserved")
-          flash[:notice] = t(:accepting_offer)
           current_user.send_message(@offer.user, :topic =>  t(:offer_accepted_email) , :body => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
           @notification = Notification.new(:user_id => m.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
           @notification.save
-          flash[:notice] = t(:accepting_offer)
+          #          flash[:notice] = t(:accepting_offer)
+          flash[:notice] = t(:thanks_for)+@offer.user.popup_storz_display_name.to_s
           redirect_to "/"
         end
       else
         current_user.send_message(@offer.user, :topic =>  t(:offer_accepted_email) , :body => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
         @notification = Notification.new(:user_id => @offer.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
         @notification.save
-        flash[:notice] = t(:accepting_offer)
+        #        flash[:notice] = t(:accepting_offer)
+        flash[:notice] = t(:thanks_for)+@offer.user.popup_storz_display_name.to_s
       end
       @offer.update_attribute("status", "Confirmed")
     else
@@ -266,7 +268,8 @@ class OffersController < ApplicationController
         @notification.save
       end
       @offer.update_attribute("status", "Confirmed")
-      flash[:notice] = t(:accepting_offer)
+      #      flash[:notice] = t(:accepting_offer)
+      flash[:notice] = t(:thanks_for)+@offer.user.popup_storz_display_name.to_s+t(:in_gathering)
     end
     if @offer.item.user == current_user      
       redirect_to "/items/overview"

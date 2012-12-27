@@ -40,7 +40,7 @@
               <br />
               <span style="font-size: 0.7em;">
                 <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
-                  <%= t(:per_day) %>
+                  <%= t(:per_person) %>
                 <% else %>
                   <%= t(:total_rental_price) %>
                 <% end %>
@@ -106,7 +106,7 @@
                   </span><br />
 
                   <div style="margin-right: 10px; text-align: right;clear: both;">
-                    <%= submit_tag "Send", :onclick => "$('#contact_me_div_#{offer.id}').hide();" %>&nbsp;&nbsp;&nbsp;
+                    <%= submit_tag "Send", :onclick => "alert('Your message was successfully sent');$('#contact_me_div_#{offer.id}').hide();" %>&nbsp;&nbsp;&nbsp;
                     <%= link_to_function "Cancel", "$('#contact_me_div_#{offer.id}').toggle('slow');"  %>
                   </div>
                 <% end %>
@@ -119,7 +119,7 @@
             <div style="font-size: 1.2em;margin-top: 55px;text-transform: uppercase;">
               <% if offer.status == "Accepted - Payment pending" or offer.status == "all joinings approved" or offer.status == "Accepted - Confirmation pending" or offer.status == "joinings approved" or offer.status == "Applied" or offer.status == "confirmed" %>
                 <% if joined.size.to_i < offer.persons_in_gathering.to_i or offer.cancellation_date.blank? %>
-                  <%= "Creating" %>
+                  <span style="color: #00DAFF;"><%= "Creating" %></span>        
                 <% else %>
                   <span style="color: #00DAFF;"><%= "Applied" %></span>
                 <% end %>

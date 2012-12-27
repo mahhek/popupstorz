@@ -67,7 +67,7 @@
 </style>
 <script type='text/javascript'>
   $(window).load(function(){
-    $(document).ready(function(){      
+    $(document).ready(function(){
       if($("input[@name=plan]:checked").val() == "standard_booking"){
         hide_gathering();
       }
@@ -288,29 +288,30 @@
           <span class ="blockParts2">
             <div id="msg_booking_div">
               <%= t(:message_to_owner) %>
+              <div class="clear">&nbsp;</div>
+              <label style="line-height:18px; float:left;">
+                <strong> 
+                  <%= @item.user.popup_storz_display_name %>
+                </strong>
+              </label>
+              <br/><br/>
+
+              <% if @item.user.avatars.size > 0 %>
+                <% unless @item.user.avatars.blank? %>
+                  <%= image_tag(@item.user.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" ) %>
+                <% end %>
+              <% end %>
             </div>
-            <div id="msg_gathering_div" style="display: none;" >
+            
+            <div id="msg_gathering_div" style="display: none;" >              
               <%= t(:pop_description) %>
             </div>
-          </span> <!-- TODO translate -->
-          <div class="clear">&nbsp;</div>
-          <label style="line-height:18px; float:left;">
-            <strong> 
-              <%= @item.user.popup_storz_display_name %>
-            </strong>
-          </label>
-          <br/>	<br/>
-
-          <% if @item.user.avatars.size > 0 %>
-            <% unless @item.user.avatars.blank? %>
-              <%= image_tag(@item.user.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" ) %>
-            <% end %>
-          <% end %>
-
-          <div style="width: 100%;">
+          </span>
+          <div style="width: 100%;margin-top: 10px;">
             <%= f.fields_for :offer_messages do |offer_message| %>
               <% if offer_message.object.new_record? %>
-                <%= offer_message.text_area :message, :hint => "Ask questions, tell them a bit about more about you, establish a friendly contact !" %>
+                <%= offer_message.text_area :message, :hint => "Ask questions, tell them a bit about more about you, establish a friendly contact !", :id => "booking_msg" %>
+                <%#= offer_message.text_area :message, :hint => "Ask questions, tell them a bit about more about you, establish a friendly contact !", :id => "gathering_msg", :style => "display:none;" %>
                 <%= offer_message.hidden_field :user_id, :value => current_user.id %>
                 <%= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
               <%end%>
@@ -648,6 +649,9 @@
 
 
   function calculateTotalAmount(){
+    $("#offer_gathering_deadline").datepicker('option', 'maxDate', new Date($("#offer_rental_start_date").val()));      
+    $("#offer_cancellation_date").datepicker('option', 'maxDate', new Date($("#offer_rental_start_date").val()));
+    
     $("#offer_rental_end_date").datepicker('option', 'minDate', new Date($("#offer_rental_start_date").val()));
 
     if($("#offer_rental_start_date").val()=="mm/dd/yy"){
@@ -885,6 +889,7 @@
     $("#tr_pricePerPerson").show();
     $("#msg_gathering_div").show();
     $("#msg_booking_div").hide();
+    $("#offer_offer_messages_attributes_0_message").attr("title","abc");
   }
 
   function hide_gathering(){
@@ -901,6 +906,7 @@
     $("#tr_pricePerPerson").hide();
     $("#msg_gathering_div").hide();
     $("#msg_booking_div").show();
+    $("#offer_offer_messages_attributes_0_message").attr("title","Ask questions, tell them a bit about more about you, establish a friendly contact !");    
   }
 
   function check_persons(obj,val){
