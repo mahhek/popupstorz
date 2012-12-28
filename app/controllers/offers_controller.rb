@@ -248,7 +248,8 @@ class OffersController < ApplicationController
           @notification = Notification.new(:user_id => m.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
           @notification.save
           #          flash[:notice] = t(:accepting_offer)
-          flash[:notice] = t(:thanks_for)+@offer.user.popup_storz_display_name.to_s
+#          flash[:notice] = t(:thanks_for)+t(:offer_made_on_your_space)+@offer.user.popup_storz_display_name.to_s
+          flash[:notice] = t(:thanks_for)+t(:offer_made_on_your_space)+@offer.item.title.to_s
           redirect_to "/"
         end
       else
@@ -256,7 +257,7 @@ class OffersController < ApplicationController
         @notification = Notification.new(:user_id => @offer.user.id, :notification_type => t(:offer_accepted_email) , :description => "#{@offer.item.user.first_name} #{t(:accepted_offer)} #{@offer.item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
         @notification.save
         #        flash[:notice] = t(:accepting_offer)
-        flash[:notice] = t(:thanks_for)+@offer.user.popup_storz_display_name.to_s
+        flash[:notice] = t(:thanks_for)+@offer.user.popup_storz_display_name.to_s+t(:in_gathering)        
       end
       @offer.update_attribute("status", "Confirmed")
     else
@@ -269,7 +270,7 @@ class OffersController < ApplicationController
       end
       @offer.update_attribute("status", "Confirmed")
       #      flash[:notice] = t(:accepting_offer)
-      flash[:notice] = t(:thanks_for)+@offer.user.popup_storz_display_name.to_s+t(:in_gathering)
+      flash[:notice] = t(:thanks_for)+t(:offer_made_on_your_space)+@offer.item.title.to_s
     end
     if @offer.item.user == current_user      
       redirect_to "/items/overview"
@@ -299,8 +300,8 @@ class OffersController < ApplicationController
       @item = @offer.item
       members = GatheringMember.find(:all, :conditions => "offer_id = #{@offer.id} and status = 'Approved'")
       members.each do|m|
-        current_user.send_message(m.user, :topic => t(:offer_declined_email), :body => "#{@offer.item.user.first_name} #{t(:reject_place)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%m-%d-%Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%m-%d-%Y")}".html_safe)
-      end      
+        current_user.send_message(m.user, :topic => t(:offer_declined_email), :body => "The owner #{@offer.item.user.first_name} #{t(:reject_place)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b. %d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b. %d, %Y")} #{t(:owner_declined_apology_without_payment)}".html_safe)
+      end
       @offer.update_attribute("status", "Declined")
       flash[:notice] = t(:offer_declined)
     end
@@ -392,7 +393,7 @@ class OffersController < ApplicationController
   
   def decline_gathering_request
     offer = Offer.find(params[:id])
-    if offer.is_gathering
+    if offer.is_gathering or offer.persons_in_gathering.to_i > 0
       gathering_member = GatheringMember.find(:first, :conditions => ["offer_id = ? and user_id = ?",params[:id],params[:mem]])
       if gathering_member.destroy
         flash[:notice] = t(:request_declined)

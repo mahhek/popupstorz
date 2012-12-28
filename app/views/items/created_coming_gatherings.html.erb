@@ -106,7 +106,7 @@
                   </span><br />
 
                   <div style="margin-right: 10px; text-align: right;clear: both;">
-                    <%= submit_tag "Send", :onclick => "alert('Your message was successfully sent');$('#contact_me_div_#{offer.id}').hide();" %>&nbsp;&nbsp;&nbsp;
+                    <%= submit_tag "Send", :onclick => "alert('Your message was successfully sent!');$('#contact_me_div_#{offer.id}').hide();" %>&nbsp;&nbsp;&nbsp;
                     <%= link_to_function "Cancel", "$('#contact_me_div_#{offer.id}').toggle('slow');"  %>
                   </div>
                 <% end %>
@@ -118,15 +118,19 @@
           <div style="float: left;text-align: center; width: 15.7%;">
             <div style="font-size: 1.2em;margin-top: 55px;text-transform: uppercase;">              
               <% if offer.status == "Accepted - Payment pending" or offer.status == "all joinings approved" or offer.status == "Accepted - Confirmation pending" or offer.status == "joinings approved" or offer.status == "Applied" or offer.status == "confirmed" or offer.status == "ALL JOININGS APPROVED" %>
-                <% if joined.size.to_i < offer.persons_in_gathering.to_i or offer.cancellation_date.blank? %>
-                  <span style="color: #00DAFF;"><%= "Creating" %></span>        
-                  <% elsif offer.status != "joinings approved" %>                
-                  <span style="color: #00DAFF;"><%= "Applied" %></span>
+                <% unless (offer.status = "all joinings approved" or offer.status == "ALL JOININGS APPROVED") %>
+                  <% if (joined.size.to_i < offer.persons_in_gathering.to_i or offer.cancellation_date.blank?)  %>      
+                    <span style="color: #00DAFF;"><%= "Creating" %></span>
+                  <% elsif offer.status != "joinings approved" %>  
+                    <span style="color: #00DAFF;"><%= "Applied" %></span>
+                  <% end %>
                 <% end %>
-                  <br />
-                <% if (offer.status == "all joinings approved" or offer.status == "ALL JOININGS APPROVED") && current_user.id == offer.user_id %>
+
+                <br />
+                <% if (offer.status == "all joinings approved" or offer.status == "ALL JOININGS APPROVED") and current_user.id == offer.user_id %>
                   <%= link_to t(:send_offer), "/send_gathering_deadline/#{offer.id}", :style => "color:#00FF66" %>
                 <% end %>
+                
               <% else %>
                 <% if offer.status == "Confirmed" %>
                   <span style="color: green;"><%= offer.status %></span>

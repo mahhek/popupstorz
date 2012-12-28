@@ -382,6 +382,11 @@
         </span>
 
         <% unless current_user.blank? %>
+          <% if (@offer.status == "all joinings approved" or @offer.status == "ALL JOININGS APPROVED") && current_user.id == @offer.user_id %>
+            <div style="float:left;margin: 5px;clear:both;width: 100%;">
+              <%= link_to t(:send_offer), "/send_gathering_deadline/#{@offer.id}",:class => "join", :style => "float:right;margin-right:20px;" %>
+            </div>
+          <% end %>
           <% if @offer.members.size.to_i < @offer.persons_in_gathering.to_i && @offer.user_id != current_user.id && @offer.owner_id != current_user.id %>
             <% if !@offer.members.include?(current_user) && @offer.rental_start_date >= Date.today %>
               <div style="float:left;margin: 5px;clear:both;width: 100%;">
@@ -554,7 +559,7 @@
           </div>
 
           <div style="margin-top: -30px; color: grey;float: right;">
-            <% if (current_user != @offer.user) %>
+            <% if (current_user != @offer.user) && current_user != member %>
               <%= link_to_function "Send Message", "$('#contact_me_div_#{member.id}').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
             <% end %>
 
@@ -638,7 +643,7 @@
             </div>
 
             <div style="margin-top: -30px; color: grey;float: right;">
-              <% if (current_user != @offer.user) %>
+              <% if (current_user != @offer.user) && current_user != req %>
                 <%= link_to_function "Send Message", "$('#contact_me_div_#{req.id}').toggle('slow');", :class => "send", :style => "margin-top: 35px;" %>
               <% end %>
 
