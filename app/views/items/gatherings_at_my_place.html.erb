@@ -96,7 +96,7 @@
             <div style="font-size: 1.2em;margin-top: 55px;text-transform: uppercase;">
               <% if offer.status == "Accepted - Payment pending" or offer.status == "all joinings approved" or offer.status == "Accepted - Confirmation pending" or offer.status == "joinings approved" or offer.status == "Applied" or offer.status == "confirmed" %>
                 <% if joined.size.to_i < offer.persons_in_gathering.to_i or offer.cancellation_date.blank? %>
-                  <%= "Creating" %>
+                  <span style="color: #00DAFF;"><%= "Creating" %></span>
                 <% else %>
                   <span style="color: #00DAFF;"><%= "Applied" %></span>
                 <% end %>
@@ -116,23 +116,24 @@
               <% end %>
             </div>
             <% if offer.status=="Accepted - Payment pending" && offer.item.user_id != current_user.id %>
-              <form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>"> <input TYPE="submit" VALUE="check in"> </form>
+              <form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>"> 
+                <input TYPE="submit" VALUE="check in">
+              </form>
             <% end %>
 
-
-            <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
+            <% if offer.is_gathering or offer.persons_in_gathering.to_i > 0 %>
               <%= link_to "Details", "/offers/#{offer.id}" %> 
-            <%end%>
+            <% end %>
 
             <% if offer.owner_id == current_user.id && offer.status == "joinings approved" %>
-              <%= link_to "Approve", "/accept_gathering/#{offer.id}?item_id=#{offer.item.id}" %> | 
-              <%= link_to "Decline", "/reject_gathering/#{offer.id}?item_id=#{offer.item.id}" %>
+              <%= link_to "Approve", "/accept_gathering/#{offer.id}?item_id=#{offer.item.id}", :style => "color:green" %>
+              <%= link_to "Decline", "/reject_gathering/#{offer.id}?item_id=#{offer.item.id}", :style => "color:red" %>
             <% end %>  
 
-            <% if offer.owner_id == current_user.id && offer.status == "all joinings approved" %>
-              <%= link_to "Approve", "/accept_gathering/#{offer.id}?item_id=#{offer.item.id}" %> | 
-              <%= link_to "Decline", "/reject_gathering/#{offer.id}?item_id=#{offer.item.id}" %>
-            <% end %>  
+            <%# if offer.owner_id == current_user.id && offer.status == "all joinings approved" %>
+              <%#= link_to "Approve", "/accept_gathering/#{offer.id}?item_id=#{offer.item.id}" %>
+              <%#= link_to "Decline", "/reject_gathering/#{offer.id}?item_id=#{offer.item.id}" %>
+            <%# end %>  
           </div>
           <div class="clear"></div>
         </div>
