@@ -125,7 +125,7 @@
                     <span style="color: #00DAFF;"><%= "Applied" %></span>
                   <% end %>
                   <% if offer.status == "joinings approved" %>                    
-                      <span style="color: #00DAFF;"><%= "Applied" %></span>                    
+                    <span style="color: #00DAFF;"><%= "Applied" %></span>                    
                   <% end %>
                 <% end %>
                 <br />
@@ -151,15 +151,13 @@
               <form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>"> <input TYPE="submit" VALUE="check in"> </form>
             <% end %>
 
-    <%# unless offer.status == "Approved" || 
-    offer.status == "Accepted" || 
-    offer.status == "confirmed" || 
-    offer.status == "Confirmed" || 
-    offer.status == "Declined" || 
-    offer.status == "Cancelled" %>
-    <%#= link_to "Approve", "/accept_gathering/#{offer.id}?mem=#{offer.user.id}" %>
-    <%#= link_to "Decline", "/reject_gathering/#{offer.id}?mem=#{offer.user.id}&item_id=#{offer.item.id}" %>
-    <%# end %>
+            <%# approved_requests = offer.members.where("status ='Approved'") %>
+            <%# if offer.status == "confirmed" && current_user.id == offer.user_id %>
+              <%# if approved_requests.size <  offer.persons_in_gathering.to_i %>                
+                <%#= link_to "Approve", "/accept_gathering/#{offer.id}?mem=#{offer.user.id}" %> |
+                <%#= link_to "Decline", "/reject_gathering/#{offer.id}?mem=#{offer.user.id}&item_id=#{offer.item.id}" %>                
+              <%# end %>
+            <%# end %>
 
 
             <% if (offer.status != "all joinings approved" and offer.status != "Cancelled" and offer.status != "Applied" and offer.status != "Declined") && current_user.id == offer.user_id && offer.rental_start_date >= Date.parse("#{Date.today}","%Y-%d-%m") %>              
