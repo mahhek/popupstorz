@@ -44,7 +44,7 @@
               <br />
               <span style="font-size: 0.7em;">
                 <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
-                  <%= t(:per_day) %>
+                  <%= t(:per_person2) %>
                 <% else %>
                   <%= t(:total_rental_price) %>
                 <% end %>
@@ -73,13 +73,14 @@
             <!-- gathering-bloc-row -->
             <div style="margin-top: 17px; color: grey;">
               <%if offer.is_gathering or offer.persons_in_gathering.to_i > 0%>
-                Gathering : </b><%= offer.gathering_description %> 
+                <%= t(:pop_union) %>:&nbsp;<%= offer.persons_in_gathering.to_s + " " + "#{t(:persons_required)}" %>
               <%else%>	          
-                Standard Gathering
+                <%= t(:standard_booking) %>
               <%end%>
             </div>
             <!-- gathering-popup-row -->
-            <a class="info"><%= offer.rental_start_date.strftime("%b. %d, %Y") %> - <%= offer.rental_end_date.strftime("%b. %d, %Y") %>
+            <a style="color:grey;" class="info">
+              <%= offer.rental_start_date.strftime("%b. %d, %Y") %> - <%= offer.rental_end_date.strftime("%b. %d, %Y") %>
               <span><b> Response required before : </b>
                 <% if offer.is_gathering or offer.persons_in_gathering.to_i > 0 %>
                   <%= offer.gathering_deadline.strftime("%b. %d, %Y") %>
@@ -89,21 +90,21 @@
             </a>
 
             <!-- messages-bloc-row -->
-            <% if current_user.id != offer.item.user_id %>
-              <div id="store-btn">
-                <%= link_to_function "Send Message", "$('#contact_me_div_#{offer.item.user_id}').toggle('slow');", :class => "send"  %>
-              </div>
-            <% end %>
+    <%# if current_user.id != offer.item.user_id %>
+    <%#*<div id="store-btn">%>
+    <%#= link_to_function "Send Message", "$('#contact_me_div_#{offer.item.user_id}').toggle('slow');", :class => "send"  %>
+    <%#*</div>%>
+    <%# end %>
 
 
           </div>
 
           <!-- action-bloc-row -->
           <div style="float: left;text-align: center; width: 15.7%;">
-            <div style="margin-top: 55px;">
+            <div style="font-size: 1.2em;margin-top: 55px;text-transform: uppercase;">
               <% if offer.status == "Accepted - Payment pending" or offer.status == "all joinings approved" or offer.status == "Accepted - Confirmation pending" or offer.status == "joinings approved" or offer.status == "Applied" or offer.status == "confirmed" %>
                 <% if joined.size.to_i < offer.persons_in_gathering.to_i or offer.cancellation_date.blank? %>
-                  <%= "Creating" %>
+                  <span style="color: #00DAFF;"><%= "Creating" %></span>
                 <% else %>
                   <span style="color: #00DAFF;"><%= "Applied" %></span>
                 <% end %>
@@ -124,15 +125,15 @@
               <form METHOD="LINK" ACTION="/items/payment_charge/<%=offer.id%>"> <input TYPE="submit" VALUE="check in"> </form>
             <% end %>
 
-            <% unless 	offer.status == "Approved" || 
-                offer.status == "Accepted" || 
-                offer.status == "confirmed" || 
-                offer.status == "Confirmed" || 
-                offer.status == "Declined" || 
-                offer.status == "Cancelled" %>
-              <%= link_to "Approve", "/accept_gathering/#{offer.id}?mem=#{offer.user.id}" %> | 
-              <%= link_to "Decline", "/reject_gathering/#{offer.id}?mem=#{offer.user.id}&item_id=#{offer.item.id}" %>
-            <% end %>
+    <%# unless 	offer.status == "Approved" || 
+    offer.status == "Accepted" || 
+    offer.status == "confirmed" || 
+    offer.status == "Confirmed" || 
+    offer.status == "Declined" || 
+    offer.status == "Cancelled" %>
+    <%#= link_to "Approve", "/accept_gathering/#{offer.id}?mem=#{offer.user.id}" %>
+    <%#= link_to "Decline", "/reject_gathering/#{offer.id}?mem=#{offer.user.id}&item_id=#{offer.item.id}" %>
+    <%# end %>
 
 
             <% if (offer.status != "all joinings approved" and offer.status != "Cancelled" and offer.status != "Applied" and offer.status != "Declined") && current_user.id == offer.user_id && offer.rental_start_date >= Date.parse("#{Date.today}","%Y-%d-%m") %>

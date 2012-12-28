@@ -73,8 +73,7 @@
       }
       else{
         show_gathering();
-      }
-      
+      }     
       
       if($("#gathering_fields").is(":hidden") == false){
         $("#gathering_bg").css("background-color","cyan");
@@ -292,7 +291,6 @@
                 </strong>
               </label>
               <br/><br/>
-
               <% if @item.user.avatars.size > 0 %>
                 <% unless @item.user.avatars.blank? %>
                   <%= image_tag(@item.user.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" ) %>
@@ -310,7 +308,6 @@
                 <div id="offer_msg_text">
                   <%= offer_message.text_area :message, :hint => "Ask questions, tell them a bit about more about you, establish a friendly contact !", :id => "booking_msg" %>
                 </div>
-      <%#= offer_message.text_area :message, :hint => "Ask questions, tell them a bit about more about you, establish a friendly contact !", :id => "gathering_msg", :style => "display:none;" %>
                 <%= offer_message.hidden_field :user_id, :value => current_user.id %>
                 <%= offer_message.hidden_field :msg_posted_as, :value => @item.user == current_user ? "Owner" : "Renter"%>
               <%end%>
@@ -888,7 +885,8 @@
     $("#tr_pricePerPerson").show();
     $("#msg_gathering_div").show();
     $("#msg_booking_div").hide();
-    
+    alert("aaa");
+    $("#offer_message_div").html("");
     
   }
 
@@ -906,7 +904,7 @@
     $("#tr_pricePerPerson").hide();
     $("#msg_gathering_div").hide();
     $("#msg_booking_div").show();
-    
+    $("#offer_message_div").html('<textarea rows="20" name="offer[offer_messages_attributes][0][message]" id="booking_msg" hint="Ask questions, tell them a bit about more about you, establish a friendly contact !" cols="40" class="hint"></textarea>');
   }
 
   function check_persons(obj,val){

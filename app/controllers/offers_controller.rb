@@ -286,8 +286,8 @@ class OffersController < ApplicationController
       if current_user.id == @offer.user_id
         @offer.update_attribute("status", "Declined")
         flash[:notice] = t(:offer_declined)
-        current_user.send_message(@item.user, :topic => t(:offer_declined_email) , :body => "#{t(:gathering_created_email)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:owner_decliend)} ".html_safe)
-        @notification = Notification.new(:user_id => @item.user.id, :notification_type =>t(:offer_declined_email), :description => "#{t(:gathering_created_email)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")} #{t(:owner_decliend)}".html_safe)
+        current_user.send_message(@item.user, :topic => t(:offer_declined_email) , :body => "#{t(:gathering_created_email)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")} ".html_safe)
+        @notification = Notification.new(:user_id => @item.user.id, :notification_type =>t(:offer_declined_email), :description => "#{t(:gathering_created_email)} #{@item.title} #{t(:email_from)} #{@offer.rental_start_date.strftime("%b.%d, %Y")} #{t(:email_to)} #{@offer.rental_end_date.strftime("%b.%d, %Y")}".html_safe)
         @notification.save
       else
         @offer.update_attribute("status", "Declined")
@@ -398,8 +398,8 @@ class OffersController < ApplicationController
       if gathering_member.destroy
         flash[:notice] = t(:request_declined)
         user = User.find(gathering_member.user_id)
-        current_user.send_message(user, :topic => t(:joining_decline), :body => "#{t(:req_to_join)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{t(:join_gathering)}</a> #{offer.item.title} from #{offer.rental_start_date.strftime("%b. %d ,%Y")} to #{offer.rental_end_date.strftime("%b. %d ,%Y")} #{t(:has_been_declined)}".html_safe)
-        @notification = Notification.new(:user_id => gathering_member.user_id, :notification_type => t(:joining_decline), :description => "#{t(:req_to_join)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{t(:join_gathering)} </a> #{offer.item.title} from #{offer.rental_start_date.strftime("%b. %d ,%Y")} to #{offer.rental_end_date.strftime("%b. %d ,%Y")} #{t(:has_been_declined)}".html_safe)
+        current_user.send_message(user, :topic => t(:joining_decline), :body => "#{t(:req_to_join)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{t(:join_gathering)}</a> #{offer.item.title} from #{offer.rental_start_date.strftime("%b. %d ,%Y")} to #{offer.rental_end_date.strftime("%b. %d ,%Y")}".html_safe)
+        @notification = Notification.new(:user_id => gathering_member.user_id, :notification_type => t(:joining_decline), :description => "#{t(:req_to_join)} <a href='http://#{request.host_with_port}/items/#{offer.item.id}'> #{t(:join_gathering)} </a> #{offer.item.title} from #{offer.rental_start_date.strftime("%b. %d ,%Y")} to #{offer.rental_end_date.strftime("%b. %d ,%Y")}".html_safe)
         @notification.save
       else
         flash[:notice] = t(:request_cant_declined)
