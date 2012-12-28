@@ -1074,7 +1074,7 @@ h2 {
 .footer a {
     text-decoration: none;
     color: #666666; 
-    margin-right: 10px;
+    margin: 0px 10px;
 }
 
 .footer a:hover {
