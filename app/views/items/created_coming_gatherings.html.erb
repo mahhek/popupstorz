@@ -154,7 +154,7 @@
             <%# approved_requests = offer.members.where("status ='Approved'") %>
             <%# if offer.status == "confirmed" && current_user.id == offer.user_id %>
               <%# if approved_requests.size <  offer.persons_in_gathering.to_i %>                
-                <%#= link_to "Approve", "/accept_gathering/#{offer.id}?mem=#{offer.user.id}" %> |
+                <%#= link_to "Approve", "/accept_gathering/#{offer.id}?mem=#{offer.user.id}" %>
                 <%#= link_to "Decline", "/reject_gathering/#{offer.id}?mem=#{offer.user.id}&item_id=#{offer.item.id}" %>                
               <%# end %>
             <%# end %>
