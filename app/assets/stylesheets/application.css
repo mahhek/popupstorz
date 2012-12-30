@@ -200,3 +200,7 @@ ul.hmenu li {
     padding-left: 8px;
     width: 32px   
 }
+
+#home_title a:hover{
+ text-decoration: underline;
+}

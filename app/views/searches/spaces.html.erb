@@ -120,7 +120,7 @@
   <%#= form_tag "/search_spaces", {:remote => true, :method => :get, :pars => params, :id => "search_spaces_form" } do %>
     <div class="refinesearchresults1 shadowCont">
       <h2 style="font-size: 21px;margin-bottom: 10px; font-weight: normal; font-family: proxima-semibold;">Spaces search</h2>
-      <div>        
+      <div>
         <div style="float:left;position: absolute;text-align: center;">
           <%= select_tag( "location", options_from_collection_for_select( @users_with_uniq_cities, :city, :city,params[:location]), :prompt => "World Wide", :class => "paris") %>
         </div>

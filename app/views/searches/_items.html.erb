@@ -1,6 +1,13 @@
+<style>
+  .chzn-container{
+    font-size: 12px;
+  }
+</style>
 <div class="listx-bg">
-  <div class="sortby">    
-    <%= select_tag "sort_option_sel", options_for_select([[t("newest_sort") ,"1"],[t("price_high_to_low") ,"2"],[t("price_low_to_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#sort_option').val($(this).val());$('#price_range_form').trigger('submit.rails')" %>
+  <div class="sortby">
+    <div style="margin-left: 20px;width:177px !important;float:left;">
+      <%= select_tag "sort_option_sel", options_for_select([[t("newest_sort") ,"1"],[t("price_high_to_low") ,"2"],[t("price_low_to_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#sort_option').val($(this).val());$('#price_range_form').trigger('submit.rails')", :style => "font-size:12px !important;width:177px;" %>
+    </div>
     <span style="float:right;">
       <%= will_paginate(@items, :params => params, :renderer => PaginationListLinkRenderer) %>
     </span>
@@ -26,7 +33,7 @@
               <%= t(:per_day) %>
             </span>
           </div>
-     
+
           <div class="name-list" style="margin-bottom: 5px;font-family: proxima-bold;color: #333333;">
             <h4 style="float:left;" onclick="window.location='<%= "/items/#{item.id}" %>'"><%= item.title %></h4>
             <div id="favorite_div_<%= item.id %>" style="float:left; color: grey;margin-left: 15px;">
@@ -37,12 +44,15 @@
             <%= item.listing_type.blank? ? "#{t(:other)}" : item.listing_type.name %>
           </div><br />
 
-          <div class="name-list XXII" style="margin-bottom: 5px;float: left;" onclick="window.location='<%= "/items/#{item.id}" %>'">
-            <span style="font-size: 1.1em; font-variant: small-caps; ">
-              <%= item.city %></span>,
-            <span style="font-size: 1.1em; text-transform: uppercase; ">
-              <%= item.country_code %>
-            </span>
+          <div class="name-list" style="margin-bottom: 5px;float:left;width:60%;color:#666666;" onclick="window.location='<%= "/items/#{item.id}" %>'">
+            <div class="name-list XXII" style="margin-bottom: 5px;float: left;" onclick="window.location='<%= "/items/#{item.id}" %>'">
+              <span style="font-size: 1.1em; font-variant: small-caps; ">
+                <%= item.city.blank? ? "" : item.city.to_s + "," %>
+              </span>
+              <span style="font-size: 1.1em; text-transform: uppercase; ">
+                <%= item.country_code %>
+              </span>
+            </div>
           </div>
 
           <div class="name-list" style="margin-bottom: 5px;width: 70%;float: left;" onclick="window.location='<%= "/items/#{item.id}" %>'">

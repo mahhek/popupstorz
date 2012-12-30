@@ -96,7 +96,7 @@
   <% end %>
 
   <% unless @gatherings.blank? %>
-    <div id="searched-gatherings" class="listx-bg">    
+    <div id="searched-gatherings" class="listx-bg">      
       <%= render :partial => "gatherings", :locals => {:offers => @gatherings} %>
     <% else %>
       <%= t(:other_search) %>

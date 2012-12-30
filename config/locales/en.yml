@@ -712,7 +712,7 @@ en:
    choose_dates: "Choose Dates"
    persons_needed : "Persons Needed"
    confirmed_guests: "Confirmed Guests"
-   join_this_gathering: "Join this Gathering"
+   join_this_gathering: "Join this Pop'union"
    post: "Post"
    show_price_details: "Show Price Details"
    total_rental_price: "Total Rental Price"
@@ -728,3 +728,4 @@ en:
    thanks_for_accepting_offer: "Thanks you for accepting the offermade on your space "
    offer_made_on_your_space: " offer made on your space "
    apology_without_payment: ". We apologize for this inconvenience."
+   no_booking_found: "No booking found. Please try again!"

@@ -36,6 +36,13 @@ class SearchesController < ApplicationController
     unless @gatherings.blank?
       @gatherings = @gatherings.uniq
     end
+    gaths = []
+    @gatherings.each do|g|
+      if g.members.size.to_i < g.persons_in_gathering.to_i
+        gaths << g
+      end
+    end
+    @gatherings = gaths
     
     @gatherings = @gatherings.paginate(:page => params[:page], :per_page => 6 )
     respond_to do |format| 

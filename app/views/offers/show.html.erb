@@ -60,26 +60,28 @@
   }
 
 </style>
-<div id="bar-useraction" class="menu-sub-layout" style="">
-  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'messages' ) ? 'cyan' : '' %>">
-    <%= link_to t(:messages), inbox_messages_path %>
-  </span>
-  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' and (params[:action] == "overview" or params[:action] == "new"or params[:action] == "show")  or (params[:controller] == 'offers' and params[:action] == "show" )) ? 'cyan' : '' %>">
-    <%= link_to t(:my_listings), overview_items_path %>
-  </span>
-  <span class="menu-sub" style="background-color: <%= ( (params[:controller] == 'items' and params[:action] == "created_coming_gatherings" ) ) ? 'cyan' : '' %>">
-    <%= link_to t(:my_bookings), "/items/created_coming_gatherings" %>
-  </span>
-  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' and params[:action] == "favorites" ) ? 'cyan' : '' %>">
-    <%= link_to t(:my_favorites), favorites_items_path %>
-  </span>
-  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
-    <%= link_to t(:my_profile), profile_path(current_user.id) if current_user %>  
-  </span>
-  <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
-    <%= link_to t(:account),"/invitation" %>
-  </span>
-</div>
+<% unless current_user.blank? %>
+  <div id="bar-useraction" class="menu-sub-layout" style="">
+    <span class="menu-sub" style="background-color: <%= (params[:controller] == 'messages' ) ? 'cyan' : '' %>">
+      <%= link_to t(:messages), inbox_messages_path %>
+    </span>
+    <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' and (params[:action] == "overview" or params[:action] == "new"or params[:action] == "show")  or (params[:controller] == 'offers' and params[:action] == "show" )) ? 'cyan' : '' %>">
+      <%= link_to t(:my_listings), overview_items_path %>
+    </span>
+    <span class="menu-sub" style="background-color: <%= ( (params[:controller] == 'items' and params[:action] == "created_coming_gatherings" ) ) ? 'cyan' : '' %>">
+      <%= link_to t(:my_bookings), "/items/created_coming_gatherings" %>
+    </span>
+    <span class="menu-sub" style="background-color: <%= (params[:controller] == 'items' and params[:action] == "favorites" ) ? 'cyan' : '' %>">
+      <%= link_to t(:my_favorites), favorites_items_path %>
+    </span>
+    <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
+      <%= link_to t(:my_profile), profile_path(current_user.id) if current_user %>  
+    </span>
+    <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
+      <%= link_to t(:account),"/invitation" %>
+    </span>
+  </div>
+<% end %>
 <%#= render :partial => "/searches/search_header" %>
 <!-- TODO Add header for search or dasboard by the context -->
 <div id="hd-result">
@@ -183,17 +185,24 @@
     <div style="float: right; padding-top: 20px; text-align: right;max-width: 250px;">
       <span style="font-family: proxima-semibold; font-size: 2em; line-height: 10px;color: #999999">
         <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>        
-          <% if session[:curr] == @offer.current_currency %>            
+          <% if session[:curr] == @offer.current_currency %>
             <%= @offer.current_currency == "USD" ? "$" : "€" + " "%>
-            <% if current_user.id == @offer.owner_id %>
-              <%= @offer.total.round.to_s %>
+            <% unless current_user.blank? %>
+              <% if current_user.id == @offer.owner_id %>
+                <%= @offer.total.round.to_s %>
+              <% else %>
+                <%= @offer.gathering_rental_price.round.to_s %>
+              <% end %>
             <% else %>
               <%= @offer.gathering_rental_price.round.to_s %>
             <% end %>
           <% else %>
-
-            <% if current_user.id == @offer.owner_id %>
-              <%= number_to_currency(exchange_currency(@offer.total.round,  @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+            <% unless current_user.blank? %>
+              <% if current_user.id == @offer.owner_id %>
+                <%= number_to_currency(exchange_currency(@offer.total.round,  @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+              <% else %>
+                <%= number_to_currency(exchange_currency(@offer.gathering_rental_price.round,  @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+              <% end %>
             <% else %>
               <%= number_to_currency(exchange_currency(@offer.gathering_rental_price.round,  @offer.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
             <% end %>
@@ -212,8 +221,12 @@
 
       <% if(@offer.is_gathering and @offer.persons_in_gathering.to_i > 0) %>
         <span style="font-family: proxima-semibold; font-size: 1.3em; color: #999999">          
-          <% if current_user.id == @offer.owner_id %>
-            <%= t(:total_rental_price) %>
+          <% unless current_user.blank? %>
+            <% if current_user.id == @offer.owner_id %>
+              <%= t(:total_rental_price) %>
+            <%else%>
+              <%= t(:per_person2) %>
+            <% end %>
           <%else%>
             <%= t(:per_person2) %>
           <% end %>
@@ -422,7 +435,7 @@
           <span style="font-family: proxima-semibold; text-transform: uppercase;">
             <%= t(:gathering_des) %>
           </span>
-          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
+          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;padding: 5px;">
             <%= raw nl2br(@offer.gathering_description) %>
           </div>
         <% end %>
@@ -430,7 +443,7 @@
           <span style="font-family: proxima-semibold; text-transform: uppercase;">
             <%= t(:pop_description) %>
           </span>
-          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
+          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;padding: 5px;">
             <%= raw nl2br(@offer.additional_message) %>
           </div>
         <% end %>
@@ -439,7 +452,7 @@
           <span style="font-family: proxima-semibold; text-transform: uppercase;">
             <%= t(:additional_message) %>
           </span>
-          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;">
+          <div style="border: 1px solid; height: 100px; overflow: scroll; width: 600px;padding: 5px;">
             <%= raw nl2br(@offer.additional_message) %>
           </div>
         <% end %>
@@ -646,11 +659,13 @@
               <div style="float:left;clear: both;">
                 <% approved_requests = @offer.members.where("status ='Approved'") %>
                 <% request = GatheringMember.where("user_id = #{req.id} and offer_id = #{@offer.id}").first %>            
-                <% if request.status == "confirmed" && current_user.id == @offer.user_id %>
-                  <% if approved_requests.size <  @offer.persons_in_gathering.to_i %>
-                    <%= link_to t(:approve), "/approve_gathering_request/#{@offer.id}?mem=#{req.id}", :class => "green" %>
-                    <%= link_to t(:decline), "/decline_gathering_request/#{@offer.id}?mem=#{req.id}", :class => "red" %>
-                    <br /><br />
+                <% unless current_user.blank? %>
+                  <% if request.status == "confirmed" && current_user.id == @offer.user_id %>
+                    <% if approved_requests.size <  @offer.persons_in_gathering.to_i %>
+                      <%= link_to t(:approve), "/approve_gathering_request/#{@offer.id}?mem=#{req.id}", :class => "green" %>
+                      <%= link_to t(:decline), "/decline_gathering_request/#{@offer.id}?mem=#{req.id}", :class => "red" %>
+                      <br /><br />
+                    <% end %>
                   <% end %>
                 <% end %>
               </div>
@@ -673,7 +688,7 @@
                   </span>
 
                   <div style="margin-right: 10px; text-align: right;">
-                    <%= submit_tag "Send", :onclick => "$('#contact_me_div_#{req.id}').hide();" %>&nbsp;&nbsp;&nbsp;
+                    <%= submit_tag "Send", :onclick => "alert('Your message was successfully sent!');$('#contact_me_div_#{req.id}').hide();" %>&nbsp;&nbsp;&nbsp;
                     <%= link_to_function "Cancel", "$('#contact_me_div_#{req.id}').toggle('slow');"  %>
                   </div>
                 <% end %>

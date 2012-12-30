@@ -1,6 +1,14 @@
+<style>
+  .chzn-container{
+    font-size: 12px;
+  }
+</style>
 <div class="listx-bg">
-  <div class="sortby">    
-    <%= select_tag "sort_option_sel", options_for_select([[t("newest_sort"),"4"],[t("oldest_sort"),""],[t("price_high_low") ,"2"],[t("price_low_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#sort_option').val($(this).val());$('#price_range_form').trigger('submit.rails')" %>
+  <div class="sortby">
+    <div style="margin-left: 20px;width:177px !important;float:left;">
+      <%= select_tag "sort_option_sel", options_for_select([[t("newest_sort"),"4"],[t("oldest_sort"),"5"],[t("price_high_low") ,"2"],[t("price_low_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#sort_option').val($(this).val());$('#price_range_form').trigger('submit.rails')", :style => "width:160px;" %>
+      <%#= select_tag "sort_option_sel", options_for_select([[t("newest_sort"),"4"],[t("oldest_sort"),""],[t("price_high_low") ,"2"],[t("price_low_high"), "3"]], params[:sort_option]), :prompt => "Sort By",:onchange => "$('#sort_option').val($(this).val());$('#price_range_form').trigger('submit.rails')" %>
+    </div>
     <span style="float:right;">
       <%= will_paginate(@gatherings, :params => params, :renderer => PaginationListLinkRenderer) %>
     </span>
@@ -22,43 +30,43 @@
           </div>
 
           <div style="color: #666666; float: right; font-size: 26px;text-align: right;" onclick="window.location='<%= "/offers/#{gathering.id}" %>'">
-            <%#= number_to_currency(exchange_currency(gathering.gathering_rental_price.round, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-            <%#*<br />%>
-            <%#*<span class="perweek" style="font-size: 0.7em;">%>
-              <%#= t(:per_person2) %>
-            <%#*</span>%>
+  <%#= number_to_currency(exchange_currency(gathering.gathering_rental_price.round, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+  <%#*<br />%>
+  <%#*<span class="perweek" style="font-size: 0.7em;">%>
+  <%#= t(:per_person2) %>
+  <%#*</span>%>
             <% if gathering.is_gathering and gathering.persons_in_gathering.to_i > 0 %>        
-                <% if session[:curr] == gathering.current_currency %>            
-                  <%= gathering.current_currency == "USD" ? "$" : "€" + " "%>
-                  <%= gathering.gathering_rental_price.round.to_s %>
-                <% else %>
-                  <%= number_to_currency(exchange_currency(gathering.gathering_rental_price.round,  gathering.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-                <% end %>
+              <% if session[:curr] == gathering.current_currency %>            
+                <%= gathering.current_currency == "USD" ? "$" : "€" + " "%>
+                <%= gathering.gathering_rental_price.round.to_s %>
               <% else %>
-                <% if session[:curr] == gathering.current_currency %>            
-                  <%= gathering.current_currency == "USD" ? "$" : "€" %>
-                  <%= gathering.total.round.to_s %>
-                <% else %>
-                  <%= number_to_currency(exchange_currency(gathering.total.round, gathering.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-                <% end %>
+                <%= number_to_currency(exchange_currency(gathering.gathering_rental_price.round,  gathering.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
               <% end %>
-              <br />
-              <span style="font-size: 0.7em;">
-                <%if gathering.is_gathering or gathering.persons_in_gathering.to_i > 0%>
-                  <%= t(:per_person2) %>
-                <% else %>
-                  <%= t(:total_rental_price) %>
-                <% end %>
-              </span>
+            <% else %>
+              <% if session[:curr] == gathering.current_currency %>            
+                <%= gathering.current_currency == "USD" ? "$" : "€" %>
+                <%= gathering.total.round.to_s %>
+              <% else %>
+                <%= number_to_currency(exchange_currency(gathering.total.round, gathering.current_currency), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+              <% end %>
+            <% end %>
+            <br />
+            <span style="font-size: 0.7em;">
+              <%if gathering.is_gathering or gathering.persons_in_gathering.to_i > 0%>
+                <%= t(:per_person2) %>
+              <% else %>
+                <%= t(:total_rental_price) %>
+              <% end %>
+            </span>
           </div>
 
-          <%#if !gathering.is_gathering or gathering.persons_in_gathering.to_i <= 0 %>          
-            <%#*<div style="color: #999999; float: right; text-align: right;" onclick="window.location='%>
-<%#= "/offers/#{gathering.id}" %>
-              <%#*Total Rental Price:%> 
-              <%#= number_to_currency(exchange_currency(gathering.total_amount.round, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
-            <%#*</div>%>
-          <%# end %>
+  <%#if !gathering.is_gathering or gathering.persons_in_gathering.to_i <= 0 %>          
+  <%#*<div style="color: #999999; float: right; text-align: right;" onclick="window.location='%>
+  <%#= "/offers/#{gathering.id}" %>
+  <%#*Total Rental Price:%> 
+  <%#= number_to_currency(exchange_currency(gathering.total_amount.round, item.price_unit), :unit => session[:curr] == "USD" ? "$" : "€", :precision => 0) %>
+  <%#*</div>%>
+  <%# end %>
 
 
           <div class="name-list" style="margin-bottom: 5px;font-family: proxima-bold;color: #333333;">
@@ -77,7 +85,6 @@
             </span>
           </div>
 
-
           <div onclick="window.location='<%= "/offers/#{gathering.id}" %>'" class="name-list" style="font-family: proxima-bold; color: #666666;">
             <%= item.type %>
           </div>
@@ -85,7 +92,7 @@
           <div class="name-list" style="margin-bottom: 5px;width: 72%;float: left;margin-top: 40px;">
             <div style="float: left;width: 75%">
               <%= t(:gathering) %><%= gathering.persons_in_gathering %>&nbsp;<%= t(:persons) %>&nbsp;<br />
-              <%= gathering.rental_start_date.strftime("%Y-%m-%d") %> - <%= gathering.rental_end_date.strftime("%Y-%m-%d") %>
+              <%= gathering.rental_start_date.strftime("%b. %d, %Y") %> - <%= gathering.rental_end_date.strftime("%b. %d, %Y") %>
             </div>
 
             <div id="favorite_div_<%= item.id %>" style="color: grey;float: left;">
