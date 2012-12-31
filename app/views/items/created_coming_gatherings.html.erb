@@ -49,9 +49,9 @@
             <div class="name-list" style="margin-bottom: 5px;" onclick="window.location='<%= "/offers/#{offer.id}" %>'">
               <h4><%= item.title %></h4>
               <%if offer.rental_end_date < Date.today %>
-                <div id="rating_of_item_<%= offer.item.id %>">
-                  <%= render :partial => "/ratings/rating", :locals => { :asset => offer.item, :only_view => false } %>
-                </div>
+                <%#*<div id="rating_of_item_<%= offer.item.id %>">%>
+                  <%#= render :partial => "/ratings/rating", :locals => { :asset => offer.item, :only_view => false } %>
+                <%#*</div>%>
               <%end%>
             </div>
 
