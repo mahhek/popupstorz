@@ -1445,3 +1445,7 @@ ul, li {
     padding-top: 1em;
     color: #333333;
 }
+
+#home_title a:hover{
+    text-decoration: underline;
+}
