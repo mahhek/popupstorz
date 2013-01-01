@@ -11,5 +11,3 @@ class Avatar < ActiveRecord::Base
     :styles => {:thumb => "178x119#", :small => "96X72>", :medium => "240x180>", :large => "480x360#",:home => "266X177#" },
     :default_style => :original
 end
-
-

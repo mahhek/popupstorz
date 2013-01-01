@@ -1,7 +1,6 @@
 # -*- encoding : utf-8 -*-
 PopupStorz::Application.routes.draw do
   get "users/show"
-  resources "users"
   
   match '/auth/:provider/callback' => 'services#create'
   match '/auth/facebook/callback' => 'services#create'
