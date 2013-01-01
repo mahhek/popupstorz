@@ -31,23 +31,30 @@
     <div style="padding: 20px;float: left;">
       <span style="text-transform: uppercase;font-size: 1.0em;font-weight: bold;">
         <%= t(:send_msg_to_pop_owner) %>
-      </span><br />
+      </span>
+      <br />
 
       <div style="margin-top:10px;width: 100%;float: left;">
-        <div style="float: left;width:15%;">
-          <b><%= @gathering.user.popup_storz_display_name %></b><br />
-          <% if @gathering.user.avatars.size > 0 %>
-            <%= link_to image_tag(@gathering.user.avatars.first.photo.url(:thumb), :height => "85", :alt => "Seller-Image" ), profile_path(@gathering.user) %>
-          <% else %>
-            <%= link_to image_tag("User.png", :height => "56"), profile_path(@gathering.user) %>
-          <% end %>
+        <div style="float: left;width:20%;">
+          <div style="float: left;height: 280px;">
+            <b><%= @gathering.user.popup_storz_display_name %></b><br />
+            <% if @gathering.user.avatars.size > 0 %>
+              <%= link_to image_tag(@gathering.user.avatars.first.photo.url(:thumb), :height => "85", :alt => "Seller-Image" ), profile_path(@gathering.user) %>
+            <% else %>
+              <%= link_to image_tag("User.png", :height => "56"), profile_path(@gathering.user) %>
+            <% end %>
+          </div>
+          <div style="float: left;color: #666666">
+            <%= "I need a response before: " %>
+          </div>
+
         </div>
 
-        <div style="width: 85%;float:left;">
+        <div style="width: 80%;float:left;">
           <%= form_for @gathering, :url => "/update_gathering_deadline", :html => {:onsubmit => "return check_request_form();"} do|f|  %>
             <%= f.hidden_field "id", :value => @gathering.id %>
             <%= f.fields_for :offer_messages do |offer_message| %>
-              <%= offer_message.text_area :message, :placeholder => "Tell them a bit about yourself, your work, your background, establish a friendly contact!", :style => "width:780px;height:250px;" %>
+              <%= offer_message.text_area :message, :placeholder => "Tell them a bit about yourself, your work, your background, establish a friendly contact!", :style => "width:735px;height:250px;" %>
               <%= offer_message.hidden_field :user_id, :value => current_user.id %>
               <%= offer_message.hidden_field :offer_id, :value => @gathering.id %>
               <%= offer_message.hidden_field :msg_posted_as, :value => @gathering.user == current_user ? "Owner" : "Renter"%>
@@ -58,7 +65,7 @@
           </div>
           <div class="clear">&nbsp;</div>
           <div id="BookingContinue">
-            <%= f.submit "Continue", :class => "search" %>
+            <%= f.submit "Send Offer", :class => "search" %>
           </div>
         <% end %>
       </div>
