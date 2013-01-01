@@ -32,7 +32,6 @@ class AvatarsController < ApplicationController
   end
   
   def update
-    ddd
     upload_pics
     return redirect_to items_path
   end

@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 PopupStorz::Application.routes.draw do
   get "users/show"
+  resources "users"
   
   match '/auth/:provider/callback' => 'services#create'
   match '/auth/facebook/callback' => 'services#create'
@@ -228,6 +229,7 @@ PopupStorz::Application.routes.draw do
   end
   
   match '/users/:id/profile' => 'users#show', :as => :profile
+  match '/users/:id/profile/edit' => 'users#edit', :as => :edit_profile
   match 'admin/users/:id/profile' => 'admin/users#show', :as => :admin_profile
   root :to => "home#index"
 end

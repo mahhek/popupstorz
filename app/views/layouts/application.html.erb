@@ -245,7 +245,7 @@
                 <%= link_to t(:my_favorites), favorites_items_path %>
               </span>
               <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
-                <%= link_to t(:my_profile), profile_path(current_user.id) if current_user %>  
+                <%= link_to t(:my_profile), edit_profile_path(current_user.id) if current_user %>  
               </span>
               <span class="menu-sub" style="background-color: <%= (params[:controller] == 'users' ) ? 'cyan' : '' %>">
                 <%= link_to t(:account),"/invitation" %>

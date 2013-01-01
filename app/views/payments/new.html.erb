@@ -60,7 +60,7 @@
 </div>
 
 <div id="booking-content">
-  <div class="container_12">
+  <div class="container_12 shadowCont" >
     <%= form_for [@item,@offer, @payment], :html => {:id => :payForm, :onsubmit => "return checkTerms();"} do |f| %>
       <div style="padding: 20px;float: left;">
         <% if @payment.errors.any? %>
@@ -74,30 +74,39 @@
           </div>
         <% end %>
       </div>
-      <div class="grid_12">
 
+      <div class="grid_12">        
         <div class="clear">&nbsp;</div>
-
-        <div id="details-panel">
+        <span style="text-transform: uppercase;font-size: 1.2em;font-weight: bold;">
+          <%= t(:location2) %>
+        </span>
+        <div id="details-panel">          
           <% unless @item.avatars.blank? %>
-            <%= image_tag(@item.avatars.first.photo.url(:large), :width => "180", :height => "123", :align => "left", :style => "padding-right:20px;" , :alt => "no image available") %>
+            <%= image_tag(@item.avatars.first.photo.url(:large), :width => "280", :height => "200", :align => "left", :style => "padding-right:20px;" , :alt => "no image available") %>
           <%end%>
-          <h5>
-            <%= link_to @item.title, item_path(@item) %>
-          </h5>
-          <%= @item.listing_type.blank? ? "#{t(:other)}" : @item.listing_type.name %>
-          <p class="XXII" style="font-family: XXII;">
-            <span style="font-variant: small-caps; ">
-              <%= @item.user.city %>
-            </span>,
-            <span style="text-transform: uppercase; ">
-              <%= @item.user.country %>
-            </span>
-          </p>          
+          <span style="font-size: 1.8em;">
+            <b>
+              <%= link_to @item.title, item_path(@item) %>
+            </b>
+          </span><br />
+          <span style="color:#666666;font-size: 15px;">
+            <b>
+              <%= @item.listing_type.blank? ? "#{t(:other)}" : @item.listing_type.name %>
+            </b>
+          </span>
+
+          <span style="display: block; font-family: XXII; font-size: 1.2em; margin-top: 4px; text-transform: uppercase;">
+            <% addr = @item.address.gsub(/\d/,'') %>
+            <% addr = addr.split(",") %>
+            <%= addr[0] %>
+            <%= @item.zipcode %>
+            <%= addr[1].blank? ? " " : " , "+addr[1] %>
+            <%= addr[2].blank? ? " " : " , "+addr[2] %>
+          </span>
           <div class="clear">&nbsp;</div>
         </div>
 
-        <div style="float:left;width:100%;margin-top: 20px;">
+        <div style="float:left;width:100%;margin-top: 20px;text-transform: uppercase;">
           <h3><%= t(:payment) %></h3>
           <div class="clear"></div>
           <br />
@@ -106,7 +115,7 @@
           <% if @offer.is_gathering %>
             <% rentareto_fee = @offer.gathering_rental_price.blank? ? 0 : (( (@offer.gathering_rental_price * 10 ) / 100).round ) %>
             <% owner_amount = @offer.gathering_rental_price.blank? ? 0 : (@offer.gathering_rental_price).round %>
-            
+
             <% total_amount = rentareto_fee + owner_amount %>
             <%= f.hidden_field :rentareto_fee, :value => rentareto_fee %>
             <%= f.hidden_field :seller_amount, :value => owner_amount %>
@@ -127,35 +136,45 @@
 
           <div style="float: left;width: 100%;" class="field">
             <span style="float: left; margin-right: 5px;">
-              <h4 style="float: left;width: 150px;margin-top: 15px;"><%= t(:amount_to_be_paid) %></h4>
-              <%= f.text_field :amount, :value => total_amount, :readonly => true %>              
+              <h4 style="float: left;width: 175px;margin-top: 15px;color: #666666;font-size: 1.2em;">
+                <%= t(:amount_to_be_paid)+": " %>
+              </h4>
+              <div style="color:#666666;float: left;font-weight: bold;font-size: 1.2em;width: 15px;margin-top: 14px;">
+                <%= @offer.current_currency == "USD" ? "$" : "€" %>
+              </div>
+              <%= f.text_field :amount, :value => total_amount, :readonly => true, :style => "background-color:#FFFFFF;border:0px;border-radius:0px;box-shadow:0 0px 0px #FFFFFF, 0 0px 0 #BBBBBB inset;font-weight: bold;margin-left:-5px;color:#666666;font-size:1.2em;float:left;width:75px;" %>
             </span>
-            <span style="margin-top: 15px;color: #666666; display: inline-block; font-size: 0.9em; line-height: 14px; text-align: center; float: left;">You will be charged only if the owner accepts your booking</span>
+            <span style="font-weight: bold;margin-top: 15px;color: #999999; display: inline-block; font-size: 0.9em; line-height: 14px; text-align: center; float: left;">You will be charged only if the owner accepts your booking</span>
           </div>
-
-          <div style="width: 100%;float: left;margin-top: 30px;">
-            <label style="width: 150px;float: left;margin-top: 10px;"><%= t(:credit_card_number) %></label>
+          <div style="width: 100%;float: left;margin-top: 20px;color:#666666;">
+            <label style="width: 150px;float: left;margin-top: 10px;">
+              <%= t(:credit_card_number)+": " %>
+            </label>
             <%= text_field_tag :card_number, "4242424242424242", name: nil %>
             <br/><br/>
-            <label style="width: 150px;float: left;margin-top: 10px;">Security Code (CVV)</label>
+            <label style="width: 150px;float: left;margin-top: 10px;">
+              Security Code (CVV): </label>
             <%= text_field_tag :card_code, "123", name: nil%>
             <br/><br/>
-            <label style="width: 150px;float: left;margin-top: 10px;">Expiry Date</label>
+            <label style="width: 150px;float: left;margin-top: 10px;">Expiry Date: </label>
             <select name="date[month]">
               <% for i in 1..12 %>
                 <option value="<%= i %>"><%= i %></option>
               <% end %>
             </select>
             <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"} %>
-            <br/>
-            <br/>
-            
-            <%# terms_of_use = t(:terms_use) %>
-            <%#= text_area_tag :terms_of_user, terms_of_use, :size => "50x4" %>
-            <div style="float: left;">
-            <%= check_box_tag "is_confirm_terms" %>
+            <br/><br/>
+
+            <div style="float: left;border: 2px solid #CC33CC;">
+              <%= check_box_tag "is_confirm_terms" %>
             </div>
-            <div style="float: left;width: 50%;margin-left: 10px;"><%= t(:by_accepting) %></div>
+            <div style="float: left;width: 50%;margin-left: 10px;">
+              <%= t(:by_accepting) %>
+              <%= t(:and) %>
+              <b>
+                <%= link_to t(:popup_terms), "/home/terms" %>
+              </b>
+            </div>
             <br/><br/>
             <% if @offer.is_gathering and @offer.persons_in_gathering.to_i > 0 %>
               <%= f.submit "Confirm Application", :class => "search" %>

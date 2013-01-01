@@ -1,13 +1,16 @@
 <div id="hd-result">
   <div class="container_12">
-    <div id="r-nav" class="grid_9"> <a href="/"><%= t(:home) %></a> &nbsp;&gt;&nbsp; <%= t(:make_booking) %></div>
+    <div id="r-nav" class="grid_9"> 
+      <a href='#' class="back " onclick='history.go(-1);return false;'>&lt;&lt; <%= t(:back) %></a>
+    </div>
     <div class="grid_3"> &nbsp; </div>
     <div class="clear">&nbsp;</div>
   </div>
 </div>
 
 <div id="booking-content">
-  <div class="container_12">
+  <div class="container_12 shadowCont">
+    <h3><%= t(:apply_to_gathering) %></h3>
     <% unless @offer.blank? %>
       <div style="padding: 20px;float: left;">
         <% if @offer.errors.any? %>
@@ -15,87 +18,37 @@
             <h2><%= t(:include_following) %></h2>
             <ul>
               <li style="list-style: square;float: left;">
-                <%= t(:req_fields) %> <%= @offer.errors.full_messages.to_sentence  %>
+                <%= t(:req_fields) %> <%= @offer.errors.full_messages.to_sentence %>
               </li>
             </ul>
           </div>
-        <% end %>
-        <div style="width:100%;clear:both;float: left;margin-bottom: 20px;">
-          <b><%= t(:org) %></b><br /><br />
-          <% if @offer.user.avatars.size > 0 %>
-            <%= link_to image_tag(@offer.user.avatars.first.photo.url(:thumb), :height => "56", :alt => "Seller-Image" ), profile_path(@offer.user) %>
-          <% else %>
-            <%= link_to image_tag("User.png", :height => "56"), profile_path(@offer.user) %>
-          <% end %>
-          <div class="fltR w107">
-            <h1 class="name"><%= link_to @offer.user.popup_storz_display_name, profile_path(@offer.user) %></h1>
-            <p class="name_text"><%= @offer.user.country %></p>
-          </div>
+        <% end %>        
 
-          <div id="store-btn">
-            <%= link_to_function "Send Message to Organizer", "$('#contact_me_div').toggle('slow');", :class => "send"  %>
-          </div>
-          <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div">
-            <%= form_tag gathering_message_messages_path , :html => {:remote => true, :id => "contact_me_form"}, :remote  => true do %>
-              <%= hidden_field_tag :topic, "Gathering Inquiry" %>
-              <%= hidden_field_tag :user_id, @offer.user.id %>
-              <span style="width: auto;float: left;">
-                <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
-              </span><br />
-              <div style="float: left;margin-top: 5px;clear:both;">
-                <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div').toggle('slow');"  %>
-              </div>
+        <span style="text-transform: uppercase;font-size: 1.0em;font-weight: bold;">
+          <%= t(:send_msg_to_pop_owner) %>
+        </span><br />
+
+        <div style="margin-top:10px;width: 100%;float: left;">
+          <div style="float: left;width:15%;">
+            <b><%= @offer.user.popup_storz_display_name %></b><br />
+            <% if @offer.user.avatars.size > 0 %>
+              <%= link_to image_tag(@offer.user.avatars.first.photo.url(:thumb), :height => "85", :alt => "Seller-Image" ), profile_path(@offer.user) %>
+            <% else %>
+              <%= link_to image_tag("User.png", :height => "56"), profile_path(@offer.user) %>
             <% end %>
           </div>
-        </div>
 
-        <div style="width:100%;clear:both;float: left;margin-bottom: 20px;">
-          <b><%= t(:join_members) %></b><br /><br />
-          <% count = 1 %>
-          <% @offer.members.each do|member| %>
-            <h1 class="name"><%= link_to member.popup_storz_display_name, profile_path(member) %></h1>
-            <p class="name_text"><%= member.country %></p>
-
-            <div id="store-btn">
-              <%= link_to_function "Send Message", "$('#contact_me_div_#{count}').toggle('slow');", :class => "send"  %>
+          <div style="width: 85%;float:left;">
+            <%= form_for @offer, :url => "/join/#{@offer.id}",:html => {:name => "offer_form", :onsubmit => "return checkPrefferedAddress();"} do|f| %>
+              <%= text_area_tag "user_message", "", :placeholder => "Tell them a bit about yourself, your work, your background, establish a friendly contact!", :style => "width:780px;height:250px;" %>
+              <br /><br />              
             </div>
-            <div style="float: left;width: 100%;margin-top: 10px;display: none;" id="contact_me_div_<%= count %>">
-              <%= form_tag gathering_message_messages_path , :html => {:remote => true, :id => "contact_me_form"}, :remote  => true do %>
-                <%= hidden_field_tag :topic, "Gathering Inquiry" %>
-                <%= hidden_field_tag :user_id, member.id %>
-                <span style="width: auto;float: left;">
-                  <%= text_area_tag  :body, "", :style => "width:118px;height:100px;" %>
-                </span><br />
-                <div style="float: left;margin-top: 5px;clear:both;">
-                  <%= submit_tag "Send" %>&nbsp;&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#contact_me_div_#{count}').toggle('slow');"  %>
-                </div>
-              <% end %>
+            <div class="clear">&nbsp;</div>
+            <div id="BookingContinue">
+              <%= f.submit "Continue", :class => "search" %>
             </div>
-            <% count += 1 %>
-
           <% end %>
         </div>
-
-        <%= form_for @offer, :url => "/join/#{@offer.id}",:html => {:name => "offer_form", :onsubmit => "return checkPrefferedAddress();"} do|f| %>
-          <div style="border-bottom: 1px solid">
-            <%= t(:start_date) %><%= @offer.rental_start_date.strftime("%m-%d-%Y") %><br />
-            <%= t(:end_date) %><%= @offer.rental_end_date.strftime("%m-%d-%Y") %><br />
-            <%= t(:total_req_person) %> <%= @offer.persons_in_gathering %><br />
-            <%= t(:joined_person) %> <%= @offer.members.size %><br/>
-            <%= t(:space_description) %> <%= @offer.gathering_description %><br/>
-            <%= t(:rental_per_person) %> <%= @offer.gathering_rental_price %>
-            <br />
-            <%= t(:gathering_des) %><%= @offer.gathering_deadline.strftime("%m-%d-%Y") %><br /><br />
-          </div>
-
-          <b><%= t(:msg2) %></b><br />
-          <%= text_area_tag "user_message", "",:cols => "50", :rows => "15" %>
-          <br /><br />
-
-          <%= f.submit "Apply" %>
-
-          <div class="clear">&nbsp;</div>
-        <% end %>
       </div>
     <% end %>
   </div>
