@@ -1,7 +1,8 @@
 # -*- encoding : utf-8 -*-
 PopupStorz::Application.routes.draw do
   get "users/show"
-  
+
+  match "/users/update" => "users#update"
   match '/auth/:provider/callback' => 'services#create'
   match '/auth/facebook/callback' => 'services#create'
   match '/auth/twitter/callback' => 'services#create'

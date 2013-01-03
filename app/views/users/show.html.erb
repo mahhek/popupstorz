@@ -15,9 +15,10 @@
   <div id="viewProfileSummary" style="height: 100px;">
     <div style="width: 150px; height: 100%; float:left;">			
       <% if @user.avatars.size > 0 %>
-        <% @user.avatars.each  do |avatar| %>
-          <%= link_to(image_tag(avatar.photo.url(:thumb)), avatar.photo.url(:original) ) %>
-        <% end %>
+        <% avatar = @user.avatars.last %>
+          <%# @user.avatars.each  do |avatar| %>
+            <%= link_to(image_tag(avatar.photo.url(:thumb), :width => "100%", :height => "100%"), avatar.photo.url(:original) ) %>
+          <%# end %>
       <% end %>
     </div>
     <div style="float:left; margin-left: 1em; margin-bottom: 2em; width: 75%">
@@ -47,9 +48,10 @@
       <div class="clear">&nbsp;</div>			
       <div style="width: 30%; height: 100px; margin-top:2px; border:1px solid black; float:left;">			
         <% if @user.avatars.size > 0 %>
-          <% @user.avatars.each  do |avatar| %>
-            <%= link_to(image_tag(avatar.photo.url(:thumb), :width => "100%", :height => "100%"), avatar.photo.url(:original) ) %>
-          <% end %>
+          <% avatar = @user.avatars.last %>
+          <%# @user.avatars.each  do |avatar| %>
+            <%= link_to(image_tag(avatar.photo.url(:small), :width => "100%", :height => "100%"), avatar.photo.url(:original) ) %>
+          <%# end %>
         <% end %>
       </div>
       <div style="margin-left: 7em;">

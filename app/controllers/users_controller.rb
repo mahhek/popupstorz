@@ -69,12 +69,10 @@ class UsersController < ApplicationController
   
   def update
     @user = User.find_by_id(params[:id])
-    params[:user][:avatars_attributes].each do|k,v|
+    params[:user][:avatars_attributes].each do|k,v|      
       @avatar = @user.avatars.build(v)
       @avatar.save
-    end
-#    p "aaaaaaaaa",params[:user][:avatars_attributes].inspect
-#    ll    
+    end  
     params[:user].reject! { |key, value| value.blank? && %w[password password_confirmation].include?(key) }
     
     if @user.update_attributes(params[:user])

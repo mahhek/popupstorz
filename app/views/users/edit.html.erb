@@ -27,8 +27,7 @@
       </h2> 
       <br/>
       <div class="name-list" style="float: left;width:200px;margin-bottom: 5px; color: #666666; font-family: proxima-semibold; font-size: 1.2em;" onclick="window.location='<%= profile_path(@user.id) %>'">
-        <%= @user.activity %>
-        </label>
+        <%= @user.activity %>        
         <br/>
         <br/>
         <div class="name-list XXII" style="margin-bottom: 5px;float: left;width:350px;" onclick="window.location='<%= profile_path(@user.id) %>'">
@@ -49,9 +48,9 @@
     <div style="float: left;width: 100%;margin-top: 20px;">
       <h2 style="color:#666666;text-transform: uppercase;"><%= t(:edit_your_profile) %></h2>
 
-      <%= form_for(@user) do |f| %>
+      <%= form_for(@user, :url => "/users/update", :multipart => true) do |f| %>
   <%#= devise_error_messages! %>
-
+        <%= hidden_field_tag "id",@user.id %>
         <div class="reqInfo"><%= t(:required_info) %></div>
 
         <div class="sign_up_input">
@@ -165,7 +164,7 @@
         </div>
         <div class="sign_up_input">
           <label><%= t(:profile_pic_upload) %></label>
-          <%(3 - @user.avatars.size).times { @user.avatars.build }%>
+          <%(3).times { @user.avatars.build }%>
           <%= f.fields_for :avatars do |avatar| %>
             <% if avatar.object.new_record? %>
               <%= avatar.file_field :photo %>
@@ -176,7 +175,7 @@
         <div style="text-align: center; margin-bottom: 30px; margin-top: 42px;">
           <%= f.submit "Save Changes", :class => "search" %>
         </div>
-      <% end %>  
+      <% end %>
 
       <script type='text/javascript'>
         $("#user_country").chosen();
@@ -187,30 +186,31 @@
 
     </div>
   </div>
+</div>
 
-  <script>
-    function defineDelete(){
-      isChecked = "false";
-      jQuery(".checkBoxClass").each(function(){
-        alert($(this).checked);
-        if($(this).checked == "checked"){
-          isChecked = "true";
-        }
-      });
-      if(isChecked == "true"){
-        alert('showDelete');
+<script>
+  function defineDelete(){
+  isChecked = "false";
+  jQuery(".checkBoxClass").each(function(){
+  alert($(this).checked);
+  if($(this).checked == "checked"){
+  isChecked = "true";
+  }
+  });
+  if(isChecked == "true"){
+  alert('showDelete');
 
-      }else{
-        alert('hideDelete');
-      }
-    }
+  }else{
+  alert('hideDelete');
+  }
+  }
 
-    function check_request_form(){
-      if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy") {
-        alert('Please enter response date.');
-        return false;
-      }
-    }
+  function check_request_form(){
+  if($("#offer_cancellation_date").val() == "" || $("#offer_cancellation_date").val() == "mm/dd/yy") {
+  alert('Please enter response date.');
+  return false;
+  }
+  }
 
 
-  </script>
+</script>
